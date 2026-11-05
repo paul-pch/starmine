@@ -66,6 +66,7 @@ class _HomeShellState extends State<HomeShell> {
     return ListenableBuilder(
       listenable: _c,
       builder: (context, _) {
+        final state = _c.state;
         final pages = [
           ItemsScreen(controller: _c, items: BuildingKind.values, now: _now),
           ResearchScreen(controller: _c, now: _now),
@@ -85,19 +86,24 @@ class _HomeShellState extends State<HomeShell> {
             selectedIndex: _tab,
             onDestinationSelected: (i) => setState(() => _tab = i),
             destinations: [
-              const NavigationDestination(icon: Icon(Icons.factory_outlined), label: 'Bâtiments'),
-              const NavigationDestination(
-                icon: Icon(ResourceStyle.researchIcon),
-                label: 'Recherche',
+              // Pastille = slot libre : quelque chose peut être lancé dans cet onglet.
+              NavigationDestination(
+                icon: _FreeSlot(
+                  free: state.currentConstruction == null,
+                  child: const Icon(Icons.factory_outlined),
+                ),
+                label: 'Bâtiments',
               ),
               NavigationDestination(
-                icon: Badge(
-                  isLabelVisible: _c.state.pending.isNotEmpty,
-                  smallSize: 8,
-                  child: const Icon(Icons.schedule_outlined),
+                icon: _FreeSlot(
+                  free:
+                      state.currentResearch == null &&
+                      state.planet.level(BuildingKind.researchLab) > 0,
+                  child: const Icon(ResourceStyle.researchIcon),
                 ),
-                label: 'File',
+                label: 'Recherche',
               ),
+              const NavigationDestination(icon: Icon(Icons.schedule_outlined), label: 'File'),
               const NavigationDestination(icon: Icon(Icons.tune_outlined), label: 'Debug'),
             ],
           ),
@@ -127,6 +133,24 @@ class _PlanetTitle extends StatelessWidget {
           style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
         ),
       ],
+    );
+  }
+}
+
+/// Petite pastille verte sur l'icône d'onglet quand le slot correspondant est libre.
+class _FreeSlot extends StatelessWidget {
+  const _FreeSlot({required this.free, required this.child});
+
+  final bool free;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Badge(
+      isLabelVisible: free,
+      smallSize: 7,
+      backgroundColor: const Color(0xFF66BB6A),
+      child: child,
     );
   }
 }
