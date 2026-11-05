@@ -1,0 +1,61 @@
+# Données de jeu V0 (formules OGame classiques). Les formules sont dans lib/domain/rules.dart.
+version: 1
+
+start:
+  resources: { metal: 500, crystal: 500, deuterium: 0 }
+  temp_max: { min: -40, max: 80 }
+
+formulas:
+  # N × growth^N, utilisé par la production et l'énergie.
+  growth: 1.1
+  base_production_per_hour: { metal: 30, crystal: 15, deuterium: 0 }
+  # Facteur deutérium = intercept + slope × Tmax.
+  deuterium_temperature: { intercept: 1.44, slope: -0.004 }
+  # Capacité = base × floor(multiplier × e^(exponent_numerator × N / exponent_denominator)).
+  storage: { base: 5000, multiplier: 2.5, exponent_numerator: 20, exponent_denominator: 33 }
+  # Durée (h) = (M + C) / (build_time_divisor × (1 + niveau robots) × vitesse).
+  build_time_divisor: 2500
+
+buildings:
+  metal_mine:
+    name: Mine de métal
+    cost: { metal: 60, crystal: 15 }
+    factor: 1.5
+    production: { resource: metal, coefficient: 30 }
+    energy: { consumption: 10 }
+  crystal_mine:
+    name: Mine de cristal
+    cost: { metal: 48, crystal: 24 }
+    factor: 1.6
+    production: { resource: crystal, coefficient: 20 }
+    energy: { consumption: 10 }
+  deuterium_synthesizer:
+    name: Synthétiseur de deutérium
+    cost: { metal: 225, crystal: 75 }
+    factor: 1.5
+    production: { resource: deuterium, coefficient: 10 }
+    energy: { consumption: 20 }
+  solar_plant:
+    name: Centrale solaire
+    cost: { metal: 75, crystal: 30 }
+    factor: 1.5
+    energy: { production: 20 }
+  metal_storage:
+    name: Hangar de métal
+    cost: { metal: 1000 }
+    factor: 2
+    stores: metal
+  crystal_storage:
+    name: Hangar de cristal
+    cost: { metal: 1000, crystal: 500 }
+    factor: 2
+    stores: crystal
+  deuterium_tank:
+    name: Réservoir de deutérium
+    cost: { metal: 1000, crystal: 1000 }
+    factor: 2
+    stores: deuterium
+  robotics_factory:
+    name: Usine de robots
+    cost: { metal: 400, crystal: 120, deuterium: 200 }
+    factor: 2
