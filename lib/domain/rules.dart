@@ -45,8 +45,7 @@ class Rules {
 
   /// Construction : (M + C) / (divisor × (1 + robots) × 2^nanites × vitesse) heures.
   Duration buildDuration(Resources cost, {required int roboticsLevel, int naniteLevel = 0}) {
-    final divisor =
-        _f.buildTimeDivisor * (1 + roboticsLevel) * math.pow(2, naniteLevel).toDouble();
+    final divisor = _f.buildTimeDivisor * (1 + roboticsLevel) * math.pow(2, naniteLevel).toDouble();
     return _duration(cost, divisor);
   }
 
@@ -110,7 +109,8 @@ class Rules {
       }
       final consumes = spec.consumes;
       if (consumes != null) {
-        consumption = consumption + _single(consumes, p * spec.consumptionCoefficient * _scaled(level));
+        consumption =
+            consumption + _single(consumes, p * spec.consumptionCoefficient * _scaled(level));
       }
     }
     final boosted = Resources.of((k) => mines[k] * factor * (1 + bonus[k]));

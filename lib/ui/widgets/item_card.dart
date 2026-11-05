@@ -151,8 +151,12 @@ class ItemCard extends StatelessWidget {
     final rules = controller.rules;
     final data = controller.data;
     final next = switch (item) {
-      BuildingKind() => state.copyWith(planet: state.planet.withLevel(item as BuildingKind, state.levelOf(item) + 1)),
-      TechKind() => state.copyWith(research: {...state.research, item as TechKind: state.levelOf(item) + 1}),
+      BuildingKind() => state.copyWith(
+        planet: state.planet.withLevel(item as BuildingKind, state.levelOf(item) + 1),
+      ),
+      TechKind() => state.copyWith(
+        research: {...state.research, item as TechKind: state.levelOf(item) + 1},
+      ),
     };
     final before = rules.hourlyProduction(state.planet, state.research);
     final after = rules.hourlyProduction(next.planet, next.research);

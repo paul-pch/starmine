@@ -14,9 +14,7 @@ class Planet {
     Map<BuildingKind, int> percents = const {},
     required this.lastUpdate,
   }) : levels = Map.unmodifiable({for (final k in BuildingKind.values) k: levels[k] ?? 0}),
-       percents = Map.unmodifiable({
-         for (final k in BuildingKind.values) k: percents[k] ?? 100,
-       });
+       percents = Map.unmodifiable({for (final k in BuildingKind.values) k: percents[k] ?? 100});
 
   /// Nouvelle planète : ressources de départ, bâtiments au niveau 0, Tmax tirée au sort.
   factory Planet.create({

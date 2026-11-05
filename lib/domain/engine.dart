@@ -6,9 +6,12 @@ import 'rules.dart';
 
 /// État complet d'une partie (une planète), technologies et événements en attente.
 class GameState {
-  GameState({required this.planet, TechLevels research = const {}, required List<GameEvent> pending})
-    : research = Map.unmodifiable({for (final k in TechKind.values) k: research[k] ?? 0}),
-      pending = List<GameEvent>.unmodifiable(<GameEvent>[...pending]..sort(GameEvent.compare));
+  GameState({
+    required this.planet,
+    TechLevels research = const {},
+    required List<GameEvent> pending,
+  }) : research = Map.unmodifiable({for (final k in TechKind.values) k: research[k] ?? 0}),
+       pending = List<GameEvent>.unmodifiable(<GameEvent>[...pending]..sort(GameEvent.compare));
 
   final Planet planet;
 
@@ -27,12 +30,11 @@ class GameState {
     TechKind() => research[item]!,
   };
 
-  GameState copyWith({Planet? planet, TechLevels? research, List<GameEvent>? pending}) =>
-      GameState(
-        planet: planet ?? this.planet,
-        research: research ?? this.research,
-        pending: pending ?? this.pending,
-      );
+  GameState copyWith({Planet? planet, TechLevels? research, List<GameEvent>? pending}) => GameState(
+    planet: planet ?? this.planet,
+    research: research ?? this.research,
+    pending: pending ?? this.pending,
+  );
 }
 
 class AdvanceResult {

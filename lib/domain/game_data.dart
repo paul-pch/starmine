@@ -202,7 +202,7 @@ class GameData {
     required Map<TechKind, TechSpec> research,
   }) : buildings = Map.unmodifiable(buildings),
        research = Map.unmodifiable(research) {
-    final missing = [
+    final missing = <Unlockable>[
       ...BuildingKind.values.where((k) => !buildings.containsKey(k)),
       ...TechKind.values.where((k) => !research.containsKey(k)),
     ];
@@ -255,7 +255,10 @@ class GameData {
       ),
       buildings: {
         for (final e in buildings.entries)
-          BuildingKind.fromKey(e.key): _building(BuildingKind.fromKey(e.key), _asMap(e.value, e.key)),
+          BuildingKind.fromKey(e.key): _building(
+            BuildingKind.fromKey(e.key),
+            _asMap(e.value, e.key),
+          ),
       },
       research: {
         for (final e in research.entries)
@@ -343,5 +346,6 @@ class GameData {
     throw FormatException('« $key » doit être une chaîne');
   }
 
-  static String _stringOr(Map<String, Object?> m, String key) => m[key] == null ? '' : _string(m, key);
+  static String _stringOr(Map<String, Object?> m, String key) =>
+      m[key] == null ? '' : _string(m, key);
 }

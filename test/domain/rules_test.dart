@@ -108,17 +108,17 @@ void main() {
       final p = planet(levels: {BuildingKind.metalMine: 2, BuildingKind.solarPlant: 1});
       final factor = (20 * 1.1) / (10 * 2 * 1.21);
       expect(rules.energy(p, noTech).factor, closeTo(factor, 1e-12));
-      expect(
-        rules.hourlyProduction(p, noTech).metal,
-        closeTo(30 + 30 * 2 * 1.21 * factor, 1e-9),
-      );
+      expect(rules.hourlyProduction(p, noTech).metal, closeTo(30 + 30 * 2 * 1.21 * factor, 1e-9));
     });
 
     test('fusion : 30 × N × (1.05 + 0.01 × E)^N, consomme 10 × N × 1.1^N deutérium', () {
       final p = planet(levels: {BuildingKind.fusionReactor: 2});
       final e = rules.energy(p, {TechKind.energy: 3});
       expect(e.produced, closeTo(30 * 2 * 1.08 * 1.08, 1e-9));
-      expect(rules.hourlyProduction(p, {TechKind.energy: 3}).deuterium, closeTo(-10 * 2 * 1.21, 1e-9));
+      expect(
+        rules.hourlyProduction(p, {TechKind.energy: 3}).deuterium,
+        closeTo(-10 * 2 * 1.21, 1e-9),
+      );
     });
 
     test('fusion à 0 % : ni énergie ni consommation', () {

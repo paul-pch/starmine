@@ -6,6 +6,7 @@ import '../domain/resources.dart';
 
 /// Identifiant du format de sauvegarde exportée.
 const saveFormat = 'starmine-save';
+
 /// v2 (V1) : technologies et réglages de production. Une sauvegarde v1 reste lisible.
 const saveVersion = 2;
 
@@ -133,7 +134,9 @@ SaveGame decodeSave(Map<String, Object?> json) {
   final p = _map(json, 'planet');
   final buildings = _map(p, 'buildings');
   // Absents en v1 : réglages à 100 %, technos à 0.
-  final percents = p['production_percent'] == null ? const <String, Object?>{} : _map(p, 'production_percent');
+  final percents = p['production_percent'] == null
+      ? const <String, Object?>{}
+      : _map(p, 'production_percent');
   final research = json['research'] == null ? const <String, Object?>{} : _map(json, 'research');
   final planet = Planet(
     id: _int(p, 'id'),

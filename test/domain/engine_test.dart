@@ -126,10 +126,7 @@ void main() {
 
   test('deutérium net négatif : le stock s’arrête à 0', () {
     final start = game(
-      planet(
-        levels: {BuildingKind.fusionReactor: 3},
-        resources: const Resources(deuterium: 100),
-      ),
+      planet(levels: {BuildingKind.fusionReactor: 3}, resources: const Resources(deuterium: 100)),
     );
     final after = advance(start, t0.add(const Duration(days: 2)), rules).state.planet;
     expect(after.resources.deuterium, 0);
@@ -224,8 +221,7 @@ void main() {
 
   group('recherche', () {
     const rich = Resources(metal: 1e6, crystal: 1e6, deuterium: 1e6);
-    GameState withLab() =>
-        game(planet(levels: {BuildingKind.researchLab: 1}, resources: rich));
+    GameState withLab() => game(planet(levels: {BuildingKind.researchLab: 1}, resources: rich));
 
     test('lancement : durée selon le labo, file séparée de la construction', () {
       final r = startOrder(withLab(), TechKind.energy, t0, rules, eventId: 1) as OrderStarted;

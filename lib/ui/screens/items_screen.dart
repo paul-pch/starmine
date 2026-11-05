@@ -16,9 +16,7 @@ class ItemsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      children: [
-        for (final item in items) ItemCard(controller: controller, item: item, now: now),
-      ],
+      children: [for (final item in items) ItemCard(controller: controller, item: item, now: now)],
     );
   }
 }
