@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Analyse et tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - run: flutter pub get
+
+      - name: Le domaine reste en Dart pur
+        run: |
+          if grep -rnE "^import 'package:(flutter|drift|sqlite3|path_provider)" lib/domain; then
+            echo "::error::lib/domain ne doit dépendre ni de Flutter ni de la persistance"
+            exit 1
+          fi
+
+      - name: Format
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - run: flutter analyze
+
+      - run: flutter test
+
+  apk:
+    name: APK release
+    needs: check
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - run: flutter pub get
+
+      # Sans keystore fixe, chaque APK aurait une signature différente :
+      # mise à jour impossible, désinstallation obligatoire, sauvegarde perdue.
+      - name: Keystore
+        env:
+          ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_B64" ]; then
+            echo "::error::Secret ANDROID_KEYSTORE_B64 absent, build release refusé"
+            exit 1
+          fi
+          echo "$ANDROID_KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/starmine.jks"
+          echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/starmine.jks" >> "$GITHUB_ENV"
+
+      - name: Build
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: >-
+          flutter build apk --release
+          --target-platform android-arm64
+          --build-number ${{ github.run_number }}
+
+      - name: Renommage
+        id: apk
+        run: |
+          version=$(sed -n 's/^version: *\([^+]*\).*/\1/p' pubspec.yaml)
+          name="starmine-${version}-${{ github.run_number }}.apk"
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-release.apk "dist/$name"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.apk.outputs.name }}
+          path: dist/*.apk
+          retention-days: 30
+
+      - name: Release GitHub
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.apk
+          generate_release_notes: true

@@ -1,0 +1,23 @@
+name: starmine
+description: "Idle solo façon OGame, en temps réel, pour Android."
+publish_to: "none"
+
+# versionName = 0.1.0 ; le versionCode (+N) est écrasé en CI par github.run_number.
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.0
+  # Version exacte lue par la CI (subosito/flutter-action, flutter-version-file).
+  flutter: 3.47.9
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
