@@ -54,8 +54,14 @@ void main() {
   });
 
   test('déterministe pour une graine donnée', () {
-    final a = fight({UnitKind.cruiser: 10, UnitKind.lightFighter: 30}, {UnitKind.rocketLauncher: 60});
-    final b = fight({UnitKind.cruiser: 10, UnitKind.lightFighter: 30}, {UnitKind.rocketLauncher: 60});
+    final a = fight(
+      {UnitKind.cruiser: 10, UnitKind.lightFighter: 30},
+      {UnitKind.rocketLauncher: 60},
+    );
+    final b = fight(
+      {UnitKind.cruiser: 10, UnitKind.lightFighter: 30},
+      {UnitKind.rocketLauncher: 60},
+    );
     expect(a.attackerLeft, b.attackerLeft);
     expect(a.defenderLeft, b.defenderLeft);
     expect(a.rounds.length, b.rounds.length);

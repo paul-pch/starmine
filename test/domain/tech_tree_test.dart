@@ -29,9 +29,8 @@ void main() {
     ]);
     expect(names(BuildingKind.roboticsFactory), ['Usine de nanites', 'Chantier spatial']);
     expect(names(TechKind.armour), isEmpty);
-    expect(
-      gameData.unlockedBy(BuildingKind.researchLab),
-      [for (final k in TechKind.values) gameData.tech(k)],
-    );
+    expect(gameData.unlockedBy(BuildingKind.researchLab), [
+      for (final k in TechKind.values) gameData.tech(k),
+    ]);
   });
 }

@@ -160,12 +160,7 @@ class _Army {
         stats.add(s);
       }
     }
-    return _Army(
-      kinds,
-      stats,
-      [for (final s in stats) s.hull],
-      [for (final s in stats) s.shield],
-    );
+    return _Army(kinds, stats, [for (final s in stats) s.hull], [for (final s in stats) s.shield]);
   }
 
   List<UnitKind> kinds;

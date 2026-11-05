@@ -51,8 +51,7 @@ class Rules {
 
   /// Unité du chantier : (M + C) / (divisor × (1 + chantier) × 2^nanites × vitesse) heures.
   Duration unitDuration(Resources cost, {required int shipyardLevel, int naniteLevel = 0}) {
-    final divisor =
-        _f.buildTimeDivisor * (1 + shipyardLevel) * math.pow(2, naniteLevel).toDouble();
+    final divisor = _f.buildTimeDivisor * (1 + shipyardLevel) * math.pow(2, naniteLevel).toDouble();
     return _duration(cost, divisor);
   }
 

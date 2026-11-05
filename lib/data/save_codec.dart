@@ -180,7 +180,9 @@ SaveGame decodeSave(Map<String, Object?> json) {
       for (final e in percents.entries)
         BuildingKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 100,
     },
-    units: {for (final e in units.entries) UnitKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 0},
+    units: {
+      for (final e in units.entries) UnitKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 0,
+    },
   );
   final events = [for (final raw in _list(json, 'events')) _decodeSavedEvent(raw)];
   return SaveGame(
