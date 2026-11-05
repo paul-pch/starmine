@@ -70,7 +70,8 @@ jobs:
   apk:
     name: APK release
     needs: check
-    if: github.event_name != 'pull_request'
+    # APK seulement pour une release (tag v*) ou un lancement manuel.
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

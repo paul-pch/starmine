@@ -84,11 +84,15 @@ class StartConditions {
     required this.resources,
     required this.tempMaxMin,
     required this.tempMaxMax,
+    required this.tempSpread,
   });
 
   final Resources resources;
   final int tempMaxMin;
   final int tempMaxMax;
+
+  /// Écart entre températures max et min d'une planète.
+  final int tempSpread;
 }
 
 /// Toutes les données de jeu, construites depuis une Map (le chargement YAML est dans `data/`).
@@ -134,6 +138,7 @@ class GameData {
         resources: _resources(_map(start, 'resources')),
         tempMaxMin: _num(temp, 'min').toInt(),
         tempMaxMax: _num(temp, 'max').toInt(),
+        tempSpread: _num(start, 'temp_spread').toInt(),
       ),
       buildings: {
         for (final entry in buildings.entries)

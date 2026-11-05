@@ -22,8 +22,8 @@ flutter run            # signé avec la clé debug
 ## CI et APK
 
 - Chaque push : format, `flutter analyze`, `flutter test`.
-- Push sur `main` : APK release arm64 signé, en artefact (30 jours).
-- Tag `v*` : GitHub Release avec l'APK en pièce jointe, à télécharger depuis le téléphone.
+- Lancement manuel (Actions → CI → Run workflow) : APK release arm64 signé, en artefact (30 jours).
+- Tag `v*` : APK et GitHub Release avec l'APK en pièce jointe, à télécharger depuis le téléphone.
 
 ```bash
 git tag v0.1.0 && git push origin v0.1.0

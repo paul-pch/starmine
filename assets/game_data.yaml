@@ -4,6 +4,8 @@ version: 1
 start:
   resources: { metal: 500, crystal: 500, deuterium: 0 }
   temp_max: { min: -40, max: 80 }
+  # Tmin = Tmax − temp_spread (affichage ; seule Tmax entre dans les formules).
+  temp_spread: 40
 
 formulas:
   # N × growth^N, utilisé par la production et l'énergie.

@@ -45,6 +45,11 @@ void main() {
     await c.init();
     expect(await c.build(BuildingKind.metalMine), isNull);
     final event = c.state.currentConstruction!;
+    // App visible : pas de notification.
+    expect(notifier.scheduled, isEmpty);
+
+    // App masquée : notification programmée à l'échéance.
+    await c.onHidden();
     expect(notifier.scheduled[event.id], event.dueAt);
 
     // Réouverture 1 h plus tard avec un nouveau contrôleur (process tué).
@@ -73,7 +78,7 @@ void main() {
     expect(notifier.scheduled, isEmpty);
   });
 
-  test('export → reset → import : partie identique, notifications reprogrammées', () async {
+  test('export → reset → import : partie identique', () async {
     final c = controller();
     await c.init();
     await c.setSpeed(10);
@@ -93,7 +98,29 @@ void main() {
     expect(c.state.planet.tempMax, before.planet.tempMax);
     final restored = c.state.currentConstruction!;
     expect(restored.dueAt, before.currentConstruction!.dueAt);
+    await c.onHidden();
     expect(notifier.scheduled[restored.id], restored.dueAt);
+  });
+
+  test('retour au premier plan : notifications retirées, temps rattrapé', () async {
+    final c = controller();
+    await c.init();
+    await c.build(BuildingKind.metalMine);
+    await c.onHidden();
+    expect(notifier.scheduled, hasLength(1));
+
+    clock.advance(const Duration(hours: 1));
+    await c.onVisible();
+    expect(notifier.scheduled, isEmpty);
+    expect(c.state.planet.level(BuildingKind.metalMine), 1);
+  });
+
+  test('construction lancée app masquée (rare) : notifiée directement', () async {
+    final c = controller();
+    await c.init();
+    await c.onHidden();
+    await c.build(BuildingKind.metalMine);
+    expect(notifier.scheduled, hasLength(1));
   });
 
   test('import invalide : FormatException, partie intacte', () async {

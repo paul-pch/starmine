@@ -127,5 +127,6 @@ void main() {
     expect(gameData.formulas.growth, 1.1);
     expect(gameData.start.tempMaxMin, -40);
     expect(gameData.start.tempMaxMax, 80);
+    expect(gameData.start.tempSpread, 40);
   });
 }

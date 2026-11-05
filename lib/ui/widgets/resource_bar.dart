@@ -39,28 +39,34 @@ class ResourceBar extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-          Row(
+          // Wrap plutôt que Row : passe à la ligne sur un écran étroit.
+          Wrap(
+            spacing: 8,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Icon(
                 Icons.bolt,
                 size: 16,
                 color: energy.net < 0 ? theme.colorScheme.error : theme.colorScheme.primary,
               ),
-              const SizedBox(width: 4),
               Text(
-                'Énergie ${fmtAmount(energy.net)}  '
-                '(${fmtAmount(energy.produced)} / ${fmtAmount(energy.consumed)})',
-                style: theme.textTheme.bodySmall?.copyWith(
+                'Énergie ${energy.net > 0 ? '+' : ''}${fmtAmount(energy.net)}',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
                   color: energy.net < 0 ? theme.colorScheme.error : null,
                 ),
               ),
-              if (energy.factor < 1) ...[
-                const Spacer(),
+              Text(
+                '${fmtAmount(energy.produced)} produite · ${fmtAmount(energy.consumed)} consommée',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              if (energy.factor < 1)
                 Text(
                   'Mines à ${(energy.factor * 100).floor()} %',
                   style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error),
                 ),
-              ],
             ],
           ),
         ],

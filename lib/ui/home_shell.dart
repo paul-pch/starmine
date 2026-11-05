@@ -34,7 +34,10 @@ class _HomeShellState extends State<HomeShell> {
     super.initState();
     _now = _c.now();
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
-    _lifecycle = AppLifecycleListener(onResume: _refresh);
+    _lifecycle = AppLifecycleListener(
+      onHide: () => unawaited(_c.onHidden()),
+      onShow: () => unawaited(_c.onVisible()),
+    );
   }
 
   @override
@@ -67,7 +70,7 @@ class _HomeShellState extends State<HomeShell> {
           DebugScreen(controller: _c),
         ];
         return Scaffold(
-          appBar: AppBar(title: Text(_c.state.planet.name)),
+          appBar: AppBar(title: _PlanetTitle(controller: _c)),
           body: Column(
             children: [
               ResourceBar(controller: _c, now: _now),
@@ -93,6 +96,30 @@ class _HomeShellState extends State<HomeShell> {
           ),
         );
       },
+    );
+  }
+}
+
+/// Nom de la planète et sa plage de températures.
+class _PlanetTitle extends StatelessWidget {
+  const _PlanetTitle({required this.controller});
+
+  final GameController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final planet = controller.state.planet;
+    final tempMin = planet.tempMax - controller.data.start.tempSpread;
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(planet.name),
+        Text(
+          'Température $tempMin °C à ${planet.tempMax} °C',
+          style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        ),
+      ],
     );
   }
 }

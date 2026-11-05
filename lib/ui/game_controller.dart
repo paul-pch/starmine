@@ -42,6 +42,9 @@ class GameController extends ChangeNotifier {
   late Rules _rules;
   Future<void> _lock = Future.value();
 
+  /// Les notifications ne sont programmées que lorsque l'app n'est pas visible.
+  var _visible = true;
+
   GameState get state => _save.state;
   Rules get rules => _rules;
   double get speed => _save.speed;
@@ -71,7 +74,7 @@ class GameController extends ChangeNotifier {
         return reason;
       case BuildStarted(:final event):
         await _commit(outcome.state, applied: adv.applied);
-        await _notifier.schedule(event, data);
+        if (!_visible) await _notifier.schedule(event, data);
         return null;
     }
   });
@@ -120,11 +123,29 @@ class GameController extends ChangeNotifier {
     );
   }
 
+  /// App masquée : programme une notification par événement à venir.
+  Future<void> onHidden() => _serialized(() async {
+    _visible = false;
+    await _scheduleAll();
+  });
+
+  /// App de nouveau visible : plus de notifications, rattrapage du temps écoulé.
+  Future<void> onVisible() => _serialized(() async {
+    _visible = true;
+    await _notifier.cancelAll();
+    await _advanceAndSave();
+  });
+
   Future<void> _replace(SaveGame save) async {
     await _repo.replaceAll(save);
     _set(save);
     await _notifier.cancelAll();
-    for (final e in save.state.pending.whereType<BuildingDone>()) {
+    if (!_visible) await _scheduleAll();
+  }
+
+  Future<void> _scheduleAll() async {
+    await _notifier.cancelAll();
+    for (final e in state.pending.whereType<BuildingDone>()) {
       if (e.dueAt.isAfter(now())) await _notifier.schedule(e, data);
     }
   }

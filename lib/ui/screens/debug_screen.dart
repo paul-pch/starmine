@@ -140,7 +140,7 @@ class _DebugScreenState extends State<DebugScreen> {
         const Divider(),
         ListTile(
           title: const Text('Planète'),
-          subtitle: Text('Tmax ${planet.tempMax} °C · mise à jour ${planet.lastUpdate.toLocal()}'),
+          subtitle: Text('Dernière mise à jour ${planet.lastUpdate.toLocal()}'),
         ),
       ],
     );

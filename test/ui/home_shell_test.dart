@@ -27,6 +27,8 @@ void main() {
     await tester.pumpWidget(StarmineApp(controller: controller));
     expect(find.text('Métal'), findsOneWidget);
     expect(find.text('Mine de métal'), findsOneWidget);
+    final tMax = controller.state.planet.tempMax;
+    expect(find.text('Température ${tMax - 40} °C à $tMax °C'), findsOneWidget);
     expect(find.text('Niv. 1'), findsWidgets);
 
     await tester.tap(find.text('File'));
