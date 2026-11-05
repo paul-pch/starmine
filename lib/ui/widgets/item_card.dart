@@ -6,8 +6,10 @@ import '../../domain/engine.dart';
 import '../../domain/events.dart';
 import '../../domain/game_data.dart';
 import '../../domain/resources.dart';
+import '../../domain/tech_tree.dart';
 import '../format.dart';
 import '../game_controller.dart';
+import '../resource_style.dart';
 import 'info_button.dart';
 
 /// Carte d'un bâtiment ou d'une technologie : niveau, effet du niveau suivant, coût,
@@ -31,6 +33,7 @@ class ItemCard extends StatelessWidget {
     final locked = block is RequirementsNotMet;
     final effect = _effect(state);
     final running = state.pending.whereType<OrderDone>().any((e) => e.item == item);
+    final unlocks = controller.data.unlockedBy(item);
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -43,6 +46,10 @@ class ItemCard extends StatelessWidget {
             children: [
               Row(
                 children: [
+                  if (item is TechKind) ...[
+                    Icon(ResourceStyle.researchIcon, size: 18, color: theme.colorScheme.primary),
+                    const SizedBox(width: 6),
+                  ],
                   Flexible(child: Text(spec.name, style: theme.textTheme.titleMedium)),
                   if (spec.description.isNotEmpty)
                     InfoButton(title: spec.name, body: spec.description),
@@ -65,12 +72,8 @@ class ItemCard extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            fmtCost(cost),
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: block is NotEnoughResources ? theme.colorScheme.error : null,
-                            ),
-                          ),
+                          CostLine(cost: cost, available: state.planet.resources),
+                          const SizedBox(height: 2),
                           Text(
                             fmtDuration(orderDuration(state, item, rules)),
                             style: theme.textTheme.bodySmall,
@@ -90,6 +93,15 @@ class ItemCard extends StatelessWidget {
                       child: Text(running ? 'En cours' : 'Niv. ${level + 1}'),
                     ),
                   ],
+                ),
+              ],
+              if (unlocks.isNotEmpty) ...[
+                const SizedBox(height: 6),
+                Text(
+                  'Débloque ${unlocks.map((u) => controller.data.spec(u).name).join(' · ')}',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
               if (item case final BuildingKind kind

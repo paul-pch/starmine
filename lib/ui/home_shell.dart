@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'game_controller.dart';
 import '../domain/game_data.dart';
+import 'resource_style.dart';
 import 'screens/debug_screen.dart';
 import 'screens/items_screen.dart';
 import 'screens/queue_screen.dart';
@@ -67,7 +68,7 @@ class _HomeShellState extends State<HomeShell> {
       builder: (context, _) {
         final pages = [
           ItemsScreen(controller: _c, items: BuildingKind.values, now: _now),
-          ItemsScreen(controller: _c, items: TechKind.values, now: _now),
+          ResearchScreen(controller: _c, now: _now),
           QueueScreen(controller: _c, now: _now),
           DebugScreen(controller: _c),
         ];
@@ -85,7 +86,7 @@ class _HomeShellState extends State<HomeShell> {
             onDestinationSelected: (i) => setState(() => _tab = i),
             destinations: [
               const NavigationDestination(icon: Icon(Icons.factory_outlined), label: 'Bâtiments'),
-              const NavigationDestination(icon: Icon(Icons.science_outlined), label: 'Recherche'),
+              const NavigationDestination(icon: Icon(ResourceStyle.researchIcon), label: 'Recherche'),
               NavigationDestination(
                 icon: Badge(
                   isLabelVisible: _c.state.pending.isNotEmpty,

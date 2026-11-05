@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../domain/resources.dart';
 import '../format.dart';
 import '../game_controller.dart';
+import '../resource_style.dart';
 import 'info_button.dart';
 
 /// Stocks interpolés à [now], capacité, production horaire et bilan d'énergie.
@@ -32,7 +33,7 @@ class ResourceBar extends StatelessWidget {
               for (final k in ResourceKind.values)
                 Expanded(
                   child: _ResourceTile(
-                    name: resourceName(k),
+                    kind: k,
                     stock: stock[k],
                     capacity: cap[k],
                     perHour: rate[k],
@@ -47,9 +48,9 @@ class ResourceBar extends StatelessWidget {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Icon(
-                Icons.bolt,
+                ResourceStyle.energyIcon,
                 size: 16,
-                color: energy.net < 0 ? theme.colorScheme.error : theme.colorScheme.primary,
+                color: energy.net < 0 ? theme.colorScheme.error : ResourceStyle.energyColor,
               ),
               Text(
                 'Énergie ${energy.net > 0 ? '+' : ''}${fmtAmount(energy.net)}',
@@ -88,13 +89,13 @@ class ResourceBar extends StatelessWidget {
 
 class _ResourceTile extends StatelessWidget {
   const _ResourceTile({
-    required this.name,
+    required this.kind,
     required this.stock,
     required this.capacity,
     required this.perHour,
   });
 
-  final String name;
+  final ResourceKind kind;
   final double stock;
   final double capacity;
   final double perHour;
@@ -106,7 +107,13 @@ class _ResourceTile extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(name, style: theme.textTheme.labelSmall),
+        Row(
+          children: [
+            Icon(ResourceStyle.icon(kind), size: 14, color: ResourceStyle.color(kind)),
+            const SizedBox(width: 4),
+            Text(resourceName(kind), style: theme.textTheme.labelSmall),
+          ],
+        ),
         Text(
           fmtAmount(stock),
           style: theme.textTheme.titleMedium?.copyWith(

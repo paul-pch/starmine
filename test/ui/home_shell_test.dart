@@ -34,6 +34,8 @@ void main() {
     await tester.tap(find.text('Recherche'));
     await tester.pump();
     expect(find.text('Technologie Énergie'), findsOneWidget);
+    expect(find.text('Palier 1'), findsOneWidget);
+    expect(find.textContaining('Débloque Centrale à fusion'), findsOneWidget);
     expect(find.textContaining('Requiert Laboratoire de recherche 1'), findsWidgets);
 
     await tester.tap(find.text('File'));

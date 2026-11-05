@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../domain/events.dart';
 import '../format.dart';
 import '../game_controller.dart';
+import '../resource_style.dart';
 
 /// Les deux files : construction et recherche.
 class QueueScreen extends StatelessWidget {
@@ -18,6 +19,7 @@ class QueueScreen extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       children: [
         _Slot(
+          icon: Icons.factory_outlined,
           title: 'Construction',
           empty: 'Aucune construction en cours',
           order: state.currentConstruction,
@@ -26,6 +28,7 @@ class QueueScreen extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         _Slot(
+          icon: ResourceStyle.researchIcon,
           title: 'Recherche',
           empty: 'Aucune recherche en cours',
           order: state.currentResearch,
@@ -39,6 +42,7 @@ class QueueScreen extends StatelessWidget {
 
 class _Slot extends StatelessWidget {
   const _Slot({
+    required this.icon,
     required this.title,
     required this.empty,
     required this.order,
@@ -46,6 +50,7 @@ class _Slot extends StatelessWidget {
     required this.now,
   });
 
+  final IconData icon;
   final String title;
   final String empty;
   final OrderDone? order;
@@ -62,7 +67,13 @@ class _Slot extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: theme.textTheme.labelLarge),
+            Row(
+              children: [
+                Icon(icon, size: 18, color: theme.colorScheme.primary),
+                const SizedBox(width: 6),
+                Text(title, style: theme.textTheme.labelLarge),
+              ],
+            ),
             const SizedBox(height: 8),
             if (current == null)
               Text(empty, style: theme.textTheme.bodyMedium)
