@@ -6,6 +6,7 @@ import 'game_controller.dart';
 import '../domain/game_data.dart';
 import 'resource_style.dart';
 import 'screens/debug_screen.dart';
+import 'screens/defense_screen.dart';
 import 'screens/items_screen.dart';
 import 'screens/queue_screen.dart';
 import 'widgets/resource_bar.dart';
@@ -70,6 +71,7 @@ class _HomeShellState extends State<HomeShell> {
         final pages = [
           ItemsScreen(controller: _c, items: BuildingKind.values, now: _now),
           ResearchScreen(controller: _c, now: _now),
+          DefenseScreen(controller: _c, now: _now),
           QueueScreen(controller: _c, now: _now),
           DebugScreen(controller: _c),
         ];
@@ -102,6 +104,14 @@ class _HomeShellState extends State<HomeShell> {
                   child: const Icon(ResourceStyle.researchIcon),
                 ),
                 label: 'Recherche',
+              ),
+              NavigationDestination(
+                icon: _FreeSlot(
+                  free:
+                      state.currentBatch == null && state.planet.level(BuildingKind.shipyard) > 0,
+                  child: const Icon(Icons.shield_outlined),
+                ),
+                label: 'Défense',
               ),
               const NavigationDestination(icon: Icon(Icons.schedule_outlined), label: 'File'),
               const NavigationDestination(icon: Icon(Icons.tune_outlined), label: 'Debug'),

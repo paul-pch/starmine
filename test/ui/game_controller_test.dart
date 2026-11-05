@@ -138,6 +138,12 @@ void main() {
     expect(c.state.planet.percent(BuildingKind.metalMine), 30);
   });
 
+  test('chantier : refusé sans chantier spatial', () async {
+    final c = controller();
+    await c.init();
+    expect(await c.orderUnits(UnitKind.rocketLauncher, 1), isA<RequirementsNotMet>());
+  });
+
   test('import invalide : FormatException, partie intacte', () async {
     final c = controller();
     await c.init();

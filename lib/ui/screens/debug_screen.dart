@@ -1,7 +1,13 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../domain/combat.dart';
+import '../../domain/game_data.dart';
 import '../game_controller.dart';
+import '../widgets/combat_report.dart';
+import '../widgets/info_button.dart';
 
 /// Vitesse de jeu, sauvegarde (presse-papiers), reset, permissions.
 class DebugScreen extends StatefulWidget {
@@ -80,6 +86,48 @@ class _DebugScreenState extends State<DebugScreen> {
     _snack('Nouvelle partie');
   }
 
+  /// Flottes pirates de test, du raid d'éclaireurs à l'armada.
+  static const _presets = <String, Map<UnitKind, int>>{
+    'Éclaireurs : 5 chasseurs légers': {UnitKind.lightFighter: 5},
+    'Patrouille : 15 chasseurs légers, 5 lourds': {
+      UnitKind.lightFighter: 15,
+      UnitKind.heavyFighter: 5,
+    },
+    'Escadre : 30 chasseurs légers, 8 croiseurs': {
+      UnitKind.lightFighter: 30,
+      UnitKind.cruiser: 8,
+    },
+    'Armada : 20 croiseurs, 10 vaisseaux de bataille': {
+      UnitKind.cruiser: 20,
+      UnitKind.battleship: 10,
+    },
+  };
+
+  Future<void> _simulate() async {
+    final fleet = await showModalBottomSheet<Map<UnitKind, int>>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (final e in _presets.entries)
+              ListTile(title: Text(e.key), onTap: () => Navigator.pop(context, e.value)),
+          ],
+        ),
+      ),
+    );
+    if (fleet == null || !mounted) return;
+    final state = _c.state;
+    final result = simulateCombat(
+      _c.data,
+      CombatSide(units: fleet),
+      CombatSide(units: state.planet.units, tech: state.research),
+      math.Random(),
+    );
+    await CombatReport.show(context, _c.data, result);
+  }
+
   Future<void> _requestExact() async {
     await _c.notifier.requestExact();
     await _checkExact();
@@ -118,6 +166,19 @@ class _DebugScreenState extends State<DebugScreen> {
           title: const Text('Importer une sauvegarde'),
           subtitle: const Text('Depuis le presse-papiers'),
           onTap: _import,
+        ),
+        ListTile(
+          leading: const Icon(Icons.gps_fixed),
+          title: const Text('Simulateur de combat'),
+          subtitle: const Text('Une flotte pirate contre tes défenses, sans effet sur la partie'),
+          trailing: const InfoButton(
+            title: 'Simulateur de combat',
+            body:
+                'Joue une bataille selon les règles OGame : 6 rounds au plus, tir rapide, '
+                'boucliers régénérés à chaque round, 70 % des défenses détruites reconstruites. '
+                'Le résultat varie d’une simulation à l’autre : relance pour te faire une idée.',
+          ),
+          onTap: _simulate,
         ),
         ListTile(
           leading: const Icon(Icons.restart_alt),

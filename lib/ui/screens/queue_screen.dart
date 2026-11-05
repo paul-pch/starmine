@@ -35,6 +35,8 @@ class QueueScreen extends StatelessWidget {
           controller: controller,
           now: now,
         ),
+        const SizedBox(height: 8),
+        _BatchSlot(batch: state.currentBatch, controller: controller, now: now),
       ],
     );
   }
@@ -138,5 +140,62 @@ class _Slot extends StatelessWidget {
   static String _clock(DateTime t) {
     String two(int n) => n.toString().padLeft(2, '0');
     return '${two(t.day)}/${two(t.month)} ${two(t.hour)}:${two(t.minute)}:${two(t.second)}';
+  }
+}
+
+/// Lot du chantier : progression du lot et de l'unité en cours. Pas d'annulation.
+class _BatchSlot extends StatelessWidget {
+  const _BatchSlot({required this.batch, required this.controller, required this.now});
+
+  final ShipyardBatch? batch;
+  final GameController controller;
+  final DateTime now;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final b = batch;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.shield_outlined, size: 18, color: theme.colorScheme.primary),
+                const SizedBox(width: 6),
+                Text('Chantier', style: theme.textTheme.labelLarge),
+              ],
+            ),
+            const SizedBox(height: 8),
+            if (b == null)
+              Text('Aucune production en cours', style: theme.textTheme.bodyMedium)
+            else ...[
+              Text(
+                '${controller.data.unit(b.unit).name} · ${b.ordered - b.remaining} / ${b.ordered}',
+                style: theme.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 12),
+              LinearProgressIndicator(value: (b.ordered - b.remaining) / b.ordered),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Text(
+                    'Prochaine dans ${fmtDuration(b.dueAt.difference(now))}',
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                  const Spacer(),
+                  Text(
+                    'Fin ${fmtDuration(b.finishAt.difference(now))}',
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
   }
 }

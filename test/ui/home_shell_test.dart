@@ -38,10 +38,15 @@ void main() {
     expect(find.textContaining('Débloque Centrale à fusion'), findsOneWidget);
     expect(find.textContaining('Requiert Laboratoire de recherche 1'), findsWidgets);
 
+    await tester.tap(find.text('Défense'));
+    await tester.pump();
+    expect(find.text('Lanceur de missiles'), findsOneWidget);
+
     await tester.tap(find.text('File'));
     await tester.pump();
     expect(find.text('Aucune construction en cours'), findsOneWidget);
     expect(find.text('Aucune recherche en cours'), findsOneWidget);
+    expect(find.text('Aucune production en cours'), findsOneWidget);
 
     await tester.tap(find.text('Debug'));
     await tester.pump();
