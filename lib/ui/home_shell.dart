@@ -69,7 +69,7 @@ class _HomeShellState extends State<HomeShell> {
       builder: (context, _) {
         final state = _c.state;
         final pages = [
-          ItemsScreen(controller: _c, items: BuildingKind.values, now: _now),
+          BuildingsScreen(controller: _c, now: _now),
           ResearchScreen(controller: _c, now: _now),
           DefenseScreen(controller: _c, now: _now),
           QueueScreen(controller: _c, now: _now),

@@ -34,9 +34,15 @@ void main() {
     await tester.tap(find.text('Recherche'));
     await tester.pump();
     expect(find.text('Technologie Énergie'), findsOneWidget);
-    expect(find.text('Palier 1'), findsOneWidget);
+    expect(find.text('Palier 1'), findsWidgets);
+    expect(find.text('Fondamentales'), findsWidgets);
     expect(find.textContaining('Débloque Centrale à fusion'), findsOneWidget);
     expect(find.textContaining('Requiert Laboratoire de recherche 1'), findsWidgets);
+    // Filtre : seules les technos de combat restent.
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Combat'));
+    await tester.pump();
+    expect(find.text('Technologie Armes'), findsOneWidget);
+    expect(find.text('Technologie Énergie'), findsNothing);
 
     await tester.tap(find.text('Défense'));
     await tester.pump();

@@ -97,6 +97,7 @@ abstract class ItemSpec {
     required this.baseCost,
     required this.costFactor,
     required this.requires,
+    this.category = '',
   });
 
   final String name;
@@ -106,6 +107,9 @@ abstract class ItemSpec {
 
   /// Niveaux minimums requis pour construire ou rechercher le premier niveau.
   final Map<Unlockable, int> requires;
+
+  /// Groupe d'affichage (clé de `categories` dans le YAML), vide pour les unités pirates.
+  final String category;
 }
 
 /// Paramètres d'un bâtiment ; les champs non concernés valent 0 ou null.
@@ -117,6 +121,7 @@ class BuildingSpec extends ItemSpec {
     required super.baseCost,
     required super.costFactor,
     super.requires = const {},
+    super.category,
     this.produces,
     this.productionCoefficient = 0,
     this.consumes,
@@ -163,6 +168,7 @@ class UnitSpec extends ItemSpec {
     super.description = '',
     required super.baseCost,
     super.requires = const {},
+    super.category,
     required this.defense,
     required this.attack,
     required this.shield,
@@ -196,6 +202,7 @@ class TechSpec extends ItemSpec {
     required super.baseCost,
     required super.costFactor,
     super.requires = const {},
+    super.category,
     this.productionBonus = Resources.zero,
   });
 
@@ -265,6 +272,7 @@ class GameData {
     required Map<BuildingKind, BuildingSpec> buildings,
     required Map<TechKind, TechSpec> research,
     required Map<UnitKind, UnitSpec> units,
+    this.categories = const {},
   }) : units = Map.unmodifiable(units),
        buildings = Map.unmodifiable(buildings),
        research = Map.unmodifiable(research) {
@@ -287,6 +295,10 @@ class GameData {
   final Map<TechKind, TechSpec> research;
   final Map<UnitKind, UnitSpec> units;
 
+  /// Groupes d'affichage par écran (`buildings`, `research`, `defense`) : clé → libellé,
+  /// dans l'ordre du YAML.
+  final Map<String, Map<String, String>> categories;
+
   UnitSpec unit(UnitKind kind) => units[kind]!;
 
   BuildingSpec operator [](BuildingKind kind) => buildings[kind]!;
@@ -307,6 +319,7 @@ class GameData {
     final buildings = _map(map, 'buildings');
     final research = _map(map, 'research');
     final units = _map(map, 'units');
+    final categories = _optMap(map, 'categories') ?? const {};
 
     return GameData(
       formulas: FormulaConstants(
@@ -338,6 +351,13 @@ class GameData {
         for (final e in research.entries)
           TechKind.fromKey(e.key): _tech(TechKind.fromKey(e.key), _asMap(e.value, e.key)),
       },
+      categories: {
+        for (final screen in categories.keys)
+          screen: {
+            for (final e in _map(categories, screen).entries)
+              e.key: _string(_map(categories, screen), e.key),
+          },
+      },
       units: {
         for (final e in units.entries)
           UnitKind.fromKey(e.key): _unit(UnitKind.fromKey(e.key), _asMap(e.value, e.key)),
@@ -357,6 +377,7 @@ class GameData {
       baseCost: _resources(_map(m, 'cost')),
       costFactor: _num(m, 'factor'),
       requires: _requires(m),
+      category: _stringOr(m, 'category'),
       produces: production == null ? null : _resourceKind(_string(production, 'resource')),
       productionCoefficient: production == null ? 0 : _num(production, 'coefficient'),
       consumes: consumption == null ? null : _resourceKind(_string(consumption, 'resource')),
@@ -378,6 +399,7 @@ class GameData {
       description: _stringOr(m, 'description'),
       baseCost: _resources(_map(m, 'cost')),
       requires: _requires(m),
+      category: _stringOr(m, 'category'),
       defense: m['defense'] == true,
       attack: _num(m, 'attack'),
       shield: _num(m, 'shield'),
@@ -398,6 +420,7 @@ class GameData {
       baseCost: _resources(_map(m, 'cost')),
       costFactor: _num(m, 'factor'),
       requires: _requires(m),
+      category: _stringOr(m, 'category'),
       productionBonus: bonus == null ? Resources.zero : _resources(bonus),
     );
   }

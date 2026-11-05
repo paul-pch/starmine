@@ -51,6 +51,7 @@ class ItemCard extends StatelessWidget {
                     const SizedBox(width: 6),
                   ],
                   Flexible(child: Text(spec.name, style: theme.textTheme.titleMedium)),
+                  if (item case final TechKind tech) _TierLabel(tier: controller.data.tier(tech)),
                   if (spec.description.isNotEmpty)
                     InfoButton(title: spec.name, body: spec.description),
                   const Spacer(),
@@ -251,6 +252,45 @@ class _PercentRow extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+}
+
+/// Étiquette « Palier N » ; au tap, explique la notion de palier.
+class _TierLabel extends StatelessWidget {
+  const _TierLabel({required this.tier});
+
+  final int tier;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: () => InfoButton.show(
+          context,
+          title: 'Paliers de recherche',
+          body:
+              'Le palier est la profondeur d’une technologie dans l’arbre : une techno de '
+              'palier 3 demande au moins une techno de palier 2, et ainsi de suite. '
+              '« Requiert » indique ce qui manque, « Débloque » ce que la techno ouvre ensuite.',
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.secondaryContainer,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            'Palier $tier',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSecondaryContainer,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

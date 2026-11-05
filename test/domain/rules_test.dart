@@ -178,6 +178,18 @@ void main() {
     });
   });
 
+  test('config : chaque bâtiment, techno et défense a une catégorie déclarée', () {
+    for (final b in gameData.buildings.values) {
+      expect(gameData.categories['buildings'], contains(b.category), reason: b.name);
+    }
+    for (final t in gameData.research.values) {
+      expect(gameData.categories['research'], contains(t.category), reason: t.name);
+    }
+    for (final u in gameData.units.values.where((u) => u.defense)) {
+      expect(gameData.categories['defense'], contains(u.category), reason: u.name);
+    }
+  });
+
   test('config : tous les éléments présents, prérequis connus', () {
     expect(gameData.buildings.keys, containsAll(BuildingKind.values));
     expect(gameData.research.keys, containsAll(TechKind.values));

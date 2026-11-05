@@ -8,6 +8,7 @@ import '../../domain/game_data.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../resource_style.dart';
+import '../widgets/categorized_list.dart';
 import '../widgets/info_button.dart';
 
 /// Défenses constructibles au chantier.
@@ -19,13 +20,15 @@ class DefenseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final defenses = [
-      for (final k in UnitKind.values)
-        if (controller.data.unit(k).defense) k,
-    ];
-    return ListView(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      children: [for (final k in defenses) _UnitCard(controller: controller, unit: k, now: now)],
+    final data = controller.data;
+    return CategorizedList<UnitKind>(
+      categories: data.categories['defense'] ?? const {},
+      items: [
+        for (final k in UnitKind.values)
+          if (data.unit(k).defense) k,
+      ],
+      categoryOf: (k) => data.unit(k).category,
+      itemBuilder: (context, k) => _UnitCard(controller: controller, unit: k, now: now),
     );
   }
 }

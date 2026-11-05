@@ -8,6 +8,22 @@ start:
   # Tmin = Tmax − temp_spread (affichage ; seule Tmax entre dans les formules).
   temp_spread: 40
 
+# Groupes d'affichage (puces de filtre), dans l'ordre d'affichage.
+categories:
+  buildings:
+    production: Production
+    energy: Énergie
+    storage: Stockage
+    infrastructure: Infrastructure
+  research:
+    basic: Fondamentales
+    combat: Combat
+    advanced: Avancées
+  defense:
+    light: Légères
+    heavy: Lourdes
+    shields: Boucliers
+
 formulas:
   # N × growth^N, utilisé par la production, les consommations et l'énergie.
   growth: 1.1
@@ -23,6 +39,7 @@ formulas:
 
 buildings:
   metal_mine:
+    category: production
     name: Mine de métal
     description: Produit du métal. Consomme de l'énergie.
     cost: { metal: 60, crystal: 15 }
@@ -30,6 +47,7 @@ buildings:
     production: { resource: metal, coefficient: 30 }
     energy: { consumption: 10 }
   crystal_mine:
+    category: production
     name: Mine de cristal
     description: Produit du cristal. Consomme de l'énergie.
     cost: { metal: 48, crystal: 24 }
@@ -37,6 +55,7 @@ buildings:
     production: { resource: crystal, coefficient: 20 }
     energy: { consumption: 10 }
   deuterium_synthesizer:
+    category: production
     name: Synthétiseur de deutérium
     description: >-
       Produit du deutérium. Consomme beaucoup d'énergie. Rend davantage sur une planète
@@ -46,12 +65,14 @@ buildings:
     production: { resource: deuterium, coefficient: 10 }
     energy: { consumption: 20 }
   solar_plant:
+    category: energy
     name: Centrale solaire
     description: Produit l'énergie nécessaire aux mines.
     cost: { metal: 75, crystal: 30 }
     factor: 1.5
     energy: { production: 20 }
   fusion_reactor:
+    category: energy
     name: Centrale à fusion
     description: >-
       Produit de l'énergie en brûlant du deutérium. La technologie Énergie augmente son
@@ -65,29 +86,34 @@ buildings:
     # Deutérium consommé = 10 × N × 1.1^N par heure.
     consumption: { resource: deuterium, coefficient: 10 }
   metal_storage:
+    category: storage
     name: Hangar de métal
     description: Augmente la capacité de stockage du métal.
     cost: { metal: 1000 }
     factor: 2
     stores: metal
   crystal_storage:
+    category: storage
     name: Hangar de cristal
     description: Augmente la capacité de stockage du cristal.
     cost: { metal: 1000, crystal: 500 }
     factor: 2
     stores: crystal
   deuterium_tank:
+    category: storage
     name: Réservoir de deutérium
     description: Augmente la capacité de stockage du deutérium.
     cost: { metal: 1000, crystal: 1000 }
     factor: 2
     stores: deuterium
   robotics_factory:
+    category: infrastructure
     name: Usine de robots
     description: Accélère les constructions.
     cost: { metal: 400, crystal: 120, deuterium: 200 }
     factor: 2
   nanite_factory:
+    category: infrastructure
     name: Usine de nanites
     description: Divise par deux la durée des constructions à chaque niveau.
     # Coûts à vérifier.
@@ -95,6 +121,7 @@ buildings:
     factor: 2
     requires: { robotics_factory: 10, computer_technology: 10 }
   shipyard:
+    category: infrastructure
     name: Chantier spatial
     description: >-
       Construit les défenses (et les vaisseaux en V3). Ses niveaux accélèrent la production.
@@ -103,6 +130,7 @@ buildings:
     factor: 2
     requires: { robotics_factory: 2 }
   research_lab:
+    category: infrastructure
     name: Laboratoire de recherche
     description: >-
       Permet les recherches et les accélère. Ne peut pas être agrandi pendant une
@@ -113,24 +141,28 @@ buildings:
 
 research:
   energy_technology:
+    category: basic
     name: Technologie Énergie
     description: Prérequis de nombreuses technos. Augmente le rendement de la centrale à fusion.
     cost: { crystal: 800, deuterium: 400 }
     factor: 2
     requires: { research_lab: 1 }
   laser_technology:
+    category: basic
     name: Technologie Laser
     description: Prérequis des technologies Ions et Plasma.
     cost: { metal: 200, crystal: 100 }
     factor: 2
     requires: { research_lab: 1, energy_technology: 2 }
   ion_technology:
+    category: basic
     name: Technologie Ions
     description: Prérequis de la technologie Plasma.
     cost: { metal: 1000, crystal: 300, deuterium: 100 }
     factor: 2
     requires: { research_lab: 4, energy_technology: 4, laser_technology: 5 }
   plasma_technology:
+    category: basic
     name: Technologie Plasma
     description: Augmente la production des mines à chaque niveau.
     cost: { metal: 2000, crystal: 4000, deuterium: 1000 }
@@ -139,24 +171,28 @@ research:
     # Bonus par niveau, à vérifier.
     production_bonus: { metal: 0.01, crystal: 0.0066, deuterium: 0.0033 }
   computer_technology:
+    category: advanced
     name: Technologie Informatique
     description: Prérequis de l'usine de nanites.
     cost: { crystal: 400, deuterium: 600 }
     factor: 2
     requires: { research_lab: 1 }
   weapons_technology:
+    category: combat
     name: Technologie Armes
     description: Augmente l'attaque des défenses et vaisseaux de 10 % par niveau.
     cost: { metal: 800, crystal: 200 }
     factor: 2
     requires: { research_lab: 4 }
   shielding_technology:
+    category: combat
     name: Technologie Bouclier
     description: Augmente les boucliers des défenses et vaisseaux de 10 % par niveau.
     cost: { metal: 200, crystal: 600 }
     factor: 2
     requires: { research_lab: 6, energy_technology: 3 }
   armour_technology:
+    category: combat
     name: Technologie Protection
     description: Augmente la coque des défenses et vaisseaux de 10 % par niveau.
     cost: { metal: 1000 }
@@ -167,6 +203,7 @@ research:
 # Coque = (M + C) / 10. Valeurs OGame classiques, à vérifier.
 units:
   rocket_launcher:
+    category: light
     name: Lanceur de missiles
     description: Défense de base, bon marché. Vulnérable au tir rapide des croiseurs.
     defense: true
@@ -175,6 +212,7 @@ units:
     shield: 20
     requires: { shipyard: 1 }
   light_laser:
+    category: light
     name: Laser léger
     description: Défense légère, plus résistante que le lanceur de missiles.
     defense: true
@@ -183,6 +221,7 @@ units:
     shield: 25
     requires: { shipyard: 2, energy_technology: 1, laser_technology: 3 }
   heavy_laser:
+    category: heavy
     name: Laser lourd
     description: Défense intermédiaire polyvalente.
     defense: true
@@ -191,6 +230,7 @@ units:
     shield: 100
     requires: { shipyard: 4, energy_technology: 3, laser_technology: 6 }
   gauss_cannon:
+    category: heavy
     name: Canon de Gauss
     description: Défense lourde, très efficace contre les gros vaisseaux.
     defense: true
@@ -199,6 +239,7 @@ units:
     shield: 200
     requires: { shipyard: 6, energy_technology: 6, weapons_technology: 3, shielding_technology: 1 }
   ion_cannon:
+    category: heavy
     name: Artillerie à ions
     description: Défense au bouclier puissant, encaisse bien les petits tirs.
     defense: true
@@ -207,6 +248,7 @@ units:
     shield: 500
     requires: { shipyard: 4, ion_technology: 4 }
   plasma_turret:
+    category: heavy
     name: Lanceur de plasma
     description: La défense la plus puissante.
     defense: true
@@ -215,6 +257,7 @@ units:
     shield: 300
     requires: { shipyard: 8, plasma_technology: 7 }
   small_shield_dome:
+    category: shields
     name: Petit bouclier
     description: >-
       Dôme qui encaisse les tirs pendant le combat. Un seul par planète. Les tirs inférieurs
@@ -226,6 +269,7 @@ units:
     max: 1
     requires: { shipyard: 1, shielding_technology: 2 }
   large_shield_dome:
+    category: shields
     name: Grand bouclier
     description: Version renforcée du petit bouclier. Un seul par planète.
     defense: true
