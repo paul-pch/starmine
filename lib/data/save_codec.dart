@@ -15,6 +15,9 @@ class SaveGame {
   final GameState state;
   final double speed;
   final int seed;
+
+  SaveGame copyWith({GameState? state, double? speed}) =>
+      SaveGame(state: state ?? this.state, speed: speed ?? this.speed, seed: seed);
 }
 
 DateTime fromEpochMs(int ms) => DateTime.fromMillisecondsSinceEpoch(ms, isUtc: true);
