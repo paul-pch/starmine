@@ -107,8 +107,7 @@ class _HomeShellState extends State<HomeShell> {
               ),
               NavigationDestination(
                 icon: _FreeSlot(
-                  free:
-                      state.currentBatch == null && state.planet.level(BuildingKind.shipyard) > 0,
+                  free: state.currentBatch == null && state.planet.level(BuildingKind.shipyard) > 0,
                   child: const Icon(Icons.shield_outlined),
                 ),
                 label: 'Défense',

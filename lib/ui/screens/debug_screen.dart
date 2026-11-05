@@ -93,10 +93,7 @@ class _DebugScreenState extends State<DebugScreen> {
       UnitKind.lightFighter: 15,
       UnitKind.heavyFighter: 5,
     },
-    'Escadre : 30 chasseurs légers, 8 croiseurs': {
-      UnitKind.lightFighter: 30,
-      UnitKind.cruiser: 8,
-    },
+    'Escadre : 30 chasseurs légers, 8 croiseurs': {UnitKind.lightFighter: 30, UnitKind.cruiser: 8},
     'Armada : 20 croiseurs, 10 vaisseaux de bataille': {
       UnitKind.cruiser: 20,
       UnitKind.battleship: 10,
