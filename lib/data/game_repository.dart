@@ -20,18 +20,19 @@ class GameRepository {
 
   /// Charge la partie (V0 : la première planète) ou `null` s'il n'y en a pas.
   Future<SaveGame?> load() async {
-    final row = await (_db.select(_db.planets)
-          ..orderBy([(t) => OrderingTerm.asc(t.id)])
-          ..limit(1))
-        .getSingleOrNull();
+    final row =
+        await (_db.select(_db.planets)
+              ..orderBy([(t) => OrderingTerm.asc(t.id)])
+              ..limit(1))
+            .getSingleOrNull();
     if (row == null) return null;
 
     final buildings = await (_db.select(
       _db.buildings,
     )..where((t) => t.planetId.equals(row.id))).get();
-    final events = await (_db.select(_db.events)
-          ..where((t) => t.planetId.equals(row.id) & t.status.equalsValue(EventStatus.pending)))
-        .get();
+    final events = await (_db.select(
+      _db.events,
+    )..where((t) => t.planetId.equals(row.id) & t.status.equalsValue(EventStatus.pending))).get();
 
     final planet = Planet(
       id: row.id,
@@ -135,9 +136,8 @@ class GameRepository {
     return row?.value;
   }
 
-  Future<void> _setMeta(String name, String value) => _db
-      .into(_db.meta)
-      .insertOnConflictUpdate(MetaCompanion.insert(name: name, value: value));
+  Future<void> _setMeta(String name, String value) =>
+      _db.into(_db.meta).insertOnConflictUpdate(MetaCompanion.insert(name: name, value: value));
 
   static DateTime _createdAt(GameEvent e) => switch (e) {
     BuildingDone(:final startedAt) => startedAt,
