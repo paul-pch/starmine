@@ -12,8 +12,10 @@ class Planet {
     required this.resources,
     required Map<BuildingKind, int> levels,
     Map<BuildingKind, int> percents = const {},
+    Map<UnitKind, int> units = const {},
     required this.lastUpdate,
-  }) : levels = Map.unmodifiable({for (final k in BuildingKind.values) k: levels[k] ?? 0}),
+  }) : units = Map.unmodifiable({for (final k in UnitKind.values) k: units[k] ?? 0}),
+       levels = Map.unmodifiable({for (final k in BuildingKind.values) k: levels[k] ?? 0}),
        percents = Map.unmodifiable({for (final k in BuildingKind.values) k: percents[k] ?? 100});
 
   /// Nouvelle planète : ressources de départ, bâtiments au niveau 0, Tmax tirée au sort.
@@ -43,16 +45,22 @@ class Planet {
 
   /// Réglage de production de chaque bâtiment, de 0 à 100 (défaut 100).
   final Map<BuildingKind, int> percents;
+
+  /// Unités stationnées sur la planète (défenses en V2).
+  final Map<UnitKind, int> units;
   final DateTime lastUpdate;
 
   int level(BuildingKind kind) => levels[kind]!;
 
   int percent(BuildingKind kind) => percents[kind]!;
 
+  int count(UnitKind kind) => units[kind]!;
+
   Planet copyWith({
     Resources? resources,
     Map<BuildingKind, int>? levels,
     Map<BuildingKind, int>? percents,
+    Map<UnitKind, int>? units,
     DateTime? lastUpdate,
   }) => Planet(
     id: id,
@@ -61,6 +69,7 @@ class Planet {
     resources: resources ?? this.resources,
     levels: levels ?? this.levels,
     percents: percents ?? this.percents,
+    units: units ?? this.units,
     lastUpdate: lastUpdate ?? this.lastUpdate,
   );
 

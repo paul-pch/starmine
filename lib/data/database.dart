@@ -47,6 +47,19 @@ class Research extends Table {
   Set<Column<Object>> get primaryKey => {kind};
 }
 
+/// Unités stationnées sur une planète (schéma v3).
+@DataClassName('UnitRow')
+class Units extends Table {
+  IntColumn get planetId => integer().references(Planets, #id)();
+
+  /// Clé de l'unité (`UnitKind.key`).
+  TextColumn get kind => text()();
+  IntColumn get quantity => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {planetId, kind};
+}
+
 /// File unique de tous les événements, futurs et passés.
 @DataClassName('EventRow')
 class Events extends Table {
@@ -73,7 +86,7 @@ class Meta extends Table {
   Set<Column<Object>> get primaryKey => {name};
 }
 
-@DriftDatabase(tables: [Planets, Buildings, Research, Events, Meta])
+@DriftDatabase(tables: [Planets, Buildings, Research, Units, Events, Meta])
 class StarmineDatabase extends _$StarmineDatabase {
   StarmineDatabase(super.executor);
 
@@ -81,8 +94,9 @@ class StarmineDatabase extends _$StarmineDatabase {
   factory StarmineDatabase.open() => StarmineDatabase(driftDatabase(name: 'starmine'));
 
   /// v1 : V0. v2 : technologies (table research) et réglages de production.
+  /// v3 : unités (table units).
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -91,6 +105,9 @@ class StarmineDatabase extends _$StarmineDatabase {
       if (from < 2) {
         await m.createTable(research);
         await m.addColumn(buildings, buildings.percent);
+      }
+      if (from < 3) {
+        await m.createTable(units);
       }
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),

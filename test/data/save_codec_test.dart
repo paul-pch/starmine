@@ -22,6 +22,7 @@ void main() {
           BuildingKind.researchLab: 1,
         },
         percents: {BuildingKind.metalMine: 70},
+        units: {UnitKind.rocketLauncher: 12},
         resources: const Resources(metal: 1234.56, crystal: 1789.1, deuterium: 912),
         tempMax: -12,
       ),
@@ -46,6 +47,7 @@ void main() {
     expect(b.tempMax, a.tempMax);
     expect(b.levels, a.levels);
     expect(b.percents, a.percents);
+    expect(b.units, a.units);
     expect(restored.state.research, original.state.research);
     expect(b.resources, a.resources);
     expect(b.lastUpdate, a.lastUpdate);

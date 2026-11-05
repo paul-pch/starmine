@@ -95,6 +95,35 @@ void main() {
     expect(loaded.state.planet.percent(BuildingKind.metalMine), 100);
   });
 
+  test('lot du chantier en cours : reste en attente, unités livrées persistées', () async {
+    final start = SaveGame(
+      state: GameState(
+        planet: planet(
+          levels: {BuildingKind.shipyard: 1},
+          resources: const Resources(metal: 20000),
+        ),
+        pending: const [],
+      ),
+      speed: 1,
+      seed: 7,
+    );
+    await repo.replaceAll(start);
+    final started = startBatch(start.state, UnitKind.rocketLauncher, 3, t0, rules, eventId: 1);
+    await repo.save(started.state);
+
+    final mid = advance(started.state, t0.add(const Duration(seconds: 1440 + 1)), rules);
+    await repo.save(mid.state, applied: mid.applied);
+    var loaded = (await repo.load())!;
+    expect(loaded.state.planet.count(UnitKind.rocketLauncher), 1);
+    expect(loaded.state.currentBatch!.remaining, 2);
+
+    final end = advance(loaded.state, t0.add(const Duration(days: 1)), rules);
+    await repo.save(end.state, applied: end.applied);
+    loaded = (await repo.load())!;
+    expect(loaded.state.planet.count(UnitKind.rocketLauncher), 3);
+    expect(loaded.state.currentBatch, isNull);
+  });
+
   test('vitesse de jeu persistée', () async {
     await repo.replaceAll(fresh());
     await repo.setSpeed(100);

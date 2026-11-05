@@ -16,6 +16,7 @@ final DateTime t0 = DateTime.utc(2026, 1, 1, 8);
 Planet planet({
   Map<BuildingKind, int> levels = const {},
   Map<BuildingKind, int> percents = const {},
+  Map<UnitKind, int> units = const {},
   Resources resources = const Resources(metal: 500, crystal: 500),
   int tempMax = 40,
   DateTime? at,
@@ -26,6 +27,7 @@ Planet planet({
   resources: resources,
   levels: levels,
   percents: percents,
+  units: units,
   lastUpdate: at ?? t0,
 );
 

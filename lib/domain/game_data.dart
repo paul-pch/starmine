@@ -27,6 +27,7 @@ enum BuildingKind implements Unlockable {
   deuteriumTank('deuterium_tank'),
   roboticsFactory('robotics_factory'),
   naniteFactory('nanite_factory'),
+  shipyard('shipyard'),
   researchLab('research_lab');
 
   const BuildingKind(this.key);
@@ -45,7 +46,10 @@ enum TechKind implements Unlockable {
   laser('laser_technology'),
   ion('ion_technology'),
   plasma('plasma_technology'),
-  computer('computer_technology');
+  computer('computer_technology'),
+  weapons('weapons_technology'),
+  shielding('shielding_technology'),
+  armour('armour_technology');
 
   const TechKind(this.key);
 
@@ -55,6 +59,33 @@ enum TechKind implements Unlockable {
   static TechKind fromKey(String key) => values.firstWhere(
     (k) => k.key == key,
     orElse: () => throw FormatException('Technologie inconnue : $key'),
+  );
+}
+
+/// Unités produites au chantier : défenses (V2) et vaisseaux (pirates en V2, joueur en V3).
+enum UnitKind {
+  rocketLauncher('rocket_launcher'),
+  lightLaser('light_laser'),
+  heavyLaser('heavy_laser'),
+  gaussCannon('gauss_cannon'),
+  ionCannon('ion_cannon'),
+  plasmaTurret('plasma_turret'),
+  smallShieldDome('small_shield_dome'),
+  largeShieldDome('large_shield_dome'),
+  smallCargo('small_cargo'),
+  largeCargo('large_cargo'),
+  lightFighter('light_fighter'),
+  heavyFighter('heavy_fighter'),
+  cruiser('cruiser'),
+  battleship('battleship');
+
+  const UnitKind(this.key);
+
+  final String key;
+
+  static UnitKind fromKey(String key) => values.firstWhere(
+    (k) => k.key == key,
+    orElse: () => throw FormatException('Unité inconnue : $key'),
   );
 }
 
@@ -122,6 +153,39 @@ class BuildingSpec extends ItemSpec {
 
   /// Bâtiment dont la production peut être réglée de 0 à 100 %.
   bool get adjustable => produces != null || energyProduction > 0;
+}
+
+/// Défense ou vaisseau. La coque vaut (M + C) / 10.
+class UnitSpec extends ItemSpec {
+  const UnitSpec({
+    required this.kind,
+    required super.name,
+    super.description = '',
+    required super.baseCost,
+    super.requires = const {},
+    required this.defense,
+    required this.attack,
+    required this.shield,
+    this.cargo = 0,
+    this.maxCount,
+    this.rapidFire = const {},
+  }) : super(costFactor: 1);
+
+  final UnitKind kind;
+
+  /// Défense planétaire (constructible en V2) ; sinon vaisseau.
+  final bool defense;
+  final double attack;
+  final double shield;
+  final double cargo;
+
+  /// Nombre maximal par planète (dômes : 1), `null` = illimité.
+  final int? maxCount;
+
+  /// Tir rapide contre un type : n = chance (n − 1) / n de tirer à nouveau.
+  final Map<UnitKind, int> rapidFire;
+
+  double get hull => (baseCost.metal + baseCost.crystal) / 10;
 }
 
 class TechSpec extends ItemSpec {
@@ -200,12 +264,18 @@ class GameData {
     required this.start,
     required Map<BuildingKind, BuildingSpec> buildings,
     required Map<TechKind, TechSpec> research,
-  }) : buildings = Map.unmodifiable(buildings),
+    required Map<UnitKind, UnitSpec> units,
+  }) : units = Map.unmodifiable(units),
+       buildings = Map.unmodifiable(buildings),
        research = Map.unmodifiable(research) {
     final missing = <Unlockable>[
       ...BuildingKind.values.where((k) => !buildings.containsKey(k)),
       ...TechKind.values.where((k) => !research.containsKey(k)),
     ];
+    final missingUnits = UnitKind.values.where((k) => !units.containsKey(k)).map((k) => k.key);
+    if (missingUnits.isNotEmpty) {
+      throw FormatException('Unités absentes de la config : $missingUnits');
+    }
     if (missing.isNotEmpty) {
       throw FormatException('Absents de la config : ${missing.map((k) => k.key)}');
     }
@@ -215,6 +285,9 @@ class GameData {
   final StartConditions start;
   final Map<BuildingKind, BuildingSpec> buildings;
   final Map<TechKind, TechSpec> research;
+  final Map<UnitKind, UnitSpec> units;
+
+  UnitSpec unit(UnitKind kind) => units[kind]!;
 
   BuildingSpec operator [](BuildingKind kind) => buildings[kind]!;
 
@@ -233,6 +306,7 @@ class GameData {
     final temp = _map(start, 'temp_max');
     final buildings = _map(map, 'buildings');
     final research = _map(map, 'research');
+    final units = _map(map, 'units');
 
     return GameData(
       formulas: FormulaConstants(
@@ -264,6 +338,10 @@ class GameData {
         for (final e in research.entries)
           TechKind.fromKey(e.key): _tech(TechKind.fromKey(e.key), _asMap(e.value, e.key)),
       },
+      units: {
+        for (final e in units.entries)
+          UnitKind.fromKey(e.key): _unit(UnitKind.fromKey(e.key), _asMap(e.value, e.key)),
+      },
     );
   }
 
@@ -289,6 +367,25 @@ class GameData {
       energyGrowthTech: growthTech == null ? null : TechKind.fromKey(growthTech.keys.single),
       energyGrowthPerTechLevel: growthTech == null ? 0 : _num(growthTech, growthTech.keys.single),
       stores: m['stores'] == null ? null : _resourceKind(_string(m, 'stores')),
+    );
+  }
+
+  static UnitSpec _unit(UnitKind kind, Map<String, Object?> m) {
+    final rf = _optMap(m, 'rapid_fire');
+    return UnitSpec(
+      kind: kind,
+      name: _string(m, 'name'),
+      description: _stringOr(m, 'description'),
+      baseCost: _resources(_map(m, 'cost')),
+      requires: _requires(m),
+      defense: m['defense'] == true,
+      attack: _num(m, 'attack'),
+      shield: _num(m, 'shield'),
+      cargo: _numOr(m, 'cargo'),
+      maxCount: m['max'] == null ? null : _num(m, 'max').toInt(),
+      rapidFire: rf == null
+          ? const {}
+          : {for (final e in rf.entries) UnitKind.fromKey(e.key): _num(rf, e.key).toInt()},
     );
   }
 

@@ -49,6 +49,13 @@ class Rules {
     return _duration(cost, divisor);
   }
 
+  /// Unité du chantier : (M + C) / (divisor × (1 + chantier) × 2^nanites × vitesse) heures.
+  Duration unitDuration(Resources cost, {required int shipyardLevel, int naniteLevel = 0}) {
+    final divisor =
+        _f.buildTimeDivisor * (1 + shipyardLevel) * math.pow(2, naniteLevel).toDouble();
+    return _duration(cost, divisor);
+  }
+
   /// Recherche : (M + C) / (divisor × (1 + labo) × vitesse) heures.
   Duration researchDuration(Resources cost, {required int labLevel}) =>
       _duration(cost, _f.researchTimeDivisor * (1 + labLevel));

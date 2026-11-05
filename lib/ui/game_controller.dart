@@ -86,6 +86,26 @@ class GameController extends ChangeNotifier {
         await _commit(outcome.state, applied: adv.applied);
         if (!_visible) await _notifier.schedule(event, data);
         return null;
+      case BatchStarted():
+        throw StateError('startOrder ne renvoie pas de lot');
+    }
+  });
+
+  /// Commande [count] unités au chantier. Renvoie la raison du refus, ou `null`.
+  Future<OrderBlock?> orderUnits(UnitKind unit, int count) => _serialized(() async {
+    final adv = advance(state, now(), _rules);
+    final id = await _repo.nextEventId();
+    final outcome = startBatch(adv.state, unit, count, now(), _rules, eventId: id);
+    switch (outcome) {
+      case OrderRejected(:final reason):
+        await _commit(adv.state, applied: adv.applied);
+        return reason;
+      case BatchStarted(:final batch):
+        await _commit(outcome.state, applied: adv.applied);
+        if (!_visible) await _notifier.schedule(batch, data);
+        return null;
+      case OrderStarted():
+        throw StateError('startBatch renvoie un lot');
     }
   });
 
@@ -164,8 +184,8 @@ class GameController extends ChangeNotifier {
 
   Future<void> _scheduleAll() async {
     await _notifier.cancelAll();
-    for (final e in state.pending.whereType<OrderDone>()) {
-      if (e.dueAt.isAfter(now())) await _notifier.schedule(e, data);
+    for (final e in state.pending) {
+      if (notifyAt(e).isAfter(now())) await _notifier.schedule(e, data);
     }
   }
 

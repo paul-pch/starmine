@@ -1,6 +1,6 @@
 # Données de jeu (formules OGame classiques). Les formules sont dans lib/domain/rules.dart.
 # Valeurs V1 marquées « à vérifier » : reprises de mémoire, sans source confirmée.
-version: 2
+version: 3
 
 start:
   resources: { metal: 500, crystal: 500, deuterium: 0 }
@@ -94,6 +94,14 @@ buildings:
     cost: { metal: 1000000, crystal: 500000, deuterium: 100000 }
     factor: 2
     requires: { robotics_factory: 10, computer_technology: 10 }
+  shipyard:
+    name: Chantier spatial
+    description: >-
+      Construit les défenses (et les vaisseaux en V3). Ses niveaux accélèrent la production.
+      Ne peut pas être agrandi pendant qu'il produit.
+    cost: { metal: 400, crystal: 200, deuterium: 100 }
+    factor: 2
+    requires: { robotics_factory: 2 }
   research_lab:
     name: Laboratoire de recherche
     description: >-
@@ -136,3 +144,131 @@ research:
     cost: { crystal: 400, deuterium: 600 }
     factor: 2
     requires: { research_lab: 1 }
+  weapons_technology:
+    name: Technologie Armes
+    description: Augmente l'attaque des défenses et vaisseaux de 10 % par niveau.
+    cost: { metal: 800, crystal: 200 }
+    factor: 2
+    requires: { research_lab: 4 }
+  shielding_technology:
+    name: Technologie Bouclier
+    description: Augmente les boucliers des défenses et vaisseaux de 10 % par niveau.
+    cost: { metal: 200, crystal: 600 }
+    factor: 2
+    requires: { research_lab: 6, energy_technology: 3 }
+  armour_technology:
+    name: Technologie Protection
+    description: Augmente la coque des défenses et vaisseaux de 10 % par niveau.
+    cost: { metal: 1000 }
+    factor: 2
+    requires: { research_lab: 2 }
+
+# Défenses (constructibles au chantier) et vaisseaux (pirates en V2).
+# Coque = (M + C) / 10. Valeurs OGame classiques, à vérifier.
+units:
+  rocket_launcher:
+    name: Lanceur de missiles
+    description: Défense de base, bon marché. Vulnérable au tir rapide des croiseurs.
+    defense: true
+    cost: { metal: 2000 }
+    attack: 80
+    shield: 20
+    requires: { shipyard: 1 }
+  light_laser:
+    name: Laser léger
+    description: Défense légère, plus résistante que le lanceur de missiles.
+    defense: true
+    cost: { metal: 1500, crystal: 500 }
+    attack: 100
+    shield: 25
+    requires: { shipyard: 2, energy_technology: 1, laser_technology: 3 }
+  heavy_laser:
+    name: Laser lourd
+    description: Défense intermédiaire polyvalente.
+    defense: true
+    cost: { metal: 6000, crystal: 2000 }
+    attack: 250
+    shield: 100
+    requires: { shipyard: 4, energy_technology: 3, laser_technology: 6 }
+  gauss_cannon:
+    name: Canon de Gauss
+    description: Défense lourde, très efficace contre les gros vaisseaux.
+    defense: true
+    cost: { metal: 20000, crystal: 15000, deuterium: 2000 }
+    attack: 1100
+    shield: 200
+    requires: { shipyard: 6, energy_technology: 6, weapons_technology: 3, shielding_technology: 1 }
+  ion_cannon:
+    name: Artillerie à ions
+    description: Défense au bouclier puissant, encaisse bien les petits tirs.
+    defense: true
+    cost: { metal: 5000, crystal: 3000 }
+    attack: 150
+    shield: 500
+    requires: { shipyard: 4, ion_technology: 4 }
+  plasma_turret:
+    name: Lanceur de plasma
+    description: La défense la plus puissante.
+    defense: true
+    cost: { metal: 50000, crystal: 50000, deuterium: 30000 }
+    attack: 3000
+    shield: 300
+    requires: { shipyard: 8, plasma_technology: 7 }
+  small_shield_dome:
+    name: Petit bouclier
+    description: >-
+      Dôme qui encaisse les tirs pendant le combat. Un seul par planète. Les tirs inférieurs
+      à 1 % de son bouclier n'ont aucun effet.
+    defense: true
+    cost: { metal: 10000, crystal: 10000 }
+    attack: 1
+    shield: 2000
+    max: 1
+    requires: { shipyard: 1, shielding_technology: 2 }
+  large_shield_dome:
+    name: Grand bouclier
+    description: Version renforcée du petit bouclier. Un seul par planète.
+    defense: true
+    cost: { metal: 50000, crystal: 50000 }
+    attack: 1
+    shield: 10000
+    max: 1
+    requires: { shipyard: 6, shielding_technology: 6 }
+  small_cargo:
+    name: Petit transporteur
+    cost: { metal: 2000, crystal: 2000 }
+    attack: 5
+    shield: 10
+    cargo: 5000
+  large_cargo:
+    name: Grand transporteur
+    cost: { metal: 6000, crystal: 6000 }
+    attack: 5
+    shield: 25
+    cargo: 25000
+  light_fighter:
+    name: Chasseur léger
+    cost: { metal: 3000, crystal: 1000 }
+    attack: 50
+    shield: 10
+    cargo: 50
+  heavy_fighter:
+    name: Chasseur lourd
+    cost: { metal: 6000, crystal: 4000 }
+    attack: 150
+    shield: 25
+    cargo: 100
+    rapid_fire: { small_cargo: 3 }
+  cruiser:
+    name: Croiseur
+    cost: { metal: 20000, crystal: 7000, deuterium: 2000 }
+    attack: 400
+    shield: 50
+    cargo: 800
+    rapid_fire: { light_fighter: 6, rocket_launcher: 10 }
+  battleship:
+    name: Vaisseau de bataille
+    cost: { metal: 45000, crystal: 15000 }
+    attack: 1000
+    shield: 200
+    cargo: 1500

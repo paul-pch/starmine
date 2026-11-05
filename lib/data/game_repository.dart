@@ -45,6 +45,12 @@ class GameRepository {
       }),
       levels: {for (final b in buildings) BuildingKind.fromKey(b.kind): b.level},
       percents: {for (final b in buildings) BuildingKind.fromKey(b.kind): b.percent},
+      units: {
+        for (final u in await (_db.select(
+          _db.units,
+        )..where((t) => t.planetId.equals(row.id))).get())
+          UnitKind.fromKey(u.kind): u.quantity,
+      },
       lastUpdate: fromEpochMs(row.lastUpdateMs),
     );
     final research = await _db.select(_db.research).get();
@@ -68,7 +74,12 @@ class GameRepository {
   }) {
     return _db.transaction(() async {
       await _writeState(state);
-      await _setStatus(applied.map((e) => e.id), EventStatus.done);
+      // Un lot du chantier reste en attente sous le même id tant qu'il n'est pas fini.
+      final stillPending = {for (final e in state.pending) e.id};
+      await _setStatus(
+        applied.map((e) => e.id).where((id) => !stillPending.contains(id)),
+        EventStatus.done,
+      );
       await _setStatus(cancelledIds, EventStatus.cancelled);
     });
   }
@@ -78,6 +89,7 @@ class GameRepository {
     return _db.transaction(() async {
       await _db.delete(_db.events).go();
       await _db.delete(_db.research).go();
+      await _db.delete(_db.units).go();
       await _db.delete(_db.buildings).go();
       await _db.delete(_db.planets).go();
       await _writeState(save.state);
@@ -120,6 +132,10 @@ class GameRepository {
             percent: Value(p.percent(e.key)),
           ),
       ]);
+      b.insertAllOnConflictUpdate(_db.units, [
+        for (final e in p.units.entries)
+          UnitsCompanion.insert(planetId: p.id, kind: e.key.key, quantity: e.value),
+      ]);
       b.insertAllOnConflictUpdate(_db.research, [
         for (final e in state.research.entries)
           ResearchCompanion.insert(kind: e.key.key, level: e.value),
@@ -157,6 +173,7 @@ class GameRepository {
 
   static DateTime _createdAt(GameEvent e) => switch (e) {
     OrderDone(:final startedAt) => startedAt,
+    ShipyardBatch(:final startedAt) => startedAt,
   };
 
   static GameEvent _decodeRow(EventRow r) => decodeEvent(

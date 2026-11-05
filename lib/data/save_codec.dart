@@ -8,7 +8,8 @@ import '../domain/resources.dart';
 const saveFormat = 'starmine-save';
 
 /// v2 (V1) : technologies et réglages de production. Une sauvegarde v1 reste lisible.
-const saveVersion = 2;
+/// v3 (V2a) : unités et lots du chantier.
+const saveVersion = 3;
 
 /// Sauvegarde complète : état de jeu et réglages persistés.
 class SaveGame {
@@ -28,15 +29,25 @@ DateTime fromEpochMs(int ms) => DateTime.fromMillisecondsSinceEpoch(ms, isUtc: t
 
 const buildingDoneType = 'building_done';
 const researchDoneType = 'research_done';
+const shipyardBatchType = 'shipyard_batch';
 
 String eventType(GameEvent event) => switch (event) {
   BuildingDone() => buildingDoneType,
   ResearchDone() => researchDoneType,
+  ShipyardBatch() => shipyardBatchType,
 };
 
 Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
   BuildingDone() => {'building': event.building.key, ..._orderPayload(event)},
   ResearchDone() => {'tech': event.tech.key, ..._orderPayload(event)},
+  ShipyardBatch() => {
+    'unit': event.unit.key,
+    'ordered': event.ordered,
+    'remaining': event.remaining,
+    'unit_duration_ms': event.unitDuration.inMilliseconds,
+    'started_at': event.startedAt.millisecondsSinceEpoch,
+    'unit_cost': encodeResources(event.unitCost),
+  },
 };
 
 Map<String, Object?> _orderPayload(OrderDone e) => {
@@ -73,6 +84,18 @@ GameEvent decodeEvent({
         targetLevel: _int(payload, 'target_level'),
         cost: decodeResources(_map(payload, 'cost')),
       );
+    case shipyardBatchType:
+      return ShipyardBatch(
+        id: id,
+        planetId: planetId,
+        dueAt: fromEpochMs(dueAtMs),
+        startedAt: fromEpochMs(_int(payload, 'started_at')),
+        unit: UnitKind.fromKey(_string(payload, 'unit')),
+        ordered: _int(payload, 'ordered'),
+        remaining: _int(payload, 'remaining'),
+        unitDuration: Duration(milliseconds: _int(payload, 'unit_duration_ms')),
+        unitCost: decodeResources(_map(payload, 'unit_cost')),
+      );
     default:
       throw FormatException('Type d’événement inconnu : $type');
   }
@@ -108,6 +131,10 @@ Map<String, Object?> encodeSave(SaveGame save, {required DateTime exportedAt}) {
       'resources': encodeResources(p.resources),
       'buildings': {for (final e in p.levels.entries) e.key.key: e.value},
       'production_percent': {for (final e in p.percents.entries) e.key.key: e.value},
+      'units': {
+        for (final e in p.units.entries)
+          if (e.value > 0) e.key.key: e.value,
+      },
     },
     'research': {for (final e in save.state.research.entries) e.key.key: e.value},
     'events': [
@@ -137,6 +164,7 @@ SaveGame decodeSave(Map<String, Object?> json) {
   final percents = p['production_percent'] == null
       ? const <String, Object?>{}
       : _map(p, 'production_percent');
+  final units = p['units'] == null ? const <String, Object?>{} : _map(p, 'units');
   final research = json['research'] == null ? const <String, Object?>{} : _map(json, 'research');
   final planet = Planet(
     id: _int(p, 'id'),
@@ -152,6 +180,7 @@ SaveGame decodeSave(Map<String, Object?> json) {
       for (final e in percents.entries)
         BuildingKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 100,
     },
+    units: {for (final e in units.entries) UnitKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 0},
   );
   final events = [for (final raw in _list(json, 'events')) _decodeSavedEvent(raw)];
   return SaveGame(

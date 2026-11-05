@@ -98,7 +98,7 @@ class ItemCard extends StatelessWidget {
               if (unlocks.isNotEmpty) ...[
                 const SizedBox(height: 6),
                 Text(
-                  'Débloque ${unlocks.map((u) => controller.data.spec(u).name).join(' · ')}',
+                  'Débloque ${unlocks.map((u) => u.name).join(' · ')}',
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -120,6 +120,8 @@ class ItemCard extends StatelessWidget {
     final text = switch (reason) {
       QueueBusy() => 'La file est occupée',
       LabBusy() => 'Le laboratoire est occupé',
+      ShipyardBusy() => 'Le chantier est occupé',
+      MaxReached() || NotBuildable() => 'Impossible',
       RequirementsNotMet() => 'Prérequis manquants',
       NotEnoughResources(:final missing) => 'Il manque ${fmtCost(missing)}',
     };
@@ -133,8 +135,11 @@ class ItemCard extends StatelessWidget {
 
   String? _blockText(GameState state, OrderBlock? block) => switch (block) {
     null || RequirementsNotMet() => null,
-    QueueBusy(:final current) =>
+    QueueBusy(current: final OrderDone current) =>
       'File occupée : ${controller.data.spec(current.item).name} ${current.targetLevel}',
+    QueueBusy() => 'File occupée',
+    ShipyardBusy() => 'Impossible pendant une production du chantier',
+    MaxReached() || NotBuildable() => null,
     LabBusy() => switch (item) {
       BuildingKind() => 'Impossible pendant une recherche',
       TechKind() => 'Impossible pendant l’agrandissement du labo',

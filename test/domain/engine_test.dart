@@ -288,6 +288,61 @@ void main() {
     });
   });
 
+  group('chantier', () {
+    const rich = Resources(metal: 1e6, crystal: 1e6, deuterium: 1e6);
+    GameState withYard({int level = 1, TechLevels research = const {}}) => game(
+      planet(levels: {BuildingKind.shipyard: level}, resources: rich),
+      research: research,
+    );
+
+    test('lot payé d’avance, livré unité par unité', () {
+      final out = startBatch(withYard(), UnitKind.rocketLauncher, 5, t0, rules, eventId: 1);
+      final batch = (out as BatchStarted).batch;
+      // 2000 / (2500 × 2) h = 1440 s par unité
+      expect(batch.unitDuration, const Duration(seconds: 1440));
+      expect(batch.finishAt, t0.add(const Duration(seconds: 1440 * 5)));
+      expect(out.state.planet.resources.metal, 1e6 - 10000);
+
+      final mid = advance(out.state, t0.add(const Duration(seconds: 1440 * 2 + 5)), rules);
+      expect(mid.state.planet.count(UnitKind.rocketLauncher), 2);
+      expect(mid.state.currentBatch!.remaining, 3);
+      expect(mid.state.currentBatch!.id, 1);
+
+      final end = advance(mid.state, t0.add(const Duration(days: 1)), rules);
+      expect(end.state.planet.count(UnitKind.rocketLauncher), 5);
+      expect(end.state.currentBatch, isNull);
+      expect(end.applied, hasLength(3));
+    });
+
+    test('un lot à la fois, chantier bloqué pendant un lot et inversement', () {
+      final out = startBatch(withYard(), UnitKind.rocketLauncher, 2, t0, rules, eventId: 1);
+      expect(checkBatch(out.state, UnitKind.rocketLauncher, 1, rules), isA<QueueBusy>());
+      expect(checkOrder(out.state, BuildingKind.shipyard, rules), isA<ShipyardBusy>());
+
+      final up = startOrder(withYard(), BuildingKind.shipyard, t0, rules, eventId: 1);
+      expect(checkBatch(up.state, UnitKind.rocketLauncher, 1, rules), isA<ShipyardBusy>());
+    });
+
+    test('prérequis, limite des dômes, vaisseaux non constructibles', () {
+      expect(checkBatch(withYard(), UnitKind.lightLaser, 1, rules), isA<RequirementsNotMet>());
+      final s = withYard(research: {TechKind.shielding: 2});
+      expect(checkBatch(s, UnitKind.smallShieldDome, 2, rules), isA<MaxReached>());
+      expect(checkBatch(s, UnitKind.smallShieldDome, 1, rules), isNull);
+      expect(checkBatch(s, UnitKind.cruiser, 1, rules), isA<NotBuildable>());
+    });
+
+    test('quantité maximale commandable', () {
+      final s = game(
+        planet(
+          levels: {BuildingKind.shipyard: 1},
+          resources: const Resources(metal: 9999, crystal: 500),
+        ),
+      );
+      expect(maxOrderable(s, UnitKind.rocketLauncher, rules), 4);
+      expect(maxOrderable(s, UnitKind.lightLaser, rules), 1);
+    });
+  });
+
   test('nouvelle planète : ressources de départ, niveaux à 0, Tmax dans la plage', () {
     final p = Planet.create(data: gameData, random: math.Random(42), now: t0);
     expect(p.resources, const Resources(metal: 500, crystal: 500));

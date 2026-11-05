@@ -2,12 +2,15 @@ import 'game_data.dart';
 
 /// Lecture de l'arbre des prérequis, pour l'affichage et la planification.
 extension TechTree on GameData {
-  /// Éléments qui ont [item] parmi leurs prérequis directs, dans l'ordre de déclaration.
-  List<Unlockable> unlockedBy(Unlockable item) => [
+  /// Bâtiments, technos et unités qui ont [item] parmi leurs prérequis directs, dans
+  /// l'ordre de déclaration.
+  List<ItemSpec> unlockedBy(Unlockable item) => [
     for (final k in BuildingKind.values)
-      if (this[k].requires.containsKey(item)) k,
+      if (this[k].requires.containsKey(item)) this[k],
     for (final k in TechKind.values)
-      if (tech(k).requires.containsKey(item)) k,
+      if (tech(k).requires.containsKey(item)) tech(k),
+    for (final k in UnitKind.values)
+      if (unit(k).defense && unit(k).requires.containsKey(item)) unit(k),
   ];
 
   /// Palier d'une techno : 1 + palier maximal de ses prérequis technologiques

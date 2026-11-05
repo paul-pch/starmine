@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'events.dart';
 import 'game_data.dart';
 import 'planet.dart';
@@ -24,6 +26,8 @@ class GameState {
   BuildingDone? get currentConstruction => pending.whereType<BuildingDone>().firstOrNull;
 
   ResearchDone? get currentResearch => pending.whereType<ResearchDone>().firstOrNull;
+
+  ShipyardBatch? get currentBatch => pending.whereType<ShipyardBatch>().firstOrNull;
 
   int levelOf(Unlockable item) => switch (item) {
     BuildingKind() => planet.level(item),
@@ -54,17 +58,20 @@ AdvanceResult advance(GameState state, DateTime now, Rules rules) {
 
   var current = state;
   final applied = <GameEvent>[];
-  final remaining = <GameEvent>[];
-  for (final event in state.pending) {
-    if (event.dueAt.isAfter(now)) {
-      remaining.add(event);
-      continue;
-    }
+  final queue = [...state.pending];
+  while (queue.isNotEmpty && !queue.first.dueAt.isAfter(now)) {
+    final event = queue.removeAt(0);
     current = _produceUntil(current, event.dueAt, rules);
     current = _apply(current, event);
     applied.add(event);
+    // Un lot du chantier se replanifie pour l'unité suivante.
+    if (event case ShipyardBatch(:final next?)) {
+      queue
+        ..add(next)
+        ..sort(GameEvent.compare);
+    }
   }
-  current = _produceUntil(current, now, rules).copyWith(pending: remaining);
+  current = _produceUntil(current, now, rules).copyWith(pending: queue);
   return AdvanceResult(current, applied);
 }
 
@@ -86,6 +93,9 @@ GameState _apply(GameState s, GameEvent event) => switch (event) {
   ResearchDone(:final tech, :final targetLevel) => s.copyWith(
     research: {...s.research, tech: targetLevel},
   ),
+  ShipyardBatch(:final unit) => s.copyWith(
+    planet: s.planet.copyWith(units: {...s.planet.units, unit: s.planet.count(unit) + 1}),
+  ),
 };
 
 // --- Vérifications -----------------------------------------------------------
@@ -99,7 +109,25 @@ sealed class OrderBlock {
 class QueueBusy extends OrderBlock {
   const QueueBusy(this.current);
 
-  final OrderDone current;
+  /// Ordre en cours : [OrderDone] ou [ShipyardBatch].
+  final GameEvent current;
+}
+
+/// Règle OGame : le chantier ne peut pas être agrandi pendant un lot, et inversement.
+class ShipyardBusy extends OrderBlock {
+  const ShipyardBusy();
+}
+
+/// Limite par planète atteinte (dômes : 1).
+class MaxReached extends OrderBlock {
+  const MaxReached(this.max);
+
+  final int max;
+}
+
+/// Unité non constructible dans cette version (vaisseaux avant la V3).
+class NotBuildable extends OrderBlock {
+  const NotBuildable();
 }
 
 /// Règle OGame : le labo ne peut pas être agrandi pendant une recherche, et inversement.
@@ -121,8 +149,12 @@ class NotEnoughResources extends OrderBlock {
 }
 
 /// Prérequis non satisfaits de [item] (vide si tout est bon).
-Map<Unlockable, int> missingRequirements(GameState state, Unlockable item, Rules rules) => {
-  for (final e in rules.data.spec(item).requires.entries)
+Map<Unlockable, int> missingRequirements(GameState state, Unlockable item, Rules rules) =>
+    unmet(state, rules.data.spec(item).requires);
+
+/// Prérequis de [requires] non satisfaits dans [state].
+Map<Unlockable, int> unmet(GameState state, Map<Unlockable, int> requires) => {
+  for (final e in requires.entries)
     if (state.levelOf(e.key) < e.value) e.key: e.value,
 };
 
@@ -134,6 +166,7 @@ OrderBlock? checkOrder(GameState state, Unlockable item, Rules rules) {
       final current = state.currentConstruction;
       if (current != null) return QueueBusy(current);
       if (item == BuildingKind.researchLab && state.currentResearch != null) return const LabBusy();
+      if (item == BuildingKind.shipyard && state.currentBatch != null) return const ShipyardBusy();
     case TechKind():
       final current = state.currentResearch;
       if (current != null) return QueueBusy(current);
@@ -259,5 +292,91 @@ GameState setProductionPercent(
   final advanced = advance(state, now, rules).state;
   return advanced.copyWith(
     planet: advanced.planet.copyWith(percents: {...advanced.planet.percents, kind: percent}),
+  );
+}
+
+// --- Chantier ----------------------------------------------------------------
+
+/// Durée de production d'une unité de [unit] dans l'état courant.
+Duration unitDuration(GameState state, UnitKind unit, Rules rules) {
+  final p = state.planet;
+  return rules.unitDuration(
+    rules.data.unit(unit).baseCost,
+    shipyardLevel: p.level(BuildingKind.shipyard),
+    naniteLevel: p.level(BuildingKind.naniteFactory),
+  );
+}
+
+/// Nombre maximal commandable maintenant : ressources et limite par planète.
+int maxOrderable(GameState state, UnitKind unit, Rules rules) {
+  final spec = rules.data.unit(unit);
+  var n = 1 << 30;
+  for (final k in ResourceKind.values) {
+    final c = spec.baseCost[k];
+    if (c > 0) n = math.min(n, (state.planet.resources[k] / c).floor());
+  }
+  final max = spec.maxCount;
+  if (max != null) n = math.min(n, math.max(0, max - state.planet.count(unit)));
+  return math.max(0, n);
+}
+
+/// Vérifie une commande de [count] unités sur un état déjà avancé.
+/// Ordre des raisons : constructible, file, chantier, prérequis, limite, ressources.
+OrderBlock? checkBatch(GameState state, UnitKind unit, int count, Rules rules) {
+  assert(count >= 1);
+  final spec = rules.data.unit(unit);
+  if (!spec.defense) return const NotBuildable();
+  final current = state.currentBatch;
+  if (current != null) return QueueBusy(current);
+  if (state.currentConstruction?.building == BuildingKind.shipyard) return const ShipyardBusy();
+  final missing = unmet(state, spec.requires);
+  if (missing.isNotEmpty) return RequirementsNotMet(missing);
+  final max = spec.maxCount;
+  if (max != null && state.planet.count(unit) + count > max) return MaxReached(max);
+  final cost = spec.baseCost * count.toDouble();
+  if (!state.planet.resources.covers(cost)) {
+    return NotEnoughResources(state.planet.resources.missingFor(cost));
+  }
+  return null;
+}
+
+class BatchStarted extends OrderOutcome {
+  const BatchStarted(super.state, this.batch);
+
+  final ShipyardBatch batch;
+}
+
+/// Commande [count] unités de [unit] à [now], payées immédiatement, livrées une à une.
+OrderOutcome startBatch(
+  GameState state,
+  UnitKind unit,
+  int count,
+  DateTime now,
+  Rules rules, {
+  required int eventId,
+}) {
+  final advanced = advance(state, now, rules).state;
+  final block = checkBatch(advanced, unit, count, rules);
+  if (block != null) return OrderRejected(advanced, block);
+  final spec = rules.data.unit(unit);
+  final duration = unitDuration(advanced, unit, rules);
+  final batch = ShipyardBatch(
+    id: eventId,
+    planetId: advanced.planet.id,
+    dueAt: now.add(duration),
+    startedAt: now,
+    unit: unit,
+    ordered: count,
+    remaining: count,
+    unitDuration: duration,
+    unitCost: spec.baseCost,
+  );
+  final planet = advanced.planet;
+  return BatchStarted(
+    advanced.copyWith(
+      planet: planet.copyWith(resources: planet.resources - spec.baseCost * count.toDouble()),
+      pending: [...advanced.pending, batch],
+    ),
+    batch,
   );
 }
