@@ -42,7 +42,10 @@ class _DebugScreenState extends State<DebugScreen> {
         content: Text(body),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Annuler')),
-          FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('Confirmer')),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Confirmer'),
+          ),
         ],
       ),
     );

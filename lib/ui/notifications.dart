@@ -39,7 +39,9 @@ class LocalBuildNotifier implements BuildNotifier {
   Future<void> init() async {
     tzdata.initializeTimeZones();
     await _plugin.initialize(
-      settings: const InitializationSettings(android: AndroidInitializationSettings('ic_stat_star')),
+      settings: const InitializationSettings(
+        android: AndroidInitializationSettings('ic_stat_star'),
+      ),
     );
     await _android?.requestNotificationsPermission();
   }
