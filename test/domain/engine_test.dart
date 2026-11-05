@@ -293,7 +293,10 @@ void main() {
   group('chantier', () {
     const rich = Resources(metal: 1e6, crystal: 1e6, deuterium: 1e6);
     GameState withYard({int level = 1, TechLevels research = const {}}) => game(
-      planet(levels: {BuildingKind.shipyard: level}, resources: rich),
+      planet(
+        levels: {BuildingKind.shipyard: level, BuildingKind.roboticsFactory: 2},
+        resources: rich,
+      ),
       research: research,
     );
 
