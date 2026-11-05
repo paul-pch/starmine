@@ -8,7 +8,7 @@ class FakeNotifier implements BuildNotifier {
   var cancelAllCount = 0;
 
   @override
-  Future<void> schedule(BuildingDone event, GameData data) async =>
+  Future<void> schedule(OrderDone event, GameData data) async =>
       scheduled[event.id] = event.dueAt;
 
   @override

@@ -1,18 +1,37 @@
 import 'resources.dart';
 
-/// Les bâtiments de la V0. La clé est celle de `assets/game_data.yaml` et de la base.
-enum BuildingKind {
+/// Ce qui a un niveau et peut servir de prérequis : bâtiment ou technologie.
+/// La clé est celle de `assets/game_data.yaml` et de la base.
+sealed class Unlockable {
+  String get key;
+
+  static Unlockable fromKey(String key) {
+    for (final k in BuildingKind.values) {
+      if (k.key == key) return k;
+    }
+    for (final k in TechKind.values) {
+      if (k.key == key) return k;
+    }
+    throw FormatException('Bâtiment ou technologie inconnu : $key');
+  }
+}
+
+enum BuildingKind implements Unlockable {
   metalMine('metal_mine'),
   crystalMine('crystal_mine'),
   deuteriumSynthesizer('deuterium_synthesizer'),
   solarPlant('solar_plant'),
+  fusionReactor('fusion_reactor'),
   metalStorage('metal_storage'),
   crystalStorage('crystal_storage'),
   deuteriumTank('deuterium_tank'),
-  roboticsFactory('robotics_factory');
+  roboticsFactory('robotics_factory'),
+  naniteFactory('nanite_factory'),
+  researchLab('research_lab');
 
   const BuildingKind(this.key);
 
+  @override
   final String key;
 
   static BuildingKind fromKey(String key) => values.firstWhere(
@@ -21,33 +40,108 @@ enum BuildingKind {
   );
 }
 
-/// Paramètres d'un bâtiment. Un bâtiment produit, consomme, stocke ou ne fait rien
-/// (usine de robots) ; les champs non concernés valent 0 ou null.
-class BuildingSpec {
-  const BuildingSpec({
-    required this.kind,
+enum TechKind implements Unlockable {
+  energy('energy_technology'),
+  laser('laser_technology'),
+  ion('ion_technology'),
+  plasma('plasma_technology'),
+  computer('computer_technology');
+
+  const TechKind(this.key);
+
+  @override
+  final String key;
+
+  static TechKind fromKey(String key) => values.firstWhere(
+    (k) => k.key == key,
+    orElse: () => throw FormatException('Technologie inconnue : $key'),
+  );
+}
+
+/// Partie commune aux bâtiments et technologies.
+abstract class ItemSpec {
+  const ItemSpec({
     required this.name,
+    required this.description,
     required this.baseCost,
     required this.costFactor,
+    required this.requires,
+  });
+
+  final String name;
+  final String description;
+  final Resources baseCost;
+  final double costFactor;
+
+  /// Niveaux minimums requis pour construire ou rechercher le premier niveau.
+  final Map<Unlockable, int> requires;
+}
+
+/// Paramètres d'un bâtiment ; les champs non concernés valent 0 ou null.
+class BuildingSpec extends ItemSpec {
+  const BuildingSpec({
+    required this.kind,
+    required super.name,
+    super.description = '',
+    required super.baseCost,
+    required super.costFactor,
+    super.requires = const {},
     this.produces,
     this.productionCoefficient = 0,
+    this.consumes,
+    this.consumptionCoefficient = 0,
     this.energyConsumption = 0,
     this.energyProduction = 0,
+    this.energyGrowth,
+    this.energyGrowthTech,
+    this.energyGrowthPerTechLevel = 0,
     this.stores,
   });
 
   final BuildingKind kind;
-  final String name;
-  final Resources baseCost;
-  final double costFactor;
+
+  /// Production horaire : coefficient × N × growth^N.
   final ResourceKind? produces;
   final double productionCoefficient;
+
+  /// Consommation horaire de ressource (fusion) : coefficient × N × growth^N.
+  final ResourceKind? consumes;
+  final double consumptionCoefficient;
+
+  /// Énergie consommée : coefficient × N × growth^N.
   final double energyConsumption;
+
+  /// Énergie produite : coefficient × N × g^N, avec
+  /// g = energyGrowth (défaut : growth global) + energyGrowthPerTechLevel × niveau de la techno.
   final double energyProduction;
+  final double? energyGrowth;
+  final TechKind? energyGrowthTech;
+  final double energyGrowthPerTechLevel;
+
   final ResourceKind? stores;
+
+  /// Bâtiment dont la production peut être réglée de 0 à 100 %.
+  bool get adjustable => produces != null || energyProduction > 0;
 }
 
-/// Constantes des formules globales (voir le doc de specs, section Règles et formules).
+class TechSpec extends ItemSpec {
+  const TechSpec({
+    required this.kind,
+    required super.name,
+    super.description = '',
+    required super.baseCost,
+    required super.costFactor,
+    super.requires = const {},
+    this.productionBonus = Resources.zero,
+  });
+
+  final TechKind kind;
+
+  /// Bonus de production des mines par niveau (fraction : 0.01 = +1 %).
+  final Resources productionBonus;
+}
+
+/// Constantes des formules globales (voir le doc de specs).
 class FormulaConstants {
   const FormulaConstants({
     required this.growth,
@@ -59,6 +153,7 @@ class FormulaConstants {
     required this.storageExponentNumerator,
     required this.storageExponentDenominator,
     required this.buildTimeDivisor,
+    required this.researchTimeDivisor,
   });
 
   /// Base de croissance N × growth^N (1.1 dans OGame).
@@ -75,8 +170,11 @@ class FormulaConstants {
   final double storageExponentNumerator;
   final double storageExponentDenominator;
 
-  /// Durée (h) = (M + C) / (divisor × (1 + robots) × vitesse).
+  /// Construction (h) = (M + C) / (divisor × (1 + robots) × 2^nanites × vitesse).
   final double buildTimeDivisor;
+
+  /// Recherche (h) = (M + C) / (divisor × (1 + labo) × vitesse).
+  final double researchTimeDivisor;
 }
 
 class StartConditions {
@@ -101,18 +199,31 @@ class GameData {
     required this.formulas,
     required this.start,
     required Map<BuildingKind, BuildingSpec> buildings,
-  }) : buildings = Map.unmodifiable(buildings) {
-    final missing = BuildingKind.values.where((k) => !buildings.containsKey(k));
+    required Map<TechKind, TechSpec> research,
+  }) : buildings = Map.unmodifiable(buildings),
+       research = Map.unmodifiable(research) {
+    final missing = [
+      ...BuildingKind.values.where((k) => !buildings.containsKey(k)),
+      ...TechKind.values.where((k) => !research.containsKey(k)),
+    ];
     if (missing.isNotEmpty) {
-      throw FormatException('Bâtiments absents de la config : ${missing.map((k) => k.key)}');
+      throw FormatException('Absents de la config : ${missing.map((k) => k.key)}');
     }
   }
 
   final FormulaConstants formulas;
   final StartConditions start;
   final Map<BuildingKind, BuildingSpec> buildings;
+  final Map<TechKind, TechSpec> research;
 
   BuildingSpec operator [](BuildingKind kind) => buildings[kind]!;
+
+  TechSpec tech(TechKind kind) => research[kind]!;
+
+  ItemSpec spec(Unlockable item) => switch (item) {
+    BuildingKind() => buildings[item]!,
+    TechKind() => research[item]!,
+  };
 
   factory GameData.fromMap(Map<String, Object?> map) {
     final f = _map(map, 'formulas');
@@ -121,6 +232,7 @@ class GameData {
     final start = _map(map, 'start');
     final temp = _map(start, 'temp_max');
     final buildings = _map(map, 'buildings');
+    final research = _map(map, 'research');
 
     return GameData(
       formulas: FormulaConstants(
@@ -133,6 +245,7 @@ class GameData {
         storageExponentNumerator: _num(storage, 'exponent_numerator'),
         storageExponentDenominator: _num(storage, 'exponent_denominator'),
         buildTimeDivisor: _num(f, 'build_time_divisor'),
+        researchTimeDivisor: _num(f, 'research_time_divisor'),
       ),
       start: StartConditions(
         resources: _resources(_map(start, 'resources')),
@@ -141,29 +254,58 @@ class GameData {
         tempSpread: _num(start, 'temp_spread').toInt(),
       ),
       buildings: {
-        for (final entry in buildings.entries)
-          BuildingKind.fromKey(entry.key): _building(
-            BuildingKind.fromKey(entry.key),
-            _asMap(entry.value, entry.key),
-          ),
+        for (final e in buildings.entries)
+          BuildingKind.fromKey(e.key): _building(BuildingKind.fromKey(e.key), _asMap(e.value, e.key)),
+      },
+      research: {
+        for (final e in research.entries)
+          TechKind.fromKey(e.key): _tech(TechKind.fromKey(e.key), _asMap(e.value, e.key)),
       },
     );
   }
 
   static BuildingSpec _building(BuildingKind kind, Map<String, Object?> m) {
-    final production = m['production'] == null ? null : _map(m, 'production');
-    final energy = m['energy'] == null ? null : _map(m, 'energy');
+    final production = _optMap(m, 'production');
+    final consumption = _optMap(m, 'consumption');
+    final energy = _optMap(m, 'energy');
+    final growthTech = energy == null ? null : _optMap(energy, 'growth_per_tech_level');
     return BuildingSpec(
       kind: kind,
       name: _string(m, 'name'),
+      description: _stringOr(m, 'description'),
       baseCost: _resources(_map(m, 'cost')),
       costFactor: _num(m, 'factor'),
+      requires: _requires(m),
       produces: production == null ? null : _resourceKind(_string(production, 'resource')),
       productionCoefficient: production == null ? 0 : _num(production, 'coefficient'),
-      energyConsumption: energy?['consumption'] == null ? 0 : _num(energy!, 'consumption'),
-      energyProduction: energy?['production'] == null ? 0 : _num(energy!, 'production'),
+      consumes: consumption == null ? null : _resourceKind(_string(consumption, 'resource')),
+      consumptionCoefficient: consumption == null ? 0 : _num(consumption, 'coefficient'),
+      energyConsumption: energy == null ? 0 : _numOr(energy, 'consumption'),
+      energyProduction: energy == null ? 0 : _numOr(energy, 'production'),
+      energyGrowth: energy?['growth'] == null ? null : _num(energy!, 'growth'),
+      energyGrowthTech: growthTech == null ? null : TechKind.fromKey(growthTech.keys.single),
+      energyGrowthPerTechLevel: growthTech == null ? 0 : _num(growthTech, growthTech.keys.single),
       stores: m['stores'] == null ? null : _resourceKind(_string(m, 'stores')),
     );
+  }
+
+  static TechSpec _tech(TechKind kind, Map<String, Object?> m) {
+    final bonus = _optMap(m, 'production_bonus');
+    return TechSpec(
+      kind: kind,
+      name: _string(m, 'name'),
+      description: _stringOr(m, 'description'),
+      baseCost: _resources(_map(m, 'cost')),
+      costFactor: _num(m, 'factor'),
+      requires: _requires(m),
+      productionBonus: bonus == null ? Resources.zero : _resources(bonus),
+    );
+  }
+
+  static Map<Unlockable, int> _requires(Map<String, Object?> m) {
+    final r = _optMap(m, 'requires');
+    if (r == null) return const {};
+    return {for (final e in r.entries) Unlockable.fromKey(e.key): _num(r, e.key).toInt()};
   }
 
   static Resources _resources(Map<String, Object?> m) => Resources(
@@ -178,6 +320,9 @@ class GameData {
   );
 
   static Map<String, Object?> _map(Map<String, Object?> m, String key) => _asMap(m[key], key);
+
+  static Map<String, Object?>? _optMap(Map<String, Object?> m, String key) =>
+      m[key] == null ? null : _map(m, key);
 
   static Map<String, Object?> _asMap(Object? v, String key) {
     if (v is Map) return v.map((k, v) => MapEntry(k.toString(), v));
@@ -197,4 +342,6 @@ class GameData {
     if (v is String) return v;
     throw FormatException('« $key » doit être une chaîne');
   }
+
+  static String _stringOr(Map<String, Object?> m, String key) => m[key] == null ? '' : _string(m, key);
 }

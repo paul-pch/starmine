@@ -15,21 +15,55 @@ sealed class GameEvent {
   }
 }
 
-/// Fin de construction d'un bâtiment. [cost] est conservé pour un remboursement exact
-/// même si la config de jeu change entre-temps.
-class BuildingDone extends GameEvent {
-  const BuildingDone({
+/// Fin d'un ordre payé d'avance (construction, recherche). [cost] est conservé pour un
+/// remboursement exact même si la config de jeu change entre-temps.
+sealed class OrderDone extends GameEvent {
+  const OrderDone({
     required super.id,
     required super.planetId,
     required super.dueAt,
     required this.startedAt,
-    required this.building,
     required this.targetLevel,
     required this.cost,
   });
 
   final DateTime startedAt;
-  final BuildingKind building;
   final int targetLevel;
   final Resources cost;
+
+  Unlockable get item;
+}
+
+class BuildingDone extends OrderDone {
+  const BuildingDone({
+    required super.id,
+    required super.planetId,
+    required super.dueAt,
+    required super.startedAt,
+    required this.building,
+    required super.targetLevel,
+    required super.cost,
+  });
+
+  final BuildingKind building;
+
+  @override
+  BuildingKind get item => building;
+}
+
+class ResearchDone extends OrderDone {
+  const ResearchDone({
+    required super.id,
+    required super.planetId,
+    required super.dueAt,
+    required super.startedAt,
+    required this.tech,
+    required super.targetLevel,
+    required super.cost,
+  });
+
+  final TechKind tech;
+
+  @override
+  TechKind get item => tech;
 }

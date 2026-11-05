@@ -44,10 +44,16 @@ class GameRepository {
         'deuterium': row.deuterium,
       }),
       levels: {for (final b in buildings) BuildingKind.fromKey(b.kind): b.level},
+      percents: {for (final b in buildings) BuildingKind.fromKey(b.kind): b.percent},
       lastUpdate: fromEpochMs(row.lastUpdateMs),
     );
+    final research = await _db.select(_db.research).get();
     return SaveGame(
-      state: GameState(planet: planet, pending: events.map(_decodeRow).toList()),
+      state: GameState(
+        planet: planet,
+        research: {for (final r in research) TechKind.fromKey(r.kind): r.level},
+        pending: events.map(_decodeRow).toList(),
+      ),
       speed: double.tryParse(await _meta(_speedKey) ?? '') ?? 1,
       seed: int.tryParse(await _meta(_seedKey) ?? '') ?? 0,
     );
@@ -71,6 +77,7 @@ class GameRepository {
   Future<void> replaceAll(SaveGame save) {
     return _db.transaction(() async {
       await _db.delete(_db.events).go();
+      await _db.delete(_db.research).go();
       await _db.delete(_db.buildings).go();
       await _db.delete(_db.planets).go();
       await _writeState(save.state);
@@ -106,7 +113,16 @@ class GameRepository {
     await _db.batch((b) {
       b.insertAllOnConflictUpdate(_db.buildings, [
         for (final e in p.levels.entries)
-          BuildingsCompanion.insert(planetId: p.id, kind: e.key.key, level: e.value),
+          BuildingsCompanion.insert(
+            planetId: p.id,
+            kind: e.key.key,
+            level: e.value,
+            percent: Value(p.percent(e.key)),
+          ),
+      ]);
+      b.insertAllOnConflictUpdate(_db.research, [
+        for (final e in state.research.entries)
+          ResearchCompanion.insert(kind: e.key.key, level: e.value),
       ]);
       b.insertAllOnConflictUpdate(_db.events, [
         for (final e in state.pending)
@@ -140,7 +156,7 @@ class GameRepository {
       _db.into(_db.meta).insertOnConflictUpdate(MetaCompanion.insert(name: name, value: value));
 
   static DateTime _createdAt(GameEvent e) => switch (e) {
-    BuildingDone(:final startedAt) => startedAt,
+    OrderDone(:final startedAt) => startedAt,
   };
 
   static GameEvent _decodeRow(EventRow r) => decodeEvent(

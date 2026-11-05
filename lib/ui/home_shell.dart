@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'game_controller.dart';
-import 'screens/buildings_screen.dart';
+import '../domain/game_data.dart';
 import 'screens/debug_screen.dart';
+import 'screens/items_screen.dart';
 import 'screens/queue_screen.dart';
 import 'widgets/resource_bar.dart';
 
@@ -49,8 +50,8 @@ class _HomeShellState extends State<HomeShell> {
 
   void _tick() {
     setState(() => _now = _c.now());
-    final current = _c.state.currentConstruction;
-    if (current != null && !current.dueAt.isAfter(_now)) _refresh();
+    // Une échéance passée (construction ou recherche) : rattrapage réel.
+    if (_c.state.pending.any((e) => !e.dueAt.isAfter(_now))) _refresh();
   }
 
   void _refresh() {
@@ -65,7 +66,8 @@ class _HomeShellState extends State<HomeShell> {
       listenable: _c,
       builder: (context, _) {
         final pages = [
-          BuildingsScreen(controller: _c, now: _now),
+          ItemsScreen(controller: _c, items: BuildingKind.values, now: _now),
+          ItemsScreen(controller: _c, items: TechKind.values, now: _now),
           QueueScreen(controller: _c, now: _now),
           DebugScreen(controller: _c),
         ];
@@ -83,9 +85,10 @@ class _HomeShellState extends State<HomeShell> {
             onDestinationSelected: (i) => setState(() => _tab = i),
             destinations: [
               const NavigationDestination(icon: Icon(Icons.factory_outlined), label: 'Bâtiments'),
+              const NavigationDestination(icon: Icon(Icons.science_outlined), label: 'Recherche'),
               NavigationDestination(
                 icon: Badge(
-                  isLabelVisible: _c.state.currentConstruction != null,
+                  isLabelVisible: _c.state.pending.isNotEmpty,
                   smallSize: 8,
                   child: const Icon(Icons.schedule_outlined),
                 ),

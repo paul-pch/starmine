@@ -29,8 +29,22 @@ class Buildings extends Table {
   TextColumn get kind => text()();
   IntColumn get level => integer()();
 
+  /// Réglage de production 0 à 100 (schéma v2).
+  IntColumn get percent => integer().withDefault(const Constant(100))();
+
   @override
   Set<Column<Object>> get primaryKey => {planetId, kind};
+}
+
+/// Niveaux de technologie, globaux à la partie (schéma v2).
+@DataClassName('ResearchRow')
+class Research extends Table {
+  /// Clé de la techno (`TechKind.key`).
+  TextColumn get kind => text()();
+  IntColumn get level => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {kind};
 }
 
 /// File unique de tous les événements, futurs et passés.
@@ -59,19 +73,26 @@ class Meta extends Table {
   Set<Column<Object>> get primaryKey => {name};
 }
 
-@DriftDatabase(tables: [Planets, Buildings, Events, Meta])
+@DriftDatabase(tables: [Planets, Buildings, Research, Events, Meta])
 class StarmineDatabase extends _$StarmineDatabase {
   StarmineDatabase(super.executor);
 
   /// Base sur le téléphone (dossier de l'app).
   factory StarmineDatabase.open() => StarmineDatabase(driftDatabase(name: 'starmine'));
 
+  /// v1 : V0. v2 : technologies (table research) et réglages de production.
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createTable(research);
+        await m.addColumn(buildings, buildings.percent);
+      }
+    },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),
   );
 }

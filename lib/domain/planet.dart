@@ -11,8 +11,12 @@ class Planet {
     required this.tempMax,
     required this.resources,
     required Map<BuildingKind, int> levels,
+    Map<BuildingKind, int> percents = const {},
     required this.lastUpdate,
-  }) : levels = Map.unmodifiable({for (final k in BuildingKind.values) k: levels[k] ?? 0});
+  }) : levels = Map.unmodifiable({for (final k in BuildingKind.values) k: levels[k] ?? 0}),
+       percents = Map.unmodifiable({
+         for (final k in BuildingKind.values) k: percents[k] ?? 100,
+       });
 
   /// Nouvelle planète : ressources de départ, bâtiments au niveau 0, Tmax tirée au sort.
   factory Planet.create({
@@ -38,19 +42,29 @@ class Planet {
   final int tempMax;
   final Resources resources;
   final Map<BuildingKind, int> levels;
+
+  /// Réglage de production de chaque bâtiment, de 0 à 100 (défaut 100).
+  final Map<BuildingKind, int> percents;
   final DateTime lastUpdate;
 
   int level(BuildingKind kind) => levels[kind]!;
 
-  Planet copyWith({Resources? resources, Map<BuildingKind, int>? levels, DateTime? lastUpdate}) =>
-      Planet(
-        id: id,
-        name: name,
-        tempMax: tempMax,
-        resources: resources ?? this.resources,
-        levels: levels ?? this.levels,
-        lastUpdate: lastUpdate ?? this.lastUpdate,
-      );
+  int percent(BuildingKind kind) => percents[kind]!;
+
+  Planet copyWith({
+    Resources? resources,
+    Map<BuildingKind, int>? levels,
+    Map<BuildingKind, int>? percents,
+    DateTime? lastUpdate,
+  }) => Planet(
+    id: id,
+    name: name,
+    tempMax: tempMax,
+    resources: resources ?? this.resources,
+    levels: levels ?? this.levels,
+    percents: percents ?? this.percents,
+    lastUpdate: lastUpdate ?? this.lastUpdate,
+  );
 
   Planet withLevel(BuildingKind kind, int level) => copyWith(levels: {...levels, kind: level});
 }

@@ -5,9 +5,10 @@ import 'package:timezone/timezone.dart' as tz;
 import '../domain/events.dart';
 import '../domain/game_data.dart';
 
-/// Notifications de fin d'événement. L'id de notification est l'id de l'événement.
+/// Notifications de fin de construction ou de recherche.
+/// L'id de notification est l'id de l'événement.
 abstract interface class BuildNotifier {
-  Future<void> schedule(BuildingDone event, GameData data);
+  Future<void> schedule(OrderDone event, GameData data);
   Future<void> cancel(int eventId);
   Future<void> cancelAll();
 
@@ -23,11 +24,21 @@ abstract interface class BuildNotifier {
 class LocalBuildNotifier implements BuildNotifier {
   final _plugin = FlutterLocalNotificationsPlugin();
 
-  static const _details = NotificationDetails(
+  static const _buildings = NotificationDetails(
     android: AndroidNotificationDetails(
       'constructions',
       'Constructions',
       channelDescription: 'Fin des constructions',
+      importance: Importance.high,
+      priority: Priority.high,
+    ),
+  );
+
+  static const _research = NotificationDetails(
+    android: AndroidNotificationDetails(
+      'recherches',
+      'Recherches',
+      channelDescription: 'Fin des recherches',
       importance: Importance.high,
       priority: Priority.high,
     ),
@@ -53,14 +64,18 @@ class LocalBuildNotifier implements BuildNotifier {
   Future<void> requestExact() async => _android?.requestExactAlarmsPermission();
 
   @override
-  Future<void> schedule(BuildingDone event, GameData data) async {
+  Future<void> schedule(OrderDone event, GameData data) async {
     final exact = await canScheduleExact();
+    final (title, details) = switch (event) {
+      BuildingDone() => ('Construction terminée', _buildings),
+      ResearchDone() => ('Recherche terminée', _research),
+    };
     await _plugin.zonedSchedule(
       id: event.id,
-      title: 'Construction terminée',
-      body: '${data[event.building].name} niveau ${event.targetLevel}',
+      title: title,
+      body: '${data.spec(event.item).name} niveau ${event.targetLevel}',
       scheduledDate: tz.TZDateTime.from(event.dueAt, tz.UTC),
-      notificationDetails: _details,
+      notificationDetails: details,
       androidScheduleMode: exact
           ? AndroidScheduleMode.exactAllowWhileIdle
           : AndroidScheduleMode.inexactAllowWhileIdle,

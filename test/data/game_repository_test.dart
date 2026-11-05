@@ -48,8 +48,7 @@ void main() {
     await repo.replaceAll(fresh());
     final id = await repo.nextEventId();
     final started =
-        startBuilding(fresh().state, BuildingKind.metalMine, t0, rules, eventId: id)
-            as BuildStarted;
+        startOrder(fresh().state, BuildingKind.metalMine, t0, rules, eventId: id) as OrderStarted;
     await repo.save(started.state);
 
     var loaded = (await repo.load())!;
@@ -73,15 +72,27 @@ void main() {
   test('annulation : événement annulé, plus chargé', () async {
     await repo.replaceAll(fresh());
     final started =
-        startBuilding(fresh().state, BuildingKind.solarPlant, t0, rules, eventId: 1)
-            as BuildStarted;
+        startOrder(fresh().state, BuildingKind.solarPlant, t0, rules, eventId: 1) as OrderStarted;
     await repo.save(started.state);
-    final cancelled = cancelBuilding(started.state, 1, t0, rules);
+    final cancelled = cancelOrder(started.state, 1, t0, rules);
     await repo.save(cancelled, cancelledIds: [1]);
 
     final loaded = (await repo.load())!;
     expect(loaded.state.pending, isEmpty);
     expect(loaded.state.planet.resources, const Resources(metal: 500, crystal: 500));
+  });
+
+  test('technos et réglages de production persistés', () async {
+    await repo.replaceAll(fresh());
+    final state = fresh().state.copyWith(
+      research: {TechKind.plasma: 3},
+      planet: fresh().state.planet.copyWith(percents: {BuildingKind.crystalMine: 40}),
+    );
+    await repo.save(state);
+    final loaded = (await repo.load())!;
+    expect(loaded.state.research[TechKind.plasma], 3);
+    expect(loaded.state.planet.percent(BuildingKind.crystalMine), 40);
+    expect(loaded.state.planet.percent(BuildingKind.metalMine), 100);
   });
 
   test('vitesse de jeu persistée', () async {

@@ -9,3 +9,4 @@
 - `pubspec.lock` doit être commité (app) ; le générer avec `flutter pub get`.
 - Le code Drift (`*.g.dart`) est généré par build_runner en CI et localement, jamais commité.
 - Si la CI signale un `pubspec.lock` obsolète, elle imprime le lock attendu dans ses logs : le reprendre tel quel.
+- UX mobile : toute mécanique non évidente a une infobulle au tap (`InfoButton`, icône i → feuille du bas). Pas de Tooltip à l'appui long seul.

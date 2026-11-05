@@ -1,5 +1,6 @@
-# Données de jeu V0 (formules OGame classiques). Les formules sont dans lib/domain/rules.dart.
-version: 1
+# Données de jeu (formules OGame classiques). Les formules sont dans lib/domain/rules.dart.
+# Valeurs V1 marquées « à vérifier » : reprises de mémoire, sans source confirmée.
+version: 2
 
 start:
   resources: { metal: 500, crystal: 500, deuterium: 0 }
@@ -8,56 +9,130 @@ start:
   temp_spread: 40
 
 formulas:
-  # N × growth^N, utilisé par la production et l'énergie.
+  # N × growth^N, utilisé par la production, les consommations et l'énergie.
   growth: 1.1
   base_production_per_hour: { metal: 30, crystal: 15, deuterium: 0 }
   # Facteur deutérium = intercept + slope × Tmax.
   deuterium_temperature: { intercept: 1.44, slope: -0.004 }
   # Capacité = base × floor(multiplier × e^(exponent_numerator × N / exponent_denominator)).
   storage: { base: 5000, multiplier: 2.5, exponent_numerator: 20, exponent_denominator: 33 }
-  # Durée (h) = (M + C) / (build_time_divisor × (1 + niveau robots) × vitesse).
+  # Construction (h) = (M + C) / (build_time_divisor × (1 + robots) × 2^nanites × vitesse).
   build_time_divisor: 2500
+  # Recherche (h) = (M + C) / (research_time_divisor × (1 + labo) × vitesse).
+  research_time_divisor: 1000
 
 buildings:
   metal_mine:
     name: Mine de métal
+    description: Produit du métal. Consomme de l'énergie.
     cost: { metal: 60, crystal: 15 }
     factor: 1.5
     production: { resource: metal, coefficient: 30 }
     energy: { consumption: 10 }
   crystal_mine:
     name: Mine de cristal
+    description: Produit du cristal. Consomme de l'énergie.
     cost: { metal: 48, crystal: 24 }
     factor: 1.6
     production: { resource: crystal, coefficient: 20 }
     energy: { consumption: 10 }
   deuterium_synthesizer:
     name: Synthétiseur de deutérium
+    description: >-
+      Produit du deutérium. Consomme beaucoup d'énergie. Rend davantage sur une planète
+      froide.
     cost: { metal: 225, crystal: 75 }
     factor: 1.5
     production: { resource: deuterium, coefficient: 10 }
     energy: { consumption: 20 }
   solar_plant:
     name: Centrale solaire
+    description: Produit l'énergie nécessaire aux mines.
     cost: { metal: 75, crystal: 30 }
     factor: 1.5
     energy: { production: 20 }
+  fusion_reactor:
+    name: Centrale à fusion
+    description: >-
+      Produit de l'énergie en brûlant du deutérium. La technologie Énergie augmente son
+      rendement.
+    # Coûts et facteur à vérifier.
+    cost: { metal: 900, crystal: 360, deuterium: 180 }
+    factor: 1.8
+    requires: { deuterium_synthesizer: 5, energy_technology: 3 }
+    # Énergie = 30 × N × (1.05 + 0.01 × Énergie)^N
+    energy: { production: 30, growth: 1.05, growth_per_tech_level: { energy_technology: 0.01 } }
+    # Deutérium consommé = 10 × N × 1.1^N par heure.
+    consumption: { resource: deuterium, coefficient: 10 }
   metal_storage:
     name: Hangar de métal
+    description: Augmente la capacité de stockage du métal.
     cost: { metal: 1000 }
     factor: 2
     stores: metal
   crystal_storage:
     name: Hangar de cristal
+    description: Augmente la capacité de stockage du cristal.
     cost: { metal: 1000, crystal: 500 }
     factor: 2
     stores: crystal
   deuterium_tank:
     name: Réservoir de deutérium
+    description: Augmente la capacité de stockage du deutérium.
     cost: { metal: 1000, crystal: 1000 }
     factor: 2
     stores: deuterium
   robotics_factory:
     name: Usine de robots
+    description: Accélère les constructions.
     cost: { metal: 400, crystal: 120, deuterium: 200 }
     factor: 2
+  nanite_factory:
+    name: Usine de nanites
+    description: Divise par deux la durée des constructions à chaque niveau.
+    # Coûts à vérifier.
+    cost: { metal: 1000000, crystal: 500000, deuterium: 100000 }
+    factor: 2
+    requires: { robotics_factory: 10, computer_technology: 10 }
+  research_lab:
+    name: Laboratoire de recherche
+    description: >-
+      Permet les recherches et les accélère. Ne peut pas être agrandi pendant une
+      recherche.
+    # Coûts à vérifier.
+    cost: { metal: 200, crystal: 400, deuterium: 200 }
+    factor: 2
+
+research:
+  energy_technology:
+    name: Technologie Énergie
+    description: Prérequis de nombreuses technos. Augmente le rendement de la centrale à fusion.
+    cost: { crystal: 800, deuterium: 400 }
+    factor: 2
+    requires: { research_lab: 1 }
+  laser_technology:
+    name: Technologie Laser
+    description: Prérequis des technologies Ions et Plasma.
+    cost: { metal: 200, crystal: 100 }
+    factor: 2
+    requires: { research_lab: 1, energy_technology: 2 }
+  ion_technology:
+    name: Technologie Ions
+    description: Prérequis de la technologie Plasma.
+    cost: { metal: 1000, crystal: 300, deuterium: 100 }
+    factor: 2
+    requires: { research_lab: 4, energy_technology: 4, laser_technology: 5 }
+  plasma_technology:
+    name: Technologie Plasma
+    description: Augmente la production des mines à chaque niveau.
+    cost: { metal: 2000, crystal: 4000, deuterium: 1000 }
+    factor: 2
+    requires: { research_lab: 4, energy_technology: 8, laser_technology: 10, ion_technology: 5 }
+    # Bonus par niveau, à vérifier.
+    production_bonus: { metal: 0.01, crystal: 0.0066, deuterium: 0.0033 }
+  computer_technology:
+    name: Technologie Informatique
+    description: Prérequis de l'usine de nanites.
+    cost: { crystal: 400, deuterium: 600 }
+    factor: 2
+    requires: { research_lab: 1 }

@@ -50,6 +50,15 @@ class GameController extends ChangeNotifier {
   double get speed => _save.speed;
   DateTime now() => _clock();
 
+  /// État affiché à [at] : stocks produits jusque-là, sans rien écrire ni appliquer
+  /// d'événement (le rattrapage réel passe par [refresh]).
+  GameState interpolated(DateTime at) {
+    final p = state.planet;
+    return state.copyWith(
+      planet: p.copyWith(resources: _rules.produce(p, state.research, at.difference(p.lastUpdate))),
+    );
+  }
+
   Future<void> init() => _serialized(() async {
     final loaded = await _repo.load();
     if (loaded == null) {
@@ -63,25 +72,35 @@ class GameController extends ChangeNotifier {
   /// Rattrape le temps écoulé (ouverture, retour au premier plan, échéance d'un timer).
   Future<void> refresh() => _serialized(_advanceAndSave);
 
-  /// Lance le niveau suivant de [kind]. Renvoie la raison du refus, ou `null`.
-  Future<BuildBlock?> build(BuildingKind kind) => _serialized(() async {
+  /// Lance le niveau suivant de [item] (bâtiment ou techno). Renvoie la raison du refus,
+  /// ou `null`.
+  Future<OrderBlock?> order(Unlockable item) => _serialized(() async {
     final adv = advance(state, now(), _rules);
     final id = await _repo.nextEventId();
-    final outcome = startBuilding(adv.state, kind, now(), _rules, eventId: id);
+    final outcome = startOrder(adv.state, item, now(), _rules, eventId: id);
     switch (outcome) {
-      case BuildRejected(:final reason):
+      case OrderRejected(:final reason):
         await _commit(adv.state, applied: adv.applied);
         return reason;
-      case BuildStarted(:final event):
+      case OrderStarted(:final event):
         await _commit(outcome.state, applied: adv.applied);
         if (!_visible) await _notifier.schedule(event, data);
         return null;
     }
   });
 
+  /// Règle la production d'un bâtiment (0 à 100 %, pas de 10).
+  Future<void> setPercent(BuildingKind kind, int percent) => _serialized(() async {
+    final adv = advance(state, now(), _rules);
+    await _commit(
+      setProductionPercent(adv.state, kind, percent, now(), _rules),
+      applied: adv.applied,
+    );
+  });
+
   Future<void> cancel(int eventId) => _serialized(() async {
     final adv = advance(state, now(), _rules);
-    final next = cancelBuilding(adv.state, eventId, now(), _rules);
+    final next = cancelOrder(adv.state, eventId, now(), _rules);
     await _commit(next, applied: adv.applied, cancelledIds: [eventId]);
     await _notifier.cancel(eventId);
   });
@@ -145,7 +164,7 @@ class GameController extends ChangeNotifier {
 
   Future<void> _scheduleAll() async {
     await _notifier.cancelAll();
-    for (final e in state.pending.whereType<BuildingDone>()) {
+    for (final e in state.pending.whereType<OrderDone>()) {
       if (e.dueAt.isAfter(now())) await _notifier.schedule(e, data);
     }
   }

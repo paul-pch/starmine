@@ -43,7 +43,7 @@ void main() {
   test('construction : notification programmée, puis appliquée app « fermée »', () async {
     var c = controller();
     await c.init();
-    expect(await c.build(BuildingKind.metalMine), isNull);
+    expect(await c.order(BuildingKind.metalMine), isNull);
     final event = c.state.currentConstruction!;
     // App visible : pas de notification.
     expect(notifier.scheduled, isEmpty);
@@ -63,14 +63,14 @@ void main() {
   test('refus si la file est occupée', () async {
     final c = controller();
     await c.init();
-    await c.build(BuildingKind.metalMine);
-    expect(await c.build(BuildingKind.solarPlant), isA<QueueBusy>());
+    await c.order(BuildingKind.metalMine);
+    expect(await c.order(BuildingKind.solarPlant), isA<QueueBusy>());
   });
 
   test('annulation : remboursement et notification supprimée', () async {
     final c = controller();
     await c.init();
-    await c.build(BuildingKind.solarPlant);
+    await c.order(BuildingKind.solarPlant);
     final id = c.state.currentConstruction!.id;
     await c.cancel(id);
     expect(c.state.currentConstruction, isNull);
@@ -82,7 +82,7 @@ void main() {
     final c = controller();
     await c.init();
     await c.setSpeed(10);
-    await c.build(BuildingKind.crystalMine);
+    await c.order(BuildingKind.crystalMine);
     clock.advance(const Duration(seconds: 3));
     final json = await c.exportJson();
     final before = c.state;
@@ -105,7 +105,7 @@ void main() {
   test('retour au premier plan : notifications retirées, temps rattrapé', () async {
     final c = controller();
     await c.init();
-    await c.build(BuildingKind.metalMine);
+    await c.order(BuildingKind.metalMine);
     await c.onHidden();
     expect(notifier.scheduled, hasLength(1));
 
@@ -119,8 +119,23 @@ void main() {
     final c = controller();
     await c.init();
     await c.onHidden();
-    await c.build(BuildingKind.metalMine);
+    await c.order(BuildingKind.metalMine);
     expect(notifier.scheduled, hasLength(1));
+  });
+
+  test('recherche : refusée sans labo', () async {
+    final c = controller();
+    await c.init();
+    expect(await c.order(TechKind.energy), isA<RequirementsNotMet>());
+  });
+
+  test('réglage de production persisté au rechargement', () async {
+    var c = controller();
+    await c.init();
+    await c.setPercent(BuildingKind.metalMine, 30);
+    c = controller();
+    await c.init();
+    expect(c.state.planet.percent(BuildingKind.metalMine), 30);
   });
 
   test('import invalide : FormatException, partie intacte', () async {

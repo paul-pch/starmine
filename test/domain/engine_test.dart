@@ -13,37 +13,53 @@ import 'helpers.dart';
 void main() {
   final rules = Rules(gameData);
 
-  BuildingDone build(
-    BuildingKind kind,
-    int target, {
-    required int id,
-    required DateTime due,
-    Resources cost = Resources.zero,
-  }) => BuildingDone(
-    id: id,
-    planetId: 1,
-    startedAt: t0,
-    dueAt: due,
-    building: kind,
-    targetLevel: target,
-    cost: cost,
-  );
+  BuildingDone build(BuildingKind kind, int target, {required int id, required DateTime due}) =>
+      BuildingDone(
+        id: id,
+        planetId: 1,
+        startedAt: t0,
+        dueAt: due,
+        building: kind,
+        targetLevel: target,
+        cost: Resources.zero,
+      );
+
+  ResearchDone research(TechKind kind, int target, {required int id, required DateTime due}) =>
+      ResearchDone(
+        id: id,
+        planetId: 1,
+        startedAt: t0,
+        dueAt: due,
+        tech: kind,
+        targetLevel: target,
+        cost: Resources.zero,
+      );
 
   /// Référence naïve : pas d'une seconde, événements appliqués à leur seconde.
-  Planet secondBySecond(Planet start, List<GameEvent> events, DateTime end) {
-    var p = start;
-    final queue = [...events]..sort(GameEvent.compare);
-    var t = start.lastUpdate;
+  GameState secondBySecond(GameState start, DateTime end) {
+    var s = start;
+    final queue = [...start.pending];
+    var t = start.planet.lastUpdate;
     while (t.isBefore(end)) {
       final next = t.add(const Duration(seconds: 1));
-      p = p.copyWith(resources: rules.produce(p, const Duration(seconds: 1)), lastUpdate: next);
+      final p = s.planet;
+      s = s.copyWith(
+        planet: p.copyWith(
+          resources: rules.produce(p, s.research, const Duration(seconds: 1)),
+          lastUpdate: next,
+        ),
+      );
       while (queue.isNotEmpty && !queue.first.dueAt.isAfter(next)) {
-        final e = queue.removeAt(0) as BuildingDone;
-        p = p.withLevel(e.building, e.targetLevel);
+        switch (queue.removeAt(0)) {
+          case BuildingDone(:final building, :final targetLevel):
+            s = s.copyWith(planet: s.planet.withLevel(building, targetLevel));
+          case ResearchDone(:final tech, :final targetLevel):
+            s = s.copyWith(research: {...s.research, tech: targetLevel});
+        }
       }
       t = next;
     }
-    return p;
+    return s.copyWith(pending: const []);
   }
 
   void expectSameResources(Resources actual, Resources expected) {
@@ -52,79 +68,84 @@ void main() {
     }
   }
 
-  test('rattrapage de 12 h avec 2 fins de construction = simulation seconde par seconde', () {
-    final start = planet(
-      levels: {
-        BuildingKind.metalMine: 3,
-        BuildingKind.crystalMine: 2,
-        BuildingKind.deuteriumSynthesizer: 1,
-        BuildingKind.solarPlant: 3,
-      },
-      resources: const Resources(metal: 1000, crystal: 800, deuterium: 50),
+  test('rattrapage de 12 h, construction et recherche = simulation seconde par seconde', () {
+    // Fusion alimentée par le synthétiseur ; la techno Énergie 4 augmente son rendement,
+    // la mine de métal 4 aggrave le manque d'énergie.
+    final start = game(
+      planet(
+        levels: {
+          BuildingKind.metalMine: 3,
+          BuildingKind.crystalMine: 2,
+          BuildingKind.deuteriumSynthesizer: 5,
+          BuildingKind.solarPlant: 3,
+          BuildingKind.fusionReactor: 2,
+          BuildingKind.researchLab: 1,
+        },
+        resources: const Resources(metal: 1000, crystal: 800, deuterium: 50),
+      ),
+      research: {TechKind.energy: 3},
+      pending: [
+        build(BuildingKind.metalMine, 4, id: 1, due: t0.add(const Duration(hours: 2, seconds: 17))),
+        research(TechKind.energy, 4, id: 2, due: t0.add(const Duration(hours: 7, minutes: 3))),
+      ],
     );
-    // Énergie déjà négative (facteur < 1), aggravée par la mine 4, rétablie par la centrale 4.
-    final events = <GameEvent>[
-      build(BuildingKind.metalMine, 4, id: 1, due: t0.add(const Duration(hours: 2, seconds: 17))),
-      build(BuildingKind.solarPlant, 4, id: 2, due: t0.add(const Duration(hours: 7, minutes: 3))),
-    ];
     final end = t0.add(const Duration(hours: 12));
 
-    final result = advance(GameState(planet: start, pending: events), end, rules);
-    final reference = secondBySecond(start, events, end);
+    final result = advance(start, end, rules);
+    final reference = secondBySecond(start, end);
 
     expect(result.applied.map((e) => e.id), [1, 2]);
     expect(result.state.pending, isEmpty);
-    expect(result.state.planet.levels, reference.levels);
+    expect(result.state.planet.levels, reference.planet.levels);
+    expect(result.state.research, reference.research);
+    expect(result.state.research[TechKind.energy], 4);
     expect(result.state.planet.lastUpdate, end);
-    expectSameResources(result.state.planet.resources, reference.resources);
+    expectSameResources(result.state.planet.resources, reference.planet.resources);
   });
 
   test('les événements futurs restent en attente', () {
     final e = build(BuildingKind.metalMine, 1, id: 1, due: t0.add(const Duration(hours: 5)));
-    final result = advance(
-      GameState(planet: planet(), pending: [e]),
-      t0.add(const Duration(hours: 1)),
-      rules,
-    );
+    final result = advance(game(planet(), pending: [e]), t0.add(const Duration(hours: 1)), rules);
     expect(result.applied, isEmpty);
     expect(result.state.pending, [e]);
     expect(result.state.planet.level(BuildingKind.metalMine), 0);
   });
 
   test('le stockage plafonne pendant le rattrapage', () {
-    final start = planet(resources: const Resources(metal: 9990, crystal: 0));
-    final after = advance(
-      GameState(planet: start, pending: const []),
-      t0.add(const Duration(days: 30)),
-      rules,
-    ).state.planet;
+    final start = game(planet(resources: const Resources(metal: 9990, crystal: 0)));
+    final after = advance(start, t0.add(const Duration(days: 30)), rules).state.planet;
     expect(after.resources.metal, 10000);
     expect(after.resources.crystal, 10000);
   });
 
   test('un stock au-dessus de la capacité est conservé, sans production', () {
-    final start = planet(resources: const Resources(metal: 12000));
-    final after = advance(
-      GameState(planet: start, pending: const []),
-      t0.add(const Duration(hours: 3)),
-      rules,
-    ).state.planet;
+    final start = game(planet(resources: const Resources(metal: 12000)));
+    final after = advance(start, t0.add(const Duration(hours: 3)), rules).state.planet;
     expect(after.resources.metal, 12000);
   });
 
+  test('deutérium net négatif : le stock s’arrête à 0', () {
+    final start = game(
+      planet(
+        levels: {BuildingKind.fusionReactor: 3},
+        resources: const Resources(deuterium: 100),
+      ),
+    );
+    final after = advance(start, t0.add(const Duration(days: 2)), rules).state.planet;
+    expect(after.resources.deuterium, 0);
+  });
+
   test('horloge reculée : aucun effet', () {
-    final state = GameState(planet: planet(), pending: const []);
+    final state = game(planet());
     final result = advance(state, t0.subtract(const Duration(hours: 1)), rules);
     expect(result.state, same(state));
   });
 
   group('construction', () {
     test('lancement : débit immédiat, événement à la bonne échéance', () {
-      final state = GameState(planet: planet(), pending: const []);
-      final outcome = startBuilding(state, BuildingKind.metalMine, t0, rules, eventId: 7);
-
-      expect(outcome, isA<BuildStarted>());
-      final started = outcome as BuildStarted;
+      final outcome = startOrder(game(planet()), BuildingKind.metalMine, t0, rules, eventId: 7);
+      final started = outcome as OrderStarted;
+      expect(started.event, isA<BuildingDone>());
       expect(started.event.id, 7);
       expect(started.event.targetLevel, 1);
       expect(started.event.dueAt, t0.add(const Duration(seconds: 108)));
@@ -133,37 +154,141 @@ void main() {
     });
 
     test('file à 1 slot', () {
-      final state = GameState(planet: planet(), pending: const []);
-      final first = startBuilding(state, BuildingKind.metalMine, t0, rules, eventId: 1);
-      final second = startBuilding(first.state, BuildingKind.crystalMine, t0, rules, eventId: 2);
-      expect((second as BuildRejected).reason, isA<QueueBusy>());
+      final first = startOrder(game(planet()), BuildingKind.metalMine, t0, rules, eventId: 1);
+      final second = startOrder(first.state, BuildingKind.crystalMine, t0, rules, eventId: 2);
+      expect((second as OrderRejected).reason, isA<QueueBusy>());
     });
 
     test('ressources insuffisantes : indique le manque', () {
-      final state = GameState(planet: planet(), pending: const []);
-      final outcome = startBuilding(state, BuildingKind.roboticsFactory, t0, rules, eventId: 1);
-      final reason = (outcome as BuildRejected).reason as NotEnoughResources;
+      final outcome = startOrder(
+        game(planet()),
+        BuildingKind.roboticsFactory,
+        t0,
+        rules,
+        eventId: 1,
+      );
+      final reason = (outcome as OrderRejected).reason as NotEnoughResources;
       expect(reason.missing, const Resources(deuterium: 200));
     });
 
     test('annulation : remboursement intégral, même au-delà de la capacité', () {
       final full = planet(resources: const Resources(metal: 10000, crystal: 10000));
-      final outcome = startBuilding(
-        GameState(planet: full, pending: const []),
-        BuildingKind.metalStorage,
-        t0,
-        rules,
-        eventId: 1,
-      );
-      final started = outcome as BuildStarted;
+      final outcome = startOrder(game(full), BuildingKind.metalStorage, t0, rules, eventId: 1);
+      final started = outcome as OrderStarted;
       final later = t0.add(const Duration(minutes: 10));
-      final cancelled = cancelBuilding(started.state, 1, later, rules);
+      final cancelled = cancelOrder(started.state, 1, later, rules);
 
       expect(cancelled.pending, isEmpty);
       // 9000 + production pendant 10 min (sous la capacité) + 1000 remboursés.
-      final produced = rules.hourlyProduction(full.levels, tempMax: full.tempMax).metal / 6;
+      final produced = rules.hourlyProduction(full, const {}).metal / 6;
       expect(cancelled.planet.resources.metal, closeTo(10000 + produced, 1e-9));
       expect(cancelled.planet.level(BuildingKind.metalStorage), 0);
+    });
+
+    test('nanites : construction plus rapide', () {
+      final p = planet(
+        levels: {BuildingKind.naniteFactory: 1},
+        resources: const Resources(metal: 500, crystal: 500),
+      );
+      final outcome = startOrder(game(p), BuildingKind.metalMine, t0, rules, eventId: 1);
+      expect((outcome as OrderStarted).event.dueAt, t0.add(const Duration(seconds: 54)));
+    });
+  });
+
+  group('prérequis', () {
+    const rich = Resources(metal: 1e6, crystal: 1e6, deuterium: 1e6);
+
+    test('fusion : synthétiseur 5 et Énergie 3 requis', () {
+      final s = game(planet(levels: {BuildingKind.deuteriumSynthesizer: 4}, resources: rich));
+      final reason = checkOrder(s, BuildingKind.fusionReactor, rules) as RequirementsNotMet;
+      expect(reason.missing, {BuildingKind.deuteriumSynthesizer: 5, TechKind.energy: 3});
+
+      final ok = game(
+        planet(levels: {BuildingKind.deuteriumSynthesizer: 5}, resources: rich),
+        research: {TechKind.energy: 3},
+      );
+      expect(checkOrder(ok, BuildingKind.fusionReactor, rules), isNull);
+    });
+
+    test('technologie : labo requis', () {
+      final s = game(planet(resources: rich));
+      final reason = checkOrder(s, TechKind.energy, rules) as RequirementsNotMet;
+      expect(reason.missing, {BuildingKind.researchLab: 1});
+    });
+
+    test('prérequis vérifiés avant les ressources', () {
+      final s = game(planet());
+      expect(checkOrder(s, TechKind.plasma, rules), isA<RequirementsNotMet>());
+    });
+  });
+
+  group('recherche', () {
+    const rich = Resources(metal: 1e6, crystal: 1e6, deuterium: 1e6);
+    GameState withLab() =>
+        game(planet(levels: {BuildingKind.researchLab: 1}, resources: rich));
+
+    test('lancement : durée selon le labo, file séparée de la construction', () {
+      final r = startOrder(withLab(), TechKind.energy, t0, rules, eventId: 1) as OrderStarted;
+      expect(r.event, isA<ResearchDone>());
+      expect(r.event.dueAt, t0.add(const Duration(seconds: 1440)));
+      expect(r.state.currentResearch, r.event);
+
+      // Une construction peut tourner en même temps.
+      final b = startOrder(r.state, BuildingKind.metalMine, t0, rules, eventId: 2);
+      expect(b, isA<OrderStarted>());
+      // Mais pas une seconde recherche.
+      final r2 = startOrder(b.state, TechKind.computer, t0, rules, eventId: 3);
+      expect((r2 as OrderRejected).reason, isA<QueueBusy>());
+    });
+
+    test('labo bloqué pendant une recherche', () {
+      final r = startOrder(withLab(), TechKind.energy, t0, rules, eventId: 1);
+      expect(checkOrder(r.state, BuildingKind.researchLab, rules), isA<LabBusy>());
+    });
+
+    test('recherche bloquée pendant l’agrandissement du labo', () {
+      final b = startOrder(withLab(), BuildingKind.researchLab, t0, rules, eventId: 1);
+      expect(checkOrder(b.state, TechKind.energy, rules), isA<LabBusy>());
+    });
+
+    test('annulation d’une recherche : remboursement intégral', () {
+      final start = withLab();
+      final r = startOrder(start, TechKind.energy, t0, rules, eventId: 1) as OrderStarted;
+      final cancelled = cancelOrder(r.state, 1, t0, rules);
+      expect(cancelled.currentResearch, isNull);
+      expect(cancelled.planet.resources, start.planet.resources);
+    });
+
+    test('fin de recherche : niveau de techno appliqué', () {
+      final r = startOrder(withLab(), TechKind.energy, t0, rules, eventId: 1) as OrderStarted;
+      final after = advance(r.state, t0.add(const Duration(hours: 1)), rules).state;
+      expect(after.research[TechKind.energy], 1);
+      expect(after.currentResearch, isNull);
+    });
+  });
+
+  group('réglage de production', () {
+    test('le passé est soldé à l’ancien réglage', () {
+      final start = game(planet(levels: {BuildingKind.metalMine: 1, BuildingKind.solarPlant: 5}));
+      final oneHour = t0.add(const Duration(hours: 1));
+      final adjusted = setProductionPercent(start, BuildingKind.metalMine, 0, oneHour, rules);
+      expect(adjusted.planet.percent(BuildingKind.metalMine), 0);
+      expect(adjusted.planet.resources.metal, closeTo(500 + 30 + 30 * 1.1, 1e-9));
+
+      final later = advance(adjusted, oneHour.add(const Duration(hours: 1)), rules).state;
+      expect(later.planet.resources.metal, closeTo(500 + 30 + 30 * 1.1 + 30, 1e-9));
+    });
+
+    test('refusé pour un bâtiment non réglable ou une valeur invalide', () {
+      final s = game(planet());
+      expect(
+        () => setProductionPercent(s, BuildingKind.metalStorage, 50, t0, rules),
+        throwsArgumentError,
+      );
+      expect(
+        () => setProductionPercent(s, BuildingKind.metalMine, 55, t0, rules),
+        throwsArgumentError,
+      );
     });
   });
 
@@ -171,6 +296,7 @@ void main() {
     final p = Planet.create(data: gameData, random: math.Random(42), now: t0);
     expect(p.resources, const Resources(metal: 500, crystal: 500));
     expect(p.levels.values, everyElement(0));
+    expect(p.percents.values, everyElement(100));
     expect(p.tempMax, inInclusiveRange(-40, 80));
   });
 }

@@ -31,9 +31,15 @@ void main() {
     expect(find.text('Température ${tMax - 40} °C à $tMax °C'), findsOneWidget);
     expect(find.text('Niv. 1'), findsWidgets);
 
+    await tester.tap(find.text('Recherche'));
+    await tester.pump();
+    expect(find.text('Technologie Énergie'), findsOneWidget);
+    expect(find.textContaining('Requiert Laboratoire de recherche 1'), findsWidgets);
+
     await tester.tap(find.text('File'));
     await tester.pump();
     expect(find.text('Aucune construction en cours'), findsOneWidget);
+    expect(find.text('Aucune recherche en cours'), findsOneWidget);
 
     await tester.tap(find.text('Debug'));
     await tester.pump();

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../domain/resources.dart';
 import '../format.dart';
 import '../game_controller.dart';
+import 'info_button.dart';
 
 /// Stocks interpolés à [now], capacité, production horaire et bilan d'énergie.
 class ResourceBar extends StatelessWidget {
@@ -13,12 +14,13 @@ class ResourceBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final planet = controller.state.planet;
+    final state = controller.state;
+    final planet = state.planet;
     final rules = controller.rules;
-    final stock = rules.produce(planet, now.difference(planet.lastUpdate));
+    final stock = controller.interpolated(now).planet.resources;
     final cap = rules.capacity(planet.levels);
-    final rate = rules.hourlyProduction(planet.levels, tempMax: planet.tempMax);
-    final energy = rules.energy(planet.levels);
+    final rate = rules.hourlyProduction(planet, state.research);
+    final energy = rules.energy(planet, state.research);
     final theme = Theme.of(context);
 
     return Padding(
@@ -67,6 +69,15 @@ class ResourceBar extends StatelessWidget {
                   'Mines à ${(energy.factor * 100).floor()} %',
                   style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error),
                 ),
+              const InfoButton(
+                title: 'Énergie',
+                body:
+                    'Le solde est l’énergie produite moins l’énergie consommée par les mines. '
+                    'S’il est négatif, toutes les mines tournent au même pourcentage réduit '
+                    '(produite ÷ consommée). La production de base de la planète n’est pas '
+                    'touchée.',
+                size: 16,
+              ),
             ],
           ),
         ],
@@ -104,7 +115,7 @@ class _ResourceTile extends StatelessWidget {
           ),
         ),
         Text(
-          '/ ${fmtAmount(capacity)}  +${fmtAmount(perHour)}/h',
+          '/ ${fmtAmount(capacity)}  ${perHour < 0 ? '' : '+'}${fmtAmount(perHour)}/h',
           style: theme.textTheme.bodySmall,
           overflow: TextOverflow.ellipsis,
         ),
