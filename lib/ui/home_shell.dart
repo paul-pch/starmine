@@ -86,7 +86,10 @@ class _HomeShellState extends State<HomeShell> {
             onDestinationSelected: (i) => setState(() => _tab = i),
             destinations: [
               const NavigationDestination(icon: Icon(Icons.factory_outlined), label: 'Bâtiments'),
-              const NavigationDestination(icon: Icon(ResourceStyle.researchIcon), label: 'Recherche'),
+              const NavigationDestination(
+                icon: Icon(ResourceStyle.researchIcon),
+                label: 'Recherche',
+              ),
               NavigationDestination(
                 icon: Badge(
                   isLabelVisible: _c.state.pending.isNotEmpty,
