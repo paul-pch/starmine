@@ -14,6 +14,7 @@ Idle solo façon OGame, en temps réel, pour Android 15+. Flutter, 100 % local (
 
 ```bash
 flutter pub get
+dart run build_runner build -d   # code Drift (*.g.dart, non commité)
 flutter test
 flutter run            # signé avec la clé debug
 ```

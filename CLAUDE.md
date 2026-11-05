@@ -7,3 +7,5 @@
 - Push direct sur `main`, commits petits et thématiques, messages en français.
 - L'environnement de Claude n'a pas de SDK Flutter : la CI GitHub Actions est la seule vérification. Lire ses logs après chaque push.
 - `pubspec.lock` doit être commité (app) ; le générer avec `flutter pub get`.
+- Le code Drift (`*.g.dart`) est généré par build_runner en CI et localement, jamais commité.
+- Si la CI signale un `pubspec.lock` obsolète, elle imprime le lock attendu dans ses logs : le reprendre tel quel.

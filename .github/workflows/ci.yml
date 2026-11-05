@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: subosito/flutter-action@v2
         with:
@@ -29,6 +29,9 @@ jobs:
 
       - run: flutter pub get
 
+      - name: Génération de code (Drift)
+        run: dart run build_runner build --delete-conflicting-outputs
+
       - name: Le domaine reste en Dart pur
         run: |
           if grep -rnE "^import 'package:(flutter|drift|sqlite3|path_provider)" lib/domain; then
@@ -36,19 +39,33 @@ jobs:
             exit 1
           fi
 
-      # Affiche le diff attendu : utile quand le code est écrit sans formateur local.
-      - name: Format
-        run: |
-          dart format lib test
-          if ! git diff --quiet; then
-            echo "::error::Code non formaté : lancer dart format lib test"
-            git diff
-            exit 1
-          fi
-
       - run: flutter analyze
 
       - run: flutter test
+        if: ${{ !cancelled() }}
+
+      # Affiche le diff attendu : utile quand le code est écrit sans formateur local.
+      - name: Format
+        if: ${{ !cancelled() }}
+        run: |
+          dart format lib test
+          if ! git diff --quiet -- lib test; then
+            echo "::error::Code non formaté : lancer dart format lib test"
+            git diff -- lib test
+            exit 1
+          fi
+
+      # Le lock commité doit correspondre au pubspec ; sinon on affiche le lock attendu.
+      - name: pubspec.lock à jour
+        if: ${{ !cancelled() }}
+        run: |
+          if ! git diff --quiet pubspec.lock; then
+            echo "::error::pubspec.lock obsolète : lancer flutter pub get et commiter"
+            echo "----- BEGIN pubspec.lock -----"
+            cat pubspec.lock
+            echo "----- END pubspec.lock -----"
+            exit 1
+          fi
 
   apk:
     name: APK release
@@ -59,9 +76,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
@@ -73,6 +90,9 @@ jobs:
           cache: true
 
       - run: flutter pub get
+
+      - name: Génération de code (Drift)
+        run: dart run build_runner build --delete-conflicting-outputs
 
       # Sans keystore fixe, chaque APK aurait une signature différente :
       # mise à jour impossible, désinstallation obligatoire, sauvegarde perdue.
