@@ -7,7 +7,7 @@ import 'rules.dart';
 /// État complet d'une partie (V0 : une planète) et ses événements en attente.
 class GameState {
   GameState({required this.planet, required List<GameEvent> pending})
-    : pending = List.unmodifiable([...pending]..sort(GameEvent.compare));
+    : pending = List<GameEvent>.unmodifiable(<GameEvent>[...pending]..sort(GameEvent.compare));
 
   final Planet planet;
 

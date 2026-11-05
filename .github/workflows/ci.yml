@@ -39,8 +39,12 @@ jobs:
       # Non bloquant tant que le code est écrit sans formateur local (environnement de Claude).
       - name: Format
         run: |
-          dart format --output=none --set-exit-if-changed lib test \
-            || echo "::warning::Code non formaté : lancer dart format lib test"
+          dart format lib test
+          if ! git diff --quiet; then
+            echo "::warning::Code non formaté : lancer dart format lib test"
+            git diff
+            git checkout -- .
+          fi
 
       - run: flutter analyze
 
