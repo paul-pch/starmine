@@ -52,6 +52,5 @@ class Planet {
         lastUpdate: lastUpdate ?? this.lastUpdate,
       );
 
-  Planet withLevel(BuildingKind kind, int level) =>
-      copyWith(levels: {...levels, kind: level});
+  Planet withLevel(BuildingKind kind, int level) => copyWith(levels: {...levels, kind: level});
 }

@@ -149,7 +149,10 @@ BuildOutcome startBuilding(
 /// dépasser la capacité). Sans effet si l'événement n'est plus en attente.
 GameState cancelBuilding(GameState state, int eventId, DateTime now, Rules rules) {
   final advanced = advance(state, now, rules).state;
-  final event = advanced.pending.whereType<BuildingDone>().where((e) => e.id == eventId).firstOrNull;
+  final event = advanced.pending
+      .whereType<BuildingDone>()
+      .where((e) => e.id == eventId)
+      .firstOrNull;
   if (event == null) return advanced;
   return GameState(
     planet: advanced.planet.copyWith(resources: advanced.planet.resources + event.cost),

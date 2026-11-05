@@ -34,9 +34,7 @@ class Resources {
 
   /// Vrai si chaque ressource de `this` couvre celle de [cost].
   bool covers(Resources cost) =>
-      metal >= cost.metal &&
-      crystal >= cost.crystal &&
-      deuterium >= cost.deuterium;
+      metal >= cost.metal && crystal >= cost.crystal && deuterium >= cost.deuterium;
 
   /// Ressources manquantes pour payer [cost] (0 quand c'est couvert).
   Resources missingFor(Resources cost) => Resources(

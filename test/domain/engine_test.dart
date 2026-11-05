@@ -148,13 +148,14 @@ void main() {
 
     test('annulation : remboursement intégral, même au-delà de la capacité', () {
       final full = planet(resources: const Resources(metal: 10000, crystal: 10000));
-      final started = startBuilding(
+      final outcome = startBuilding(
         GameState(planet: full, pending: const []),
         BuildingKind.metalStorage,
         t0,
         rules,
         eventId: 1,
-      ) as BuildStarted;
+      );
+      final started = outcome as BuildStarted;
       final later = t0.add(const Duration(minutes: 10));
       final cancelled = cancelBuilding(started.state, 1, later, rules);
 

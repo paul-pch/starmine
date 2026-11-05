@@ -36,14 +36,14 @@ jobs:
             exit 1
           fi
 
-      # Non bloquant tant que le code est écrit sans formateur local (environnement de Claude).
+      # Affiche le diff attendu : utile quand le code est écrit sans formateur local.
       - name: Format
         run: |
           dart format lib test
           if ! git diff --quiet; then
-            echo "::warning::Code non formaté : lancer dart format lib test"
+            echo "::error::Code non formaté : lancer dart format lib test"
             git diff
-            git checkout -- .
+            exit 1
           fi
 
       - run: flutter analyze
