@@ -123,10 +123,7 @@ void main() {
   test('forces en présence : sommes avec technos', () {
     final s = SideStrength.of(
       gameData,
-      const CombatSide(
-        units: {UnitKind.rocketLauncher: 10},
-        tech: {TechKind.weapons: 1},
-      ),
+      const CombatSide(units: {UnitKind.rocketLauncher: 10}, tech: {TechKind.weapons: 1}),
     );
     expect(s.units, 10);
     expect(s.attack, closeTo(880, 1e-9));

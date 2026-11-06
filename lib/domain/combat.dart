@@ -15,12 +15,7 @@ enum CombatWinner { attacker, defender, draw }
 
 /// Tirs d'un camp pendant un round.
 class Volley {
-  const Volley({
-    this.shots = 0,
-    this.fired = 0,
-    this.toShields = 0,
-    this.toHull = 0,
-  });
+  const Volley({this.shots = 0, this.fired = 0, this.toShields = 0, this.toHull = 0});
 
   final int shots;
 

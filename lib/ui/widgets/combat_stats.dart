@@ -89,7 +89,12 @@ class ForcesTable extends StatelessWidget {
                 Text(defenderName, textAlign: TextAlign.end, style: head),
               ],
             ),
-            row(Icons.groups_outlined, 'Unités', attacker.units.toDouble(), defender.units.toDouble()),
+            row(
+              Icons.groups_outlined,
+              'Unités',
+              attacker.units.toDouble(),
+              defender.units.toDouble(),
+            ),
             row(Icons.gps_fixed, 'Attaque', attacker.attack, defender.attack),
             row(Icons.shield_outlined, 'Boucliers', attacker.shield, defender.shield),
             row(Icons.favorite_border, 'Coque', attacker.hull, defender.hull),
