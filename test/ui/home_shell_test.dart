@@ -56,7 +56,12 @@ void main() {
     expect(find.text('Fondamentales'), findsWidgets);
     expect(find.textContaining('Requiert Laboratoire de recherche 1'), findsWidgets);
     // Filtre : seules les technos de combat restent.
-    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'Combat'));
+    // Les puces défilent à gauche de la bascule « Réalisables ».
+    await tester.dragUntilVisible(
+      find.widgetWithText(ChoiceChip, 'Combat'),
+      find.byWidgetPredicate((w) => w is ListView && w.scrollDirection == Axis.horizontal),
+      const Offset(-80, 0),
+    );
     await tester.pump();
     await tester.tap(find.widgetWithText(ChoiceChip, 'Combat'));
     await tester.pump();

@@ -70,7 +70,8 @@ void main() {
     expect(raidB.arrivalAt, raidA.arrivalAt);
     expect(raidB.seed, raidA.seed);
     expect(raidB.base!.points, raidA.base!.points);
-    expect(raidB.base!.tech, raidA.base!.tech);
+    expect(encodeTech(raidB.base!.tech), encodeTech(raidA.base!.tech));
+    expect(raidB.base!.tech[TechKind.computer], 2);
     final restoredOrders = restored.state.pending.whereType<OrderDone>().toList();
     final originalOrders = original.state.pending.whereType<OrderDone>().toList();
     for (var i = 0; i < 2; i++) {
