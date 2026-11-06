@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 
 import '../../domain/combat.dart';
@@ -7,7 +5,7 @@ import '../../domain/events.dart';
 import '../../domain/raid.dart';
 import '../format.dart';
 import '../game_controller.dart';
-import 'combat_report.dart';
+import 'combat_stats.dart';
 import 'info_button.dart';
 
 const raidHelp =
@@ -107,31 +105,23 @@ class _RaidDetails extends StatelessWidget {
           style: theme.textTheme.bodySmall,
         ),
         const SizedBox(height: 16),
+        ForcesTable(
+          attacker: SideStrength.of(data, CombatSide(units: raid.fleet)),
+          defender: SideStrength.of(
+            data,
+            CombatSide(units: controller.state.planet.units, tech: controller.state.research),
+          ),
+        ),
+        const SizedBox(height: 16),
         Align(
           alignment: Alignment.centerRight,
           child: FilledButton.tonalIcon(
-            onPressed: () => _simulate(context),
+            onPressed: () => SimulationSheet.show(context, controller, raid.fleet),
             icon: const Icon(Icons.gps_fixed),
-            label: const Text('Simuler contre mes défenses'),
+            label: const Text('Simuler 100 batailles'),
           ),
         ),
       ],
-    );
-  }
-
-  /// Estimation : une bataille tirée au hasard avec les défenses actuelles.
-  Future<void> _simulate(BuildContext context) {
-    final state = controller.state;
-    final result = simulateCombat(
-      controller.data,
-      CombatSide(units: raid.fleet),
-      CombatSide(units: state.planet.units, tech: state.research),
-      math.Random(),
-    );
-    return CombatReport.show(
-      context,
-      controller.data,
-      RaidReport.fromCombat(result, at: controller.now(), simulated: true),
     );
   }
 }

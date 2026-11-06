@@ -6,6 +6,7 @@ import '../../domain/raid.dart';
 import '../../domain/resources.dart';
 import '../format.dart';
 import '../resource_style.dart';
+import 'combat_stats.dart';
 
 /// Rapport de combat : issue, pillage, pertes par camp, défenses reconstruites.
 class CombatReport extends StatelessWidget {
@@ -62,6 +63,10 @@ class CombatReport extends StatelessWidget {
           const SizedBox(height: 4),
           CostLine(cost: r.loot),
         ],
+        if ((r.attackerStrength, r.defenderStrength) case (final a?, final d?)) ...[
+          const SizedBox(height: 16),
+          ForcesTable(attacker: a, defender: d),
+        ],
         const SizedBox(height: 16),
         _SideTable(title: 'Pirates', data: data, start: r.attackerStart, left: r.attackerLeft),
         const SizedBox(height: 16),
@@ -72,6 +77,10 @@ class CombatReport extends StatelessWidget {
           left: r.defenderLeft,
           rebuilt: r.rebuilt,
         ),
+        if (r.roundDetails.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          RoundsTable(rounds: r.roundDetails),
+        ],
       ],
     );
   }

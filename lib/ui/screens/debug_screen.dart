@@ -1,14 +1,10 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../domain/combat.dart';
 import '../../domain/game_data.dart';
-import '../../domain/raid.dart';
 import '../format.dart';
 import '../game_controller.dart';
-import '../widgets/combat_report.dart';
+import '../widgets/combat_stats.dart';
 import '../widgets/info_button.dart';
 
 /// Vitesse de jeu, sauvegarde (presse-papiers), reset, permissions.
@@ -117,18 +113,7 @@ class _DebugScreenState extends State<DebugScreen> {
       ),
     );
     if (fleet == null || !mounted) return;
-    final state = _c.state;
-    final result = simulateCombat(
-      _c.data,
-      CombatSide(units: fleet),
-      CombatSide(units: state.planet.units, tech: state.research),
-      math.Random(),
-    );
-    await CombatReport.show(
-      context,
-      _c.data,
-      RaidReport.fromCombat(result, at: _c.now(), simulated: true),
-    );
+    await SimulationSheet.show(context, _c, fleet);
   }
 
   Future<void> _requestExact() async {
@@ -173,7 +158,7 @@ class _DebugScreenState extends State<DebugScreen> {
         ListTile(
           leading: const Icon(Icons.gps_fixed),
           title: const Text('Simulateur de combat'),
-          subtitle: const Text('Une flotte pirate contre tes défenses, sans effet sur la partie'),
+          subtitle: const Text('100 batailles d’une flotte type contre tes défenses, sans effet'),
           trailing: const InfoButton(
             title: 'Simulateur de combat',
             body:

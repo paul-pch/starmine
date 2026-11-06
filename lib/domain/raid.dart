@@ -83,6 +83,9 @@ class RaidReport {
     required this.rebuilt,
     this.loot = Resources.zero,
     this.simulated = false,
+    this.attackerStrength,
+    this.defenderStrength,
+    this.roundDetails = const [],
   });
 
   factory RaidReport.fromCombat(
@@ -90,6 +93,8 @@ class RaidReport {
     required DateTime at,
     Resources loot = Resources.zero,
     bool simulated = false,
+    SideStrength? attackerStrength,
+    SideStrength? defenderStrength,
   }) => RaidReport(
     at: at,
     winner: r.winner,
@@ -101,6 +106,9 @@ class RaidReport {
     rebuilt: r.rebuilt,
     loot: loot,
     simulated: simulated,
+    attackerStrength: attackerStrength,
+    defenderStrength: defenderStrength,
+    roundDetails: r.rounds,
   );
 
   final DateTime at;
@@ -115,6 +123,106 @@ class RaidReport {
 
   /// Simulation (debug, estimation) : pas un vrai raid.
   final bool simulated;
+
+  /// Forces en présence au début du combat (absentes des rapports antérieurs).
+  final SideStrength? attackerStrength;
+  final SideStrength? defenderStrength;
+
+  /// Détail des rounds (vide pour les rapports antérieurs).
+  final List<CombatRound> roundDetails;
+}
+
+/// Valeur en ressources (M + C + D) d'un ensemble d'unités.
+double fleetValue(Map<UnitKind, num> units, GameData data) =>
+    units.entries.fold(0.0, (sum, e) => sum + e.value * _total(data.unit(e.key).baseCost));
+
+/// Bilan de [runs] batailles simulées : probabilités et moyennes.
+class SimulationSummary {
+  const SimulationSummary({
+    required this.runs,
+    required this.attackerWins,
+    required this.defenderWins,
+    required this.draws,
+    required this.averageRounds,
+    required this.attackerLosses,
+    required this.defenderLosses,
+    required this.averageLoot,
+    required this.attackerStrength,
+    required this.defenderStrength,
+  });
+
+  final int runs;
+  final int attackerWins;
+  final int defenderWins;
+  final int draws;
+  final double averageRounds;
+
+  /// Pertes moyennes par type (défenses : après reconstruction).
+  final Map<UnitKind, double> attackerLosses;
+  final Map<UnitKind, double> defenderLosses;
+
+  /// Pillage moyen, toutes batailles confondues.
+  final Resources averageLoot;
+  final SideStrength attackerStrength;
+  final SideStrength defenderStrength;
+
+  double rate(int n) => n / runs;
+}
+
+/// Simule [runs] fois un raid de [fleet] contre la planète de [state] (stocks actuels).
+SimulationSummary simulateRaid(
+  GameState state,
+  Map<UnitKind, int> fleet,
+  GameData data, {
+  int runs = 100,
+  required math.Random random,
+}) {
+  final attacker = CombatSide(units: fleet);
+  final defender = CombatSide(units: state.planet.units, tech: state.research);
+  var aWins = 0;
+  var dWins = 0;
+  var draws = 0;
+  var rounds = 0;
+  var lootSum = Resources.zero;
+  final aLoss = <UnitKind, double>{};
+  final dLoss = <UnitKind, double>{};
+  for (var i = 0; i < runs; i++) {
+    final r = simulateCombat(data, attacker, defender, random);
+    rounds += r.rounds.length;
+    switch (r.winner) {
+      case CombatWinner.attacker:
+        aWins++;
+        lootSum =
+            lootSum +
+            loot(
+              state.planet.resources,
+              cargoCapacity(r.attackerLeft, data),
+              data.pirates.lootShare,
+            );
+      case CombatWinner.defender:
+        dWins++;
+      case CombatWinner.draw:
+        draws++;
+    }
+    for (final e in r.attackerLosses.entries) {
+      aLoss[e.key] = (aLoss[e.key] ?? 0) + e.value / runs;
+    }
+    for (final e in r.defenderLosses.entries) {
+      dLoss[e.key] = (dLoss[e.key] ?? 0) + e.value / runs;
+    }
+  }
+  return SimulationSummary(
+    runs: runs,
+    attackerWins: aWins,
+    defenderWins: dWins,
+    draws: draws,
+    averageRounds: rounds / runs,
+    attackerLosses: aLoss,
+    defenderLosses: dLoss,
+    averageLoot: lootSum * (1 / runs),
+    attackerStrength: SideStrength.of(data, attacker),
+    defenderStrength: SideStrength.of(data, defender),
+  );
 }
 
 /// Résultat d'un événement de raid : nouvel état, événement suivant, rapport éventuel.
@@ -147,12 +255,9 @@ RaidStep resolveRaid(GameState s, RaidArrival e, Rules rules) {
   final data = rules.data;
   final random = math.Random(e.seed);
   final planet = s.planet;
-  final result = simulateCombat(
-    data,
-    CombatSide(units: e.fleet),
-    CombatSide(units: planet.units, tech: s.research),
-    random,
-  );
+  final attacker = CombatSide(units: e.fleet);
+  final defender = CombatSide(units: planet.units, tech: s.research);
+  final result = simulateCombat(data, attacker, defender, random);
   final taken = result.winner == CombatWinner.attacker
       ? loot(planet.resources, cargoCapacity(result.attackerLeft, data), data.pirates.lootShare)
       : Resources.zero;
@@ -163,7 +268,13 @@ RaidStep resolveRaid(GameState s, RaidArrival e, Rules rules) {
   return (
     state: s.copyWith(planet: next),
     next: _nextRaid(e.id, e.planetId, e.dueAt, random, rules),
-    report: RaidReport.fromCombat(result, at: e.dueAt, loot: taken),
+    report: RaidReport.fromCombat(
+      result,
+      at: e.dueAt,
+      loot: taken,
+      attackerStrength: SideStrength.of(data, attacker),
+      defenderStrength: SideStrength.of(data, defender),
+    ),
   );
 }
 

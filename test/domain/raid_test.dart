@@ -161,4 +161,28 @@ void main() {
     expect(raid.dueAt, t0);
     expect(raid.arrivalAt, t0.add(const Duration(hours: 1)));
   });
+
+  test('simulation multiple : probabilités cohérentes', () {
+    final s = game(
+      planet(resources: const Resources(metal: 10000), units: {UnitKind.rocketLauncher: 8}),
+    );
+    final sum = simulateRaid(
+      s,
+      {UnitKind.lightFighter: 3},
+      gameData,
+      runs: 50,
+      random: math.Random(1),
+    );
+    expect(sum.attackerWins + sum.defenderWins + sum.draws, 50);
+    expect(sum.defenderWins, greaterThan(sum.attackerWins));
+    expect(sum.attackerStrength.units, 3);
+    expect(sum.defenderStrength.units, 8);
+  });
+
+  test('sans défense : pillage garanti, moyenne égale au butin', () {
+    final s = game(planet(resources: const Resources(metal: 10000, crystal: 10000)));
+    final sum = simulateRaid(s, {UnitKind.lightFighter: 3}, gameData, random: math.Random(1));
+    expect(sum.rate(sum.attackerWins), 1);
+    expect(sum.averageLoot.metal, closeTo(75, 1e-6));
+  });
 }

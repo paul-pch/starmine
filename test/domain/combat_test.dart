@@ -108,4 +108,29 @@ void main() {
     }
     expect(withTech, greaterThan(without));
   });
+
+  test('volées : la puissance tirée se répartit entre boucliers, coques et pertes', () {
+    final r = fight({UnitKind.cruiser: 5}, {UnitKind.rocketLauncher: 40, UnitKind.ionCannon: 3});
+    for (final round in r.rounds) {
+      for (final v in [round.attacker, round.defender]) {
+        expect(v.fired, greaterThan(0));
+        expect(v.toShields + v.toHull, lessThanOrEqualTo(v.fired + 1e-6));
+        expect(v.wasted, greaterThanOrEqualTo(-1e-6));
+      }
+    }
+  });
+
+  test('forces en présence : sommes avec technos', () {
+    final s = SideStrength.of(
+      gameData,
+      const CombatSide(
+        units: {UnitKind.rocketLauncher: 10},
+        tech: {TechKind.weapons: 1},
+      ),
+    );
+    expect(s.units, 10);
+    expect(s.attack, closeTo(880, 1e-9));
+    expect(s.shield, 200);
+    expect(s.hull, 2000);
+  });
 }

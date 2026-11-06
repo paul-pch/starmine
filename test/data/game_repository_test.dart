@@ -148,6 +148,25 @@ void main() {
     expect(stored.first.report.loot, const Resources(metal: 75, crystal: 75));
     expect(stored.first.report.attackerStart, {UnitKind.lightFighter: 3});
     expect(stored.every((r) => !r.seen), isTrue);
+    // Rapport complet : forces et détail des rounds conservés.
+    final full = resolveRaid(
+      game(planet(units: {UnitKind.rocketLauncher: 5})),
+      RaidArrival(
+        id: 1,
+        planetId: 1,
+        dueAt: t0,
+        detectedAt: t0,
+        fleet: const {UnitKind.lightFighter: 10},
+        seed: 1,
+      ),
+      rules,
+    ).report!;
+    await repo.save(fresh().state, reports: [full]);
+    final back = (await repo.loadReports()).first.report;
+    expect(back.roundDetails.length, full.roundDetails.length);
+    expect(back.roundDetails.first.attacker.fired, full.roundDetails.first.attacker.fired);
+    expect(back.attackerStrength!.attack, full.attackerStrength!.attack);
+    expect(back.defenderStrength!.units, 5);
 
     await repo.markReportsSeen();
     stored = await repo.loadReports();

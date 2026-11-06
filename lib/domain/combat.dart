@@ -13,16 +13,77 @@ class CombatSide {
 
 enum CombatWinner { attacker, defender, draw }
 
+/// Tirs d'un camp pendant un round.
+class Volley {
+  const Volley({
+    this.shots = 0,
+    this.fired = 0,
+    this.toShields = 0,
+    this.toHull = 0,
+  });
+
+  final int shots;
+
+  /// Puissance totale tirée.
+  final double fired;
+
+  /// Part encaissée par les boucliers ennemis.
+  final double toShields;
+
+  /// Part infligée aux coques (dégâts réels).
+  final double toHull;
+
+  /// Part perdue : règle du 1 %, cibles déjà détruites, excédent sur une coque.
+  double get wasted => fired - toShields - toHull;
+}
+
+/// Puissance totale d'un camp, technos comprises.
+class SideStrength {
+  const SideStrength({
+    required this.units,
+    required this.attack,
+    required this.shield,
+    required this.hull,
+  });
+
+  factory SideStrength.of(GameData data, CombatSide side) {
+    var units = 0;
+    var attack = 0.0;
+    var shield = 0.0;
+    var hull = 0.0;
+    for (final e in side.units.entries) {
+      if (e.value <= 0) continue;
+      final s = UnitStats.of(data.unit(e.key), side.tech);
+      units += e.value;
+      attack += s.attack * e.value;
+      shield += s.shield * e.value;
+      hull += s.hull * e.value;
+    }
+    return SideStrength(units: units, attack: attack, shield: shield, hull: hull);
+  }
+
+  final int units;
+
+  /// Puissance de feu par round, hors tir rapide.
+  final double attack;
+  final double shield;
+  final double hull;
+}
+
 class CombatRound {
   const CombatRound({
-    required this.attackerShots,
-    required this.defenderShots,
+    required this.attacker,
+    required this.defender,
     required this.attackerLeft,
     required this.defenderLeft,
   });
 
-  final int attackerShots;
-  final int defenderShots;
+  /// Tirs de l'attaquant et du défenseur.
+  final Volley attacker;
+  final Volley defender;
+
+  int get attackerShots => attacker.shots;
+  int get defenderShots => defender.shots;
 
   /// Unités restantes à la fin du round.
   final Map<UnitKind, int> attackerLeft;
@@ -106,8 +167,8 @@ CombatResult simulateCombat(
     d.endRound(random);
     rounds.add(
       CombatRound(
-        attackerShots: aShots,
-        defenderShots: dShots,
+        attacker: aShots,
+        defender: dShots,
         attackerLeft: a.counts(),
         defenderLeft: d.counts(),
       ),
@@ -170,33 +231,43 @@ class _Army {
 
   int get alive => kinds.length;
 
-  /// Toutes les unités tirent sur [enemy]. Renvoie le nombre de tirs.
-  int fireAt(_Army enemy, GameData data, math.Random random) {
-    if (enemy.alive == 0) return 0;
+  /// Toutes les unités tirent sur [enemy].
+  Volley fireAt(_Army enemy, GameData data, math.Random random) {
+    if (enemy.alive == 0) return const Volley();
     var shots = 0;
+    var fired = 0.0;
+    var toShields = 0.0;
+    var toHull = 0.0;
     for (var i = 0; i < kinds.length; i++) {
       final rapidFire = data.unit(kinds[i]).rapidFire;
       final attack = stats[i].attack;
       while (true) {
         final target = random.nextInt(enemy.alive);
-        enemy._hit(target, attack);
+        final (s, h) = enemy._hit(target, attack);
         shots++;
+        fired += attack;
+        toShields += s;
+        toHull += h;
         final rf = rapidFire[enemy.kinds[target]] ?? 0;
         if (rf <= 1 || random.nextDouble() >= (rf - 1) / rf) break;
       }
     }
-    return shots;
+    return Volley(shots: shots, fired: fired, toShields: toShields, toHull: toHull);
   }
 
-  void _hit(int target, double damage) {
-    if (hull[target] <= 0) return; // déjà détruite ce round : tir perdu
-    if (damage < 0.01 * stats[target].shield) return; // règle du 1 %
+  /// Applique un tir ; renvoie (encaissé par le bouclier, infligé à la coque).
+  (double, double) _hit(int target, double damage) {
+    if (hull[target] <= 0) return (0, 0); // déjà détruite ce round : tir perdu
+    if (damage < 0.01 * stats[target].shield) return (0, 0); // règle du 1 %
     if (damage <= shield[target]) {
       shield[target] -= damage;
-    } else {
-      hull[target] -= damage - shield[target];
-      shield[target] = 0;
+      return (damage, 0);
     }
+    final absorbed = shield[target];
+    final toHull = math.min(hull[target], damage - absorbed);
+    hull[target] -= damage - absorbed;
+    shield[target] = 0;
+    return (absorbed, toHull);
   }
 
   /// Explosions, retrait des unités détruites, régénération des boucliers.

@@ -292,7 +292,56 @@ Map<String, Object?> encodeReport(RaidReport r) => {
   'defender_left': encodeUnits(r.defenderLeft),
   'rebuilt': encodeUnits(r.rebuilt),
   'loot': encodeResources(r.loot),
+  if (r.attackerStrength case final a?) 'attacker_strength': _encodeStrength(a),
+  if (r.defenderStrength case final d?) 'defender_strength': _encodeStrength(d),
+  'round_details': [
+    for (final round in r.roundDetails)
+      {
+        'attacker': _encodeVolley(round.attacker),
+        'defender': _encodeVolley(round.defender),
+        'attacker_left': encodeUnits(round.attackerLeft),
+        'defender_left': encodeUnits(round.defenderLeft),
+      },
+  ],
 };
+
+Map<String, Object?> _encodeStrength(SideStrength s) => {
+  'units': s.units,
+  'attack': s.attack,
+  'shield': s.shield,
+  'hull': s.hull,
+};
+
+SideStrength _decodeStrength(Map<String, Object?> m) => SideStrength(
+  units: _int(m, 'units'),
+  attack: _double(m, 'attack'),
+  shield: _double(m, 'shield'),
+  hull: _double(m, 'hull'),
+);
+
+Map<String, Object?> _encodeVolley(Volley v) => {
+  'shots': v.shots,
+  'fired': v.fired,
+  'to_shields': v.toShields,
+  'to_hull': v.toHull,
+};
+
+Volley _decodeVolley(Map<String, Object?> m) => Volley(
+  shots: _int(m, 'shots'),
+  fired: _double(m, 'fired'),
+  toShields: _double(m, 'to_shields'),
+  toHull: _double(m, 'to_hull'),
+);
+
+CombatRound _decodeRound(Object? raw) {
+  final m = _asMap(raw, 'round_details[]');
+  return CombatRound(
+    attacker: _decodeVolley(_map(m, 'attacker')),
+    defender: _decodeVolley(_map(m, 'defender')),
+    attackerLeft: decodeUnits(_map(m, 'attacker_left')),
+    defenderLeft: decodeUnits(_map(m, 'defender_left')),
+  );
+}
 
 RaidReport decodeReport(Map<String, Object?> m) => RaidReport(
   at: fromEpochMs(_int(m, 'at')),
@@ -304,4 +353,14 @@ RaidReport decodeReport(Map<String, Object?> m) => RaidReport(
   defenderLeft: decodeUnits(_map(m, 'defender_left')),
   rebuilt: decodeUnits(_map(m, 'rebuilt')),
   loot: decodeResources(_map(m, 'loot')),
+  // Absents des rapports antérieurs.
+  attackerStrength: m['attacker_strength'] == null
+      ? null
+      : _decodeStrength(_map(m, 'attacker_strength')),
+  defenderStrength: m['defender_strength'] == null
+      ? null
+      : _decodeStrength(_map(m, 'defender_strength')),
+  roundDetails: m['round_details'] == null
+      ? const []
+      : [for (final raw in _list(m, 'round_details')) _decodeRound(raw)],
 );
