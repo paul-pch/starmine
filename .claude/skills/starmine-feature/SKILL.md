@@ -65,5 +65,7 @@ Ordre de travail. Chaque étape a sa vérification ; ne pas passer à la suivant
 - Suivre le skill `starmine-ci` (push sur `main`, lecture de la CI, format, lock).
 - Commits petits et thématiques, en français, avec les lignes d'attribution demandées.
 - Mettre à jour la spec et, si le périmètre de version change, `00-vision-roadmap.md`.
+- Si une spec change, régénérer l'instantané `claude/specs-fonctionnelles.md` du projet
+  claude.ai (concaténation de `docs/specs/[0-9]*.md`) : il sert à la refonte visuelle.
 - Proposer le tag à l'utilisateur (`git tag vX.Y.Z && git push origin vX.Y.Z`) : la session
   ne peut pas pousser de tag.
