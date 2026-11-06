@@ -1,15 +1,17 @@
+import '../domain/combat.dart';
 import '../domain/engine.dart';
 import '../domain/events.dart';
 import '../domain/game_data.dart';
 import '../domain/planet.dart';
+import '../domain/raid.dart';
 import '../domain/resources.dart';
 
 /// Identifiant du format de sauvegarde exportée.
 const saveFormat = 'starmine-save';
 
 /// v2 (V1) : technologies et réglages de production. Une sauvegarde v1 reste lisible.
-/// v3 (V2a) : unités et lots du chantier.
-const saveVersion = 3;
+/// v3 (V2a) : unités et lots du chantier. v4 (V2b) : raids pirates.
+const saveVersion = 4;
 
 /// Sauvegarde complète : état de jeu et réglages persistés.
 class SaveGame {
@@ -30,11 +32,15 @@ DateTime fromEpochMs(int ms) => DateTime.fromMillisecondsSinceEpoch(ms, isUtc: t
 const buildingDoneType = 'building_done';
 const researchDoneType = 'research_done';
 const shipyardBatchType = 'shipyard_batch';
+const raidDetectedType = 'raid_detected';
+const raidArrivalType = 'raid_arrival';
 
 String eventType(GameEvent event) => switch (event) {
   BuildingDone() => buildingDoneType,
   ResearchDone() => researchDoneType,
   ShipyardBatch() => shipyardBatchType,
+  RaidDetected() => raidDetectedType,
+  RaidArrival() => raidArrivalType,
 };
 
 Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
@@ -48,6 +54,21 @@ Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
     'started_at': event.startedAt.millisecondsSinceEpoch,
     'unit_cost': encodeResources(event.unitCost),
   },
+  RaidDetected() => {'arrival_at': event.arrivalAt.millisecondsSinceEpoch, 'seed': event.seed},
+  RaidArrival() => {
+    'detected_at': event.detectedAt.millisecondsSinceEpoch,
+    'seed': event.seed,
+    'fleet': encodeUnits(event.fleet),
+  },
+};
+
+Map<String, Object?> encodeUnits(Map<UnitKind, int> units) => {
+  for (final e in units.entries)
+    if (e.value > 0) e.key.key: e.value,
+};
+
+Map<UnitKind, int> decodeUnits(Map<String, Object?> m) => {
+  for (final e in m.entries) UnitKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 0,
 };
 
 Map<String, Object?> _orderPayload(OrderDone e) => {
@@ -95,6 +116,23 @@ GameEvent decodeEvent({
         remaining: _int(payload, 'remaining'),
         unitDuration: Duration(milliseconds: _int(payload, 'unit_duration_ms')),
         unitCost: decodeResources(_map(payload, 'unit_cost')),
+      );
+    case raidDetectedType:
+      return RaidDetected(
+        id: id,
+        planetId: planetId,
+        dueAt: fromEpochMs(dueAtMs),
+        arrivalAt: fromEpochMs(_int(payload, 'arrival_at')),
+        seed: _int(payload, 'seed'),
+      );
+    case raidArrivalType:
+      return RaidArrival(
+        id: id,
+        planetId: planetId,
+        dueAt: fromEpochMs(dueAtMs),
+        detectedAt: fromEpochMs(_int(payload, 'detected_at')),
+        seed: _int(payload, 'seed'),
+        fleet: decodeUnits(_map(payload, 'fleet')),
       );
     default:
       throw FormatException('Type d’événement inconnu : $type');
@@ -241,3 +279,29 @@ String _string(Map<String, Object?> m, String key) {
   if (v is String) return v;
   throw FormatException('« $key » doit être une chaîne');
 }
+
+// --- Rapports de combat --------------------------------------------------------
+
+Map<String, Object?> encodeReport(RaidReport r) => {
+  'at': r.at.millisecondsSinceEpoch,
+  'winner': r.winner.name,
+  'rounds': r.rounds,
+  'attacker_start': encodeUnits(r.attackerStart),
+  'attacker_left': encodeUnits(r.attackerLeft),
+  'defender_start': encodeUnits(r.defenderStart),
+  'defender_left': encodeUnits(r.defenderLeft),
+  'rebuilt': encodeUnits(r.rebuilt),
+  'loot': encodeResources(r.loot),
+};
+
+RaidReport decodeReport(Map<String, Object?> m) => RaidReport(
+  at: fromEpochMs(_int(m, 'at')),
+  winner: CombatWinner.values.byName(_string(m, 'winner')),
+  rounds: _int(m, 'rounds'),
+  attackerStart: decodeUnits(_map(m, 'attacker_start')),
+  attackerLeft: decodeUnits(_map(m, 'attacker_left')),
+  defenderStart: decodeUnits(_map(m, 'defender_start')),
+  defenderLeft: decodeUnits(_map(m, 'defender_left')),
+  rebuilt: decodeUnits(_map(m, 'rebuilt')),
+  loot: decodeResources(_map(m, 'loot')),
+);

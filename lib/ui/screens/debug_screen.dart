@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 
 import '../../domain/combat.dart';
 import '../../domain/game_data.dart';
+import '../../domain/raid.dart';
+import '../format.dart';
 import '../game_controller.dart';
 import '../widgets/combat_report.dart';
 import '../widgets/info_button.dart';
@@ -122,7 +124,11 @@ class _DebugScreenState extends State<DebugScreen> {
       CombatSide(units: state.planet.units, tech: state.research),
       math.Random(),
     );
-    await CombatReport.show(context, _c.data, result);
+    await CombatReport.show(
+      context,
+      _c.data,
+      RaidReport.fromCombat(result, at: _c.now(), simulated: true),
+    );
   }
 
   Future<void> _requestExact() async {
@@ -176,6 +182,18 @@ class _DebugScreenState extends State<DebugScreen> {
                 'Le résultat varie d’une simulation à l’autre : relance pour te faire une idée.',
           ),
           onTap: _simulate,
+        ),
+        ListTile(
+          leading: const Icon(Icons.warning_amber_rounded),
+          title: const Text('Raid pirate maintenant'),
+          subtitle: Text(
+            'La prochaine flotte est détectée tout de suite · tes points : '
+            '${fmtAmount(_c.points)}',
+          ),
+          onTap: () async {
+            await _c.raidNow();
+            _snack('Flotte pirate détectée');
+          },
         ),
         ListTile(
           leading: const Icon(Icons.restart_alt),

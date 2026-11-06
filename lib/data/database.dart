@@ -60,6 +60,15 @@ class Units extends Table {
   Set<Column<Object>> get primaryKey => {planetId, kind};
 }
 
+/// Rapports des raids (schéma v4), JSON dans [payload].
+@DataClassName('ReportRow')
+class Reports extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get atMs => integer()();
+  TextColumn get payload => text()();
+  BoolColumn get seen => boolean().withDefault(const Constant(false))();
+}
+
 /// File unique de tous les événements, futurs et passés.
 @DataClassName('EventRow')
 class Events extends Table {
@@ -86,7 +95,7 @@ class Meta extends Table {
   Set<Column<Object>> get primaryKey => {name};
 }
 
-@DriftDatabase(tables: [Planets, Buildings, Research, Units, Events, Meta])
+@DriftDatabase(tables: [Planets, Buildings, Research, Units, Events, Reports, Meta])
 class StarmineDatabase extends _$StarmineDatabase {
   StarmineDatabase(super.executor);
 
@@ -94,9 +103,9 @@ class StarmineDatabase extends _$StarmineDatabase {
   factory StarmineDatabase.open() => StarmineDatabase(driftDatabase(name: 'starmine'));
 
   /// v1 : V0. v2 : technologies (table research) et réglages de production.
-  /// v3 : unités (table units).
+  /// v3 : unités (table units). v4 : rapports de raid (table reports).
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -108,6 +117,9 @@ class StarmineDatabase extends _$StarmineDatabase {
       }
       if (from < 3) {
         await m.createTable(units);
+      }
+      if (from < 4) {
+        await m.createTable(reports);
       }
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),

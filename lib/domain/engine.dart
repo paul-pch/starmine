@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'events.dart';
 import 'game_data.dart';
 import 'planet.dart';
+import 'raid.dart';
 import 'resources.dart';
 import 'rules.dart';
 
@@ -42,12 +43,15 @@ class GameState {
 }
 
 class AdvanceResult {
-  const AdvanceResult(this.state, this.applied);
+  const AdvanceResult(this.state, this.applied, [this.reports = const []]);
 
   final GameState state;
 
   /// Événements appliqués pendant ce rattrapage, dans l'ordre.
   final List<GameEvent> applied;
+
+  /// Rapports des raids résolus pendant ce rattrapage.
+  final List<RaidReport> reports;
 }
 
 /// Avance la simulation jusqu'à [now], événement par événement :
@@ -58,21 +62,24 @@ AdvanceResult advance(GameState state, DateTime now, Rules rules) {
 
   var current = state;
   final applied = <GameEvent>[];
+  final reports = <RaidReport>[];
   final queue = [...state.pending];
   while (queue.isNotEmpty && !queue.first.dueAt.isAfter(now)) {
     final event = queue.removeAt(0);
     current = _produceUntil(current, event.dueAt, rules);
-    current = _apply(current, event);
+    final step = _apply(current, event, rules);
+    current = step.state;
     applied.add(event);
-    // Un lot du chantier se replanifie pour l'unité suivante.
-    if (event case ShipyardBatch(:final next?)) {
+    if (step.report case final report?) reports.add(report);
+    // Événement suivant de la même chaîne (lot du chantier, raid), même id.
+    if (step.next case final next?) {
       queue
         ..add(next)
         ..sort(GameEvent.compare);
     }
   }
   current = _produceUntil(current, now, rules).copyWith(pending: queue);
-  return AdvanceResult(current, applied);
+  return AdvanceResult(current, applied, reports);
 }
 
 GameState _produceUntil(GameState s, DateTime t, Rules rules) {
@@ -86,16 +93,30 @@ GameState _produceUntil(GameState s, DateTime t, Rules rules) {
   );
 }
 
-GameState _apply(GameState s, GameEvent event) => switch (event) {
-  BuildingDone(:final building, :final targetLevel) => s.copyWith(
-    planet: s.planet.withLevel(building, targetLevel),
+({GameState state, GameEvent? next, RaidReport? report}) _apply(
+  GameState s,
+  GameEvent event,
+  Rules rules,
+) => switch (event) {
+  BuildingDone(:final building, :final targetLevel) => (
+    state: s.copyWith(planet: s.planet.withLevel(building, targetLevel)),
+    next: null,
+    report: null,
   ),
-  ResearchDone(:final tech, :final targetLevel) => s.copyWith(
-    research: {...s.research, tech: targetLevel},
+  ResearchDone(:final tech, :final targetLevel) => (
+    state: s.copyWith(research: {...s.research, tech: targetLevel}),
+    next: null,
+    report: null,
   ),
-  ShipyardBatch(:final unit) => s.copyWith(
-    planet: s.planet.copyWith(units: {...s.planet.units, unit: s.planet.count(unit) + 1}),
+  ShipyardBatch(:final unit, :final next) => (
+    state: s.copyWith(
+      planet: s.planet.copyWith(units: {...s.planet.units, unit: s.planet.count(unit) + 1}),
+    ),
+    next: next,
+    report: null,
   ),
+  RaidDetected() => detectRaid(s, event, rules),
+  RaidArrival() => resolveRaid(s, event, rules),
 };
 
 // --- Vérifications -----------------------------------------------------------

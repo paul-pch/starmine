@@ -3,9 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:starmine/data/database.dart';
 import 'package:starmine/data/game_repository.dart';
 import 'package:starmine/data/save_codec.dart';
+import 'package:starmine/domain/combat.dart';
 import 'package:starmine/domain/engine.dart';
 import 'package:starmine/domain/events.dart';
 import 'package:starmine/domain/game_data.dart';
+import 'package:starmine/domain/raid.dart';
 import 'package:starmine/domain/resources.dart';
 import 'package:starmine/domain/rules.dart';
 
@@ -122,6 +124,31 @@ void main() {
     loaded = (await repo.load())!;
     expect(loaded.state.planet.count(UnitKind.rocketLauncher), 3);
     expect(loaded.state.currentBatch, isNull);
+  });
+
+  test('rapports de raid : enregistrés, les plus récents d’abord, marqués vus', () async {
+    await repo.replaceAll(fresh());
+    RaidReport report(int minutes) => RaidReport(
+      at: t0.add(Duration(minutes: minutes)),
+      winner: CombatWinner.attacker,
+      rounds: 0,
+      attackerStart: const {UnitKind.lightFighter: 3},
+      attackerLeft: const {UnitKind.lightFighter: 3},
+      defenderStart: const {},
+      defenderLeft: const {},
+      rebuilt: const {},
+      loot: const Resources(metal: 75, crystal: 75),
+    );
+    await repo.save(fresh().state, reports: [report(1), report(2)]);
+    var stored = await repo.loadReports();
+    expect(stored.map((r) => r.report.at), [t0.add(const Duration(minutes: 2)), t0.add(const Duration(minutes: 1))]);
+    expect(stored.first.report.loot, const Resources(metal: 75, crystal: 75));
+    expect(stored.first.report.attackerStart, {UnitKind.lightFighter: 3});
+    expect(stored.every((r) => !r.seen), isTrue);
+
+    await repo.markReportsSeen();
+    stored = await repo.loadReports();
+    expect(stored.every((r) => r.seen), isTrue);
   });
 
   test('vitesse de jeu persistée', () async {

@@ -264,6 +264,44 @@ class StartConditions {
   final int tempSpread;
 }
 
+/// Paramètres des raids pirates (section `pirates` du YAML).
+class PirateConfig {
+  const PirateConfig({
+    required this.intervalHoursMin,
+    required this.intervalHoursMax,
+    required this.warningMinutes,
+    required this.minBudget,
+    required this.strengthMin,
+    required this.strengthMax,
+    required this.cargoShare,
+    required this.lootShare,
+    required this.warships,
+    required this.cargoShips,
+  });
+
+  /// Délai entre deux arrivées, en heures de jeu à ×1.
+  final double intervalHoursMin;
+  final double intervalHoursMax;
+
+  /// Préavis entre la détection et l'arrivée, en minutes à ×1.
+  final double warningMinutes;
+
+  /// Budget de flotte = max(minBudget, points × 1000 × force).
+  final double minBudget;
+  final double strengthMin;
+  final double strengthMax;
+
+  /// Part du budget consacrée aux transporteurs.
+  final double cargoShare;
+
+  /// Part maximale de chaque stock emportée.
+  final double lootShare;
+
+  /// Vaisseaux disponibles selon les points du joueur (seuil minimal).
+  final Map<UnitKind, double> warships;
+  final Map<UnitKind, double> cargoShips;
+}
+
 /// Toutes les données de jeu, construites depuis une Map (le chargement YAML est dans `data/`).
 class GameData {
   GameData({
@@ -273,6 +311,7 @@ class GameData {
     required Map<TechKind, TechSpec> research,
     required Map<UnitKind, UnitSpec> units,
     this.categories = const {},
+    required this.pirates,
   }) : units = Map.unmodifiable(units),
        buildings = Map.unmodifiable(buildings),
        research = Map.unmodifiable(research) {
@@ -299,6 +338,8 @@ class GameData {
   /// dans l'ordre du YAML.
   final Map<String, Map<String, String>> categories;
 
+  final PirateConfig pirates;
+
   UnitSpec unit(UnitKind kind) => units[kind]!;
 
   BuildingSpec operator [](BuildingKind kind) => buildings[kind]!;
@@ -320,6 +361,13 @@ class GameData {
     final research = _map(map, 'research');
     final units = _map(map, 'units');
     final categories = _optMap(map, 'categories') ?? const {};
+    final pirates = _map(map, 'pirates');
+    final interval = _map(pirates, 'interval_hours');
+    final strength = _map(pirates, 'strength');
+    Map<UnitKind, double> ships(String key) => {
+      for (final e in _map(pirates, key).entries)
+        UnitKind.fromKey(e.key): _num(_map(pirates, key), e.key),
+    };
 
     return GameData(
       formulas: FormulaConstants(
@@ -351,6 +399,18 @@ class GameData {
         for (final e in research.entries)
           TechKind.fromKey(e.key): _tech(TechKind.fromKey(e.key), _asMap(e.value, e.key)),
       },
+      pirates: PirateConfig(
+        intervalHoursMin: _num(interval, 'min'),
+        intervalHoursMax: _num(interval, 'max'),
+        warningMinutes: _num(pirates, 'warning_minutes'),
+        minBudget: _num(pirates, 'min_budget'),
+        strengthMin: _num(strength, 'min'),
+        strengthMax: _num(strength, 'max'),
+        cargoShare: _num(pirates, 'cargo_share'),
+        lootShare: _num(pirates, 'loot_share'),
+        warships: ships('warships'),
+        cargoShips: ships('cargo_ships'),
+      ),
       categories: {
         for (final screen in categories.keys)
           screen: {

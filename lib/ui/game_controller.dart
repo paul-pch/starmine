@@ -9,6 +9,8 @@ import '../domain/engine.dart';
 import '../domain/events.dart';
 import '../domain/game_data.dart';
 import '../domain/planet.dart';
+import '../domain/raid.dart' as raid;
+import '../domain/raid.dart' show RaidReport;
 import '../domain/rules.dart';
 import 'notifications.dart';
 
@@ -67,7 +69,49 @@ class GameController extends ChangeNotifier {
       _set(loaded);
     }
     await _advanceAndSave();
+    await _ensureRaid();
+    _reports = await _repo.loadReports();
   });
+
+  /// Rapports de raid, les plus récents d'abord.
+  List<StoredReport> get reports => _reports;
+  var _reports = <StoredReport>[];
+
+  int get unseenReports => _reports.where((r) => !r.seen).length;
+
+  Future<void> markReportsSeen() => _serialized(() async {
+    if (unseenReports == 0) return;
+    await _repo.markReportsSeen();
+    _reports = await _repo.loadReports();
+    notifyListeners();
+  });
+
+  /// Flotte pirate détectée et en route, s'il y en a une.
+  RaidArrival? get incomingRaid => state.pending.whereType<RaidArrival>().firstOrNull;
+
+  /// Points du joueur (force des raids).
+  double get points => raid.points(state, _rules);
+
+  /// Debug : la prochaine flotte pirate est détectée tout de suite.
+  Future<void> raidNow() => _serialized(() async {
+    final t = now();
+    final adv = advance(state, t, _rules);
+    await _commit(raid.raidNow(adv.state, t, _rules), applied: adv.applied, reports: adv.reports);
+  });
+
+  Future<void> _ensureRaid() async {
+    if (raid.pendingRaid(state) != null) return;
+    final id = await _repo.nextEventId();
+    final next = raid.ensureRaidScheduled(
+      state,
+      now(),
+      _rules,
+      seed: _random.nextInt(1 << 31),
+      eventId: id,
+    );
+    await _commit(next);
+    if (!_visible) await _scheduleAll();
+  }
 
   /// Rattrape le temps écoulé (ouverture, retour au premier plan, échéance d'un timer).
   Future<void> refresh() => _serialized(_advanceAndSave);
@@ -75,15 +119,16 @@ class GameController extends ChangeNotifier {
   /// Lance le niveau suivant de [item] (bâtiment ou techno). Renvoie la raison du refus,
   /// ou `null`.
   Future<OrderBlock?> order(Unlockable item) => _serialized(() async {
-    final adv = advance(state, now(), _rules);
+    final t = now();
+    final adv = advance(state, t, _rules);
     final id = await _repo.nextEventId();
-    final outcome = startOrder(adv.state, item, now(), _rules, eventId: id);
+    final outcome = startOrder(adv.state, item, t, _rules, eventId: id);
     switch (outcome) {
       case OrderRejected(:final reason):
-        await _commit(adv.state, applied: adv.applied);
+        await _commit(adv.state, applied: adv.applied, reports: adv.reports);
         return reason;
       case OrderStarted(:final event):
-        await _commit(outcome.state, applied: adv.applied);
+        await _commit(outcome.state, applied: adv.applied, reports: adv.reports);
         if (!_visible) await _notifier.schedule(event, data);
         return null;
       case BatchStarted():
@@ -93,15 +138,16 @@ class GameController extends ChangeNotifier {
 
   /// Commande [count] unités au chantier. Renvoie la raison du refus, ou `null`.
   Future<OrderBlock?> orderUnits(UnitKind unit, int count) => _serialized(() async {
-    final adv = advance(state, now(), _rules);
+    final t = now();
+    final adv = advance(state, t, _rules);
     final id = await _repo.nextEventId();
-    final outcome = startBatch(adv.state, unit, count, now(), _rules, eventId: id);
+    final outcome = startBatch(adv.state, unit, count, t, _rules, eventId: id);
     switch (outcome) {
       case OrderRejected(:final reason):
-        await _commit(adv.state, applied: adv.applied);
+        await _commit(adv.state, applied: adv.applied, reports: adv.reports);
         return reason;
       case BatchStarted(:final batch):
-        await _commit(outcome.state, applied: adv.applied);
+        await _commit(outcome.state, applied: adv.applied, reports: adv.reports);
         if (!_visible) await _notifier.schedule(batch, data);
         return null;
       case OrderStarted():
@@ -111,17 +157,19 @@ class GameController extends ChangeNotifier {
 
   /// Règle la production d'un bâtiment (0 à 100 %, pas de 10).
   Future<void> setPercent(BuildingKind kind, int percent) => _serialized(() async {
-    final adv = advance(state, now(), _rules);
+    final t = now();
+    final adv = advance(state, t, _rules);
     await _commit(
-      setProductionPercent(adv.state, kind, percent, now(), _rules),
-      applied: adv.applied,
+      setProductionPercent(adv.state, kind, percent, t, _rules),
+      applied: adv.applied, reports: adv.reports,
     );
   });
 
   Future<void> cancel(int eventId) => _serialized(() async {
-    final adv = advance(state, now(), _rules);
-    final next = cancelOrder(adv.state, eventId, now(), _rules);
-    await _commit(next, applied: adv.applied, cancelledIds: [eventId]);
+    final t = now();
+    final adv = advance(state, t, _rules);
+    final next = cancelOrder(adv.state, eventId, t, _rules);
+    await _commit(next, applied: adv.applied, reports: adv.reports, cancelledIds: [eventId]);
     await _notifier.cancel(eventId);
   });
 
@@ -145,10 +193,14 @@ class GameController extends ChangeNotifier {
     if (decoded is! Map) throw const FormatException('JSON invalide : objet attendu');
     await _replace(decodeSave(decoded.cast<String, Object?>()));
     await _advanceAndSave();
+    await _ensureRaid();
+    _reports = await _repo.loadReports();
   });
 
   Future<void> reset() => _serialized(() async {
     await _replace(_newGame(speed: speed));
+    await _ensureRaid();
+    _reports = await _repo.loadReports();
     notifyListeners();
   });
 
@@ -192,16 +244,18 @@ class GameController extends ChangeNotifier {
   Future<void> _advanceAndSave() async {
     final result = advance(state, now(), _rules);
     if (identical(result.state, state)) return;
-    await _commit(result.state, applied: result.applied);
+    await _commit(result.state, applied: result.applied, reports: result.reports);
   }
 
   Future<void> _commit(
     GameState next, {
     Iterable<GameEvent> applied = const [],
     Iterable<int> cancelledIds = const [],
+    Iterable<RaidReport> reports = const [],
   }) async {
-    await _repo.save(next, applied: applied, cancelledIds: cancelledIds);
+    await _repo.save(next, applied: applied, cancelledIds: cancelledIds, reports: reports);
     _set(_save.copyWith(state: next));
+    if (reports.isNotEmpty) _reports = await _repo.loadReports();
     notifyListeners();
   }
 

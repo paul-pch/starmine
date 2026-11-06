@@ -5,6 +5,7 @@ import 'package:starmine/data/save_codec.dart';
 import 'package:starmine/domain/engine.dart';
 import 'package:starmine/domain/events.dart';
 import 'package:starmine/domain/game_data.dart';
+import 'package:starmine/domain/raid.dart';
 import 'package:starmine/domain/resources.dart';
 import 'package:starmine/domain/rules.dart';
 
@@ -31,7 +32,14 @@ void main() {
     );
     final built = startOrder(base, BuildingKind.crystalMine, t0, rules, eventId: 5);
     final researching = startOrder(built.state, TechKind.energy, t0, rules, eventId: 6);
-    return SaveGame(state: (researching as OrderStarted).state, speed: 10, seed: 42);
+    final withRaid = ensureRaidScheduled(
+      (researching as OrderStarted).state,
+      t0,
+      rules,
+      seed: 3,
+      eventId: 7,
+    );
+    return SaveGame(state: withRaid, speed: 10, seed: 42);
   }
 
   test('export puis import : partie identique', () {
@@ -54,10 +62,18 @@ void main() {
     expect(restored.speed, 10);
     expect(restored.seed, 42);
 
-    expect(restored.state.pending, hasLength(2));
+    expect(restored.state.pending, hasLength(3));
+    final raidA = pendingRaid(original.state)! as RaidDetected;
+    final raidB = pendingRaid(restored.state)! as RaidDetected;
+    expect(raidB.id, raidA.id);
+    expect(raidB.dueAt, raidA.dueAt);
+    expect(raidB.arrivalAt, raidA.arrivalAt);
+    expect(raidB.seed, raidA.seed);
+    final restoredOrders = restored.state.pending.whereType<OrderDone>().toList();
+    final originalOrders = original.state.pending.whereType<OrderDone>().toList();
     for (var i = 0; i < 2; i++) {
-      final e = restored.state.pending[i] as OrderDone;
-      final o = original.state.pending[i] as OrderDone;
+      final e = restoredOrders[i];
+      final o = originalOrders[i];
       expect(e.runtimeType, o.runtimeType);
       expect(e.id, o.id);
       expect(e.item, o.item);

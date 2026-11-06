@@ -61,5 +61,6 @@ void main() {
     final reloaded = (await GameRepository(db).load())!;
     expect(reloaded.state.research[TechKind.energy], 2);
     expect(reloaded.state.planet.lastUpdate, t0);
+    expect(await GameRepository(db).loadReports(), isEmpty);
   });
 }

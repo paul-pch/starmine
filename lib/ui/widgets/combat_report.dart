@@ -2,24 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../../domain/combat.dart';
 import '../../domain/game_data.dart';
+import '../../domain/raid.dart';
+import '../../domain/resources.dart';
 import '../format.dart';
+import '../resource_style.dart';
 
-/// Rapport de combat : issue, rounds, pertes par camp, défenses reconstruites.
+/// Rapport de combat : issue, pillage, pertes par camp, défenses reconstruites.
 class CombatReport extends StatelessWidget {
-  const CombatReport({
-    super.key,
-    required this.data,
-    required this.result,
-    this.attackerName = 'Pirates',
-    this.defenderName = 'Planète',
-  });
+  const CombatReport({super.key, required this.data, required this.report});
 
   final GameData data;
-  final CombatResult result;
-  final String attackerName;
-  final String defenderName;
+  final RaidReport report;
 
-  static Future<void> show(BuildContext context, GameData data, CombatResult result) =>
+  static Future<void> show(BuildContext context, GameData data, RaidReport report) =>
       showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
@@ -30,41 +25,52 @@ class CombatReport extends StatelessWidget {
           builder: (context, scroll) => SingleChildScrollView(
             controller: scroll,
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-            child: CombatReport(data: data, result: result),
+            child: CombatReport(data: data, report: report),
           ),
         ),
       );
 
+  static String verdict(RaidReport r) => switch (r.winner) {
+    CombatWinner.attacker => 'Raid réussi : planète pillée',
+    CombatWinner.defender => 'Raid repoussé',
+    CombatWinner.draw => 'Match nul : les pirates repartent',
+  };
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final verdict = switch (result.winner) {
-      CombatWinner.attacker => '$attackerName victorieux',
-      CombatWinner.defender => '$defenderName victorieuse',
-      CombatWinner.draw => 'Match nul',
-    };
+    final r = report;
+    final at = r.at.toLocal();
+    String two(int n) => n.toString().padLeft(2, '0');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(verdict, style: theme.textTheme.titleLarge),
         Text(
-          '${result.rounds.length} round${result.rounds.length > 1 ? 's' : ''}',
+          r.simulated ? 'Simulation · ${verdict(r)}' : verdict(r),
+          style: theme.textTheme.titleLarge,
+        ),
+        Text(
+          [
+            if (!r.simulated) '${two(at.day)}/${two(at.month)} ${two(at.hour)}:${two(at.minute)}',
+            '${r.rounds} round${r.rounds > 1 ? 's' : ''}',
+          ].join(' · '),
           style: theme.textTheme.bodySmall,
         ),
+        if (r.loot != Resources.zero) ...[
+          const SizedBox(height: 12),
+          Text('Butin emporté', style: theme.textTheme.titleSmall),
+          const SizedBox(height: 4),
+          CostLine(cost: r.loot),
+        ],
+        const SizedBox(height: 16),
+        _SideTable(title: 'Pirates', data: data, start: r.attackerStart, left: r.attackerLeft),
         const SizedBox(height: 16),
         _SideTable(
-          title: attackerName,
+          title: 'Planète',
           data: data,
-          start: result.attackerStart,
-          left: result.attackerLeft,
-        ),
-        const SizedBox(height: 16),
-        _SideTable(
-          title: defenderName,
-          data: data,
-          start: result.defenderStart,
-          left: result.defenderLeft,
-          rebuilt: result.rebuilt,
+          start: r.defenderStart,
+          left: r.defenderLeft,
+          rebuilt: r.rebuilt,
         ),
       ],
     );

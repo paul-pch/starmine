@@ -4,7 +4,9 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:starmine/data/database.dart';
 import 'package:starmine/data/game_repository.dart';
+import 'package:starmine/domain/combat.dart';
 import 'package:starmine/domain/engine.dart';
+import 'package:starmine/domain/events.dart';
 import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/domain/resources.dart';
 import 'package:starmine/ui/game_controller.dart';
@@ -107,7 +109,8 @@ void main() {
     await c.init();
     await c.order(BuildingKind.metalMine);
     await c.onHidden();
-    expect(notifier.scheduled, hasLength(1));
+    // Construction + prochain raid.
+    expect(notifier.scheduled, hasLength(2));
 
     clock.advance(const Duration(hours: 1));
     await c.onVisible();
@@ -120,7 +123,32 @@ void main() {
     await c.init();
     await c.onHidden();
     await c.order(BuildingKind.metalMine);
-    expect(notifier.scheduled, hasLength(1));
+    expect(notifier.scheduled, containsPair(c.state.currentConstruction!.id, isNotNull));
+  });
+
+  test('raid : planifié dès la première ouverture, rapport après passage', () async {
+    final c = controller();
+    await c.init();
+    expect(c.state.pending.whereType<RaidDetected>(), hasLength(1));
+    expect(c.reports, isEmpty);
+
+    await c.raidNow();
+    clock.advance(const Duration(seconds: 1));
+    await c.refresh();
+    expect(c.incomingRaid, isNotNull);
+
+    clock.advance(const Duration(hours: 1));
+    await c.refresh();
+    expect(c.incomingRaid, isNull);
+    expect(c.reports, hasLength(1));
+    expect(c.unseenReports, 1);
+    // Pas de défense : les pirates gagnent et pillent.
+    expect(c.reports.single.report.winner, CombatWinner.attacker);
+
+    await c.markReportsSeen();
+    expect(c.unseenReports, 0);
+    // Le raid suivant est déjà planifié.
+    expect(c.state.pending.whereType<RaidDetected>(), hasLength(1));
   });
 
   test('recherche : refusée sans labo', () async {

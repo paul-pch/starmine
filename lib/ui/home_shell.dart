@@ -6,6 +6,9 @@ import 'game_controller.dart';
 import '../domain/game_data.dart';
 import 'resource_style.dart';
 import 'screens/debug_screen.dart';
+import 'screens/reports_screen.dart';
+import 'widgets/combat_report.dart';
+import 'widgets/raid_banner.dart';
 import 'screens/defense_screen.dart';
 import 'screens/items_screen.dart';
 import 'screens/queue_screen.dart';
@@ -30,6 +33,9 @@ class _HomeShellState extends State<HomeShell> {
   var _tab = 0;
   var _refreshing = false;
 
+  /// Dernier rapport signalé à l'écran (pour n'afficher que les nouveaux).
+  int? _lastReportId;
+
   GameController get _c => widget.controller;
 
   @override
@@ -37,6 +43,8 @@ class _HomeShellState extends State<HomeShell> {
     super.initState();
     _now = _c.now();
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
+    _lastReportId = _c.reports.firstOrNull?.id;
+    _c.addListener(_onChange);
     _lifecycle = AppLifecycleListener(
       onHide: () => unawaited(_c.onHidden()),
       onShow: () => unawaited(_c.onVisible()),
@@ -47,6 +55,7 @@ class _HomeShellState extends State<HomeShell> {
   void dispose() {
     _ticker.cancel();
     _lifecycle.dispose();
+    _c.removeListener(_onChange);
     super.dispose();
   }
 
@@ -54,6 +63,30 @@ class _HomeShellState extends State<HomeShell> {
     setState(() => _now = _c.now());
     // Une échéance passée (construction ou recherche) : rattrapage réel.
     if (_c.state.pending.any((e) => !e.dueAt.isAfter(_now))) _refresh();
+  }
+
+  /// Raid résolu pendant que l'app est ouverte : message avec accès au rapport.
+  void _onChange() {
+    final latest = _c.reports.firstOrNull;
+    if (latest == null || latest.id == _lastReportId) return;
+    _lastReportId = latest.id;
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(CombatReport.verdict(latest.report)),
+        action: SnackBarAction(
+          label: 'Rapport',
+          onPressed: () => CombatReport.show(context, _c.data, latest.report),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openReports() async {
+    await Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => ReportsScreen(controller: _c)));
+    await _c.markReportsSeen();
   }
 
   void _refresh() {
@@ -76,9 +109,24 @@ class _HomeShellState extends State<HomeShell> {
           DebugScreen(controller: _c),
         ];
         return Scaffold(
-          appBar: AppBar(title: _PlanetTitle(controller: _c)),
+          appBar: AppBar(
+            title: _PlanetTitle(controller: _c),
+            actions: [
+              IconButton(
+                tooltip: 'Rapports de raid',
+                onPressed: _openReports,
+                icon: Badge(
+                  isLabelVisible: _c.unseenReports > 0,
+                  label: Text('${_c.unseenReports}'),
+                  child: const Icon(Icons.article_outlined),
+                ),
+              ),
+            ],
+          ),
           body: Column(
             children: [
+              if (_c.incomingRaid case final raid?)
+                RaidBanner(controller: _c, raid: raid, now: _now),
               ResourceBar(controller: _c, now: _now),
               const Divider(height: 1),
               Expanded(child: pages[_tab]),

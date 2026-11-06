@@ -6,6 +6,7 @@ import '../domain/engine.dart';
 import '../domain/events.dart';
 import '../domain/game_data.dart';
 import '../domain/planet.dart';
+import '../domain/raid.dart';
 import 'database.dart';
 import 'save_codec.dart';
 
@@ -71,9 +72,20 @@ class GameRepository {
     GameState state, {
     Iterable<GameEvent> applied = const [],
     Iterable<int> cancelledIds = const [],
+    Iterable<RaidReport> reports = const [],
   }) {
     return _db.transaction(() async {
       await _writeState(state);
+      for (final r in reports) {
+        await _db
+            .into(_db.reports)
+            .insert(
+              ReportsCompanion.insert(
+                atMs: r.at.millisecondsSinceEpoch,
+                payload: jsonEncode(encodeReport(r)),
+              ),
+            );
+      }
       // Un lot du chantier reste en attente sous le même id tant qu'il n'est pas fini.
       final stillPending = {for (final e in state.pending) e.id};
       await _setStatus(
@@ -90,6 +102,7 @@ class GameRepository {
       await _db.delete(_db.events).go();
       await _db.delete(_db.research).go();
       await _db.delete(_db.units).go();
+      await _db.delete(_db.reports).go();
       await _db.delete(_db.buildings).go();
       await _db.delete(_db.planets).go();
       await _writeState(save.state);
@@ -174,7 +187,28 @@ class GameRepository {
   static DateTime _createdAt(GameEvent e) => switch (e) {
     OrderDone(:final startedAt) => startedAt,
     ShipyardBatch(:final startedAt) => startedAt,
+    RaidDetected() || RaidArrival() => e.dueAt,
   };
+
+  /// Rapports les plus récents d'abord.
+  Future<List<StoredReport>> loadReports({int limit = 50}) async {
+    final rows =
+        await (_db.select(_db.reports)
+              ..orderBy([(t) => OrderingTerm.desc(t.id)])
+              ..limit(limit))
+            .get();
+    return [
+      for (final r in rows)
+        StoredReport(
+          id: r.id,
+          seen: r.seen,
+          report: decodeReport((jsonDecode(r.payload) as Map).cast<String, Object?>()),
+        ),
+    ];
+  }
+
+  Future<void> markReportsSeen() =>
+      _db.update(_db.reports).write(const ReportsCompanion(seen: Value(true)));
 
   static GameEvent _decodeRow(EventRow r) => decodeEvent(
     id: r.id,
@@ -183,4 +217,12 @@ class GameRepository {
     dueAtMs: r.dueAtMs,
     payload: (jsonDecode(r.payload) as Map).cast<String, Object?>(),
   );
+}
+
+class StoredReport {
+  const StoredReport({required this.id, required this.seen, required this.report});
+
+  final int id;
+  final bool seen;
+  final RaidReport report;
 }

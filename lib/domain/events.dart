@@ -111,3 +111,37 @@ class ShipyardBatch extends GameEvent {
           unitCost: unitCost,
         );
 }
+
+/// Flotte pirate repérée : à [dueAt], sa composition est fixée selon les points du joueur
+/// et l'événement devient un [RaidArrival] (même id) dû à [arrivalAt].
+class RaidDetected extends GameEvent {
+  const RaidDetected({
+    required super.id,
+    required super.planetId,
+    required super.dueAt,
+    required this.arrivalAt,
+    required this.seed,
+  });
+
+  final DateTime arrivalAt;
+
+  /// Graine de l'aléatoire du raid (composition, combat, raid suivant).
+  final int seed;
+}
+
+/// Flotte pirate en approche, composition connue. À [dueAt] : combat, pillage, rapport,
+/// puis le raid suivant est planifié (même id).
+class RaidArrival extends GameEvent {
+  const RaidArrival({
+    required super.id,
+    required super.planetId,
+    required super.dueAt,
+    required this.detectedAt,
+    required this.fleet,
+    required this.seed,
+  });
+
+  final DateTime detectedAt;
+  final Map<UnitKind, int> fleet;
+  final int seed;
+}

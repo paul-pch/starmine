@@ -55,8 +55,8 @@ void main() {
             s = s.copyWith(planet: s.planet.withLevel(building, targetLevel));
           case ResearchDone(:final tech, :final targetLevel):
             s = s.copyWith(research: {...s.research, tech: targetLevel});
-          case ShipyardBatch():
-            throw StateError('pas de lot dans ce test');
+          case ShipyardBatch() || RaidDetected() || RaidArrival():
+            throw StateError('ni lot ni raid dans ce test');
         }
       }
       t = next;
