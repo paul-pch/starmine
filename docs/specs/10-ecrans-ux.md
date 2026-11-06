@@ -88,7 +88,8 @@ est dans la feuille de détail (un tap).
 
 ## Filtre « Réalisables »
 
-Une bascule « Réalisables », à droite des puces de catégorie (combinable avec elles), qui
+Une bascule « Réalisables », en tête de la rangée défilante des puces de catégorie
+(combinable avec elles), qui
 **masque** tout ce qui ne peut pas être lancé maintenant, sur Bâtiments, Recherche et
 Défense (`lib/domain/availability.dart`, `CategorizedList`).
 

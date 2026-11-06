@@ -94,36 +94,34 @@ class _CategorizedListState<T> extends State<CategorizedList<T>> {
     // Une catégorie vidée par le filtre ramène à « Tout ».
     if (_selected != null && !groups.containsKey(_selected)) _selected = null;
 
+    // Une seule rangée défilante : « Réalisables » en tête, puis les catégories.
     final chips = SizedBox(
       height: 48,
-      child: Row(
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         children: [
-          Expanded(
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.only(left: 12),
-              children: [
-                for (final entry in [null, ...groups.keys])
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: ChoiceChip(
-                      label: Text(entry == null ? 'Tout' : widget.categories[entry]!),
-                      selected: _selected == entry,
-                      visualDensity: VisualDensity.compact,
-                      onSelected: (_) => setState(() => _selected = entry),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          if (filter != null)
-            Padding(
-              padding: const EdgeInsets.only(left: 4, right: 12),
+          if (filter != null) ...[
+            Center(
               child: FilterChip(
                 label: const Text('Réalisables'),
                 selected: filtering,
                 visualDensity: VisualDensity.compact,
                 onSelected: filter.onChanged,
+              ),
+            ),
+            const VerticalDivider(width: 17, indent: 12, endIndent: 12),
+          ],
+          for (final entry in [null, ...groups.keys])
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: Center(
+                child: ChoiceChip(
+                  label: Text(entry == null ? 'Tout' : widget.categories[entry]!),
+                  selected: _selected == entry,
+                  visualDensity: VisualDensity.compact,
+                  onSelected: (_) => setState(() => _selected = entry),
+                ),
               ),
             ),
         ],

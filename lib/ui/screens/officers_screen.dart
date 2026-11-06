@@ -41,8 +41,9 @@ class OfficersScreen extends StatelessWidget {
       ),
       body: ListenableBuilder(
         listenable: controller,
+        // Marge du bas : barre de navigation Android (affichage bord à bord).
         builder: (context, _) => ListView(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: EdgeInsets.only(top: 8, bottom: 16 + MediaQuery.paddingOf(context).bottom),
           children: [
             for (final kind in controller.data.officers.keys)
               _OfficerCard(controller: controller, kind: kind),
@@ -139,7 +140,7 @@ class _OfficerCard extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: FilledButton(
                     style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
-                    onPressed: available ? () => _promote(context, spec, level) : null,
+                    onPressed: available ? () => controller.promoteOfficer(kind) : null,
                     child: Text(level == 0 ? 'Débloquer' : 'Promouvoir'),
                   ),
                 ),
@@ -149,19 +150,5 @@ class _OfficerCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> _promote(BuildContext context, OfficerSpec spec, int level) async {
-    final messenger = ScaffoldMessenger.of(context);
-    final ok = await controller.promoteOfficer(kind);
-    messenger
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(
-            ok ? '${spec.name} : niveau ${level + 1}' : 'Prérequis non remplis pour ${spec.name}',
-          ),
-        ),
-      );
   }
 }
