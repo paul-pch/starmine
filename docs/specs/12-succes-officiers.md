@@ -25,6 +25,12 @@ de construction et de recherche).
 - **Tous les officiers débloqués sont actifs.** Un nombre limité de places actives reste une
   **option d'équilibrage** : le noter en commentaire dans le code (application des bonus) et
   dans le YAML.
+- **Prérequis** : arbre d'avancement **et/ou compteurs** (raids repoussés, événements
+  traversés…) selon l'officier ; les compteurs sont tenus dans `advance()` (exacts app
+  fermée) et persistés.
+- **Pas de notification** quand un officier devient disponible : la pastille dans l'app
+  suffit.
+- **Place de l'écran** : décidée par le skill `starmine-ui` à l'implémentation.
 - Les officiers d'abord (V2c), les événements ensuite (V2d, spec 14) ; les officiers
   influencent certains événements.
 
@@ -43,7 +49,7 @@ de construction et de recherche).
 | Géologue | Niveaux des mines | Production des mines |
 | Technocrate | Labo et niveaux de technos | Durée de recherche réduite |
 | Architecte | Usine de robots / nanites | Durée de construction réduite |
-| Ingénieur | Chantier et technos de combat | Reconstruction des défenses au-delà de 70 %, énergie |
+| Ingénieur | Chantier, technos de combat, raids repoussés | Reconstruction des défenses au-delà de 70 %, énergie |
 | Commandant | Progression générale | File d'attente (spec 13) : un ordre de plus par niveau |
 | Amiral | V3 (flotte) | Avantages de flotte |
 
@@ -69,12 +75,7 @@ l'import d'une ancienne sauvegarde). Spec 08 à mettre à jour.
 
 ## À trancher
 
-1. Place de l'écran : onglet dédié, ou entrée depuis le hero ?
-2. Notification (app fermée) quand un officier devient disponible ? Recommandation : oui,
-   une seule par officier disponible.
-3. Prérequis uniquement sur l'arbre, ou aussi des compteurs (raids repoussés pour
-   l'Ingénieur, événements traversés) ? Recommandation : l'arbre d'abord, compteurs plus tard.
-4. Liste et seuils exacts des officiers de la V2c (proposition : Géologue, Technocrate,
+1. Liste et seuils exacts des officiers de la V2c (proposition : Géologue, Technocrate,
    Architecte, Ingénieur ; Commandant avec la spec 13).
 
 ## Code

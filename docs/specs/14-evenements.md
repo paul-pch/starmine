@@ -58,7 +58,7 @@ Section `events` du YAML : `interval_hours`, poids positif / négatif, et par é
   restant ; tap → feuille avec le texte d'histoire et l'effet chiffré (`InfoButton`).
 - Événement à choix : feuille avec les options, leurs effets chiffrés, l'échéance et
   l'option par défaut.
-- Historique des événements : avec les rapports (à trancher).
+- Historique des événements : place décidée par le skill `starmine-ui` à l'implémentation.
 - Illustration éventuelle : registre d'images (spec 11), jamais porteuse d'information.
 
 ## Persistance
@@ -68,10 +68,9 @@ attente : nouvelle table et sauvegarde JSON. Spec 08 à mettre à jour.
 
 ## À trancher
 
-1. Historique des événements : dans l'écran Rapports, ou nulle part ?
-2. Un événement négatif peut-il tomber pendant un raid annoncé ? Recommandation : oui (le
+1. Un événement négatif peut-il tomber pendant un raid annoncé ? Recommandation : oui (le
    hasard crée des situations), mais jamais deux négatifs actifs à la fois.
-3. Les événements peuvent-ils dépendre de la progression (ex. Geyser seulement avec un
+2. Les événements peuvent-ils dépendre de la progression (ex. Geyser seulement avec un
    synthétiseur) ? Recommandation : oui, via `requires` comme les technos.
 
 ## Code
