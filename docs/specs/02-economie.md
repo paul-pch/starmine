@@ -9,7 +9,8 @@ Produire, stocker et consommer les ressources ; c'est la boucle de base du jeu.
 - **Ressources stockées** : métal, cristal, deutérium (`double`, affichées tronquées).
   L'énergie n'est pas stockée : c'est un bilan instantané.
 - **Production horaire** (vitesse comprise) :
-  `base + mines × facteur d'énergie × (1 + bonus Plasma) − consommations`.
+  `base + mines × facteur d'énergie × (1 + bonus Plasma + Géologue) − consommations`
+  (Géologue : spec 12).
   - Mine de niveau N : `coefficient × N × 1.1^N`, multiplié par le réglage de production.
   - Deutérium : × `(1.44 − 0.004 × Tmax)` ; une planète froide produit plus.
   - La **production de base** ne dépend ni de l'énergie ni du réglage.

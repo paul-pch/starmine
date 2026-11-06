@@ -16,7 +16,8 @@ règles OGame classiques, et en rendre les chiffres lisibles.
 - Sous **70 % de coque**, une unité explose avec la probabilité `1 − coque / coque initiale`.
 - Issue : attaquant victorieux si le défenseur n'a plus d'unité, défenseur victorieux dans le
   cas inverse, match nul sinon.
-- Après la bataille, **70 %** des défenses détruites sont **reconstruites** (tirage par unité).
+- Après la bataille, **70 %** des défenses détruites sont **reconstruites** (tirage par unité),
+  plus le bonus de l'Ingénieur (spec 12).
 - Technos (Armes, Bouclier, Protection) : +10 % par niveau.
 - Déterministe pour une graine donnée.
 

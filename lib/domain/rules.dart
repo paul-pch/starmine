@@ -7,6 +7,31 @@ import 'resources.dart';
 /// Niveaux des technologies (globaux à la partie). Une techno absente vaut 0.
 typedef TechLevels = Map<TechKind, int>;
 
+/// Modificateurs appliqués par les formules : bonus des officiers (spec 12), et plus tard
+/// effets des événements (spec 14). Toutes les valeurs sont des fractions.
+class Modifiers {
+  const Modifiers({
+    this.mineProduction = 0,
+    this.researchTime = 0,
+    this.buildTime = 0,
+    this.defenseRebuild = 0,
+  });
+
+  static const none = Modifiers();
+
+  /// Ajouté au bonus de production des mines (0.1 = +10 %).
+  final double mineProduction;
+
+  /// Réduction de la durée de recherche (0.1 = −10 %).
+  final double researchTime;
+
+  /// Réduction de la durée de construction des bâtiments.
+  final double buildTime;
+
+  /// Ajouté à la part de défenses reconstruites après un combat.
+  final double defenseRebuild;
+}
+
 /// Bilan d'énergie instantané de la planète.
 class EnergyBalance {
   const EnergyBalance({required this.produced, required this.consumed});
@@ -43,10 +68,16 @@ class Rules {
     return spec.baseCost.map((_, v) => (v * k).floorToDouble());
   }
 
-  /// Construction : (M + C) / (divisor × (1 + robots) × 2^nanites × vitesse) heures.
-  Duration buildDuration(Resources cost, {required int roboticsLevel, int naniteLevel = 0}) {
+  /// Construction : (M + C) / (divisor × (1 + robots) × 2^nanites × vitesse) heures,
+  /// réduite de [reduction] (Architecte).
+  Duration buildDuration(
+    Resources cost, {
+    required int roboticsLevel,
+    int naniteLevel = 0,
+    double reduction = 0,
+  }) {
     final divisor = _f.buildTimeDivisor * (1 + roboticsLevel) * math.pow(2, naniteLevel).toDouble();
-    return _duration(cost, divisor);
+    return _duration(cost, divisor, reduction);
   }
 
   /// Unité du chantier : (M + C) / (divisor × (1 + chantier) × 2^nanites × vitesse) heures.
@@ -55,13 +86,14 @@ class Rules {
     return _duration(cost, divisor);
   }
 
-  /// Recherche : (M + C) / (divisor × (1 + labo) × vitesse) heures.
-  Duration researchDuration(Resources cost, {required int labLevel}) =>
-      _duration(cost, _f.researchTimeDivisor * (1 + labLevel));
+  /// Recherche : (M + C) / (divisor × (1 + labo) × vitesse) heures, réduite de
+  /// [reduction] (Technocrate).
+  Duration researchDuration(Resources cost, {required int labLevel, double reduction = 0}) =>
+      _duration(cost, _f.researchTimeDivisor * (1 + labLevel), reduction);
 
   /// Arrondi à la seconde inférieure, au moins 1 s.
-  Duration _duration(Resources cost, double divisor) {
-    final hours = (cost.metal + cost.crystal) / (divisor * speed);
+  Duration _duration(Resources cost, double divisor, [double reduction = 0]) {
+    final hours = (cost.metal + cost.crystal) / (divisor * speed) * (1 - reduction);
     return Duration(seconds: math.max(1, (hours * 3600).floor()));
   }
 
@@ -94,11 +126,12 @@ class Rules {
   }
 
   /// Production horaire nette, vitesse comprise :
-  /// base + mines × facteur d'énergie × (1 + bonus) − consommations (fusion).
-  /// La production de base et les consommations ne dépendent pas de l'énergie.
-  Resources hourlyProduction(Planet planet, TechLevels tech) {
+  /// base + mines × facteur d'énergie × (1 + bonus des technos + officiers)
+  /// − consommations (fusion). La production de base et les consommations ne dépendent pas
+  /// de l'énergie.
+  Resources hourlyProduction(Planet planet, TechLevels tech, [Modifiers mods = Modifiers.none]) {
     final factor = energy(planet, tech).factor;
-    final bonus = productionBonus(tech);
+    final bonus = productionBonus(tech).map((_, v) => v + mods.mineProduction);
     var mines = Resources.zero;
     var consumption = Resources.zero;
     for (final spec in data.buildings.values) {
@@ -140,10 +173,15 @@ class Rules {
   /// Production entre deux instants à niveaux constants. Plafonnée au stockage ; un stock
   /// déjà au-dessus (remboursement) est conservé sans production. Une production nette
   /// négative (fusion) fait baisser le stock jusqu'à 0.
-  Resources produce(Planet planet, TechLevels tech, Duration elapsed) {
+  Resources produce(
+    Planet planet,
+    TechLevels tech,
+    Duration elapsed, [
+    Modifiers mods = Modifiers.none,
+  ]) {
     if (elapsed <= Duration.zero) return planet.resources;
     final hours = elapsed.inMicroseconds / Duration.microsecondsPerHour;
-    final rate = hourlyProduction(planet, tech);
+    final rate = hourlyProduction(planet, tech, mods);
     final cap = capacity(planet.levels);
     return planet.resources.map((k, stock) {
       if (rate[k] < 0) return math.max(0.0, stock + rate[k] * hours);

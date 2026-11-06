@@ -57,11 +57,18 @@ class GameRepository {
       lastUpdate: fromEpochMs(row.lastUpdateMs),
     );
     final research = await _db.select(_db.research).get();
+    final officers = await _db.select(_db.officers).get();
+    final counters = await _db.select(_db.counters).get();
     return SaveGame(
       state: GameState(
         planet: planet,
         research: {for (final r in research) TechKind.fromKey(r.kind): r.level},
         pending: events.map(_decodeRow).toList(),
+        officers: {for (final o in officers) OfficerKind.fromKey(o.kind): o.level},
+        counters: {
+          for (final c in counters)
+            if (Counter.tryKey(c.kind) case final k?) k: c.value,
+        },
       ),
       speed: double.tryParse(await _meta(_speedKey) ?? '') ?? 1,
       seed: int.tryParse(await _meta(_seedKey) ?? '') ?? 0,
@@ -105,6 +112,8 @@ class GameRepository {
       await _db.delete(_db.research).go();
       await _db.delete(_db.units).go();
       await _db.delete(_db.reports).go();
+      await _db.delete(_db.officers).go();
+      await _db.delete(_db.counters).go();
       await _db.delete(_db.buildings).go();
       await _db.delete(_db.planets).go();
       await _writeState(save.state);
@@ -166,6 +175,14 @@ class GameRepository {
       b.insertAllOnConflictUpdate(_db.research, [
         for (final e in state.research.entries)
           ResearchCompanion.insert(kind: e.key.key, level: e.value),
+      ]);
+      b.insertAllOnConflictUpdate(_db.officers, [
+        for (final e in state.officers.entries)
+          OfficersCompanion.insert(kind: e.key.key, level: e.value),
+      ]);
+      b.insertAllOnConflictUpdate(_db.counters, [
+        for (final e in state.counters.entries)
+          CountersCompanion.insert(kind: e.key.key, value: e.value),
       ]);
       b.insertAllOnConflictUpdate(_db.events, [
         for (final e in state.pending)

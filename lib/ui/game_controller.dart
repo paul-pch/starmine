@@ -8,7 +8,9 @@ import '../data/save_codec.dart';
 import '../domain/engine.dart';
 import '../domain/events.dart';
 import '../domain/game_data.dart';
+import '../domain/officers.dart' as officers;
 import '../domain/planet.dart';
+import '../domain/resources.dart';
 import '../domain/raid.dart' as raid;
 import '../domain/raid.dart' show RaidReport;
 import '../domain/rules.dart';
@@ -58,7 +60,14 @@ class GameController extends ChangeNotifier {
   GameState interpolated(DateTime at) {
     final p = state.planet;
     return state.copyWith(
-      planet: p.copyWith(resources: _rules.produce(p, state.research, at.difference(p.lastUpdate))),
+      planet: p.copyWith(
+        resources: _rules.produce(
+          p,
+          state.research,
+          at.difference(p.lastUpdate),
+          state.modifiers(data),
+        ),
+      ),
     );
   }
 
@@ -122,11 +131,27 @@ class GameController extends ChangeNotifier {
   /// Flotte pirate détectée et en route, s'il y en a une.
   RaidArrival? get incomingRaid => state.pending.whereType<RaidArrival>().firstOrNull;
 
+  /// Production horaire de [s], bonus des officiers compris.
+  Resources hourlyRate(GameState s) =>
+      _rules.hourlyProduction(s.planet, s.research, s.modifiers(data));
+
   /// Points du joueur (classement).
   double get points => raid.points(state, _rules);
 
   /// Points d'économie et de recherche : base de la force des raids.
   double get economyPoints => raid.economyPoints(state, _rules);
+
+  /// Officiers dont un niveau peut être débloqué (pastille du hero).
+  List<OfficerKind> get availableOfficers => officers.availableOfficers(state, data);
+
+  /// Débloque ou promeut un officier ; `false` si ce n'est pas possible.
+  Future<bool> promoteOfficer(OfficerKind kind) => _serialized(() async {
+    final t = now();
+    final adv = advance(state, t, _rules);
+    final outcome = officers.promoteOfficer(adv.state, kind, t, _rules);
+    await _commit(outcome.state, applied: adv.applied, reports: adv.reports);
+    return outcome.promoted;
+  });
 
   /// Debug : la prochaine flotte pirate est détectée tout de suite.
   Future<void> raidNow() => _serialized(() async {

@@ -69,6 +69,28 @@ class Reports extends Table {
   BoolColumn get seen => boolean().withDefault(const Constant(false))();
 }
 
+/// Niveau de chaque officier débloqué (schéma v5).
+@DataClassName('OfficerRow')
+class Officers extends Table {
+  /// Clé de l'officier (`OfficerKind.key`).
+  TextColumn get kind => text()();
+  IntColumn get level => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {kind};
+}
+
+/// Compteurs de progression, prérequis des officiers (schéma v5).
+@DataClassName('CounterRow')
+class Counters extends Table {
+  /// Clé du compteur (`Counter.key`).
+  TextColumn get kind => text()();
+  IntColumn get value => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {kind};
+}
+
 /// File unique de tous les événements, futurs et passés.
 @DataClassName('EventRow')
 class Events extends Table {
@@ -95,7 +117,9 @@ class Meta extends Table {
   Set<Column<Object>> get primaryKey => {name};
 }
 
-@DriftDatabase(tables: [Planets, Buildings, Research, Units, Events, Reports, Meta])
+@DriftDatabase(
+  tables: [Planets, Buildings, Research, Units, Events, Reports, Officers, Counters, Meta],
+)
 class StarmineDatabase extends _$StarmineDatabase {
   StarmineDatabase(super.executor);
 
@@ -104,8 +128,9 @@ class StarmineDatabase extends _$StarmineDatabase {
 
   /// v1 : V0. v2 : technologies (table research) et réglages de production.
   /// v3 : unités (table units). v4 : rapports de raid (table reports).
+  /// v5 : officiers et compteurs (tables officers, counters).
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -120,6 +145,15 @@ class StarmineDatabase extends _$StarmineDatabase {
       }
       if (from < 4) {
         await m.createTable(reports);
+      }
+      if (from < 5) {
+        await m.createTable(officers);
+        await m.createTable(counters);
+        // Les raids déjà repoussés comptent pour l'Ingénieur.
+        await customStatement(
+          "INSERT INTO counters (kind, value) SELECT 'raids_repelled', COUNT(*) FROM reports "
+          'WHERE payload LIKE \'%"winner":"defender"%\'',
+        );
       }
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),

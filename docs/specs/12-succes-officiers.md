@@ -1,7 +1,6 @@
 # 12 · Officiers
 
-> **À implémenter** — version V2c. Rien n'est codé. Le nom du fichier reste
-> `12-succes-officiers.md` pour ne pas casser les liens.
+> Version V2c. Le nom du fichier reste `12-succes-officiers.md` pour ne pas casser les liens.
 
 ## Objet
 
@@ -9,75 +8,67 @@ Récompenser la progression : des **officiers**, personnages gagnés en jouant, 
 **bonus permanents** qui compensent le ralentissement naturel du jeu (la courbe des durées
 de construction et de recherche).
 
-## Décidé
+## Règles
 
 - **Gagnés, jamais achetés ni loués** : pas de monnaie, pas de durée (spec 00).
-- **Écran des officiers** : liste de tous les officiers, débloqués ou non, avec leurs
-  prérequis et leur progression.
-- **Prérequis indexés sur l'arbre d'avancement**, sur le modèle des technos : niveaux de
-  bâtiments et de technos (`requires`). Idem pour chaque **niveau** d'officier.
-- **Déblocage explicite** : quand les prérequis sont remplis, l'officier (ou son niveau
-  suivant) devient *disponible* ; le joueur doit appuyer sur **« Débloquer »** (ou
-  « Promouvoir »). Rien ne se débloque sans qu'il le sache. Une pastille signale un officier
-  disponible.
-- **Niveaux plafonnés** : le bonus croît par niveau jusqu'à un plafond (ex. Technocrate :
-  −5 % de durée de recherche par niveau). Bonus par niveau et niveau max dans le YAML.
+- **Prérequis par niveau** : niveaux de bâtiments et de technos (arbre d'avancement) et/ou
+  **compteurs** de progression, selon l'officier (`officers.<id>.levels[].requires`).
+- **Déblocage explicite** : quand les prérequis du niveau suivant sont remplis, l'officier
+  est *disponible* ; le joueur appuie sur **« Débloquer »** (niveau 1) ou **« Promouvoir »**.
+  Rien ne se débloque sans lui. Commande **gratuite**, horodatée : le bonus s'applique à
+  partir de cet instant (le passé est soldé à l'ancien niveau).
+- **Niveaux plafonnés** : bonus = `per_level × niveau`, plafond = nombre de niveaux.
 - **Tous les officiers débloqués sont actifs.** Un nombre limité de places actives reste une
-  **option d'équilibrage** : le noter en commentaire dans le code (application des bonus) et
-  dans le YAML.
-- **Prérequis** : arbre d'avancement **et/ou compteurs** (raids repoussés, événements
-  traversés…) selon l'officier ; les compteurs sont tenus dans `advance()` (exacts app
-  fermée) et persistés.
-- **Pas de notification** quand un officier devient disponible : la pastille dans l'app
-  suffit.
-- **Place de l'écran** : décidée par le skill `starmine-ui` à l'implémentation.
-- Les officiers d'abord (V2c), les événements ensuite (V2d, spec 14) ; les officiers
-  influencent certains événements.
+  **option d'équilibrage** (noté dans `GameState.modifiers` et dans le YAML).
+- **Compteurs** tenus par `advance()` (exacts app fermée) : `raids_repelled` (raid dont le
+  défenseur sort vainqueur).
+- **Bonus** = `Modifiers` appliqués par les formules existantes, jamais un timer :
 
-## Règles proposées
-
-- **Bonus** = modificateurs appliqués par les formules existantes (production, durées,
-  reconstruction, énergie), jamais un timer. Un bonus en pourcentage suit la courbe des
-  coûts, donc garde sa valeur en fin de partie.
-- Le déblocage est une **commande** (comme lancer une construction) : refusée si les
-  prérequis ne sont pas remplis, horodatée, effet immédiat (le bonus s'applique à partir de
-  cet instant dans `advance()`).
-- Déblocage **gratuit** : c'est une récompense, les prérequis suffisent.
-
-| Officier | Prérequis (indicatifs) | Bonus par niveau |
+| Officier | Prérequis | Bonus |
 | --- | --- | --- |
-| Géologue | Niveaux des mines | Production des mines |
-| Technocrate | Labo et niveaux de technos | Durée de recherche réduite |
-| Architecte | Usine de robots / nanites | Durée de construction réduite |
-| Ingénieur | Chantier, technos de combat, raids repoussés | Reconstruction des défenses au-delà de 70 %, énergie |
-| Commandant | Progression générale | File d'attente (spec 13) : un ordre de plus par niveau |
-| Amiral | V3 (flotte) | Avantages de flotte |
+| Géologue | Niveaux des mines | Production des mines (ajouté au bonus des technos) |
+| Technocrate | Labo et technos | Durée de recherche réduite |
+| Architecte | Usine de robots, puis de nanites | Durée de construction des bâtiments réduite |
+| Ingénieur | Chantier, Protection, raids repoussés | Part des défenses reconstruites (70 % de base) |
 
-Lien avec les événements (spec 14) : un officier atténue ou prolonge certains événements
-(ex. Géologue : filons plus longs ; Ingénieur : tempête solaire atténuée).
+- Pas de notification quand un officier devient disponible : la pastille du hero suffit.
+- Commandant (file d'attente, spec 13) et Amiral (flotte, V3) : plus tard.
+- Les officiers influenceront certains événements (spec 14, V2d).
 
 ## Données
 
-Section `officers` du YAML : par officier `name`, `description` (infobulle), `bonus` (type,
-valeur par niveau), `max_level`, et par niveau `requires`.
-
-## Persistance
-
-Niveau par officier (0 = verrouillé) : nouvelle table, sauvegarde JSON (défaut 0 à
-l'import d'une ancienne sauvegarde). Spec 08 à mettre à jour.
+Section `officers` du YAML : par officier `name`, `description` (infobulle), `bonus`
+(`type` : `mine_production`, `research_time`, `build_time`, `defense_rebuild` ;
+`per_level`), `levels` (liste de `requires`, clés = bâtiments, technos ou compteurs).
+Section `counters` : libellé de chaque compteur. Seuils à équilibrer en jouant.
 
 ## UI
 
-- Écran ou onglet **Officiers** : carte par officier (portrait, niveau, bonus actuel et
-  suivant, prérequis manquants en rouge comme pour les technos), bouton « Débloquer » /
-  « Promouvoir » quand disponible, `InfoButton` sur le bonus.
-- Portraits : catégorie `character` du registre d'images (spec 11) ; repli sans image.
+- Icône **Officiers** dans le bandeau du hero, pastille = nombre d'officiers disponibles.
+- Écran **Officiers** : carte par officier (portrait en repli icône, nom, « Niveau n / max »,
+  bonus actuel, bonus du niveau suivant, prérequis « Élément requis (actuel) » en rouge s'ils
+  manquent), bouton « Débloquer » / « Promouvoir » actif seulement si disponible, message de
+  confirmation ; `InfoButton` par officier (description) et sur l'écran (règles).
+- Portraits : catégorie `character` du registre d'images (spec 11), à produire.
 
-## À trancher
+## Persistance
 
-1. Liste et seuils exacts des officiers de la V2c (proposition : Géologue, Technocrate,
-   Architecte, Ingénieur ; Commandant avec la spec 13).
+Tables `officers` et `counters` (schéma v5), sauvegarde JSON v5 (spec 08).
 
 ## Code
 
-À venir : `lib/domain/officers.dart` (nom indicatif).
+`lib/domain/officers.dart` (disponibilité, prérequis manquants, `promoteOfficer`),
+`GameState.officers` / `counters` / `modifiers` (`engine.dart`), `Modifiers` (`rules.dart`),
+`lib/ui/screens/officers_screen.dart`.
+
+## Tests
+
+`officers_test.dart` : config, verrouillé, disponible mais jamais débloqué seul, Géologue
+(production à partir du déblocage), Technocrate et Architecte (durées), Ingénieur
+(compteur en prérequis, reconstruction), plafond, compteur de raids repoussés. Persistance :
+`migration_test.dart`, `save_codec_test.dart`. Écran : `home_shell_test.dart`.
+
+## Points ouverts
+
+- Seuils et bonus à équilibrer en jouant (skill `starmine-balance`).
+- Place définitive de l'entrée Officiers une fois la refonte en main (skill `starmine-ui`).

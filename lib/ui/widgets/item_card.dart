@@ -62,7 +62,7 @@ class ItemFacts {
   /// « Manque 120 M · dans 14 min », ou capacité insuffisante.
   String _missingHint(Resources missing) {
     final rules = controller.rules;
-    final rate = rules.hourlyProduction(state.planet, state.research);
+    final rate = controller.hourlyRate(state);
     final cap = rules.capacity(state.planet.levels);
     var hours = 0.0;
     for (final k in ResourceKind.values) {
@@ -86,8 +86,8 @@ class ItemFacts {
         research: {...state.research, item as TechKind: state.levelOf(item) + 1},
       ),
     };
-    final before = rules.hourlyProduction(state.planet, state.research);
-    final after = rules.hourlyProduction(next.planet, next.research);
+    final before = controller.hourlyRate(state);
+    final after = controller.hourlyRate(next);
     final eBefore = rules.energy(state.planet, state.research);
     final eAfter = rules.energy(next.planet, next.research);
 

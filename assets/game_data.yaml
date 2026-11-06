@@ -340,3 +340,63 @@ pirates:
   warships: { light_fighter: 0, heavy_fighter: 50, cruiser: 200, battleship: 1000 }
   # Transporteur utilisé : le plus gros disponible.
   cargo_ships: { small_cargo: 0, large_cargo: 200 }
+
+# Libellés des compteurs de progression (prérequis d'officiers).
+counters:
+  raids_repelled: Raids repoussés
+
+# Officiers (spec 12) : gagnés en jouant, débloqués par le joueur quand les prérequis d'un
+# niveau sont remplis. Bonus = per_level × niveau ; le plafond est le nombre de niveaux.
+# Tous les officiers débloqués sont actifs. Option d'équilibrage pour plus tard : un nombre
+# limité de places actives.
+# Seuils à équilibrer en jouant (skill starmine-balance).
+officers:
+  geologist:
+    name: Géologue
+    description: >-
+      Spécialiste des gisements. Chaque niveau augmente la production des mines de métal,
+      de cristal et de deutérium. Se débloque en développant les mines.
+    bonus: { type: mine_production, per_level: 0.05 }
+    levels:
+      - requires: { metal_mine: 5, crystal_mine: 4 }
+      - requires: { metal_mine: 10, crystal_mine: 8, deuterium_synthesizer: 5 }
+      - requires: { metal_mine: 14, crystal_mine: 12, deuterium_synthesizer: 9 }
+      - requires: { metal_mine: 18, crystal_mine: 15, deuterium_synthesizer: 12 }
+      - requires: { metal_mine: 22, crystal_mine: 19, deuterium_synthesizer: 16 }
+  technocrat:
+    name: Technocrate
+    description: >-
+      Scientifique en chef. Chaque niveau réduit la durée des recherches. Se débloque en
+      agrandissant le laboratoire et en avançant dans l'arbre technologique.
+    bonus: { type: research_time, per_level: 0.05 }
+    levels:
+      - requires: { research_lab: 2, energy_technology: 1 }
+      - requires: { research_lab: 4, energy_technology: 4, computer_technology: 2 }
+      - requires: { research_lab: 6, laser_technology: 5, computer_technology: 4 }
+      - requires: { research_lab: 8, ion_technology: 4, computer_technology: 6 }
+      - requires: { research_lab: 10, plasma_technology: 3, computer_technology: 8 }
+  architect:
+    name: Architecte
+    description: >-
+      Maître d'œuvre de la planète. Chaque niveau réduit la durée de construction des
+      bâtiments. Se débloque avec l'usine de robots puis l'usine de nanites.
+    bonus: { type: build_time, per_level: 0.05 }
+    levels:
+      - requires: { robotics_factory: 2 }
+      - requires: { robotics_factory: 5 }
+      - requires: { robotics_factory: 8 }
+      - requires: { robotics_factory: 10, nanite_factory: 1 }
+      - requires: { nanite_factory: 3 }
+  engineer:
+    name: Ingénieur
+    description: >-
+      Responsable des défenses. Chaque niveau augmente la part des défenses détruites
+      reconstruites après un combat (70 % de base). Se débloque avec le chantier, la
+      technologie Protection et les raids repoussés.
+    bonus: { type: defense_rebuild, per_level: 0.03 }
+    levels:
+      - requires: { shipyard: 2, raids_repelled: 1 }
+      - requires: { shipyard: 4, armour_technology: 2, raids_repelled: 3 }
+      - requires: { shipyard: 6, armour_technology: 4, raids_repelled: 6 }
+      - requires: { shipyard: 8, armour_technology: 6, raids_repelled: 10 }
+      - requires: { shipyard: 10, armour_technology: 8, raids_repelled: 15 }

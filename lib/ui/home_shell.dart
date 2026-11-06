@@ -8,6 +8,7 @@ import 'resource_style.dart';
 import 'theme.dart';
 import 'visuals.dart';
 import 'screens/debug_screen.dart';
+import 'screens/officers_screen.dart';
 import 'screens/reports_screen.dart';
 import 'widgets/combat_report.dart';
 import 'widgets/planet_hero.dart';
@@ -98,6 +99,10 @@ class _HomeShellState extends State<HomeShell> {
     await _c.markReportsSeen();
   }
 
+  Future<void> _openOfficers() => Navigator.of(
+    context,
+  ).push(MaterialPageRoute<void>(builder: (_) => OfficersScreen(controller: _c)));
+
   void _refresh() {
     if (_refreshing) return;
     _refreshing = true;
@@ -130,7 +135,11 @@ class _HomeShellState extends State<HomeShell> {
                   child: NestedScrollView(
                     headerSliverBuilder: (context, _) => [
                       SliverToBoxAdapter(
-                        child: PlanetHero(controller: _c, onReports: _openReports),
+                        child: PlanetHero(
+                          controller: _c,
+                          onReports: _openReports,
+                          onOfficers: _openOfficers,
+                        ),
                       ),
                     ],
                     body: Column(

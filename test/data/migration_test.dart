@@ -30,7 +30,7 @@ const _v1 = [
 ];
 
 void main() {
-  test('base v1 → v2 : partie conservée, technos à 0, réglages à 100 %', () async {
+  test('base v1 → v5 : partie conservée, technos et officiers à 0, réglages à 100 %', () async {
     final db = StarmineDatabase(
       NativeDatabase.memory(
         setup: (raw) {
@@ -50,6 +50,8 @@ void main() {
     expect(p.level(BuildingKind.solarPlant), 4);
     expect(p.percents.values, everyElement(100));
     expect(save.state.research.values, everyElement(0));
+    expect(save.state.officers.values, everyElement(0));
+    expect(save.state.counters.values, everyElement(0));
     expect(save.speed, 10);
     expect(save.seed, 99);
     final e = save.state.pending.single as BuildingDone;
@@ -57,9 +59,17 @@ void main() {
     expect(e.building, BuildingKind.crystalMine);
 
     // La base migrée accepte les nouvelles données.
-    await GameRepository(db).save(save.state.copyWith(research: {TechKind.energy: 2}));
+    await GameRepository(db).save(
+      save.state.copyWith(
+        research: {TechKind.energy: 2},
+        officers: {OfficerKind.geologist: 3},
+        counters: {Counter.raidsRepelled: 4},
+      ),
+    );
     final reloaded = (await GameRepository(db).load())!;
     expect(reloaded.state.research[TechKind.energy], 2);
+    expect(reloaded.state.officers[OfficerKind.geologist], 3);
+    expect(reloaded.state.counters[Counter.raidsRepelled], 4);
     expect(reloaded.state.planet.lastUpdate, t0);
     expect(await GameRepository(db).loadReports(), isEmpty);
   });

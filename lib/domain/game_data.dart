@@ -89,6 +89,90 @@ enum UnitKind {
   );
 }
 
+/// Officiers (spec 12) : personnages gagnés en jouant, qui donnent un bonus permanent.
+enum OfficerKind {
+  geologist('geologist'),
+  technocrat('technocrat'),
+  architect('architect'),
+  engineer('engineer');
+
+  const OfficerKind(this.key);
+
+  final String key;
+
+  static OfficerKind fromKey(String key) => values.firstWhere(
+    (k) => k.key == key,
+    orElse: () => throw FormatException('Officier inconnu : $key'),
+  );
+}
+
+/// Compteurs de progression tenus par `advance()`, prérequis possibles des officiers.
+enum Counter {
+  raidsRepelled('raids_repelled');
+
+  const Counter(this.key);
+
+  final String key;
+
+  static Counter? tryKey(String key) => values.where((k) => k.key == key).firstOrNull;
+}
+
+/// Effet d'un officier, par niveau.
+enum OfficerBonus {
+  /// Production des mines (fraction ajoutée : 0.05 = +5 %).
+  mineProduction('mine_production'),
+
+  /// Durée de recherche réduite (0.05 = −5 %).
+  researchTime('research_time'),
+
+  /// Durée de construction des bâtiments réduite.
+  buildTime('build_time'),
+
+  /// Part des défenses détruites reconstruites, ajoutée aux 70 % de base.
+  defenseRebuild('defense_rebuild');
+
+  const OfficerBonus(this.key);
+
+  final String key;
+
+  static OfficerBonus fromKey(String key) => values.firstWhere(
+    (k) => k.key == key,
+    orElse: () => throw FormatException('Bonus d’officier inconnu : $key'),
+  );
+}
+
+/// Prérequis d'un niveau d'officier : niveaux de bâtiments et technos, compteurs.
+class OfficerLevelSpec {
+  const OfficerLevelSpec({this.requires = const {}, this.counters = const {}});
+
+  final Map<Unlockable, int> requires;
+  final Map<Counter, int> counters;
+}
+
+class OfficerSpec {
+  const OfficerSpec({
+    required this.kind,
+    required this.name,
+    this.description = '',
+    required this.bonus,
+    required this.perLevel,
+    required this.levels,
+  });
+
+  final OfficerKind kind;
+  final String name;
+  final String description;
+  final OfficerBonus bonus;
+
+  /// Valeur du bonus par niveau (fraction).
+  final double perLevel;
+
+  /// Prérequis de chaque niveau, du premier au dernier (le plafond).
+  final List<OfficerLevelSpec> levels;
+
+  int get maxLevel => levels.length;
+}
+
 /// Partie commune aux bâtiments et technologies.
 abstract class ItemSpec {
   const ItemSpec({
@@ -316,7 +400,10 @@ class GameData {
     required Map<UnitKind, UnitSpec> units,
     this.categories = const {},
     required this.pirates,
-  }) : units = Map.unmodifiable(units),
+    Map<OfficerKind, OfficerSpec> officers = const {},
+    this.counterNames = const {},
+  }) : officers = Map.unmodifiable(officers),
+       units = Map.unmodifiable(units),
        buildings = Map.unmodifiable(buildings),
        research = Map.unmodifiable(research) {
     final missing = <Unlockable>[
@@ -344,6 +431,12 @@ class GameData {
 
   final PirateConfig pirates;
 
+  /// Officiers, dans l'ordre du YAML.
+  final Map<OfficerKind, OfficerSpec> officers;
+
+  /// Libellé de chaque compteur (prérequis d'officiers).
+  final Map<Counter, String> counterNames;
+
   UnitSpec unit(UnitKind kind) => units[kind]!;
 
   BuildingSpec operator [](BuildingKind kind) => buildings[kind]!;
@@ -366,6 +459,8 @@ class GameData {
     final units = _map(map, 'units');
     final categories = _optMap(map, 'categories') ?? const {};
     final pirates = _map(map, 'pirates');
+    final officers = _optMap(map, 'officers') ?? const {};
+    final counters = _optMap(map, 'counters') ?? const {};
     final interval = _map(pirates, 'interval_hours');
     final strength = _map(pirates, 'strength');
     Map<UnitKind, double> ships(String key) => {
@@ -427,7 +522,52 @@ class GameData {
         for (final e in units.entries)
           UnitKind.fromKey(e.key): _unit(UnitKind.fromKey(e.key), _asMap(e.value, e.key)),
       },
+      officers: {
+        for (final e in officers.entries)
+          OfficerKind.fromKey(e.key): _officer(OfficerKind.fromKey(e.key), _asMap(e.value, e.key)),
+      },
+      counterNames: {
+        for (final e in counters.entries) _counter(e.key): _string(counters, e.key),
+      },
     );
+  }
+
+  static Counter _counter(String key) =>
+      Counter.tryKey(key) ?? (throw FormatException('Compteur inconnu : $key'));
+
+  static OfficerSpec _officer(OfficerKind kind, Map<String, Object?> m) {
+    final bonus = _map(m, 'bonus');
+    final levels = m['levels'];
+    if (levels is! List || levels.isEmpty) {
+      throw FormatException('« ${kind.key}.levels » doit être une liste non vide');
+    }
+    return OfficerSpec(
+      kind: kind,
+      name: _string(m, 'name'),
+      description: _stringOr(m, 'description'),
+      bonus: OfficerBonus.fromKey(_string(bonus, 'type')),
+      perLevel: _num(bonus, 'per_level'),
+      levels: [
+        for (final raw in levels) _officerLevel(_asMap(raw, '${kind.key}.levels[]')),
+      ],
+    );
+  }
+
+  /// Une clé de `requires` est un compteur, un bâtiment ou une techno.
+  static OfficerLevelSpec _officerLevel(Map<String, Object?> m) {
+    final r = _map(m, 'requires');
+    final requires = <Unlockable, int>{};
+    final counters = <Counter, int>{};
+    for (final key in r.keys) {
+      final n = _num(r, key).toInt();
+      final counter = Counter.tryKey(key);
+      if (counter != null) {
+        counters[counter] = n;
+      } else {
+        requires[Unlockable.fromKey(key)] = n;
+      }
+    }
+    return OfficerLevelSpec(requires: requires, counters: counters);
   }
 
   static BuildingSpec _building(BuildingKind kind, Map<String, Object?> m) {

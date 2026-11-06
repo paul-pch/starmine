@@ -24,7 +24,7 @@ maquette) ; couleurs des ressources et de la production selon les jetons ci-dess
 ```
 Barre de ressources (collée en haut, compacte)
 Hero planète 21:9 (défile avec le contenu, 200 dp au plus) : image + bandeau opaque (nom,
-  « Tmin à Tmax °C », icône Rapports + non lus)
+  « Tmin à Tmax °C », icônes Officiers + disponibles et Rapports + non lus)
 [Bandeau d'alerte raid, si une flotte est en route]
 Contenu de l'onglet : [carte « En cours » de la file de l'onglet] · puces · cartes
 Navigation : Bâtiments · Recherche · Défense · File · Debug (pastilles d'état de file)
@@ -38,7 +38,7 @@ sont posés sur des panneaux opaques à 78–90 %.
 | Élément | Information | Disposition |
 | --- | --- | --- |
 | Barre de ressources | Par ressource : icône, stock (animé chaque seconde, rouge si plein), production /h ; jauge fine de remplissage. Énergie : solde ; « Mines à X % » en rouge à la place du /h si manque | 4 colonnes. Tap sur une ressource → feuille : nom, stock / capacité, production détaillée (base, mines et consommations, total) ; énergie : produite · consommée, explication du facteur |
-| Hero planète | Nom, « Tmin à Tmax °C », Rapports (badge du nombre de non lus) | Image par tranche de température (spec 11), texte sur un bandeau opaque à 82 %, jamais sur l'image nue |
+| Hero planète | Nom, « Tmin à Tmax °C », Officiers (badge du nombre d'officiers à débloquer ou promouvoir), Rapports (badge du nombre de non lus) | Image par tranche de température (spec 11), texte sur un bandeau opaque à 82 %, jamais sur l'image nue |
 | Carte « En cours » | File de l'onglet : nom → niveau ou « 3 / 20 », barre de progression, reste (fin du lot pour le chantier) | En tête de l'onglet si la file est occupée ; tap → onglet File. Rouge avec cadenas si la file est bloquée (agrandissement du labo / chantier) |
 | Pastilles d'onglet | Verte = file libre ; rouge = file bloquée par l'agrandissement du labo ou du chantier ; rien = occupée ou bâtiment absent | Point sur l'icône de navigation (inchangé) |
 | Puces de filtre | « Tout » (avec titres de section) + une puce par catégorie du YAML | Rangée défilante horizontale sous la carte « En cours » |
@@ -79,6 +79,9 @@ est dans la feuille de détail (un tap).
   immédiat + points, événement immédiat (spec 14, à venir), nouvelle partie, alarmes
   exactes, dernière mise à jour.
 - **Rapports** (depuis le hero) : liste des raids → rapport complet.
+- **Officiers** (depuis le hero, spec 12) : carte par officier (nom, niveau / plafond, bonus
+  actuel et du niveau suivant, prérequis en rouge s'ils manquent, « Débloquer » ou
+  « Promouvoir »).
 - **Feuilles** : détail d'élément, détail d'une ressource, rapport de combat, simulation
   (spec 06), détail de la flotte pirate (spec 07), quantité au chantier.
 - **Messages** : refus d'une commande, raid résolu app ouverte (avec accès au rapport).

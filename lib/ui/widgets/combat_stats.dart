@@ -236,7 +236,13 @@ abstract final class SimulationSheet {
     final attacker = CombatSide(units: fleet, tech: tech);
     final defender = CombatSide(units: state.planet.units, tech: state.research);
     final data = controller.data;
-    final result = simulateCombat(data, attacker, defender, math.Random());
+    final result = simulateCombat(
+      data,
+      attacker,
+      defender,
+      math.Random(),
+      rebuildChance: defenseRebuildChance + state.modifiers(data).defenseRebuild,
+    );
     final taken = result.winner == CombatWinner.attacker
         ? loot(
             state.planet.resources,

@@ -8,7 +8,7 @@ Débloquer bâtiments, défenses et bonus via un arbre de technologies.
 
 - Technologies **globales à la partie** (pas par planète).
 - Coût du niveau N : `floor(base × 2^(N−1))`, débité au lancement.
-- Durée : `(M + C) / (1000 × (1 + labo) × vitesse)` heures.
+- Durée : `(M + C) / (1000 × (1 + labo) × vitesse) × (1 − Technocrate)` heures (spec 12).
 - **File de recherche** : 1 slot, en parallèle de la construction. Annulation avec
   remboursement intégral. Règle du labo : spec 03.
 - Prérequis : bâtiments et technos (`requires`), labo 1 au minimum.

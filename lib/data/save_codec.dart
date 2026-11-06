@@ -12,7 +12,8 @@ const saveFormat = 'starmine-save';
 
 /// v2 (V1) : technologies et réglages de production. Une sauvegarde v1 reste lisible.
 /// v3 (V2a) : unités et lots du chantier. v4 (V2b) : raids pirates.
-const saveVersion = 4;
+/// v5 (V2c) : officiers, compteurs, relevé des raids et technos pirates.
+const saveVersion = 5;
 
 /// Sauvegarde complète : état de jeu et réglages persistés.
 class SaveGame {
@@ -201,6 +202,11 @@ Map<String, Object?> encodeSave(SaveGame save, {required DateTime exportedAt}) {
       },
     },
     'research': {for (final e in save.state.research.entries) e.key.key: e.value},
+    'officers': {
+      for (final e in save.state.officers.entries)
+        if (e.value > 0) e.key.key: e.value,
+    },
+    'counters': {for (final e in save.state.counters.entries) e.key.key: e.value},
     'events': [
       for (final e in save.state.pending)
         {
@@ -230,6 +236,9 @@ SaveGame decodeSave(Map<String, Object?> json) {
       : _map(p, 'production_percent');
   final units = p['units'] == null ? const <String, Object?>{} : _map(p, 'units');
   final research = json['research'] == null ? const <String, Object?>{} : _map(json, 'research');
+  // Absents avant la v5 : aucun officier, compteurs à 0.
+  final officers = json['officers'] == null ? const <String, Object?>{} : _map(json, 'officers');
+  final counters = json['counters'] == null ? const <String, Object?>{} : _map(json, 'counters');
   final planet = Planet(
     id: _int(p, 'id'),
     name: _string(p, 'name'),
@@ -256,6 +265,14 @@ SaveGame decodeSave(Map<String, Object?> json) {
         for (final e in research.entries) TechKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 0,
       },
       pending: events,
+      officers: {
+        for (final e in officers.entries)
+          OfficerKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 0,
+      },
+      counters: {
+        for (final e in counters.entries)
+          if (Counter.tryKey(e.key) case final k?) k: (e.value as num?)?.toInt() ?? 0,
+      },
     ),
     speed: _double(json, 'game_speed'),
     seed: _int(json, 'rng_seed'),

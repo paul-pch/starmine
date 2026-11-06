@@ -25,7 +25,7 @@ class ResourceBar extends StatelessWidget {
     final rules = controller.rules;
     final stock = controller.interpolated(now).planet.resources;
     final cap = rules.capacity(state.planet.levels);
-    final rate = rules.hourlyProduction(state.planet, state.research);
+    final rate = controller.hourlyRate(state);
     return ColoredBox(
       color: Palette.bar,
       child: SafeArea(
@@ -62,7 +62,7 @@ class ResourceBar extends StatelessWidget {
   Future<void> _showResource(BuildContext context, ResourceKind kind) {
     final state = controller.interpolated(now);
     final rules = controller.rules;
-    final total = rules.hourlyProduction(state.planet, state.research)[kind];
+    final total = controller.hourlyRate(state)[kind];
     final base = controller.data.formulas.baseProductionPerHour[kind] * rules.speed;
     final cap = rules.capacity(state.planet.levels)[kind];
     return _showSheet(

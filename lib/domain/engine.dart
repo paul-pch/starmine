@@ -13,13 +13,23 @@ class GameState {
     required this.planet,
     TechLevels research = const {},
     required List<GameEvent> pending,
+    Map<OfficerKind, int> officers = const {},
+    Map<Counter, int> counters = const {},
   }) : research = Map.unmodifiable({for (final k in TechKind.values) k: research[k] ?? 0}),
+       officers = Map.unmodifiable({for (final k in OfficerKind.values) k: officers[k] ?? 0}),
+       counters = Map.unmodifiable({for (final k in Counter.values) k: counters[k] ?? 0}),
        pending = List<GameEvent>.unmodifiable(<GameEvent>[...pending]..sort(GameEvent.compare));
 
   final Planet planet;
 
   /// Niveaux de technologie, globaux à la partie.
   final TechLevels research;
+
+  /// Niveau de chaque officier (0 = pas encore débloqué), spec 12.
+  final Map<OfficerKind, int> officers;
+
+  /// Compteurs de progression (raids repoussés…), tenus par `advance()`.
+  final Map<Counter, int> counters;
 
   /// Événements non encore appliqués, triés par (dueAt, id).
   final List<GameEvent> pending;
@@ -35,10 +45,46 @@ class GameState {
     TechKind() => research[item]!,
   };
 
-  GameState copyWith({Planet? planet, TechLevels? research, List<GameEvent>? pending}) => GameState(
+  /// Bonus des officiers. Tous les officiers débloqués sont actifs ; un nombre limité de
+  /// places actives est une option d'équilibrage pour plus tard (spec 12).
+  Modifiers modifiers(GameData data) {
+    var mine = 0.0;
+    var research = 0.0;
+    var build = 0.0;
+    var rebuild = 0.0;
+    for (final spec in data.officers.values) {
+      final value = spec.perLevel * (officers[spec.kind] ?? 0);
+      switch (spec.bonus) {
+        case OfficerBonus.mineProduction:
+          mine += value;
+        case OfficerBonus.researchTime:
+          research += value;
+        case OfficerBonus.buildTime:
+          build += value;
+        case OfficerBonus.defenseRebuild:
+          rebuild += value;
+      }
+    }
+    return Modifiers(
+      mineProduction: mine,
+      researchTime: research,
+      buildTime: build,
+      defenseRebuild: rebuild,
+    );
+  }
+
+  GameState copyWith({
+    Planet? planet,
+    TechLevels? research,
+    List<GameEvent>? pending,
+    Map<OfficerKind, int>? officers,
+    Map<Counter, int>? counters,
+  }) => GameState(
     planet: planet ?? this.planet,
     research: research ?? this.research,
     pending: pending ?? this.pending,
+    officers: officers ?? this.officers,
+    counters: counters ?? this.counters,
   );
 }
 
@@ -87,7 +133,12 @@ GameState _produceUntil(GameState s, DateTime t, Rules rules) {
   if (!t.isAfter(planet.lastUpdate)) return s;
   return s.copyWith(
     planet: planet.copyWith(
-      resources: rules.produce(planet, s.research, t.difference(planet.lastUpdate)),
+      resources: rules.produce(
+        planet,
+        s.research,
+        t.difference(planet.lastUpdate),
+        s.modifiers(rules.data),
+      ),
       lastUpdate: t,
     ),
   );
@@ -206,13 +257,19 @@ OrderBlock? checkOrder(GameState state, Unlockable item, Rules rules) {
 Duration orderDuration(GameState state, Unlockable item, Rules rules) {
   final cost = rules.cost(item, state.levelOf(item) + 1);
   final p = state.planet;
+  final mods = state.modifiers(rules.data);
   return switch (item) {
     BuildingKind() => rules.buildDuration(
       cost,
       roboticsLevel: p.level(BuildingKind.roboticsFactory),
       naniteLevel: p.level(BuildingKind.naniteFactory),
+      reduction: mods.buildTime,
     ),
-    TechKind() => rules.researchDuration(cost, labLevel: p.level(BuildingKind.researchLab)),
+    TechKind() => rules.researchDuration(
+      cost,
+      labLevel: p.level(BuildingKind.researchLab),
+      reduction: mods.researchTime,
+    ),
   };
 }
 

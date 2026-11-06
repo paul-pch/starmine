@@ -206,8 +206,9 @@ SimulationSummary simulateRaid(
   var lootSum = Resources.zero;
   final aLoss = <UnitKind, double>{};
   final dLoss = <UnitKind, double>{};
+  final rebuild = defenseRebuildChance + state.modifiers(data).defenseRebuild;
   for (var i = 0; i < runs; i++) {
-    final r = simulateCombat(data, attacker, defender, random);
+    final r = simulateCombat(data, attacker, defender, random, rebuildChance: rebuild);
     rounds += r.rounds.length;
     switch (r.winner) {
       case CombatWinner.attacker:
@@ -280,15 +281,25 @@ RaidStep resolveRaid(GameState s, RaidArrival e, Rules rules) {
   final planet = s.planet;
   final attacker = CombatSide(units: e.fleet, tech: e.tech);
   final defender = CombatSide(units: planet.units, tech: s.research);
-  final result = simulateCombat(data, attacker, defender, random);
+  final result = simulateCombat(
+    data,
+    attacker,
+    defender,
+    random,
+    rebuildChance: defenseRebuildChance + s.modifiers(data).defenseRebuild,
+  );
   final taken = result.winner == CombatWinner.attacker
       ? loot(planet.resources, cargoCapacity(result.attackerLeft, data), data.pirates.lootShare)
       : Resources.zero;
+  final repelled = result.winner == CombatWinner.defender;
   final next = s.copyWith(
     planet: planet.copyWith(
       resources: planet.resources - taken,
       units: {for (final k in UnitKind.values) k: result.defenderLeft[k] ?? 0},
     ),
+    counters: repelled
+        ? {...s.counters, Counter.raidsRepelled: s.counters[Counter.raidsRepelled]! + 1}
+        : null,
   );
   return (
     state: next,

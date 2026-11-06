@@ -142,14 +142,15 @@ const maxRounds = 6;
 /// - un tir inférieur à 1 % du bouclier de la cible est absorbé sans effet ;
 /// - le bouclier absorbe avant la coque, et se régénère à chaque round ;
 /// - sous 70 % de coque, explosion avec une probabilité de 1 − coque / coque initiale ;
-/// - 70 % des défenses détruites sont reconstruites.
+/// - 70 % des défenses détruites sont reconstruites ([rebuildChance], Ingénieur compris).
 /// Déterministe pour un [random] donné.
 CombatResult simulateCombat(
   GameData data,
   CombatSide attacker,
   CombatSide defender,
-  math.Random random,
-) {
+  math.Random random, {
+  double rebuildChance = defenseRebuildChance,
+}) {
   final a = _Army.of(data, attacker);
   final d = _Army.of(data, defender);
   final rounds = <CombatRound>[];
@@ -183,7 +184,7 @@ CombatResult simulateCombat(
     final lost = e.value - (defenderLeft[e.key] ?? 0);
     var back = 0;
     for (var i = 0; i < lost; i++) {
-      if (random.nextDouble() < defenseRebuildChance) back++;
+      if (random.nextDouble() < rebuildChance) back++;
     }
     if (back > 0) {
       rebuilt[e.key] = back;

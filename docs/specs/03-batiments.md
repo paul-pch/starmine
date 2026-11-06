@@ -7,7 +7,7 @@ Faire progresser la planète niveau par niveau.
 ## Règles
 
 - Coût du niveau N : `floor(coût de base × facteur^(N−1))`, débité **au lancement**.
-- Durée : `(M + C) / (2500 × (1 + robots) × 2^nanites × vitesse)` heures, arrondie à la
+- Durée : `(M + C) / (2500 × (1 + robots) × 2^nanites × vitesse) × (1 − Architecte)` heures, arrondie à la
   seconde inférieure, au moins 1 s.
 - **File de construction** : 1 slot. Annulation avec remboursement intégral (le stock peut
   alors dépasser la capacité).

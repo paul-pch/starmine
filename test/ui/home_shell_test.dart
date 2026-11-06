@@ -183,4 +183,22 @@ void main() {
 
     await close(tester, db);
   });
+
+  testWidgets('officiers : écran depuis le hero, prérequis, déblocage explicite', (tester) async {
+    final (controller, db) = await open(tester);
+
+    await tester.tap(find.byIcon(Icons.military_tech_outlined));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text('Officiers'), findsOneWidget);
+    expect(find.text('Géologue'), findsOneWidget);
+    expect(find.text('Mine de métal 5 (0)'), findsOneWidget);
+    final button = tester.widget<FilledButton>(
+      find.widgetWithText(FilledButton, 'Débloquer').first,
+    );
+    expect(button.onPressed, isNull);
+    expect(controller.availableOfficers, isEmpty);
+
+    await close(tester, db);
+  });
 }

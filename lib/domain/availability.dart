@@ -34,7 +34,7 @@ Duration? waitForUnit(GameState s, UnitKind unit, Rules rules) {
 /// une ressource manquante n'est pas produite ou dépasse la capacité de stockage.
 Duration? timeToAfford(GameState s, Resources cost, Rules rules) {
   final planet = s.planet;
-  final rate = rules.hourlyProduction(planet, s.research);
+  final rate = rules.hourlyProduction(planet, s.research, s.modifiers(rules.data));
   final cap = rules.capacity(planet.levels);
   var hours = 0.0;
   for (final k in ResourceKind.values) {
