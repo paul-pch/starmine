@@ -75,6 +75,23 @@ est dans la feuille de détail (un tap).
   (spec 06), détail de la flotte pirate (spec 07), quantité au chantier.
 - **Messages** : refus d'une commande, raid résolu app ouverte (avec accès au rapport).
 
+## Filtre « Réalisables » (à implémenter)
+
+Décidé : une bascule « Réalisables » qui **masque** tout ce qui ne peut pas être lancé
+maintenant, sur Bâtiments, Recherche et Défense.
+
+Proposé (non contesté, à confirmer à l'implémentation) :
+
+- réalisable = prérequis remplis **et** ressources disponibles (défense : au moins une
+  unité) ; la file n'est **pas** prise en compte (sinon l'onglet se vide pendant une
+  construction) ; les éléments verrouillés sont masqués aussi ;
+- combinable avec les puces de catégorie, placée à droite des puces ;
+- évalué à l'activation et au changement d'onglet, **pas chaque seconde** (sinon les cartes
+  apparaissent et disparaissent en plein défilement) ; un bandeau « N nouveaux éléments
+  réalisables · Actualiser » signale les changements ;
+- liste vide : « Rien de réalisable · <élément> dans <durée> » (le plus tôt accessible) ;
+- choix mémorisé par onglet (préférence d'affichage, comme l'ambiance).
+
 ## Ambiance
 
 Préférence d'affichage, pas un état de jeu : table `meta`, clé `ambiance`

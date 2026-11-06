@@ -18,6 +18,10 @@ Grande fidélité aux règles OGame classiques ; on diverge seulement quand le s
 - **UX mobile** : toute mécanique non évidente a une infobulle au tap (spec 10).
 - **L'image ne porte jamais d'information** (refonte visuelle) : chiffres, coûts et timers
   restent en texte.
+- **Aucun achat, jamais** : pas de monnaie premium ni de paiement réel. Ce qui est payant dans
+  OGame (officiers, file d'attente du Commandant) se **gagne en jouant** (spec 12).
+- **Vitesse par défaut ×1**, température max tirée au hasard à la création (questions ouvertes
+  du spec V0, tranchées par l'implémentation).
 
 ## Versions
 
@@ -27,9 +31,17 @@ Grande fidélité aux règles OGame classiques ; on diverge seulement quand le s
 | V1 | Recherche : labo, 5 technos, prérequis, fusion, nanites, réglage de production | Livrée |
 | V2a | Chantier, 8 défenses, technos de combat, simulateur de combat | Livrée |
 | V2b | Raids pirates : détection, force indexée sur les points, pillage, rapports | Livrée |
-| V3 | Flotte : vaisseaux constructibles, attaques de bases pirates, champ de débris | À spécifier |
-| V4 | Galaxie : systèmes, colonisation, multi-planètes, transports | À spécifier |
+| V2c | Succès et officiers : succès (paliers, défenses réussies), officiers débloqués qui donnent des avantages (spec 12) | Décidée, à spécifier |
+| V3 | Flotte : vaisseaux constructibles, attaques de bases pirates (le pillage devient un revenu), champ de débris et recycleurs, technos de propulsion et d'espionnage, missions d'exploration et officiers d'exploration (spec 12) | À spécifier |
+| V4 | Galaxie : systèmes, colonisation, multi-planètes, transports, réseau de recherche intergalactique | À spécifier |
 | V5 | Fin de jeu : expéditions, événements rares, objectif final | À spécifier |
+
+Hors version, à placer :
+
+| Sujet | Contenu | État |
+| --- | --- | --- |
+| Filtre « Réalisables » | Masquer ce qui n'est pas lançable maintenant (spec 10) | Décidé, à implémenter |
+| File d'attente d'ordres | Plusieurs ordres enchaînés par file ; candidat : avantage du Commandant (spec 13) | À spécifier |
 
 Transverse en cours : **refonte visuelle** — disposition cible validée (spec 10, ambiances
 Équilibrée / Immersive / Sobre), images SF réalistes pré-générées avec Higgsfield et registre
@@ -38,5 +50,6 @@ Transverse en cours : **refonte visuelle** — disposition cible validée (spec 
 
 ## Points ouverts
 
+- Place de la V2c par rapport au filtre « Réalisables » et à la refonte visuelle.
 - Équilibrage des raids à valider en jouant (spec 07).
 - Valeurs OGame « à vérifier » dans le YAML (fusion, labo, nanites, Plasma, défenses, vaisseaux).

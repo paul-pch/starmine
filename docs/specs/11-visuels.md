@@ -94,3 +94,5 @@ vérifie que chaque entrée `validated` a son fichier `build` et inversement.
 
 - Poids total de l'APK à surveiller (cible : < 15 Mo d'images).
 - Images 4:3 dédiées à C ou recadrage du 1:1 : à trancher sur les premiers rendus.
+- Portraits des officiers (spec 12) : nouvelle catégorie `character` au registre, à prévoir
+  avec la V2c.
