@@ -1,6 +1,7 @@
 # Specs fonctionnelles de Starmine
 
-Une spec par fonctionnalité, décrivant le comportement **tel qu'il est implémenté**. Elles
+Une spec par fonctionnalité, décrivant le comportement **tel qu'il est implémenté** (une
+spec « à implémenter » le dit en tête). Elles
 servent de référence pour faire évoluer le jeu et pour la refonte visuelle.
 
 | # | Spec | Contenu |
@@ -15,7 +16,8 @@ servent de référence pour faire évoluer le jeu et pour la refonte visuelle.
 | 07 | [Raids pirates](07-raids.md) | Détection, force, pillage, rapports |
 | 08 | [Persistance et sauvegarde](08-persistance.md) | Schéma SQLite, migrations, export/import |
 | 09 | [Notifications](09-notifications.md) | Quand et quoi notifier |
-| 10 | [Écrans et UX](10-ecrans-ux.md) | Inventaire des écrans, informations affichées, conventions |
+| 10 | [Écrans et UX](10-ecrans-ux.md) | Inventaire des écrans, informations affichées, disposition cible, styles |
+| 11 | [Visuels et registre](11-visuels.md) | Images pré-générées, catalogue, paliers, registre, repli (à implémenter) |
 
 ## Règles de rédaction
 

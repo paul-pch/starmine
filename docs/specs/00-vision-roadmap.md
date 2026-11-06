@@ -31,9 +31,10 @@ Grande fidélité aux règles OGame classiques ; on diverge seulement quand le s
 | V4 | Galaxie : systèmes, colonisation, multi-planètes, transports | À spécifier |
 | V5 | Fin de jeu : expéditions, événements rares, objectif final | À spécifier |
 
-Transverse en cours : **refonte visuelle** (décisions dans le projet claude.ai, fichier
-`claude/visuels-decisions.md` : images pré-générées, registre YAML, intégration « équilibrée »
-par défaut).
+Transverse en cours : **refonte visuelle** — disposition cible validée (spec 10, ambiances
+Équilibrée / Immersive / Sobre), images SF réalistes pré-générées avec Higgsfield et registre
+`art/registry.yaml` (spec 11). Décisions et historique : projet claude.ai,
+`claude/visuels-decisions.md`.
 
 ## Points ouverts
 
