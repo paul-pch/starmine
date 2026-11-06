@@ -11,7 +11,7 @@ import 'rules.dart';
 /// technologies et unités. Les ordres en cours ne comptent pas.
 double points(GameState state, Rules rules) {
   var spent = 0.0;
-  for (final item in [...BuildingKind.values, ...TechKind.values]) {
+  for (final item in <Unlockable>[...BuildingKind.values, ...TechKind.values]) {
     for (var l = 1; l <= state.levelOf(item); l++) {
       spent += _total(rules.cost(item, l));
     }

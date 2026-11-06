@@ -123,7 +123,7 @@ void main() {
       final next = step.next as RaidDetected;
       final gap = next.arrivalAt.difference(t0.add(const Duration(hours: 1)));
       expect(next.id, 9);
-      expect(gap, inInclusiveRange(const Duration(hours: 6), const Duration(hours: 18)));
+      expect(gap.inMinutes, inInclusiveRange(6 * 60, 18 * 60));
       expect(next.arrivalAt.difference(next.dueAt), const Duration(hours: 1));
     });
 
