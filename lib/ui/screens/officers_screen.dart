@@ -159,12 +159,9 @@ class _OfficerCard extends StatelessWidget {
       ..showSnackBar(
         SnackBar(
           content: Text(
-            ok
-                ? '${spec.name} : niveau ${level + 1}'
-                : 'Prérequis non remplis pour ${spec.name}',
+            ok ? '${spec.name} : niveau ${level + 1}' : 'Prérequis non remplis pour ${spec.name}',
           ),
         ),
       );
   }
 }
-

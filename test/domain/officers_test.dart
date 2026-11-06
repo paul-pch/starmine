@@ -78,9 +78,7 @@ void main() {
 
   test('Ingénieur : compteur de raids repoussés en prérequis', () {
     final s = game(planet(levels: {BuildingKind.shipyard: 2}));
-    expect(officerMissing(s, OfficerKind.engineer, gameData).counters, {
-      Counter.raidsRepelled: 1,
-    });
+    expect(officerMissing(s, OfficerKind.engineer, gameData).counters, {Counter.raidsRepelled: 1});
     final repelled = s.copyWith(counters: {Counter.raidsRepelled: 1});
     expect(officerAvailable(repelled, OfficerKind.engineer, gameData), isTrue);
     final promoted = promoteOfficer(repelled, OfficerKind.engineer, t0, rules).state;

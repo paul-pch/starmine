@@ -526,9 +526,7 @@ class GameData {
         for (final e in officers.entries)
           OfficerKind.fromKey(e.key): _officer(OfficerKind.fromKey(e.key), _asMap(e.value, e.key)),
       },
-      counterNames: {
-        for (final e in counters.entries) _counter(e.key): _string(counters, e.key),
-      },
+      counterNames: {for (final e in counters.entries) _counter(e.key): _string(counters, e.key)},
     );
   }
 
@@ -547,9 +545,7 @@ class GameData {
       description: _stringOr(m, 'description'),
       bonus: OfficerBonus.fromKey(_string(bonus, 'type')),
       perLevel: _num(bonus, 'per_level'),
-      levels: [
-        for (final raw in levels) _officerLevel(_asMap(raw, '${kind.key}.levels[]')),
-      ],
+      levels: [for (final raw in levels) _officerLevel(_asMap(raw, '${kind.key}.levels[]'))],
     );
   }
 

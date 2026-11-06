@@ -270,8 +270,7 @@ SaveGame decodeSave(Map<String, Object?> json) {
           OfficerKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 0,
       },
       counters: {
-        for (final e in counters.entries)
-          if (Counter.tryKey(e.key) case final k?) k: (e.value as num?)?.toInt() ?? 0,
+        for (final e in counters.entries) ?Counter.tryKey(e.key): (e.value as num?)?.toInt() ?? 0,
       },
     ),
     speed: _double(json, 'game_speed'),

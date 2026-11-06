@@ -65,10 +65,7 @@ class GameRepository {
         research: {for (final r in research) TechKind.fromKey(r.kind): r.level},
         pending: events.map(_decodeRow).toList(),
         officers: {for (final o in officers) OfficerKind.fromKey(o.kind): o.level},
-        counters: {
-          for (final c in counters)
-            if (Counter.tryKey(c.kind) case final k?) k: c.value,
-        },
+        counters: {for (final c in counters) ?Counter.tryKey(c.kind): c.value},
       ),
       speed: double.tryParse(await _meta(_speedKey) ?? '') ?? 1,
       seed: int.tryParse(await _meta(_seedKey) ?? '') ?? 0,
