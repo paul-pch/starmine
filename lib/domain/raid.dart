@@ -10,17 +10,36 @@ import 'rules.dart';
 /// Points du joueur (classement OGame) : ressources dépensées ÷ 1000, bâtiments,
 /// technologies et unités. Les ordres en cours ne comptent pas.
 double points(GameState state, Rules rules) {
+  var spent = economyPoints(state, rules) * 1000;
+  for (final e in state.planet.units.entries) {
+    spent += e.value * _total(rules.data.unit(e.key).baseCost);
+  }
+  return spent / 1000;
+}
+
+/// Points d'économie et de recherche : [points] sans les unités. C'est la base de la force
+/// des raids, pour qu'investir en défense ne renforce pas les pirates.
+double economyPoints(GameState state, Rules rules) {
   var spent = 0.0;
   for (final item in <Unlockable>[...BuildingKind.values, ...TechKind.values]) {
     for (var l = 1; l <= state.levelOf(item); l++) {
       spent += _total(rules.cost(item, l));
     }
   }
-  for (final e in state.planet.units.entries) {
-    spent += e.value * _total(rules.data.unit(e.key).baseCost);
-  }
   return spent / 1000;
 }
+
+/// Relevé du joueur pour un raid futur.
+RaidBase raidBase(GameState state, Rules rules) =>
+    RaidBase(points: economyPoints(state, rules), tech: state.research);
+
+/// Technos de combat que les pirates peuvent avoir.
+const pirateTechKinds = [TechKind.weapons, TechKind.shielding, TechKind.armour];
+
+/// Technos de combat des pirates : celles du relevé moins `pirates.tech_offset` (plancher 0).
+TechLevels pirateTech(TechLevels player, PirateConfig cfg) => {
+  for (final k in pirateTechKinds) k: math.max(0, (player[k] ?? 0) - cfg.techOffset),
+};
 
 double _total(Resources r) => r.metal + r.crystal + r.deuterium;
 
@@ -175,9 +194,10 @@ SimulationSummary simulateRaid(
   Map<UnitKind, int> fleet,
   GameData data, {
   int runs = 100,
+  TechLevels attackerTech = const {},
   required math.Random random,
 }) {
-  final attacker = CombatSide(units: fleet);
+  final attacker = CombatSide(units: fleet, tech: attackerTech);
   final defender = CombatSide(units: state.planet.units, tech: state.research);
   var aWins = 0;
   var dWins = 0;
@@ -232,9 +252,11 @@ typedef RaidStep = ({GameState state, GameEvent next, RaidReport? report});
 Duration _hours(double h, Rules rules) =>
     Duration(milliseconds: (h * Duration.millisecondsPerHour / rules.speed).round());
 
-/// Détection : la composition est fixée selon les points actuels.
+/// Détection : la composition et les technos sont fixées d'après le relevé du raid
+/// précédent (retard des pirates), ou le joueur actuel pour une sauvegarde antérieure.
 RaidStep detectRaid(GameState s, RaidDetected e, Rules rules) {
   final random = math.Random(e.seed);
+  final base = e.base ?? raidBase(s, rules);
   return (
     state: s,
     next: RaidArrival(
@@ -242,8 +264,9 @@ RaidStep detectRaid(GameState s, RaidDetected e, Rules rules) {
       planetId: e.planetId,
       dueAt: e.arrivalAt,
       detectedAt: e.dueAt,
-      fleet: pirateFleet(points(s, rules), rules.data, random),
+      fleet: pirateFleet(base.points, rules.data, random),
       seed: random.nextInt(1 << 31),
+      tech: pirateTech(base.tech, rules.data.pirates),
     ),
     report: null,
   );
@@ -255,19 +278,21 @@ RaidStep resolveRaid(GameState s, RaidArrival e, Rules rules) {
   final data = rules.data;
   final random = math.Random(e.seed);
   final planet = s.planet;
-  final attacker = CombatSide(units: e.fleet);
+  final attacker = CombatSide(units: e.fleet, tech: e.tech);
   final defender = CombatSide(units: planet.units, tech: s.research);
   final result = simulateCombat(data, attacker, defender, random);
   final taken = result.winner == CombatWinner.attacker
       ? loot(planet.resources, cargoCapacity(result.attackerLeft, data), data.pirates.lootShare)
       : Resources.zero;
-  final next = planet.copyWith(
-    resources: planet.resources - taken,
-    units: {for (final k in UnitKind.values) k: result.defenderLeft[k] ?? 0},
+  final next = s.copyWith(
+    planet: planet.copyWith(
+      resources: planet.resources - taken,
+      units: {for (final k in UnitKind.values) k: result.defenderLeft[k] ?? 0},
+    ),
   );
   return (
-    state: s.copyWith(planet: next),
-    next: _nextRaid(e.id, e.planetId, e.dueAt, random, rules),
+    state: next,
+    next: _nextRaid(e.id, e.planetId, e.dueAt, random, rules, raidBase(next, rules)),
     report: RaidReport.fromCombat(
       result,
       at: e.dueAt,
@@ -278,7 +303,14 @@ RaidStep resolveRaid(GameState s, RaidArrival e, Rules rules) {
   );
 }
 
-RaidDetected _nextRaid(int id, int planetId, DateTime after, math.Random random, Rules rules) {
+RaidDetected _nextRaid(
+  int id,
+  int planetId,
+  DateTime after,
+  math.Random random,
+  Rules rules,
+  RaidBase base,
+) {
   final cfg = rules.data.pirates;
   final delay =
       cfg.intervalHoursMin + random.nextDouble() * (cfg.intervalHoursMax - cfg.intervalHoursMin);
@@ -289,6 +321,7 @@ RaidDetected _nextRaid(int id, int planetId, DateTime after, math.Random random,
     dueAt: arrival.subtract(_hours(cfg.warningMinutes / 60, rules)),
     arrivalAt: arrival,
     seed: random.nextInt(1 << 31),
+    base: base,
   );
 }
 
@@ -305,7 +338,7 @@ GameState ensureRaidScheduled(
   required int eventId,
 }) {
   if (pendingRaid(s) != null) return s;
-  final raid = _nextRaid(eventId, s.planet.id, now, math.Random(seed), rules);
+  final raid = _nextRaid(eventId, s.planet.id, now, math.Random(seed), rules, raidBase(s, rules));
   return s.copyWith(pending: [...s.pending, raid]);
 }
 
@@ -317,6 +350,7 @@ GameState raidNow(GameState s, DateTime now, Rules rules) {
     RaidDetected(:final seed) || RaidArrival(:final seed) => seed,
     _ => 0,
   };
+  final base = raid is RaidDetected ? raid.base : null;
   final warning = _hours(rules.data.pirates.warningMinutes / 60, rules);
   final replaced = RaidDetected(
     id: raid.id,
@@ -324,6 +358,7 @@ GameState raidNow(GameState s, DateTime now, Rules rules) {
     dueAt: now,
     arrivalAt: now.add(warning),
     seed: seed,
+    base: base,
   );
   return s.copyWith(pending: [for (final e in s.pending) e.id == raid.id ? replaced : e]);
 }

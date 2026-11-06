@@ -69,6 +69,8 @@ void main() {
     expect(raidB.dueAt, raidA.dueAt);
     expect(raidB.arrivalAt, raidA.arrivalAt);
     expect(raidB.seed, raidA.seed);
+    expect(raidB.base!.points, raidA.base!.points);
+    expect(raidB.base!.tech, raidA.base!.tech);
     final restoredOrders = restored.state.pending.whereType<OrderDone>().toList();
     final originalOrders = original.state.pending.whereType<OrderDone>().toList();
     for (var i = 0; i < 2; i++) {
@@ -92,6 +94,29 @@ void main() {
     final restored = decodeSave(json);
     expect(restored.state.research.values, everyElement(0));
     expect(restored.state.planet.percents.values, everyElement(100));
+  });
+
+  test('raids d’avant la V2c : sans relevé ni technos pirates', () {
+    final detected = decodeEvent(
+      id: 1,
+      planetId: 1,
+      type: raidDetectedType,
+      dueAtMs: 1000,
+      payload: {'arrival_at': 2000, 'seed': 3},
+    );
+    expect((detected as RaidDetected).base, isNull);
+    final arrival = decodeEvent(
+      id: 1,
+      planetId: 1,
+      type: raidArrivalType,
+      dueAtMs: 2000,
+      payload: {
+        'detected_at': 1000,
+        'seed': 3,
+        'fleet': {'light_fighter': 3},
+      },
+    );
+    expect((arrival as RaidArrival).tech, isEmpty);
   });
 
   test('refuse un fichier qui n’est pas une sauvegarde', () {

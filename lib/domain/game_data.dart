@@ -277,6 +277,7 @@ class PirateConfig {
     required this.lootShare,
     required this.warships,
     required this.cargoShips,
+    this.techOffset = 0,
   });
 
   /// Délai entre deux arrivées, en heures de jeu à ×1.
@@ -300,6 +301,9 @@ class PirateConfig {
   /// Vaisseaux disponibles selon les points du joueur (seuil minimal).
   final Map<UnitKind, double> warships;
   final Map<UnitKind, double> cargoShips;
+
+  /// Technos de combat des pirates = celles du joueur (au relevé) moins ce décalage.
+  final int techOffset;
 }
 
 /// Toutes les données de jeu, construites depuis une Map (le chargement YAML est dans `data/`).
@@ -410,6 +414,7 @@ class GameData {
         lootShare: _num(pirates, 'loot_share'),
         warships: ships('warships'),
         cargoShips: ships('cargo_ships'),
+        techOffset: _num(pirates, 'tech_offset').toInt(),
       ),
       categories: {
         for (final screen in categories.keys)

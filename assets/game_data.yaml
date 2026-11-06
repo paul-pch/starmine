@@ -319,18 +319,23 @@ units:
 
 # Raids pirates (V2b). Durées à ×1, divisées par la vitesse de jeu.
 pirates:
-  # Délai entre deux arrivées, tiré uniformément.
-  interval_hours: { min: 6, max: 18 }
+  # Délai entre deux arrivées, tiré uniformément : 2 à 3 raids par semaine à ×1. C'est aussi
+  # le retard des pirates : leur force vient du relevé fait au raid précédent.
+  interval_hours: { min: 48, max: 96 }
   # La flotte est détectée (et sa composition fixée) ce délai avant son arrivée.
   warning_minutes: 60
   # Budget de la flotte (en ressources) = max(min_budget, points × 1000 × force),
-  # force tirée dans la plage. Plancher : 3 chasseurs légers.
+  # force tirée dans la plage. Points d'économie et de recherche (sans les unités).
+  # Plancher : 3 chasseurs légers.
   min_budget: 15000
   strength: { min: 0.15, max: 0.4 }
   # Part du budget consacrée aux transporteurs (capacité de pillage).
   cargo_share: 0.2
   # Pillage : part maximale de chaque stock, dans la limite de la soute.
   loot_share: 0.5
+  # Technos Armes, Bouclier et Protection des pirates = celles du joueur au relevé, moins
+  # ce décalage (plancher 0) : un cran sous le joueur qui recherche.
+  tech_offset: 1
   # Vaisseaux de combat disponibles à partir de N points du joueur.
   warships: { light_fighter: 0, heavy_fighter: 50, cruiser: 200, battleship: 1000 }
   # Transporteur utilisé : le plus gros disponible.

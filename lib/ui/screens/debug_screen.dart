@@ -187,7 +187,7 @@ class _DebugScreenState extends State<DebugScreen> {
           title: const Text('Raid pirate maintenant'),
           subtitle: Text(
             'La prochaine flotte est détectée tout de suite · tes points : '
-            '${fmtAmount(_c.points)}',
+            '${fmtAmount(_c.points)} · base des raids : ${fmtAmount(_c.economyPoints)}',
           ),
           onTap: () async {
             await _c.raidNow();

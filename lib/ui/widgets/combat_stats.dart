@@ -6,6 +6,7 @@ import '../../domain/combat.dart';
 import '../../domain/game_data.dart';
 import '../../domain/raid.dart';
 import '../../domain/resources.dart';
+import '../../domain/rules.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../resource_style.dart';
@@ -184,13 +185,15 @@ abstract final class SimulationSheet {
   static Future<void> show(
     BuildContext context,
     GameController controller,
-    Map<UnitKind, int> fleet,
-  ) {
+    Map<UnitKind, int> fleet, {
+    TechLevels tech = const {},
+  }) {
     final summary = simulateRaid(
       controller.state,
       fleet,
       controller.data,
       runs: runs,
+      attackerTech: tech,
       random: math.Random(),
     );
     return showModalBottomSheet<void>(
@@ -211,7 +214,7 @@ abstract final class SimulationSheet {
               Align(
                 alignment: Alignment.centerRight,
                 child: OutlinedButton.icon(
-                  onPressed: () => _typical(context, controller, fleet),
+                  onPressed: () => _typical(context, controller, fleet, tech),
                   icon: const Icon(Icons.play_arrow_outlined),
                   label: const Text('Voir une bataille type'),
                 ),
@@ -227,9 +230,10 @@ abstract final class SimulationSheet {
     BuildContext context,
     GameController controller,
     Map<UnitKind, int> fleet,
+    TechLevels tech,
   ) {
     final state = controller.state;
-    final attacker = CombatSide(units: fleet);
+    final attacker = CombatSide(units: fleet, tech: tech);
     final defender = CombatSide(units: state.planet.units, tech: state.research);
     final data = controller.data;
     final result = simulateCombat(data, attacker, defender, math.Random());

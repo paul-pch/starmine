@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../domain/combat.dart';
 import '../../domain/events.dart';
+import '../../domain/game_data.dart';
 import '../../domain/raid.dart';
+import '../../domain/rules.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import 'combat_stats.dart';
@@ -10,7 +12,10 @@ import 'info_button.dart';
 
 const raidHelp =
     'Des pirates attaquent régulièrement la planète. Leur flotte est repérée un moment avant '
-    'son arrivée ; sa force dépend de tes points (ressources dépensées ÷ 1000).\n\n'
+    'son arrivée. Sa force dépend de tes points d’économie et de recherche (ressources '
+    'dépensées ÷ 1000, unités non comprises) relevés au raid précédent : les pirates ont du '
+    'retard, et tes défenses ne les renforcent pas. Leurs technos Armes, Bouclier et '
+    'Protection suivent les tiennes, un cran en dessous.\n\n'
     'S’ils gagnent, ils emportent jusqu’à la moitié de chaque ressource, dans la limite de '
     'leur soute. Dépenser tes ressources avant l’arrivée limite donc le pillage.\n\n'
     'Après le combat, 70 % des défenses détruites sont reconstruites.';
@@ -104,9 +109,10 @@ class _RaidDetails extends StatelessWidget {
           'Soute : ${fmtAmount(cargoCapacity(raid.fleet, data))}',
           style: theme.textTheme.bodySmall,
         ),
+        Text('Technos : ${pirateTechLine(data, raid.tech)}', style: theme.textTheme.bodySmall),
         const SizedBox(height: 16),
         ForcesTable(
-          attacker: SideStrength.of(data, CombatSide(units: raid.fleet)),
+          attacker: SideStrength.of(data, CombatSide(units: raid.fleet, tech: raid.tech)),
           defender: SideStrength.of(
             data,
             CombatSide(units: controller.state.planet.units, tech: controller.state.research),
@@ -116,7 +122,7 @@ class _RaidDetails extends StatelessWidget {
         Align(
           alignment: Alignment.centerRight,
           child: FilledButton.tonalIcon(
-            onPressed: () => SimulationSheet.show(context, controller, raid.fleet),
+            onPressed: () => SimulationSheet.show(context, controller, raid.fleet, tech: raid.tech),
             icon: const Icon(Icons.gps_fixed),
             label: const Text('Simuler 100 batailles'),
           ),
@@ -125,3 +131,9 @@ class _RaidDetails extends StatelessWidget {
     );
   }
 }
+
+/// « Armes 2 · Bouclier 1 · Protection 2 ».
+String pirateTechLine(GameData data, TechLevels tech) => [
+  for (final k in pirateTechKinds)
+    '${data.tech(k).name.replaceFirst('Technologie ', '')} ${tech[k] ?? 0}',
+].join(' · ');

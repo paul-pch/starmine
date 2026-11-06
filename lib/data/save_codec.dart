@@ -5,6 +5,7 @@ import '../domain/game_data.dart';
 import '../domain/planet.dart';
 import '../domain/raid.dart';
 import '../domain/resources.dart';
+import '../domain/rules.dart';
 
 /// Identifiant du format de sauvegarde exportée.
 const saveFormat = 'starmine-save';
@@ -54,11 +55,19 @@ Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
     'started_at': event.startedAt.millisecondsSinceEpoch,
     'unit_cost': encodeResources(event.unitCost),
   },
-  RaidDetected() => {'arrival_at': event.arrivalAt.millisecondsSinceEpoch, 'seed': event.seed},
+  RaidDetected() => {
+    'arrival_at': event.arrivalAt.millisecondsSinceEpoch,
+    'seed': event.seed,
+    if (event.base case final base?) ...{
+      'base_points': base.points,
+      'base_tech': encodeTech(base.tech),
+    },
+  },
   RaidArrival() => {
     'detected_at': event.detectedAt.millisecondsSinceEpoch,
     'seed': event.seed,
     'fleet': encodeUnits(event.fleet),
+    'tech': encodeTech(event.tech),
   },
 };
 
@@ -69,6 +78,15 @@ Map<String, Object?> encodeUnits(Map<UnitKind, int> units) => {
 
 Map<UnitKind, int> decodeUnits(Map<String, Object?> m) => {
   for (final e in m.entries) UnitKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 0,
+};
+
+Map<String, Object?> encodeTech(TechLevels tech) => {
+  for (final e in tech.entries)
+    if (e.value > 0) e.key.key: e.value,
+};
+
+TechLevels decodeTech(Map<String, Object?> m) => {
+  for (final e in m.entries) TechKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 0,
 };
 
 Map<String, Object?> _orderPayload(OrderDone e) => {
@@ -124,6 +142,13 @@ GameEvent decodeEvent({
         dueAt: fromEpochMs(dueAtMs),
         arrivalAt: fromEpochMs(_int(payload, 'arrival_at')),
         seed: _int(payload, 'seed'),
+        // Absent avant la V2c : relevé pris à la détection.
+        base: payload['base_points'] == null
+            ? null
+            : RaidBase(
+                points: _double(payload, 'base_points'),
+                tech: decodeTech(_map(payload, 'base_tech')),
+              ),
       );
     case raidArrivalType:
       return RaidArrival(
@@ -133,6 +158,7 @@ GameEvent decodeEvent({
         detectedAt: fromEpochMs(_int(payload, 'detected_at')),
         seed: _int(payload, 'seed'),
         fleet: decodeUnits(_map(payload, 'fleet')),
+        tech: payload['tech'] == null ? const {} : decodeTech(_map(payload, 'tech')),
       );
     default:
       throw FormatException('Type d’événement inconnu : $type');

@@ -31,6 +31,75 @@ void main() {
       );
       // Mine 1 (75) + mine 2 (112) + Énergie 1 (1200) + 3 lanceurs (6000).
       expect(points(s, rules), closeTo((75 + 112 + 1200 + 6000) / 1000, 1e-9));
+      // Base des raids : sans les unités.
+      expect(economyPoints(s, rules), closeTo((75 + 112 + 1200) / 1000, 1e-9));
+    });
+  });
+
+  group('force et technos des pirates', () {
+    test('technos : celles du relevé moins le décalage, plancher 0', () {
+      final t = pirateTech({
+        TechKind.weapons: 3,
+        TechKind.shielding: 1,
+        TechKind.energy: 8,
+      }, gameData.pirates);
+      final offset = gameData.pirates.techOffset;
+      expect(t[TechKind.weapons], 3 - offset);
+      expect(t[TechKind.shielding], math.max(0, 1 - offset));
+      expect(t[TechKind.armour], 0);
+      expect(t.containsKey(TechKind.energy), isFalse);
+    });
+
+    test('détection : flotte et technos d’après le relevé, pas le joueur actuel', () {
+      const base = RaidBase(points: 6000, tech: {TechKind.weapons: 4});
+      final detected = RaidDetected(
+        id: 9,
+        planetId: 1,
+        dueAt: t0,
+        arrivalAt: t0.add(const Duration(hours: 1)),
+        seed: 5,
+        base: base,
+      );
+      final step = detectRaid(game(planet()), detected, rules);
+      final next = step.next as RaidArrival;
+      expect(next.fleet, pirateFleet(6000, gameData, math.Random(5)));
+      expect(next.tech, pirateTech(base.tech, gameData.pirates));
+    });
+
+    test('les défenses ne renforcent pas le raid suivant', () {
+      final eco = {BuildingKind.metalMine: 10, BuildingKind.solarPlant: 10};
+      final bare = resolveRaid(
+        game(planet(levels: eco)),
+        arrival({UnitKind.lightFighter: 3}),
+        rules,
+      );
+      final defended = resolveRaid(
+        game(planet(levels: eco, units: {UnitKind.rocketLauncher: 500})),
+        arrival({UnitKind.lightFighter: 3}),
+        rules,
+      );
+      final a = (bare.next as RaidDetected).base!;
+      final b = (defended.next as RaidDetected).base!;
+      expect(b.points, a.points);
+      expect(a.points, economyPoints(game(planet(levels: eco)), rules));
+    });
+
+    test('combat : les technos pirates comptent', () {
+      final s = game(planet(units: {UnitKind.rocketLauncher: 10}));
+      final weak = arrival({UnitKind.lightFighter: 3});
+      final strong = RaidArrival(
+        id: 9,
+        planetId: 1,
+        dueAt: weak.dueAt,
+        detectedAt: t0,
+        fleet: weak.fleet,
+        seed: 1,
+        tech: const {TechKind.weapons: 5, TechKind.armour: 5},
+      );
+      final a = resolveRaid(s, weak, rules).report!.attackerStrength!;
+      final b = resolveRaid(s, strong, rules).report!.attackerStrength!;
+      expect(b.attack, closeTo(a.attack * 1.5, 1e-9));
+      expect(b.hull, closeTo(a.hull * 1.5, 1e-9));
     });
   });
 
@@ -117,12 +186,12 @@ void main() {
       expect(left, greaterThan(100));
     });
 
-    test('raid suivant : même id, arrivée 6 à 18 h plus tard, détection 1 h avant', () {
+    test('raid suivant : même id, arrivée 48 à 96 h plus tard, détection 1 h avant', () {
       final step = resolveRaid(game(planet()), arrival({UnitKind.lightFighter: 3}), rules);
       final next = step.next as RaidDetected;
       final gap = next.arrivalAt.difference(t0.add(const Duration(hours: 1)));
       expect(next.id, 9);
-      expect(gap.inMinutes, inInclusiveRange(6 * 60, 18 * 60));
+      expect(gap.inMinutes, inInclusiveRange(48 * 60, 96 * 60));
       expect(next.arrivalAt.difference(next.dueAt), const Duration(hours: 1));
     });
 
@@ -134,7 +203,7 @@ void main() {
     });
   });
 
-  test('rattrapage de 3 jours : plusieurs raids, rapports, déterministe', () {
+  test('rattrapage de 3 semaines : plusieurs raids, rapports, déterministe', () {
     final start = ensureRaidScheduled(
       game(planet(levels: {BuildingKind.metalMine: 5, BuildingKind.solarPlant: 5})),
       t0,
@@ -142,11 +211,11 @@ void main() {
       seed: 42,
       eventId: 1,
     );
-    final end = t0.add(const Duration(days: 3));
+    final end = t0.add(const Duration(days: 21));
     final a = advance(start, end, rules);
     final b = advance(start, end, rules);
 
-    expect(a.reports.length, inInclusiveRange(4, 12));
+    expect(a.reports.length, inInclusiveRange(5, 10));
     expect(a.reports.map((r) => r.at), b.reports.map((r) => r.at));
     expect(a.state.planet.resources, b.state.planet.resources);
     expect(pendingRaid(a.state)!.id, 1);

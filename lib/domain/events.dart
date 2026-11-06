@@ -1,5 +1,6 @@
 import 'game_data.dart';
 import 'resources.dart';
+import 'rules.dart';
 
 /// Événement futur. L'ordre d'application est (dueAt, id).
 sealed class GameEvent {
@@ -121,12 +122,25 @@ class RaidDetected extends GameEvent {
     required super.dueAt,
     required this.arrivalAt,
     required this.seed,
+    this.base,
   });
 
   final DateTime arrivalAt;
 
   /// Graine de l'aléatoire du raid (composition, combat, raid suivant).
   final int seed;
+
+  /// Relevé du joueur à la planification (raid précédent) : les pirates ont du retard.
+  /// Absent des sauvegardes antérieures : relevé pris à la détection.
+  final RaidBase? base;
+}
+
+/// Ce que les pirates savent du joueur : points d'économie et de recherche, technos.
+class RaidBase {
+  const RaidBase({required this.points, required this.tech});
+
+  final double points;
+  final TechLevels tech;
 }
 
 /// Flotte pirate en approche, composition connue. À [dueAt] : combat, pillage, rapport,
@@ -139,9 +153,13 @@ class RaidArrival extends GameEvent {
     required this.detectedAt,
     required this.fleet,
     required this.seed,
+    this.tech = const {},
   });
 
   final DateTime detectedAt;
   final Map<UnitKind, int> fleet;
   final int seed;
+
+  /// Technos de combat des pirates (vides dans les sauvegardes antérieures).
+  final TechLevels tech;
 }

@@ -122,8 +122,11 @@ class GameController extends ChangeNotifier {
   /// Flotte pirate détectée et en route, s'il y en a une.
   RaidArrival? get incomingRaid => state.pending.whereType<RaidArrival>().firstOrNull;
 
-  /// Points du joueur (force des raids).
+  /// Points du joueur (classement).
   double get points => raid.points(state, _rules);
+
+  /// Points d'économie et de recherche : base de la force des raids.
+  double get economyPoints => raid.economyPoints(state, _rules);
 
   /// Debug : la prochaine flotte pirate est détectée tout de suite.
   Future<void> raidNow() => _serialized(() async {
