@@ -10,6 +10,12 @@ Idle solo façon OGame, en temps réel, pour Android 15+. Flutter, 100 % local (
 | `lib/data/` | Drift/SQLite, chargement de `assets/game_data.yaml`, export/import JSON | domain |
 | `lib/ui/` | Écrans, notifications | domain, data |
 
+## Documentation
+
+- Specs fonctionnelles : [`docs/specs/`](docs/specs/README.md)
+- Consignes et skills pour Claude : [`CLAUDE.md`](CLAUDE.md), `.claude/skills/`
+- Boucle CI sans SDK local : `tool/ci.sh wait`
+
 ## Dev local
 
 ```bash
