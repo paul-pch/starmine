@@ -5,14 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:starmine/data/database.dart';
 import 'package:starmine/data/game_repository.dart';
+import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/main.dart';
+import 'package:starmine/ui/format.dart';
 import 'package:starmine/ui/game_controller.dart';
+import 'package:starmine/ui/visuals.dart';
 
 import '../domain/helpers.dart';
 import 'fakes.dart';
 
 void main() {
-  testWidgets('écran principal : ressources, bâtiments, onglets', (tester) async {
+  /// Téléphone de référence : 390 × 844 dp.
+  Future<(GameController, StarmineDatabase)> open(WidgetTester tester) async {
+    tester.view.devicePixelRatio = 3;
+    tester.view.physicalSize = const Size(1170, 2532);
+    addTearDown(tester.view.reset);
     final db = StarmineDatabase(NativeDatabase.memory());
     final controller = GameController(
       repository: GameRepository(db),
@@ -23,22 +30,34 @@ void main() {
     );
     // La base fait de vraies entrées/sorties : hors de la zone de temps simulé.
     await tester.runAsync(controller.init);
-
     await tester.pumpWidget(StarmineApp(controller: controller));
-    expect(find.text('Métal'), findsOneWidget);
+    return (controller, db);
+  }
+
+  /// Démonte l'écran pour arrêter l'horloge d'affichage avant la fin du test.
+  Future<void> close(WidgetTester tester, StarmineDatabase db) async {
+    await tester.pumpWidget(const SizedBox());
+    await tester.runAsync(db.close);
+  }
+
+  testWidgets('écran principal : ressources, bâtiments, onglets', (tester) async {
+    final (controller, db) = await open(tester);
+
+    expect(find.byKey(const ValueKey('resource.metal')), findsOneWidget);
     expect(find.text('Mine de métal'), findsOneWidget);
     final tMax = controller.state.planet.tempMax;
-    expect(find.text('Température ${tMax - 40} °C à $tMax °C'), findsOneWidget);
-    expect(find.text('Niv. 1'), findsWidgets);
+    expect(find.text(fmtTempRange(tMax - 40, tMax)), findsOneWidget);
+    expect(find.textContaining('Niv. 0'), findsWidgets);
 
     await tester.tap(find.text('Recherche'));
     await tester.pump();
     expect(find.text('Technologie Énergie'), findsOneWidget);
     expect(find.text('Palier 1'), findsWidgets);
     expect(find.text('Fondamentales'), findsWidgets);
-    expect(find.textContaining('Débloque Centrale à fusion'), findsOneWidget);
     expect(find.textContaining('Requiert Laboratoire de recherche 1'), findsWidgets);
     // Filtre : seules les technos de combat restent.
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'Combat'));
+    await tester.pump();
     await tester.tap(find.widgetWithText(ChoiceChip, 'Combat'));
     await tester.pump();
     expect(find.text('Technologie Armes'), findsOneWidget);
@@ -57,9 +76,77 @@ void main() {
     await tester.tap(find.text('Debug'));
     await tester.pump();
     expect(find.text('Vitesse de jeu'), findsOneWidget);
+    expect(find.text('Ambiance'), findsOneWidget);
 
-    // Démonte l'écran pour arrêter l'horloge d'affichage avant la fin du test.
-    await tester.pumpWidget(const SizedBox());
-    await tester.runAsync(db.close);
+    await close(tester, db);
+  });
+
+  testWidgets('feuille de ressource et d’énergie', (tester) async {
+    final (_, db) = await open(tester);
+
+    await tester.tap(find.byKey(const ValueKey('resource.metal')));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text('Métal'), findsOneWidget);
+    expect(find.text('Production de base'), findsOneWidget);
+    expect(find.text('Stock'), findsOneWidget);
+    Navigator.of(tester.element(find.text('Stock'))).pop();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    await tester.tap(find.byKey(const ValueKey('resource.energy')));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text('Produite'), findsOneWidget);
+    expect(find.text('Consommée'), findsOneWidget);
+    expect(find.textContaining('Le solde est'), findsOneWidget);
+
+    await close(tester, db);
+  });
+
+  testWidgets('feuille de détail : débloque, prérequis, description', (tester) async {
+    final (controller, db) = await open(tester);
+
+    await tester.tap(find.text('Recherche'));
+    await tester.pump();
+    await tester.tap(find.text('Technologie Énergie'));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.textContaining('Débloque Centrale à fusion'), findsOneWidget);
+    expect(find.text(controller.data.spec(TechKind.energy).description), findsOneWidget);
+
+    await close(tester, db);
+  });
+
+  testWidgets('carte « En cours » : ordre lancé, tap vers la file', (tester) async {
+    final (controller, db) = await open(tester);
+
+    await tester.runAsync(() => controller.order(BuildingKind.metalMine));
+    await tester.pump();
+    expect(find.textContaining('En cours · Mine de métal → 1'), findsOneWidget);
+
+    await tester.tap(find.textContaining('En cours · Mine de métal'));
+    await tester.pump();
+    expect(find.text('Mine de métal → niveau 1'), findsOneWidget);
+
+    await close(tester, db);
+  });
+
+  testWidgets('ambiance Sobre : même information, mémorisée', (tester) async {
+    final (controller, db) = await open(tester);
+
+    await tester.runAsync(() => controller.setAmbiance(Ambiance.plain));
+    await tester.pump();
+    expect(controller.ambiance, Ambiance.plain);
+    expect(find.text(controller.state.planet.name), findsOneWidget);
+    expect(find.text('Mine de métal'), findsOneWidget);
+
+    final reloaded = GameController(
+      repository: GameRepository(db),
+      data: gameData,
+      notifier: FakeNotifier(),
+      clock: FakeClock(t0).call,
+      random: math.Random(1),
+    );
+    await tester.runAsync(reloaded.init);
+    expect(reloaded.ambiance, Ambiance.plain);
+
+    await close(tester, db);
   });
 }

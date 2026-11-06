@@ -49,3 +49,4 @@ app.*.map.json
 
 # Code généré (build_runner)
 *.g.dart
+.vscode

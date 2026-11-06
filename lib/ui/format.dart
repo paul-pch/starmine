@@ -13,6 +13,10 @@ String fmtAmount(double value) {
   return buf.toString();
 }
 
+/// « −82 à −42 °C ».
+String fmtTempRange(int min, int max) =>
+    '${fmtAmount(min.toDouble())} à ${fmtAmount(max.toDouble())} °C';
+
 /// Durée compacte : « 2 j 03 h », « 1 h 05 min », « 4 min 09 s », « 12 s ».
 String fmtDuration(Duration d) {
   if (d.isNegative) d = Duration.zero;

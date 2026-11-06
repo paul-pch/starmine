@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -10,131 +11,41 @@ import '../../domain/tech_tree.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../resource_style.dart';
+import '../theme.dart';
+import '../visuals.dart';
 import 'info_button.dart';
 
-/// Carte d'un bâtiment ou d'une technologie : niveau, effet du niveau suivant, coût,
-/// durée, ce qui bloque, bouton de lancement et réglage de production.
-class ItemCard extends StatelessWidget {
-  const ItemCard({super.key, required this.controller, required this.item, required this.now});
+/// Ce qu'on sait d'un élément à [now] : partagé par la carte et sa feuille de détail.
+class ItemFacts {
+  ItemFacts(this.controller, this.item, DateTime now) : state = controller.interpolated(now);
 
   final GameController controller;
   final Unlockable item;
-  final DateTime now;
+  final GameState state;
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final rules = controller.rules;
-    final state = controller.interpolated(now);
-    final spec = controller.data.spec(item);
-    final level = state.levelOf(item);
-    final cost = rules.cost(item, level + 1);
-    final block = checkOrder(state, item, rules);
-    final locked = block is RequirementsNotMet;
-    final effect = _effect(state);
-    final running = state.pending.whereType<OrderDone>().any((e) => e.item == item);
-    final unlocks = controller.data.unlockedBy(item);
+  int get level => state.levelOf(item);
+  Resources get cost => controller.rules.cost(item, level + 1);
+  Duration get duration => orderDuration(state, item, controller.rules);
+  OrderBlock? get block => checkOrder(state, item, controller.rules);
 
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      child: Opacity(
-        opacity: locked ? 0.6 : 1,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  if (item is TechKind) ...[
-                    Icon(ResourceStyle.researchIcon, size: 18, color: theme.colorScheme.primary),
-                    const SizedBox(width: 6),
-                  ],
-                  Flexible(child: Text(spec.name, style: theme.textTheme.titleMedium)),
-                  if (item case final TechKind tech) _TierLabel(tier: controller.data.tier(tech)),
-                  if (spec.description.isNotEmpty)
-                    InfoButton(title: spec.name, body: spec.description),
-                  const Spacer(),
-                  Text('Niv. $level', style: theme.textTheme.titleMedium),
-                ],
-              ),
-              if (effect.isNotEmpty) Text(effect, style: theme.textTheme.bodyMedium),
-              if (locked) ...[
-                const SizedBox(height: 4),
-                Text(
-                  'Requiert ${_requirements(state, block.missing)}',
-                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error),
-                ),
-              ] else ...[
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CostLine(cost: cost, available: state.planet.resources),
-                          const SizedBox(height: 2),
-                          Text(
-                            fmtDuration(orderDuration(state, item, rules)),
-                            style: theme.textTheme.bodySmall,
-                          ),
-                          if (_blockText(state, block) case final text?)
-                            Text(
-                              text,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.error,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    FilledButton(
-                      onPressed: block == null ? () => _order(context) : null,
-                      child: Text(running ? 'En cours' : 'Niv. ${level + 1}'),
-                    ),
-                  ],
-                ),
-              ],
-              if (unlocks.isNotEmpty) ...[
-                const SizedBox(height: 6),
-                Text(
-                  'Débloque ${unlocks.map((u) => u.name).join(' · ')}',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
-              if (item case final BuildingKind kind
-                  when controller.data[kind].adjustable && level > 0)
-                _PercentRow(controller: controller, kind: kind),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  /// Libellé de l'action ; aussi le libellé accessible du bouton de la carte.
+  String get verb => switch (item) {
+    TechKind() => 'Rechercher',
+    BuildingKind() => level == 0 ? 'Construire' : 'Améliorer',
+  };
 
-  Future<void> _order(BuildContext context) async {
-    final reason = await controller.order(item);
-    if (reason == null || !context.mounted) return;
-    final text = switch (reason) {
-      QueueBusy() => 'La file est occupée',
-      LabBusy() => 'Le laboratoire est occupé',
-      ShipyardBusy() => 'Le chantier est occupé',
-      MaxReached() || NotBuildable() => 'Impossible',
-      RequirementsNotMet() => 'Prérequis manquants',
-      NotEnoughResources(:final missing) => 'Il manque ${fmtCost(missing)}',
-    };
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
-  }
+  /// Réglage de production du bâtiment, 100 pour une techno.
+  int get percent => switch (item) {
+    final BuildingKind kind => state.planet.percent(kind),
+    TechKind() => 100,
+  };
 
-  String _requirements(GameState state, Map<Unlockable, int> missing) => [
-    for (final e in missing.entries)
+  String requirements(Map<Unlockable, int> items) => [
+    for (final e in items.entries)
       '${controller.data.spec(e.key).name} ${e.value} (${state.levelOf(e.key)})',
   ].join(' · ');
 
-  String? _blockText(GameState state, OrderBlock? block) => switch (block) {
+  String? blockText() => switch (block) {
     null || RequirementsNotMet() => null,
     QueueBusy(current: final OrderDone current) =>
       'File occupée : ${controller.data.spec(current.item).name} ${current.targetLevel}',
@@ -145,15 +56,14 @@ class ItemCard extends StatelessWidget {
       BuildingKind() => 'Impossible pendant une recherche',
       TechKind() => 'Impossible pendant l’agrandissement du labo',
     },
-    NotEnoughResources(:final missing) => _missingHint(state, missing),
+    NotEnoughResources(:final missing) => _missingHint(missing),
   };
 
   /// « Manque 120 M · dans 14 min », ou capacité insuffisante.
-  String _missingHint(GameState state, Resources missing) {
+  String _missingHint(Resources missing) {
     final rules = controller.rules;
     final rate = rules.hourlyProduction(state.planet, state.research);
     final cap = rules.capacity(state.planet.levels);
-    final cost = rules.cost(item, state.levelOf(item) + 1);
     var hours = 0.0;
     for (final k in ResourceKind.values) {
       if (missing[k] <= 0) continue;
@@ -165,7 +75,7 @@ class ItemCard extends StatelessWidget {
   }
 
   /// Gain apporté par le niveau suivant, en clair.
-  String _effect(GameState state) {
+  String effect() {
     final rules = controller.rules;
     final data = controller.data;
     final next = switch (item) {
@@ -214,6 +124,247 @@ class ItemCard extends StatelessWidget {
         break;
     }
     return parts.join(' · ');
+  }
+}
+
+/// Lance le niveau suivant ; un refus s'affiche en message sur [context].
+Future<void> _order(BuildContext context, GameController controller, Unlockable item) async {
+  final reason = await controller.order(item);
+  if (reason == null || !context.mounted) return;
+  final text = switch (reason) {
+    QueueBusy() => 'La file est occupée',
+    LabBusy() => 'Le laboratoire est occupé',
+    ShipyardBusy() => 'Le chantier est occupé',
+    MaxReached() || NotBuildable() => 'Impossible',
+    RequirementsNotMet() => 'Prérequis manquants',
+    NotEnoughResources(:final missing) => 'Il manque ${fmtCost(missing)}',
+  };
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
+}
+
+/// Carte d'un bâtiment ou d'une technologie : l'essentiel pour décider. Le tap ouvre la
+/// feuille de détail (description, débloque, prérequis, réglage de production).
+class ItemCard extends StatelessWidget {
+  const ItemCard({super.key, required this.controller, required this.item, required this.now});
+
+  final GameController controller;
+  final Unlockable item;
+  final DateTime now;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final facts = ItemFacts(controller, item, now);
+    final spec = controller.data.spec(item);
+    final block = facts.block;
+    final locked = block is RequirementsNotMet;
+    final effect = facts.effect();
+    final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
+    final error = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error);
+    final level = facts.level;
+
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => ItemDetailSheet.show(context, controller, item),
+        child: Opacity(
+          opacity: locked ? 0.6 : 1,
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    GameImage(
+                      path: VisualsScope.of(context).unlockable(item, level),
+                      icon: ItemStyle.icon(item),
+                      width: 64,
+                      radius: 10,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Marge à droite : place de l'icône (i), posée au-dessus.
+                          Padding(
+                            padding: const EdgeInsets.only(right: 36),
+                            child: Row(
+                              children: [
+                                Flexible(child: Text(spec.name, style: theme.textTheme.titleSmall)),
+                                if (item case final TechKind tech)
+                                  _TierLabel(tier: controller.data.tier(tech)),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Wrap(
+                            spacing: 8,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(
+                                effect.isEmpty ? 'Niv. $level' : 'Niv. $level · $effect',
+                                style: secondary,
+                              ),
+                              if (facts.percent < 100) _PercentChip(percent: facts.percent),
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          if (block case RequirementsNotMet(:final missing))
+                            Text('Requiert ${facts.requirements(missing)}', style: error)
+                          else ...[
+                            Wrap(
+                              spacing: 10,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                CostLine(cost: facts.cost, available: facts.state.planet.resources),
+                                Text(fmtDuration(facts.duration), style: mono(secondary)),
+                              ],
+                            ),
+                            if (facts.blockText() case final text?) Text(text, style: error),
+                          ],
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton.filled(
+                      tooltip: '${facts.verb} ${spec.name}',
+                      onPressed: block == null ? () => _order(context, controller, item) : null,
+                      style: IconButton.styleFrom(
+                        minimumSize: const Size.square(48),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      ),
+                      icon: const Icon(Icons.arrow_upward),
+                    ),
+                  ],
+                ),
+              ),
+              if (spec.description.isNotEmpty)
+                Positioned(
+                  top: 0,
+                  right: 56,
+                  child: InfoButton(title: spec.name, body: spec.description),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Puce « Production X % » : réglage inférieur à 100 %.
+class _PercentChip extends StatelessWidget {
+  const _PercentChip({required this.percent});
+
+  final int percent;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondaryContainer,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        'Production $percent %',
+        style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSecondaryContainer),
+      ),
+    );
+  }
+}
+
+/// Feuille de détail : tout ce que la carte ne montre pas. Suit l'état du jeu tant qu'elle
+/// est ouverte (réglage de production).
+abstract final class ItemDetailSheet {
+  static Future<void> show(BuildContext context, GameController controller, Unlockable item) =>
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        isScrollControlled: true,
+        builder: (sheet) => ListenableBuilder(
+          listenable: controller,
+          builder: (_, _) => SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+              child: _ItemDetail(
+                controller: controller,
+                item: item,
+                onOrder: () {
+                  Navigator.pop(sheet);
+                  unawaited(_order(context, controller, item));
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+}
+
+class _ItemDetail extends StatelessWidget {
+  const _ItemDetail({required this.controller, required this.item, required this.onOrder});
+
+  final GameController controller;
+  final Unlockable item;
+  final VoidCallback onOrder;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final facts = ItemFacts(controller, item, controller.now());
+    final spec = controller.data.spec(item);
+    final block = facts.block;
+    final locked = block is RequirementsNotMet;
+    final effect = facts.effect();
+    final unlocks = controller.data.unlockedBy(item);
+    final body = theme.textTheme.bodyMedium;
+    final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
+    final error = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error);
+    const gap = SizedBox(height: 8);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(child: Text(spec.name, style: theme.textTheme.titleLarge)),
+            Text('Niv. ${facts.level}', style: mono(theme.textTheme.titleSmall)),
+          ],
+        ),
+        if (spec.description.isNotEmpty) ...[gap, Text(spec.description, style: body)],
+        if (effect.isNotEmpty) ...[gap, Text('Niveau suivant : $effect', style: body)],
+        gap,
+        Wrap(
+          spacing: 10,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            CostLine(cost: facts.cost, available: facts.state.planet.resources),
+            Text(fmtDuration(facts.duration), style: mono(secondary)),
+          ],
+        ),
+        if (facts.blockText() case final text?) Text(text, style: error),
+        if (spec.requires.isNotEmpty) ...[
+          gap,
+          Text('Requiert ${facts.requirements(spec.requires)}', style: locked ? error : secondary),
+        ],
+        if (unlocks.isNotEmpty) ...[
+          gap,
+          Text('Débloque ${unlocks.map((u) => u.name).join(' · ')}', style: secondary),
+        ],
+        if (item case final BuildingKind kind
+            when controller.data[kind].adjustable && facts.level > 0)
+          _PercentRow(controller: controller, kind: kind),
+        const SizedBox(height: 12),
+        SizedBox(
+          width: double.infinity,
+          child: FilledButton(onPressed: block == null ? onOrder : null, child: Text(facts.verb)),
+        ),
+      ],
+    );
   }
 }
 

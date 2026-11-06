@@ -7,6 +7,8 @@ import 'data/game_repository.dart';
 import 'ui/game_controller.dart';
 import 'ui/home_shell.dart';
 import 'ui/notifications.dart';
+import 'ui/theme.dart';
+import 'ui/visuals.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,26 +21,22 @@ Future<void> main() async {
     notifier: notifier,
   );
   await controller.init();
-  runApp(StarmineApp(controller: controller));
+  runApp(StarmineApp(controller: controller, visuals: await Visuals.load(rootBundle)));
 }
 
 class StarmineApp extends StatelessWidget {
-  const StarmineApp({super.key, required this.controller});
+  const StarmineApp({super.key, required this.controller, this.visuals = const Visuals()});
 
   final GameController controller;
+  final Visuals visuals;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Starmine',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFF5C451),
-          brightness: Brightness.dark,
-        ),
-      ),
-      home: HomeShell(controller: controller),
+      theme: buildTheme(),
+      home: HomeShell(controller: controller, visuals: visuals),
     );
   }
 }

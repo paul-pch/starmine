@@ -9,6 +9,7 @@ class CategorizedList<T> extends StatefulWidget {
     required this.items,
     required this.categoryOf,
     required this.itemBuilder,
+    this.header,
   });
 
   /// Clé → libellé, dans l'ordre d'affichage.
@@ -16,6 +17,9 @@ class CategorizedList<T> extends StatefulWidget {
   final List<T> items;
   final String Function(T item) categoryOf;
   final Widget Function(BuildContext context, T item) itemBuilder;
+
+  /// Au-dessus des puces, hors défilement (carte « En cours »).
+  final Widget? header;
 
   @override
   State<CategorizedList<T>> createState() => _CategorizedListState<T>();
@@ -79,6 +83,7 @@ class _CategorizedListState<T> extends State<CategorizedList<T>> {
 
     return Column(
       children: [
+        ?widget.header,
         chips,
         Expanded(
           child: ListView(padding: const EdgeInsets.only(bottom: 8), children: children),

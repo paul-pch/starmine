@@ -5,22 +5,27 @@ import 'package:flutter/material.dart';
 import 'game_controller.dart';
 import '../domain/engine.dart';
 import 'resource_style.dart';
+import 'theme.dart';
+import 'visuals.dart';
 import 'screens/debug_screen.dart';
 import 'screens/reports_screen.dart';
 import 'widgets/combat_report.dart';
+import 'widgets/planet_hero.dart';
 import 'widgets/raid_banner.dart';
 import 'screens/defense_screen.dart';
 import 'screens/items_screen.dart';
 import 'screens/queue_screen.dart';
 import 'widgets/resource_bar.dart';
 
-/// Écran principal : barre de ressources, trois onglets.
+/// Écran principal : barre de ressources collée en haut, hero qui défile avec le contenu,
+/// bandeau de raid, onglet courant, navigation.
 /// Une horloge d'affichage (1 s) interpole les stocks sans rien écrire ; quand une
 /// échéance est passée, elle déclenche un rattrapage réel via le contrôleur.
 class HomeShell extends StatefulWidget {
-  const HomeShell({super.key, required this.controller});
+  const HomeShell({super.key, required this.controller, this.visuals = const Visuals()});
 
   final GameController controller;
+  final Visuals visuals;
 
   @override
   State<HomeShell> createState() => _HomeShellState();
@@ -30,6 +35,7 @@ class _HomeShellState extends State<HomeShell> {
   late DateTime _now;
   late final Timer _ticker;
   late final AppLifecycleListener _lifecycle;
+  static const _queueTab = 3;
   var _tab = 0;
   var _refreshing = false;
 
@@ -95,6 +101,8 @@ class _HomeShellState extends State<HomeShell> {
     unawaited(_c.refresh().whenComplete(() => _refreshing = false));
   }
 
+  void _openQueue() => setState(() => _tab = _queueTab);
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
@@ -102,35 +110,37 @@ class _HomeShellState extends State<HomeShell> {
       builder: (context, _) {
         final state = _c.state;
         final pages = [
-          BuildingsScreen(controller: _c, now: _now),
-          ResearchScreen(controller: _c, now: _now),
-          DefenseScreen(controller: _c, now: _now),
+          BuildingsScreen(controller: _c, now: _now, onOpenQueue: _openQueue),
+          ResearchScreen(controller: _c, now: _now, onOpenQueue: _openQueue),
+          DefenseScreen(controller: _c, now: _now, onOpenQueue: _openQueue),
           QueueScreen(controller: _c, now: _now),
           DebugScreen(controller: _c),
         ];
         return Scaffold(
-          appBar: AppBar(
-            title: _PlanetTitle(controller: _c),
-            actions: [
-              IconButton(
-                tooltip: 'Rapports de raid',
-                onPressed: _openReports,
-                icon: Badge(
-                  isLabelVisible: _c.unseenReports > 0,
-                  label: Text('${_c.unseenReports}'),
-                  child: const Icon(Icons.article_outlined),
+          body: VisualsScope(
+            visuals: widget.visuals.withAmbiance(_c.ambiance),
+            child: Column(
+              children: [
+                ResourceBar(controller: _c, now: _now),
+                const Divider(height: 1),
+                Expanded(
+                  child: NestedScrollView(
+                    headerSliverBuilder: (context, _) => [
+                      SliverToBoxAdapter(
+                        child: PlanetHero(controller: _c, onReports: _openReports),
+                      ),
+                    ],
+                    body: Column(
+                      children: [
+                        if (_c.incomingRaid case final raid?)
+                          RaidBanner(controller: _c, raid: raid, now: _now),
+                        Expanded(child: pages[_tab]),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          body: Column(
-            children: [
-              if (_c.incomingRaid case final raid?)
-                RaidBanner(controller: _c, raid: raid, now: _now),
-              ResourceBar(controller: _c, now: _now),
-              const Divider(height: 1),
-              Expanded(child: pages[_tab]),
-            ],
+              ],
+            ),
           ),
           bottomNavigationBar: NavigationBar(
             selectedIndex: _tab,
@@ -168,30 +178,6 @@ class _HomeShellState extends State<HomeShell> {
   }
 }
 
-/// Nom de la planète et sa plage de températures.
-class _PlanetTitle extends StatelessWidget {
-  const _PlanetTitle({required this.controller});
-
-  final GameController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    final planet = controller.state.planet;
-    final tempMin = planet.tempMax - controller.data.start.tempSpread;
-    final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(planet.name),
-        Text(
-          'Température $tempMin °C à ${planet.tempMax} °C',
-          style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-        ),
-      ],
-    );
-  }
-}
-
 /// Pastille d'onglet : verte si la file est libre, rouge si elle est bloquée.
 class _SlotBadge extends StatelessWidget {
   const _SlotBadge({required this.status, required this.child});
@@ -206,7 +192,7 @@ class _SlotBadge extends StatelessWidget {
       smallSize: 7,
       backgroundColor: status == SlotStatus.blocked
           ? Theme.of(context).colorScheme.error
-          : const Color(0xFF66BB6A),
+          : Palette.free,
       child: child,
     );
   }

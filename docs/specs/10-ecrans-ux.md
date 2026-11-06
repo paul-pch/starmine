@@ -11,14 +11,20 @@ Maquettes de référence (validées) : canevas claude.ai « Ogamelike – intég
 C « Immersive » (option), A « Sobre » (repli sans image). Les images et leur registre :
 spec 11.
 
-État : la disposition ci-dessous est la **cible** ; l'implémentation actuelle suit encore
-l'ancienne disposition (AppBar + barre de ressources + liste), avec la même information.
+État : B et A sont implémentées, sans images pour l'instant (repli partout, spec 11) ; les
+polices restent à embarquer. C reste la **cible** : ce qui la concerne ci-dessous n'est pas
+implémenté.
+
+Écarts voulus avec les maquettes, la spec primant sur l'information : stocks en entier animé
+(pas « 128.4k ») ; (i) sur chaque carte ; navigation avec icônes ; cibles 48 dp (44 sur la
+maquette) ; couleurs des ressources et de la production selon les jetons ci-dessous.
 
 ## Structure
 
 ```
 Barre de ressources (collée en haut, compacte)
-Hero planète 21:9 : image + bandeau opaque (nom, « Tmin à Tmax °C », icône Rapports + non lus)
+Hero planète 21:9 (défile avec le contenu, 200 dp au plus) : image + bandeau opaque (nom,
+  « Tmin à Tmax °C », icône Rapports + non lus)
 [Bandeau d'alerte raid, si une flotte est en route]
 Contenu de l'onglet : [carte « En cours » de la file de l'onglet] · puces · cartes
 Navigation : Bâtiments · Recherche · Défense · File · Debug (pastilles d'état de file)
@@ -31,9 +37,9 @@ sont posés sur des panneaux opaques à 78–90 %.
 
 | Élément | Information | Disposition |
 | --- | --- | --- |
-| Barre de ressources | Par ressource : icône, stock (animé chaque seconde, rouge si plein), production /h ; jauge fine de remplissage. Énergie : solde ; « Mines à X % » en rouge à la place du /h si manque | 4 colonnes. Tap sur une ressource → feuille : nom, stock / capacité, production détaillée ; énergie : produite · consommée, explication du facteur |
+| Barre de ressources | Par ressource : icône, stock (animé chaque seconde, rouge si plein), production /h ; jauge fine de remplissage. Énergie : solde ; « Mines à X % » en rouge à la place du /h si manque | 4 colonnes. Tap sur une ressource → feuille : nom, stock / capacité, production détaillée (base, mines et consommations, total) ; énergie : produite · consommée, explication du facteur |
 | Hero planète | Nom, « Tmin à Tmax °C », Rapports (badge du nombre de non lus) | Image par tranche de température (spec 11), texte sur un bandeau opaque à 82 %, jamais sur l'image nue |
-| Carte « En cours » | File de l'onglet : nom → niveau ou « 3 / 20 », barre de progression, reste | En tête de l'onglet si la file est occupée ; tap → onglet File. Rouge avec cadenas si la file est bloquée (agrandissement du labo / chantier) |
+| Carte « En cours » | File de l'onglet : nom → niveau ou « 3 / 20 », barre de progression, reste (fin du lot pour le chantier) | En tête de l'onglet si la file est occupée ; tap → onglet File. Rouge avec cadenas si la file est bloquée (agrandissement du labo / chantier) |
 | Pastilles d'onglet | Verte = file libre ; rouge = file bloquée par l'agrandissement du labo ou du chantier ; rien = occupée ou bâtiment absent | Point sur l'icône de navigation (inchangé) |
 | Puces de filtre | « Tout » (avec titres de section) + une puce par catégorie du YAML | Rangée défilante horizontale sous la carte « En cours » |
 | Carte d'élément | Voir ci-dessous | B : ligne avec vignette 64 px ; C : grille 2 colonnes, image 4:3 en tête ; A : vignette remplacée par l'icône vectorielle |
@@ -53,7 +59,8 @@ Toujours visible sur la carte (B) :
 
 Dans la feuille de détail (tap sur la carte) : description (YAML), « Débloque … »,
 « Requiert … » complet, réglage de production 0–100 % (bâtiments concernés), caractéristiques
-d'unité (attaque / bouclier / coque) et feuille de quantité pour la défense.
+d'unité (attaque / bouclier / coque) pour la défense. La feuille de quantité s'ouvre depuis
+le bouton de la carte.
 
 En C, la carte n'affiche que nom, niveau, durée et le coût **sur** le bouton ; tout le reste
 est dans la feuille de détail (un tap).
@@ -117,7 +124,7 @@ change aucune information affichée.
 
 Les icônes de ressources restent vectorielles (Material) : pas d'image générée à cette taille.
 
-Code : `lib/ui/resource_style.dart`, thème dans `lib/main.dart`.
+Code : `lib/ui/resource_style.dart`, thème et jetons dans `lib/ui/theme.dart`.
 
 ## Règles pour la refonte visuelle
 
@@ -130,11 +137,12 @@ Code : `lib/ui/resource_style.dart`, thème dans `lib/main.dart`.
 
 ## Code
 
-`lib/ui/home_shell.dart`, `lib/ui/screens/*`, `lib/ui/widgets/*`.
+`lib/ui/home_shell.dart`, `lib/ui/theme.dart`, `lib/ui/screens/*`, `lib/ui/widgets/*`.
 
 ## Tests
 
-`test/ui/home_shell_test.dart` (navigation, filtres, messages de file),
+`test/ui/home_shell_test.dart` (navigation, filtres, messages de file, feuilles, carte
+« En cours », ambiance),
 `test/ui/game_controller_test.dart`.
 
 ## Points ouverts

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../domain/game_data.dart';
 import '../format.dart';
 import '../game_controller.dart';
+import '../visuals.dart';
 import '../widgets/combat_stats.dart';
 import '../widgets/info_button.dart';
 
@@ -139,6 +140,19 @@ class _DebugScreenState extends State<DebugScreen> {
               ],
               selected: {_c.speed},
               onSelectionChanged: (s) => _c.setSpeed(s.single),
+            ),
+          ),
+        ),
+        ListTile(
+          title: const Text('Ambiance'),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: SegmentedButton<Ambiance>(
+              segments: [
+                for (final a in Ambiance.values) ButtonSegment(value: a, label: Text(a.label)),
+              ],
+              selected: {_c.ambiance},
+              onSelectionChanged: (s) => _c.setAmbiance(s.single),
             ),
           ),
         ),

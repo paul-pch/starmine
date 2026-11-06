@@ -18,6 +18,7 @@ class GameRepository {
 
   static const _speedKey = 'game_speed';
   static const _seedKey = 'rng_seed';
+  static const _ambianceKey = 'ambiance';
 
   /// Charge la partie (V0 : la première planète) ou `null` s'il n'y en a pas.
   Future<SaveGame?> load() async {
@@ -112,6 +113,11 @@ class GameRepository {
   }
 
   Future<void> setSpeed(double speed) => _setMeta(_speedKey, speed.toString());
+
+  /// Préférence d'affichage : hors sauvegarde JSON, survit à une nouvelle partie.
+  Future<String?> ambiance() => _meta(_ambianceKey);
+
+  Future<void> setAmbiance(String value) => _setMeta(_ambianceKey, value);
 
   /// Prochain identifiant d'événement libre (historique compris).
   Future<int> nextEventId() async {

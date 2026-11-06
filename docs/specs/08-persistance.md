@@ -14,7 +14,7 @@ Ne jamais perdre une partie : base locale versionnée et sauvegarde exportable.
 | `units` | Nombre par unité et par planète | v3 |
 | `events` | File unique : type, échéance, `payload` JSON, statut | v1 |
 | `reports` | Rapports de raid (JSON), vu / non vu | v4 |
-| `meta` | Vitesse de jeu, graine | v1 |
+| `meta` | Vitesse de jeu, graine ; ambiance d'affichage (`ambiance`, hors sauvegarde JSON) | v1 |
 
 - `schemaVersion` = **4**. Chaque montée de version a son étape dans `onUpgrade` et le test
   `migration_test.dart` part d'une **base v1 réelle** jusqu'à la dernière version.

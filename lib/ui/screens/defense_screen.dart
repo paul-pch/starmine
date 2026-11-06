@@ -8,20 +8,35 @@ import '../../domain/game_data.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../resource_style.dart';
+import '../theme.dart';
+import '../visuals.dart';
 import '../widgets/categorized_list.dart';
+import '../widgets/in_progress_card.dart';
 import '../widgets/info_button.dart';
 
 /// Défenses constructibles au chantier.
 class DefenseScreen extends StatelessWidget {
-  const DefenseScreen({super.key, required this.controller, required this.now});
+  const DefenseScreen({
+    super.key,
+    required this.controller,
+    required this.now,
+    required this.onOpenQueue,
+  });
 
   final GameController controller;
   final DateTime now;
+  final VoidCallback onOpenQueue;
 
   @override
   Widget build(BuildContext context) {
     final data = controller.data;
     return CategorizedList<UnitKind>(
+      header: InProgressCard(
+        controller: controller,
+        slot: Slot.shipyard,
+        now: now,
+        onTap: onOpenQueue,
+      ),
       categories: data.categories['defense'] ?? const {},
       items: [
         for (final k in UnitKind.values)
@@ -41,7 +56,7 @@ class UnitStatsLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = Theme.of(context).textTheme.bodySmall;
+    final style = mono(Theme.of(context).textTheme.bodySmall);
     Widget part(IconData icon, double v) => Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -74,6 +89,16 @@ class _UnitCard extends StatelessWidget {
   final UnitKind unit;
   final DateTime now;
 
+  String get _helpText {
+    final description = controller.data.unit(unit).description;
+    return [if (description.isNotEmpty) description, statsHelp].join('\n\n');
+  }
+
+  String _requirements(GameState state, Map<Unlockable, int> items) => [
+    for (final e in items.entries)
+      '${controller.data.spec(e.key).name} ${e.value} (${state.levelOf(e.key)})',
+  ].join(' · ');
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -83,72 +108,127 @@ class _UnitCard extends StatelessWidget {
     final owned = state.planet.count(unit);
     final block = checkBatch(state, unit, 1, rules);
     final locked = block is RequirementsNotMet;
+    final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
+    final error = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error);
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      child: Opacity(
-        opacity: locked ? 0.6 : 1,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => _details(context),
+        child: Opacity(
+          opacity: locked ? 0.6 : 1,
+          child: Stack(
             children: [
-              Row(
-                children: [
-                  Flexible(child: Text(spec.name, style: theme.textTheme.titleMedium)),
-                  InfoButton(
-                    title: spec.name,
-                    body: [
-                      if (spec.description.isNotEmpty) spec.description,
-                      statsHelp,
-                    ].join('\n\n'),
-                  ),
-                  const Spacer(),
-                  Text('× ${fmtAmount(owned.toDouble())}', style: theme.textTheme.titleMedium),
-                ],
-              ),
-              UnitStatsLine(stats: UnitStats.of(spec, state.research)),
-              if (locked) ...[
-                const SizedBox(height: 4),
-                Text(
-                  'Requiert ${[for (final e in block.missing.entries) '${controller.data.spec(e.key).name} ${e.value} (${state.levelOf(e.key)})'].join(' · ')}',
-                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error),
-                ),
-              ] else ...[
-                const SizedBox(height: 8),
-                Row(
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
                   children: [
+                    GameImage(
+                      path: VisualsScope.of(context).unit(unit),
+                      icon: ItemStyle.unitIcon,
+                      width: 64,
+                      radius: 10,
+                    ),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CostLine(cost: spec.baseCost, available: state.planet.resources),
-                          const SizedBox(height: 2),
-                          Text(
-                            '${fmtDuration(unitDuration(state, unit, rules))} par unité',
-                            style: theme.textTheme.bodySmall,
+                          // Marge à droite : place de l'icône (i), posée au-dessus.
+                          Padding(
+                            padding: const EdgeInsets.only(right: 36),
+                            child: Text(spec.name, style: theme.textTheme.titleSmall),
                           ),
-                          if (_blockText(block) case final text?)
-                            Text(
-                              text,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.error,
-                              ),
+                          const SizedBox(height: 2),
+                          Wrap(
+                            spacing: 10,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text('× ${fmtAmount(owned.toDouble())}', style: mono(secondary)),
+                              UnitStatsLine(stats: UnitStats.of(spec, state.research)),
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          if (block case RequirementsNotMet(:final missing))
+                            Text('Requiert ${_requirements(state, missing)}', style: error)
+                          else ...[
+                            Wrap(
+                              spacing: 10,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                CostLine(cost: spec.baseCost, available: state.planet.resources),
+                                Text(
+                                  '${fmtDuration(unitDuration(state, unit, rules))} par unité',
+                                  style: mono(secondary),
+                                ),
+                              ],
                             ),
+                            if (_blockText(block) case final text?) Text(text, style: error),
+                          ],
                         ],
                       ),
                     ),
-                    FilledButton(
+                    const SizedBox(width: 8),
+                    IconButton.filled(
+                      tooltip: 'Commander ${spec.name}',
                       onPressed: block == null ? () => _order(context) : null,
-                      child: const Text('Construire'),
+                      style: IconButton.styleFrom(
+                        minimumSize: const Size.square(48),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      ),
+                      icon: const Icon(Icons.add),
                     ),
                   ],
                 ),
-              ],
+              ),
+              Positioned(
+                top: 0,
+                right: 56,
+                child: InfoButton(title: spec.name, body: _helpText),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  /// Feuille de détail : description, caractéristiques, prérequis complets.
+  Future<void> _details(BuildContext context) {
+    final state = controller.interpolated(now);
+    final spec = controller.data.unit(unit);
+    return showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (context) {
+        final theme = Theme.of(context);
+        const gap = SizedBox(height: 8);
+        return SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(spec.name, style: theme.textTheme.titleLarge),
+                gap,
+                UnitStatsLine(stats: UnitStats.of(spec, state.research)),
+                gap,
+                Text(_helpText, style: theme.textTheme.bodyMedium),
+                if (spec.requires.isNotEmpty) ...[
+                  gap,
+                  Text(
+                    'Requiert ${_requirements(state, spec.requires)}',
+                    style: theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

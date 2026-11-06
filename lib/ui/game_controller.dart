@@ -13,6 +13,7 @@ import '../domain/raid.dart' as raid;
 import '../domain/raid.dart' show RaidReport;
 import '../domain/rules.dart';
 import 'notifications.dart';
+import 'visuals.dart';
 
 /// Horloge UTC tronquée à la milliseconde (précision de la base).
 DateTime systemClock() =>
@@ -71,6 +72,17 @@ class GameController extends ChangeNotifier {
     await _advanceAndSave();
     await _ensureRaid();
     _reports = await _repo.loadReports();
+    _ambiance = Ambiance.fromName(await _repo.ambiance());
+  });
+
+  /// Ambiance d'affichage : préférence, pas un état de jeu.
+  Ambiance get ambiance => _ambiance;
+  var _ambiance = Ambiance.balanced;
+
+  Future<void> setAmbiance(Ambiance value) => _serialized(() async {
+    await _repo.setAmbiance(value.name);
+    _ambiance = value;
+    notifyListeners();
   });
 
   /// Rapports de raid, les plus récents d'abord.

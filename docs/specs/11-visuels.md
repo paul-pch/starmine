@@ -6,7 +6,9 @@ Rendre le jeu plus immersif avec des images SF réalistes, sans toucher à la li
 idle de ressources. Les images sont générées hors du jeu (Higgsfield), validées une par une,
 puis packagées dans l'APK.
 
-État : **à implémenter** (aucune image ni registre dans le dépôt pour l'instant).
+État : code d'affichage implémenté (`lib/ui/visuals.dart`, repli) ; **aucune image ni registre
+dans le dépôt pour l'instant**. Les seuils `tiers` et `temperature_bands` sont repris dans le
+code, à garder alignés sur le registre quand il existera.
 
 ## Règles
 
@@ -81,14 +83,15 @@ images:
 
 ## Code
 
-À créer : `lib/ui/visuals.dart` (id → chemin d'asset, palier, tranche de température,
-repli), `assets/visuels/` déclaré dans `pubspec.yaml`. Le domaine n'en sait rien.
+`lib/ui/visuals.dart` (id → chemin d'asset, palier, tranche de température, repli) ;
+`assets/visuels/` déclaré dans `pubspec.yaml`, liste lue dans le manifeste d'assets au
+démarrage. Le domaine n'en sait rien.
 
 ## Tests
 
-À créer : `test/ui/visuals_test.dart` — palier selon le niveau et les seuils, tranche selon
-Tmax, repli quand l'asset manque, ambiance « Sobre » sans image. Un test de cohérence
-vérifie que chaque entrée `validated` a son fichier `build` et inversement.
+`test/ui/visuals_test.dart` — palier selon le niveau et les seuils, tranche selon Tmax, repli
+quand l'asset manque, ambiance « Sobre » sans image. À créer avec le registre : un test de
+cohérence vérifiant que chaque entrée `validated` a son fichier `build` et inversement.
 
 ## Points ouverts
 

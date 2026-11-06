@@ -5,6 +5,7 @@ import '../../domain/events.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../resource_style.dart';
+import '../widgets/in_progress_card.dart';
 
 /// Les deux files : construction et recherche.
 class QueueScreen extends StatelessWidget {
@@ -118,17 +119,11 @@ class _Slot extends StatelessWidget {
                 style: theme.textTheme.titleMedium,
               ),
               const SizedBox(height: 12),
-              LinearProgressIndicator(value: _progress(current)),
+              LinearProgressIndicator(value: orderProgress(current, now)),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  Text(
-                    'Reste ${fmtDuration(current.dueAt.difference(now))}',
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                  const Spacer(),
-                  Text('Fin ${_clock(current.dueAt.toLocal())}', style: theme.textTheme.bodySmall),
-                ],
+              _TimeLine(
+                left: 'Reste ${fmtDuration(current.dueAt.difference(now))}',
+                right: 'Fin ${_clock(current.dueAt.toLocal())}',
               ),
               const SizedBox(height: 12),
               Align(
@@ -144,12 +139,6 @@ class _Slot extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  double _progress(OrderDone o) {
-    final total = o.dueAt.difference(o.startedAt).inMilliseconds;
-    if (total <= 0) return 1;
-    return (1 - o.dueAt.difference(now).inMilliseconds / total).clamp(0.0, 1.0);
   }
 
   Future<void> _cancel(BuildContext context, OrderDone o) async {
@@ -220,22 +209,37 @@ class _BatchSlot extends StatelessWidget {
               const SizedBox(height: 12),
               LinearProgressIndicator(value: (b.ordered - b.remaining) / b.ordered),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  Text(
-                    'Prochaine dans ${fmtDuration(b.dueAt.difference(now))}',
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                  const Spacer(),
-                  Text(
-                    'Fin ${fmtDuration(b.finishAt.difference(now))}',
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
+              _TimeLine(
+                left: 'Prochaine dans ${fmtDuration(b.dueAt.difference(now))}',
+                right: 'Fin ${fmtDuration(b.finishAt.difference(now))}',
               ),
             ],
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Reste et fin, aux deux bords ; passent l'un sous l'autre si la largeur manque.
+class _TimeLine extends StatelessWidget {
+  const _TimeLine({required this.left, required this.right});
+
+  final String left;
+  final String right;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SizedBox(
+      width: double.infinity,
+      child: Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        spacing: 8,
+        children: [
+          Text(left, style: theme.textTheme.bodyMedium),
+          Text(right, style: theme.textTheme.bodySmall),
+        ],
       ),
     );
   }
