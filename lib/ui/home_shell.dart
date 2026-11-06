@@ -71,21 +71,24 @@ class _HomeShellState extends State<HomeShell> {
     if (_c.state.pending.any((e) => !e.dueAt.isAfter(_now))) _refresh();
   }
 
-  /// Raid résolu pendant que l'app est ouverte : message avec accès au rapport.
+  /// Raid résolu pendant que l'app est ouverte : message avec accès au rapport. Le dernier
+  /// remplace le précédent (pas de file de messages).
   void _onChange() {
     final latest = _c.reports.firstOrNull;
     if (latest == null || latest.id == _lastReportId) return;
     _lastReportId = latest.id;
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(CombatReport.verdict(latest.report)),
-        action: SnackBarAction(
-          label: 'Rapport',
-          onPressed: () => CombatReport.show(context, _c.data, latest.report),
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(CombatReport.verdict(latest.report)),
+          action: SnackBarAction(
+            label: 'Rapport',
+            onPressed: () => CombatReport.show(context, _c.data, latest.report),
+          ),
         ),
-      ),
-    );
+      );
   }
 
   Future<void> _openReports() async {
