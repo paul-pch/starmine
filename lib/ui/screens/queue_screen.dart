@@ -21,7 +21,10 @@ class QueueScreen extends StatelessWidget {
     (String, bool) idle(Slot slot, String none, String missing, String building) =>
         switch (slotStatus(state, slot)) {
           SlotStatus.unavailable => (missing, false),
-          SlotStatus.blocked => ('$building en agrandissement : impossible pendant encore $upgradeLeft', true),
+          SlotStatus.blocked => (
+            '$building en agrandissement : impossible pendant encore $upgradeLeft',
+            true,
+          ),
           SlotStatus.free || SlotStatus.busy => (none, false),
         };
     final research = idle(
