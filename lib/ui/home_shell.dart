@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'game_controller.dart';
+import '../domain/engine.dart';
 import '../domain/game_data.dart';
 import 'resource_style.dart';
 import 'screens/debug_screen.dart';
@@ -136,26 +137,24 @@ class _HomeShellState extends State<HomeShell> {
             selectedIndex: _tab,
             onDestinationSelected: (i) => setState(() => _tab = i),
             destinations: [
-              // Pastille = slot libre : quelque chose peut être lancé dans cet onglet.
+              // Pastille verte : file libre. Rouge : bloquée par un agrandissement.
               NavigationDestination(
-                icon: _FreeSlot(
-                  free: state.currentConstruction == null,
+                icon: _SlotBadge(
+                  status: slotStatus(state, Slot.construction),
                   child: const Icon(Icons.factory_outlined),
                 ),
                 label: 'Bâtiments',
               ),
               NavigationDestination(
-                icon: _FreeSlot(
-                  free:
-                      state.currentResearch == null &&
-                      state.planet.level(BuildingKind.researchLab) > 0,
+                icon: _SlotBadge(
+                  status: slotStatus(state, Slot.research),
                   child: const Icon(ResourceStyle.researchIcon),
                 ),
                 label: 'Recherche',
               ),
               NavigationDestination(
-                icon: _FreeSlot(
-                  free: state.currentBatch == null && state.planet.level(BuildingKind.shipyard) > 0,
+                icon: _SlotBadge(
+                  status: slotStatus(state, Slot.shipyard),
                   child: const Icon(Icons.shield_outlined),
                 ),
                 label: 'Défense',
@@ -194,19 +193,21 @@ class _PlanetTitle extends StatelessWidget {
   }
 }
 
-/// Petite pastille verte sur l'icône d'onglet quand le slot correspondant est libre.
-class _FreeSlot extends StatelessWidget {
-  const _FreeSlot({required this.free, required this.child});
+/// Pastille d'onglet : verte si la file est libre, rouge si elle est bloquée.
+class _SlotBadge extends StatelessWidget {
+  const _SlotBadge({required this.status, required this.child});
 
-  final bool free;
+  final SlotStatus status;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return Badge(
-      isLabelVisible: free,
+      isLabelVisible: status == SlotStatus.free || status == SlotStatus.blocked,
       smallSize: 7,
-      backgroundColor: const Color(0xFF66BB6A),
+      backgroundColor: status == SlotStatus.blocked
+          ? Theme.of(context).colorScheme.error
+          : const Color(0xFF66BB6A),
       child: child,
     );
   }

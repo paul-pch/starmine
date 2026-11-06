@@ -401,3 +401,46 @@ OrderOutcome startBatch(
     batch,
   );
 }
+
+// --- État des files ----------------------------------------------------------------
+
+/// État d'une file pour l'affichage (pastilles, messages).
+enum SlotStatus {
+  /// Rien ne tourne : on peut lancer quelque chose.
+  free,
+
+  /// Un ordre est en cours.
+  busy,
+
+  /// Bloquée par l'agrandissement du bâtiment qui l'abrite (labo, chantier).
+  blocked,
+
+  /// Bâtiment requis pas encore construit.
+  unavailable,
+}
+
+enum Slot { construction, research, shipyard }
+
+SlotStatus slotStatus(GameState s, Slot slot) {
+  final upgrading = s.currentConstruction?.building;
+  return switch (slot) {
+    Slot.construction => s.currentConstruction == null ? SlotStatus.free : SlotStatus.busy,
+    Slot.research => _slot(
+      built: s.planet.level(BuildingKind.researchLab) > 0,
+      busy: s.currentResearch != null,
+      blocked: upgrading == BuildingKind.researchLab,
+    ),
+    Slot.shipyard => _slot(
+      built: s.planet.level(BuildingKind.shipyard) > 0,
+      busy: s.currentBatch != null,
+      blocked: upgrading == BuildingKind.shipyard,
+    ),
+  };
+}
+
+SlotStatus _slot({required bool built, required bool busy, required bool blocked}) {
+  if (busy) return SlotStatus.busy;
+  if (!built) return SlotStatus.unavailable;
+  if (blocked) return SlotStatus.blocked;
+  return SlotStatus.free;
+}

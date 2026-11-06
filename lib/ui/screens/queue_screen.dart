@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/engine.dart';
 import '../../domain/events.dart';
 import '../format.dart';
 import '../game_controller.dart';
@@ -15,6 +16,26 @@ class QueueScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = controller.state;
+    final upgrade = state.currentConstruction;
+    final upgradeLeft = upgrade == null ? '' : fmtDuration(upgrade.dueAt.difference(now));
+    (String, bool) idle(Slot slot, String none, String missing, String building) =>
+        switch (slotStatus(state, slot)) {
+          SlotStatus.unavailable => (missing, false),
+          SlotStatus.blocked => ('$building en agrandissement : impossible pendant encore $upgradeLeft', true),
+          SlotStatus.free || SlotStatus.busy => (none, false),
+        };
+    final research = idle(
+      Slot.research,
+      'Aucune recherche en cours',
+      'Construis un laboratoire de recherche pour lancer des recherches',
+      'Laboratoire',
+    );
+    final shipyard = idle(
+      Slot.shipyard,
+      'Aucune production en cours',
+      'Construis un chantier spatial pour produire des défenses',
+      'Chantier',
+    );
     return ListView(
       padding: const EdgeInsets.all(12),
       children: [
@@ -30,13 +51,20 @@ class QueueScreen extends StatelessWidget {
         _Slot(
           icon: ResourceStyle.researchIcon,
           title: 'Recherche',
-          empty: 'Aucune recherche en cours',
+          empty: research.$1,
+          blocked: research.$2,
           order: state.currentResearch,
           controller: controller,
           now: now,
         ),
         const SizedBox(height: 8),
-        _BatchSlot(batch: state.currentBatch, controller: controller, now: now),
+        _BatchSlot(
+          batch: state.currentBatch,
+          empty: shipyard.$1,
+          blocked: shipyard.$2,
+          controller: controller,
+          now: now,
+        ),
       ],
     );
   }
@@ -47,6 +75,7 @@ class _Slot extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.empty,
+    this.blocked = false,
     required this.order,
     required this.controller,
     required this.now,
@@ -55,6 +84,7 @@ class _Slot extends StatelessWidget {
   final IconData icon;
   final String title;
   final String empty;
+  final bool blocked;
   final OrderDone? order;
   final GameController controller;
   final DateTime now;
@@ -78,7 +108,7 @@ class _Slot extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             if (current == null)
-              Text(empty, style: theme.textTheme.bodyMedium)
+              _EmptyText(text: empty, blocked: blocked)
             else ...[
               Text(
                 '${controller.data.spec(current.item).name} → niveau ${current.targetLevel}',
@@ -145,9 +175,17 @@ class _Slot extends StatelessWidget {
 
 /// Lot du chantier : progression du lot et de l'unité en cours. Pas d'annulation.
 class _BatchSlot extends StatelessWidget {
-  const _BatchSlot({required this.batch, required this.controller, required this.now});
+  const _BatchSlot({
+    required this.batch,
+    required this.empty,
+    required this.blocked,
+    required this.controller,
+    required this.now,
+  });
 
   final ShipyardBatch? batch;
+  final String empty;
+  final bool blocked;
   final GameController controller;
   final DateTime now;
 
@@ -170,7 +208,7 @@ class _BatchSlot extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             if (b == null)
-              Text('Aucune production en cours', style: theme.textTheme.bodyMedium)
+              _EmptyText(text: empty, blocked: blocked)
             else ...[
               Text(
                 '${controller.data.unit(b.unit).name} · ${b.ordered - b.remaining} / ${b.ordered}',
@@ -196,6 +234,33 @@ class _BatchSlot extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Message d'une file vide ; en rouge avec un cadenas quand elle est bloquée.
+class _EmptyText extends StatelessWidget {
+  const _EmptyText({required this.text, required this.blocked});
+
+  final String text;
+  final bool blocked;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    if (!blocked) return Text(text, style: theme.textTheme.bodyMedium);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(Icons.lock_clock_outlined, size: 18, color: theme.colorScheme.error),
+        const SizedBox(width: 6),
+        Expanded(
+          child: Text(
+            text,
+            style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.error),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -51,8 +51,8 @@ void main() {
     await tester.tap(find.text('File'));
     await tester.pump();
     expect(find.text('Aucune construction en cours'), findsOneWidget);
-    expect(find.text('Aucune recherche en cours'), findsOneWidget);
-    expect(find.text('Aucune production en cours'), findsOneWidget);
+    expect(find.textContaining('Construis un laboratoire'), findsOneWidget);
+    expect(find.textContaining('Construis un chantier spatial'), findsOneWidget);
 
     await tester.tap(find.text('Debug'));
     await tester.pump();

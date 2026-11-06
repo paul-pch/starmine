@@ -348,6 +348,30 @@ void main() {
     });
   });
 
+  test('état des files : libre, occupée, bloquée par un agrandissement, indisponible', () {
+    const rich = Resources(metal: 1e6, crystal: 1e6, deuterium: 1e6);
+    final s = game(
+      planet(
+        levels: {
+          BuildingKind.researchLab: 1,
+          BuildingKind.shipyard: 1,
+          BuildingKind.roboticsFactory: 2,
+        },
+        resources: rich,
+      ),
+    );
+    expect(slotStatus(s, Slot.research), SlotStatus.free);
+    expect(slotStatus(game(planet()), Slot.shipyard), SlotStatus.unavailable);
+
+    final yardUp = startOrder(s, BuildingKind.shipyard, t0, rules, eventId: 1).state;
+    expect(slotStatus(yardUp, Slot.construction), SlotStatus.busy);
+    expect(slotStatus(yardUp, Slot.shipyard), SlotStatus.blocked);
+    expect(slotStatus(yardUp, Slot.research), SlotStatus.free);
+
+    final labUp = startOrder(s, BuildingKind.researchLab, t0, rules, eventId: 1).state;
+    expect(slotStatus(labUp, Slot.research), SlotStatus.blocked);
+  });
+
   test('nouvelle planète : ressources de départ, niveaux à 0, Tmax dans la plage', () {
     final p = Planet.create(data: gameData, random: math.Random(42), now: t0);
     expect(p.resources, const Resources(metal: 500, crystal: 500));
