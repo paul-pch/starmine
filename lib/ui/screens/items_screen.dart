@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/availability.dart';
 import '../../domain/engine.dart';
 import '../../domain/game_data.dart';
 import '../game_controller.dart';
@@ -33,6 +34,7 @@ class BuildingsScreen extends StatelessWidget {
       categories: data.categories['buildings'] ?? const {},
       items: BuildingKind.values,
       categoryOf: (k) => data[k].category,
+      filter: realizableFilter(controller, 'buildings', now),
       itemBuilder: (context, k) => ItemCard(controller: controller, item: k, now: now),
     );
   }
@@ -64,7 +66,25 @@ class ResearchScreen extends StatelessWidget {
       categories: data.categories['research'] ?? const {},
       items: TechKind.values,
       categoryOf: (k) => data.tech(k).category,
+      filter: realizableFilter(controller, 'research', now),
       itemBuilder: (context, k) => ItemCard(controller: controller, item: k, now: now),
     );
   }
+}
+
+/// Filtre « Réalisables » d'un onglet de bâtiments ou de technos.
+RealizableFilter<T> realizableFilter<T extends Unlockable>(
+  GameController controller,
+  String screen,
+  DateTime now,
+) {
+  final state = controller.interpolated(now);
+  final rules = controller.rules;
+  return RealizableFilter<T>(
+    enabled: controller.realizableOnly(screen),
+    onChanged: (on) => controller.setRealizableOnly(screen, on),
+    isRealizable: (k) => realizable(state, k, rules),
+    waitFor: (k) => waitFor(state, k, rules),
+    nameOf: (k) => controller.data.spec(k).name,
+  );
 }

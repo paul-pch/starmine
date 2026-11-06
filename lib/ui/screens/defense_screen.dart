@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../domain/availability.dart';
 import '../../domain/combat.dart';
 import '../../domain/engine.dart';
 import '../../domain/game_data.dart';
@@ -30,6 +31,7 @@ class DefenseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = controller.data;
+    final state = controller.interpolated(now);
     return CategorizedList<UnitKind>(
       header: InProgressCard(
         controller: controller,
@@ -43,6 +45,13 @@ class DefenseScreen extends StatelessWidget {
           if (data.unit(k).defense) k,
       ],
       categoryOf: (k) => data.unit(k).category,
+      filter: RealizableFilter<UnitKind>(
+        enabled: controller.realizableOnly('defense'),
+        onChanged: (on) => controller.setRealizableOnly('defense', on),
+        isRealizable: (k) => realizableUnit(state, k, controller.rules),
+        waitFor: (k) => waitForUnit(state, k, controller.rules),
+        nameOf: (k) => data.unit(k).name,
+      ),
       itemBuilder: (context, k) => _UnitCard(controller: controller, unit: k, now: now),
     );
   }

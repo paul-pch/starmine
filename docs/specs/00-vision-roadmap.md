@@ -41,8 +41,8 @@ Hors version, à placer :
 
 | Sujet | Contenu | État |
 | --- | --- | --- |
-| Filtre « Réalisables » | Masquer ce qui n'est pas lançable maintenant (spec 10) | Décidé, à faire en BSR à la prochaine session de code |
-| Message de raid résolu | Le dernier remplace le précédent au lieu de s'empiler (spec 07) | Décidé, BSR |
+| Filtre « Réalisables » | Masquer ce qui n'est pas lançable maintenant (spec 10) | Livré |
+| Message de raid résolu | Le dernier remplace le précédent au lieu de s'empiler (spec 07) | Livré |
 | File d'attente d'ordres | Plusieurs ordres enchaînés par file ; candidat : avantage du Commandant (spec 13) | À spécifier |
 
 Transverse en cours : **refonte visuelle** — disposition cible validée (spec 10, ambiances

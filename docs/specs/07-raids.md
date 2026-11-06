@@ -40,7 +40,7 @@ Section `pirates` du YAML.
   composition, soute, forces en présence, « Simuler 100 batailles ».
 - **Rapports** : icône dans la barre du haut, pastille du nombre de non lus ; liste des raids
   (verdict, date, pillage) ; tap → rapport complet.
-- Raid résolu app ouverte : message avec accès au rapport.
+- Raid résolu app ouverte : message avec accès au rapport ; le dernier remplace le précédent.
 - Debug : « Raid pirate maintenant » (détection immédiate) et affichage des points.
 
 ## Tests
@@ -63,8 +63,6 @@ Décidé :
   base étant le relevé le plus récent antérieur à `now − lag`. Un joueur qui progresse vite
   dépasse les pirates.
 - **Fréquence** : 2 à 3 raids par semaine à ×1 (`pirates.interval_hours`, ~48 à 96 h).
-- **Message de raid résolu** app ouverte : le dernier remplace le précédent (aujourd'hui les
-  messages s'empilent) — BSR.
 - **Technos pirates** : Armes, Bouclier et Protection des pirates = niveaux du joueur à la
   date de retard, moins `pirates.tech_offset` (≥ 1, plancher 0). Les raids gagnent en
   qualité, pas seulement en nombre, et restent un cran en dessous du joueur qui recherche.

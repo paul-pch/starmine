@@ -149,4 +149,33 @@ void main() {
 
     await close(tester, db);
   });
+
+  testWidgets('filtre « Réalisables » : masque, liste vide, mémorisé par onglet', (tester) async {
+    final (controller, db) = await open(tester);
+
+    expect(find.widgetWithText(FilterChip, 'Réalisables'), findsOneWidget);
+    await tester.runAsync(() => controller.setRealizableOnly('buildings', true));
+    await tester.pump();
+    expect(find.text('Mine de métal'), findsOneWidget);
+    expect(find.text('Usine de nanites'), findsNothing);
+
+    await tester.runAsync(() => controller.setRealizableOnly('research', true));
+    await tester.tap(find.text('Recherche'));
+    await tester.pump();
+    expect(find.text('Rien de réalisable'), findsOneWidget);
+    expect(find.text('Technologie Énergie'), findsNothing);
+
+    final reloaded = GameController(
+      repository: GameRepository(db),
+      data: gameData,
+      notifier: FakeNotifier(),
+      clock: FakeClock(t0).call,
+      random: math.Random(1),
+    );
+    await tester.runAsync(reloaded.init);
+    expect(reloaded.realizableOnly('buildings'), isTrue);
+    expect(reloaded.realizableOnly('defense'), isFalse);
+
+    await close(tester, db);
+  });
 }

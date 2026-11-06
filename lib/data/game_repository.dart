@@ -19,6 +19,7 @@ class GameRepository {
   static const _speedKey = 'game_speed';
   static const _seedKey = 'rng_seed';
   static const _ambianceKey = 'ambiance';
+  static const _realizableKey = 'filter_realizable';
 
   /// Charge la partie (V0 : la première planète) ou `null` s'il n'y en a pas.
   Future<SaveGame?> load() async {
@@ -118,6 +119,13 @@ class GameRepository {
   Future<String?> ambiance() => _meta(_ambianceKey);
 
   Future<void> setAmbiance(String value) => _setMeta(_ambianceKey, value);
+
+  /// Filtre « Réalisables » d'un onglet (préférence d'affichage, comme l'ambiance).
+  Future<bool> realizableOnly(String screen) async =>
+      await _meta('$_realizableKey.$screen') == 'true';
+
+  Future<void> setRealizableOnly(String screen, bool on) =>
+      _setMeta('$_realizableKey.$screen', on.toString());
 
   /// Prochain identifiant d'événement libre (historique compris).
   Future<int> nextEventId() async {

@@ -73,6 +73,27 @@ class GameController extends ChangeNotifier {
     await _ensureRaid();
     _reports = await _repo.loadReports();
     _ambiance = Ambiance.fromName(await _repo.ambiance());
+    for (final screen in filterScreens) {
+      if (await _repo.realizableOnly(screen)) _realizableOnly.add(screen);
+    }
+  });
+
+  /// Onglets qui ont le filtre « Réalisables ».
+  static const filterScreens = ['buildings', 'research', 'defense'];
+
+  final _realizableOnly = <String>{};
+
+  /// Filtre « Réalisables » actif sur l'onglet [screen] (préférence d'affichage).
+  bool realizableOnly(String screen) => _realizableOnly.contains(screen);
+
+  Future<void> setRealizableOnly(String screen, bool on) => _serialized(() async {
+    await _repo.setRealizableOnly(screen, on);
+    if (on) {
+      _realizableOnly.add(screen);
+    } else {
+      _realizableOnly.remove(screen);
+    }
+    notifyListeners();
   });
 
   /// Ambiance d'affichage : préférence, pas un état de jeu.

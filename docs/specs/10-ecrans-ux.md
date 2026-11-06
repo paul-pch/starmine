@@ -83,22 +83,21 @@ est dans la feuille de détail (un tap).
   (spec 06), détail de la flotte pirate (spec 07), quantité au chantier.
 - **Messages** : refus d'une commande, raid résolu app ouverte (avec accès au rapport).
 
-## Filtre « Réalisables » (à implémenter)
+## Filtre « Réalisables »
 
-Décidé : une bascule « Réalisables » qui **masque** tout ce qui ne peut pas être lancé
-maintenant, sur Bâtiments, Recherche et Défense.
+Une bascule « Réalisables », à droite des puces de catégorie (combinable avec elles), qui
+**masque** tout ce qui ne peut pas être lancé maintenant, sur Bâtiments, Recherche et
+Défense (`lib/domain/availability.dart`, `CategorizedList`).
 
-Proposé (non contesté, à confirmer à l'implémentation) :
-
-- réalisable = prérequis remplis **et** ressources disponibles (défense : au moins une
-  unité) ; la file n'est **pas** prise en compte (sinon l'onglet se vide pendant une
-  construction) ; les éléments verrouillés sont masqués aussi ;
-- combinable avec les puces de catégorie, placée à droite des puces ;
-- évalué à l'activation et au changement d'onglet, **pas chaque seconde** (sinon les cartes
-  apparaissent et disparaissent en plein défilement) ; un bandeau « N nouveaux éléments
-  réalisables · Actualiser » signale les changements ;
-- liste vide : « Rien de réalisable · <élément> dans <durée> » (le plus tôt accessible) ;
-- choix mémorisé par onglet (préférence d'affichage, comme l'ambiance).
+- Réalisable = prérequis remplis **et** ressources disponibles (défense : au moins une
+  unité, limite par planète comprise). La file n'est **pas** prise en compte (sinon
+  l'onglet se vide pendant une construction) ; les éléments verrouillés sont masqués.
+- Évalué à l'activation et à l'ouverture de l'onglet, **pas chaque seconde** ; un bandeau
+  « N nouveaux éléments réalisables · Actualiser » signale les éléments devenus réalisables.
+- Liste vide : « Rien de réalisable » et « <élément> dans <durée> » (le plus tôt accessible
+  au rythme de production actuel ; rien si tout est verrouillé ou hors d'atteinte).
+- Choix mémorisé par onglet (préférence d'affichage, table `meta`, clés
+  `filter_realizable.<onglet>`, hors sauvegarde JSON).
 
 ## Ambiance
 
