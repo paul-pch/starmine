@@ -172,7 +172,6 @@ class _CategorizedListState<T> extends State<CategorizedList<T>> {
       ],
     );
   }
-}
 
   /// Liste vide : l'élément accessible le plus tôt, au rythme de production actuel.
   Widget _empty(ThemeData theme, RealizableFilter<T> filter) {
