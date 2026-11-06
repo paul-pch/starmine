@@ -38,7 +38,9 @@ class ReportsScreen extends StatelessWidget {
               final scheme = Theme.of(context).colorScheme;
               return ListTile(
                 leading: Icon(
-                  r.winner == CombatWinner.attacker ? Icons.gpp_bad_outlined : Icons.gpp_good_outlined,
+                  r.winner == CombatWinner.attacker
+                      ? Icons.gpp_bad_outlined
+                      : Icons.gpp_good_outlined,
                   color: r.winner == CombatWinner.attacker ? scheme.error : scheme.primary,
                 ),
                 title: Text(CombatReport.verdict(r)),

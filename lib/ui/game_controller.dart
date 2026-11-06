@@ -161,7 +161,8 @@ class GameController extends ChangeNotifier {
     final adv = advance(state, t, _rules);
     await _commit(
       setProductionPercent(adv.state, kind, percent, t, _rules),
-      applied: adv.applied, reports: adv.reports,
+      applied: adv.applied,
+      reports: adv.reports,
     );
   });
 

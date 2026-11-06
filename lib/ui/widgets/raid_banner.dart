@@ -46,7 +46,10 @@ class RaidBanner extends StatelessWidget {
                   style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onErrorContainer),
                 ),
               ),
-              Text('Voir', style: theme.textTheme.labelLarge?.copyWith(color: scheme.onErrorContainer)),
+              Text(
+                'Voir',
+                style: theme.textTheme.labelLarge?.copyWith(color: scheme.onErrorContainer),
+              ),
             ],
           ),
         ),

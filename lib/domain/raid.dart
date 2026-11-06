@@ -120,8 +120,9 @@ class RaidReport {
 /// Résultat d'un événement de raid : nouvel état, événement suivant, rapport éventuel.
 typedef RaidStep = ({GameState state, GameEvent next, RaidReport? report});
 
+/// [h] heures de jeu à ×1, arrondies à la milliseconde (précision de la base).
 Duration _hours(double h, Rules rules) =>
-    Duration(microseconds: (h * Duration.microsecondsPerHour / rules.speed).round());
+    Duration(milliseconds: (h * Duration.millisecondsPerHour / rules.speed).round());
 
 /// Détection : la composition est fixée selon les points actuels.
 RaidStep detectRaid(GameState s, RaidDetected e, Rules rules) {
@@ -168,7 +169,8 @@ RaidStep resolveRaid(GameState s, RaidArrival e, Rules rules) {
 
 RaidDetected _nextRaid(int id, int planetId, DateTime after, math.Random random, Rules rules) {
   final cfg = rules.data.pirates;
-  final delay = cfg.intervalHoursMin + random.nextDouble() * (cfg.intervalHoursMax - cfg.intervalHoursMin);
+  final delay =
+      cfg.intervalHoursMin + random.nextDouble() * (cfg.intervalHoursMax - cfg.intervalHoursMin);
   final arrival = after.add(_hours(delay, rules));
   return RaidDetected(
     id: id,

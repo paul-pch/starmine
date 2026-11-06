@@ -141,7 +141,10 @@ void main() {
     );
     await repo.save(fresh().state, reports: [report(1), report(2)]);
     var stored = await repo.loadReports();
-    expect(stored.map((r) => r.report.at), [t0.add(const Duration(minutes: 2)), t0.add(const Duration(minutes: 1))]);
+    expect(stored.map((r) => r.report.at), [
+      t0.add(const Duration(minutes: 2)),
+      t0.add(const Duration(minutes: 1)),
+    ]);
     expect(stored.first.report.loot, const Resources(metal: 75, crystal: 75));
     expect(stored.first.report.attackerStart, {UnitKind.lightFighter: 3});
     expect(stored.every((r) => !r.seen), isTrue);

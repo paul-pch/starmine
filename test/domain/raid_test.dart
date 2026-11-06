@@ -26,10 +26,7 @@ void main() {
   group('points', () {
     test('ressources dépensées ÷ 1000 : bâtiments, technos, unités', () {
       final s = game(
-        planet(
-          levels: {BuildingKind.metalMine: 2},
-          units: {UnitKind.rocketLauncher: 3},
-        ),
+        planet(levels: {BuildingKind.metalMine: 2}, units: {UnitKind.rocketLauncher: 3}),
         research: {TechKind.energy: 1},
       );
       // Mine 1 (75) + mine 2 (112) + Énergie 1 (1200) + 3 lanceurs (6000).
@@ -47,7 +44,9 @@ void main() {
       final big = pirateFleet(6000, gameData, math.Random(2));
       double value(Map<UnitKind, int> f) => f.entries.fold(
         0,
-        (s, e) => s + e.value * (gameData.unit(e.key).baseCost.metal + gameData.unit(e.key).baseCost.crystal),
+        (s, e) =>
+            s +
+            e.value * (gameData.unit(e.key).baseCost.metal + gameData.unit(e.key).baseCost.crystal),
       );
       expect(value(big), greaterThan(value(small) * 10));
       expect(big.keys, containsAll([UnitKind.battleship, UnitKind.largeCargo]));
