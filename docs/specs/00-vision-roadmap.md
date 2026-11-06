@@ -31,16 +31,18 @@ Grande fidélité aux règles OGame classiques ; on diverge seulement quand le s
 | V1 | Recherche : labo, 5 technos, prérequis, fusion, nanites, réglage de production | Livrée |
 | V2a | Chantier, 8 défenses, technos de combat, simulateur de combat | Livrée |
 | V2b | Raids pirates : détection, force indexée sur les points, pillage, rapports | Livrée |
-| V2c | Succès et officiers : succès (paliers, défenses réussies), officiers débloqués qui donnent des avantages (spec 12) | Décidée, à spécifier |
+| V2c | Officiers : écran de déblocage, prérequis indexés sur la progression, niveaux plafonnés, bonus permanents (spec 12) ; refonte de la force des raids (spec 07) | Spécifiée, à implémenter |
+| V2d | Événements ponctuels : effets temporaires positifs ou négatifs justifiés par l'histoire, certains à choix, liés aux officiers (spec 14) | Spécifiée, à implémenter |
 | V3 | Flotte : vaisseaux constructibles, attaques de bases pirates (le pillage devient un revenu), champ de débris et recycleurs, technos de propulsion et d'espionnage, missions d'exploration et officiers d'exploration (spec 12) | À spécifier |
 | V4 | Galaxie : systèmes, colonisation, multi-planètes, transports, réseau de recherche intergalactique | À spécifier |
-| V5 | Fin de jeu : expéditions, événements rares, objectif final | À spécifier |
+| V5 | Fin de jeu : expéditions, objectif final | À spécifier |
 
 Hors version, à placer :
 
 | Sujet | Contenu | État |
 | --- | --- | --- |
-| Filtre « Réalisables » | Masquer ce qui n'est pas lançable maintenant (spec 10) | Décidé, à implémenter |
+| Filtre « Réalisables » | Masquer ce qui n'est pas lançable maintenant (spec 10) | Décidé, à faire en BSR à la prochaine session de code |
+| Message de raid résolu | Le dernier remplace le précédent au lieu de s'empiler (spec 07) | Décidé, BSR |
 | File d'attente d'ordres | Plusieurs ordres enchaînés par file ; candidat : avantage du Commandant (spec 13) | À spécifier |
 
 Transverse en cours : **refonte visuelle** — disposition cible validée (spec 10, ambiances
@@ -48,8 +50,12 @@ Transverse en cours : **refonte visuelle** — disposition cible validée (spec 
 `art/registry.yaml` (spec 11). Décisions et historique : projet claude.ai,
 `claude/visuels-decisions.md`.
 
+## Méthode
+
+- **BSR (Boy Scout Rule)** : la dette repérée est corrigée au fil de l'eau, dans la session de
+  code suivante, en plus du lot prévu (commits séparés).
+
 ## Points ouverts
 
-- Place de la V2c par rapport au filtre « Réalisables » et à la refonte visuelle.
-- Équilibrage des raids à valider en jouant (spec 07).
+- Équilibrage des raids : V2b jugée bonne en jeu ; refonte de la force décidée (spec 07).
 - Valeurs OGame « à vérifier » dans le YAML (fusion, labo, nanites, Plasma, défenses, vaisseaux).

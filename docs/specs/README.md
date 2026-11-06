@@ -18,8 +18,9 @@ servent de référence pour faire évoluer le jeu et pour la refonte visuelle.
 | 09 | [Notifications](09-notifications.md) | Quand et quoi notifier |
 | 10 | [Écrans et UX](10-ecrans-ux.md) | Inventaire des écrans, informations affichées, disposition cible, styles |
 | 11 | [Visuels et registre](11-visuels.md) | Images pré-générées, catalogue, paliers, registre, repli (à implémenter) |
-| 12 | [Succès et officiers](12-succes-officiers.md) | Succès, officiers débloqués, avantages (à spécifier, V2c) |
+| 12 | [Officiers](12-succes-officiers.md) | Déblocage, niveaux, bonus permanents (à implémenter, V2c) |
 | 13 | [File d'attente d'ordres](13-file-attente.md) | Plusieurs ordres par file (à spécifier) |
+| 14 | [Événements ponctuels](14-evenements.md) | Effets temporaires, choix, lien avec les officiers (à implémenter, V2d) |
 
 Statuts utilisés dans les specs non implémentées : **Décidé** (tranché par l'utilisateur),
 **Proposé** (recommandation non contestée, à confirmer), **À trancher** (question ouverte).

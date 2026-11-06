@@ -76,7 +76,8 @@ est dans la feuille de détail (un tap).
   encore … » ; bâtiment absent : invitation à le construire.
 - **Debug** : vitesse ×1/×10/×100, **ambiance** (Équilibrée / Immersive / Sobre), export /
   import (presse-papiers), simulateur de combat (flottes types → 100 batailles), raid
-  immédiat + points, nouvelle partie, alarmes exactes, dernière mise à jour.
+  immédiat + points, événement immédiat (spec 14, à venir), nouvelle partie, alarmes
+  exactes, dernière mise à jour.
 - **Rapports** (depuis le hero) : liste des raids → rapport complet.
 - **Feuilles** : détail d'élément, détail d'une ressource, rapport de combat, simulation
   (spec 06), détail de la flotte pirate (spec 07), quantité au chantier.
