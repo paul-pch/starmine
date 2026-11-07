@@ -147,9 +147,9 @@ class Rules {
   /// de l'énergie.
   Resources hourlyProduction(Planet planet, TechLevels tech, [Modifiers mods = Modifiers.none]) {
     final factor = energy(planet, tech, mods).factor;
-    final bonus = productionBonus(tech).map(
-      (k, v) => v + mods.mineProduction + mods.mineByResource[k],
-    );
+    final bonus = productionBonus(
+      tech,
+    ).map((k, v) => v + mods.mineProduction + mods.mineByResource[k]);
     var mines = Resources.zero;
     var consumption = Resources.zero;
     for (final spec in data.buildings.values) {

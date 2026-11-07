@@ -223,13 +223,7 @@ class GameController extends ChangeNotifier {
     if (story.pendingStory(state) != null) return;
     final id = await _repo.nextEventId();
     await _commit(
-      story.ensureStoryScheduled(
-        state,
-        now(),
-        _rules,
-        seed: _random.nextInt(1 << 31),
-        eventId: id,
-      ),
+      story.ensureStoryScheduled(state, now(), _rules, seed: _random.nextInt(1 << 31), eventId: id),
     );
     if (!_visible) await _scheduleAll();
   }
@@ -281,7 +275,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
-      stories: adv.stories,
+          stories: adv.stories,
         );
         return null;
       case OrderRejected(:final reason):
@@ -290,7 +284,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
-      stories: adv.stories,
+          stories: adv.stories,
         );
         return reason;
       case OrderStarted(:final event):
@@ -299,7 +293,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
-      stories: adv.stories,
+          stories: adv.stories,
         );
         if (!_visible) await _notifier.schedule(event, data);
         return null;
@@ -321,7 +315,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
-      stories: adv.stories,
+          stories: adv.stories,
         );
         return null;
       case OrderRejected(:final reason):
@@ -330,7 +324,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
-      stories: adv.stories,
+          stories: adv.stories,
         );
         return reason;
       case BatchStarted(:final batch):
@@ -339,7 +333,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
-      stories: adv.stories,
+          stories: adv.stories,
         );
         if (!_visible) await _notifier.schedule(batch, data);
         return null;
@@ -448,6 +442,8 @@ class GameController extends ChangeNotifier {
     await _notifier.cancelAll();
     final t = now();
     for (final e in state.pending) {
+      // Un tirage d'événement n'est notifié que par la prévision ci-dessous.
+      if (e is StoryEvent && e.choiceKey == null) continue;
       if (notifyAt(e).isAfter(t)) await _notifier.schedule(e, data);
     }
     // Les ordres en attente n'ont pas encore d'échéance et les événements ponctuels ne sont

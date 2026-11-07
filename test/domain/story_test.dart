@@ -95,7 +95,13 @@ void main() {
     final s = developed();
     final once = applyStoryEffects(s, spec('rich_vein'), spec('rich_vein').effects, t0, rules);
     final later = t0.add(const Duration(hours: 5));
-    final twice = applyStoryEffects(once, spec('rich_vein'), spec('rich_vein').effects, later, rules);
+    final twice = applyStoryEffects(
+      once,
+      spec('rich_vein'),
+      spec('rich_vein').effects,
+      later,
+      rules,
+    );
     expect(twice.effects, hasLength(1));
     expect(twice.effects.single.endsAt, later.add(const Duration(hours: 12)));
   });
@@ -123,7 +129,13 @@ void main() {
 
   test('stock et gain immédiats', () {
     final s = developed(resources: const Resources(metal: 5000, crystal: 5000));
-    final leak = applyStoryEffects(s, spec('storage_leak'), spec('storage_leak').effects, t0, rules);
+    final leak = applyStoryEffects(
+      s,
+      spec('storage_leak'),
+      spec('storage_leak').effects,
+      t0,
+      rules,
+    );
     expect(leak.planet.resources.metal, 4500);
     expect(leak.planet.resources.crystal, 5000);
     final wreck = applyStoryEffects(

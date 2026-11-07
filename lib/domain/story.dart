@@ -330,12 +330,7 @@ StoryStep applyStory(GameState s, StoryEvent e, Rules rules) {
     state: applied.copyWith(
       pending: [for (final p in applied.pending) p.id == pending.id ? next : p],
     ),
-    outcome: StoryOutcome(
-      key: spec.key,
-      at: now,
-      kind: StoryOutcomeKind.answered,
-      option: option,
-    ),
+    outcome: StoryOutcome(key: spec.key, at: now, kind: StoryOutcomeKind.answered, option: option),
   );
 }
 

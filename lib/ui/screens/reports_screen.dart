@@ -33,7 +33,10 @@ class ReportsScreen extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [_raids(), _StoryLogList(controller: controller)],
+          children: [
+            _raids(),
+            _StoryLogList(controller: controller),
+          ],
         ),
       ),
     );
@@ -41,39 +44,39 @@ class ReportsScreen extends StatelessWidget {
 
   Widget _raids() {
     return ListenableBuilder(
-        listenable: controller,
-        builder: (context, _) {
-          final reports = controller.reports;
-          if (reports.isEmpty) {
-            return const Center(child: Text('Aucun raid pour l’instant'));
-          }
-          return ListView.separated(
-            itemCount: reports.length,
-            separatorBuilder: (_, _) => const Divider(height: 1),
-            itemBuilder: (context, i) {
-              final r = reports[i].report;
-              final at = r.at.toLocal();
-              String two(int n) => n.toString().padLeft(2, '0');
-              final scheme = Theme.of(context).colorScheme;
-              return ListTile(
-                leading: Icon(
-                  r.winner == CombatWinner.attacker
-                      ? Icons.gpp_bad_outlined
-                      : Icons.gpp_good_outlined,
-                  color: r.winner == CombatWinner.attacker ? scheme.error : scheme.primary,
-                ),
-                title: Text(CombatReport.verdict(r)),
-                subtitle: Text(
-                  [
-                    '${two(at.day)}/${two(at.month)} ${two(at.hour)}:${two(at.minute)}',
-                    if (r.loot != Resources.zero) 'pillé ${fmtCost(r.loot)}',
-                  ].join(' · '),
-                ),
-                onTap: () => CombatReport.show(context, controller.data, r),
-              );
-            },
-          );
-        },
+      listenable: controller,
+      builder: (context, _) {
+        final reports = controller.reports;
+        if (reports.isEmpty) {
+          return const Center(child: Text('Aucun raid pour l’instant'));
+        }
+        return ListView.separated(
+          itemCount: reports.length,
+          separatorBuilder: (_, _) => const Divider(height: 1),
+          itemBuilder: (context, i) {
+            final r = reports[i].report;
+            final at = r.at.toLocal();
+            String two(int n) => n.toString().padLeft(2, '0');
+            final scheme = Theme.of(context).colorScheme;
+            return ListTile(
+              leading: Icon(
+                r.winner == CombatWinner.attacker
+                    ? Icons.gpp_bad_outlined
+                    : Icons.gpp_good_outlined,
+                color: r.winner == CombatWinner.attacker ? scheme.error : scheme.primary,
+              ),
+              title: Text(CombatReport.verdict(r)),
+              subtitle: Text(
+                [
+                  '${two(at.day)}/${two(at.month)} ${two(at.hour)}:${two(at.minute)}',
+                  if (r.loot != Resources.zero) 'pillé ${fmtCost(r.loot)}',
+                ].join(' · '),
+              ),
+              onTap: () => CombatReport.show(context, controller.data, r),
+            );
+          },
+        );
+      },
     );
   }
 }

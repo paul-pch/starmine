@@ -659,9 +659,7 @@ class GameData {
       intervalHoursMin: _num(interval, 'min'),
       intervalHoursMax: _num(interval, 'max'),
       answerHours: _num(m, 'answer_hours'),
-      catalog: {
-        for (final e in catalog.entries) e.key: _storyEvent(e.key, _asMap(e.value, e.key)),
-      },
+      catalog: {for (final e in catalog.entries) e.key: _storyEvent(e.key, _asMap(e.value, e.key))},
     );
   }
 

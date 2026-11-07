@@ -17,7 +17,8 @@ const storyHelp =
 
 String _pct(double v) => '${v > 0 ? '+' : '−'}${(v.abs() * 100).round()} %';
 
-String _resource(ResourceKind? k) => k == null ? 'toutes ressources' : resourceName(k).toLowerCase();
+String _resource(ResourceKind? k) =>
+    k == null ? 'toutes ressources' : resourceName(k).toLowerCase();
 
 /// Un effet du catalogue, en clair (« +30 % de production de métal pendant 12 h »).
 String storyEffectText(StoryEffectSpec e) => switch (e.type) {
@@ -41,7 +42,8 @@ String activeEffectText(ActiveEffect e) => switch (e.type) {
   _ => '${_pct(e.value)} ${_resource(e.resource)}',
 };
 
-String fmtHours(double h) => h == h.roundToDouble() ? '${h.round()} h' : '${h.toStringAsFixed(1)} h';
+String fmtHours(double h) =>
+    h == h.roundToDouble() ? '${h.round()} h' : '${h.toStringAsFixed(1)} h';
 
 /// Sous le bandeau de raid : décision attendue et effets en cours. Rien sinon.
 class StoryBanner extends StatelessWidget {
@@ -82,9 +84,7 @@ class StoryBanner extends StatelessWidget {
                     ),
                     Text(
                       'Choisir',
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        color: theme.colorScheme.primary,
-                      ),
+                      style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.primary),
                     ),
                   ],
                 ),
