@@ -86,10 +86,17 @@ est dans la feuille de détail (un tap).
   (spec 06), détail de la flotte pirate (spec 07), quantité au chantier.
 - **Messages** : refus d'une commande, raid résolu app ouverte (avec accès au rapport).
 
+## Puces de filtre
+
+Puces en **icônes** (une par catégorie du YAML, « Tout », « Réalisables »), pour tenir sur la
+largeur d'un téléphone sans défiler (`CategoryStyle`). Le nom du filtre actif est écrit sous
+les puces (« Réalisables · Production ») et les titres de section restent en texte ; chaque
+puce a son libellé accessible.
+
 ## Filtre « Réalisables »
 
-Une bascule « Réalisables », en tête de la rangée défilante des puces de catégorie
-(combinable avec elles), qui
+Une bascule « Réalisables », en tête de la rangée des puces de catégorie (combinable avec
+elles), qui
 **masque** tout ce qui ne peut pas être lancé maintenant, sur Bâtiments, Recherche et
 Défense (`lib/domain/availability.dart`, `CategorizedList`).
 

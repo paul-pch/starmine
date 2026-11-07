@@ -56,15 +56,10 @@ void main() {
     expect(find.text('Fondamentales'), findsWidgets);
     expect(find.textContaining('Requiert Laboratoire de recherche 1'), findsWidgets);
     // Filtre : seules les technos de combat restent.
-    // Les puces défilent, après la bascule « Réalisables ».
-    await tester.dragUntilVisible(
-      find.widgetWithText(ChoiceChip, 'Combat'),
-      find.byWidgetPredicate((w) => w is ListView && w.scrollDirection == Axis.horizontal),
-      const Offset(-80, 0),
-    );
+    // Puces en icônes, sans défilement ; le filtre actif est écrit sous les puces.
+    await tester.tap(find.widgetWithIcon(ChoiceChip, Icons.gps_fixed));
     await tester.pump();
-    await tester.tap(find.widgetWithText(ChoiceChip, 'Combat'));
-    await tester.pump();
+    expect(find.text('Combat'), findsOneWidget);
     expect(find.text('Technologie Armes'), findsOneWidget);
     expect(find.text('Technologie Énergie'), findsNothing);
 
@@ -158,11 +153,12 @@ void main() {
   testWidgets('filtre « Réalisables » : masque, liste vide, mémorisé par onglet', (tester) async {
     final (controller, db) = await open(tester);
 
-    expect(find.widgetWithText(FilterChip, 'Réalisables'), findsOneWidget);
+    expect(find.widgetWithIcon(ChoiceChip, Icons.task_alt), findsOneWidget);
     await tester.runAsync(() => controller.setRealizableOnly('buildings', true));
     await tester.pump();
     expect(find.text('Mine de métal'), findsOneWidget);
     expect(find.text('Usine de nanites'), findsNothing);
+    expect(find.text('Réalisables · Tout'), findsOneWidget);
 
     await tester.runAsync(() => controller.setRealizableOnly('research', true));
     await tester.tap(find.text('Recherche'));

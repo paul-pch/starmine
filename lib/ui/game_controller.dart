@@ -127,6 +127,13 @@ class GameController extends ChangeNotifier {
 
   int get unseenReports => _reports.where((r) => !r.seen).length;
 
+  /// Rapport ouvert depuis le message de fin de raid : sa pastille disparaît.
+  Future<void> markReportSeen(int id) => _serialized(() async {
+    await _repo.markReportSeen(id);
+    _reports = await _repo.loadReports();
+    notifyListeners();
+  });
+
   Future<void> markReportsSeen() => _serialized(() async {
     if (unseenReports == 0) return;
     await _repo.markReportsSeen();

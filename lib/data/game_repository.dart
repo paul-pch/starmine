@@ -259,6 +259,10 @@ class GameRepository {
   Future<void> markReportsSeen() =>
       _db.update(_db.reports).write(const ReportsCompanion(seen: Value(true)));
 
+  Future<void> markReportSeen(int id) => (_db.update(
+    _db.reports,
+  )..where((t) => t.id.equals(id))).write(const ReportsCompanion(seen: Value(true)));
+
   static GameEvent _decodeRow(EventRow r) => decodeEvent(
     id: r.id,
     planetId: r.planetId,

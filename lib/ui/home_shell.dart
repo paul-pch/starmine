@@ -92,7 +92,10 @@ class _HomeShellState extends State<HomeShell> {
           content: Text(CombatReport.verdict(latest.report)),
           action: SnackBarAction(
             label: 'Rapport',
-            onPressed: () => CombatReport.show(context, _c.data, latest.report),
+            onPressed: () {
+              unawaited(_c.markReportSeen(latest.id));
+              unawaited(CombatReport.show(context, _c.data, latest.report));
+            },
           ),
         ),
       );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../category_style.dart';
 import '../format.dart';
 import '../theme.dart';
 
@@ -94,7 +95,25 @@ class _CategorizedListState<T> extends State<CategorizedList<T>> {
     // Une catégorie vidée par le filtre ramène à « Tout ».
     if (_selected != null && !groups.containsKey(_selected)) _selected = null;
 
-    // Une seule rangée défilante : « Réalisables » en tête, puis les catégories.
+    // Puces en icônes pour tenir sur la largeur d'un téléphone sans défiler ; le nom du
+    // filtre actif est écrit sous les puces.
+    Widget chip({
+      required IconData icon,
+      required String label,
+      required bool selected,
+      required ValueChanged<bool> onSelected,
+    }) => Semantics(
+      label: label,
+      child: ChoiceChip(
+        label: Icon(icon, size: 20),
+        selected: selected,
+        showCheckmark: false,
+        visualDensity: VisualDensity.compact,
+        labelPadding: const EdgeInsets.symmetric(horizontal: 2),
+        onSelected: onSelected,
+      ),
+    );
+
     final chips = SizedBox(
       height: 48,
       child: ListView(
@@ -103,10 +122,10 @@ class _CategorizedListState<T> extends State<CategorizedList<T>> {
         children: [
           if (filter != null) ...[
             Center(
-              child: FilterChip(
-                label: const Text('Réalisables'),
+              child: chip(
+                icon: CategoryStyle.realizable,
+                label: 'Réalisables',
                 selected: filtering,
-                visualDensity: VisualDensity.compact,
                 onSelected: filter.onChanged,
               ),
             ),
@@ -114,12 +133,12 @@ class _CategorizedListState<T> extends State<CategorizedList<T>> {
           ],
           for (final entry in [null, ...groups.keys])
             Padding(
-              padding: const EdgeInsets.only(right: 8),
+              padding: const EdgeInsets.only(right: 6),
               child: Center(
-                child: ChoiceChip(
-                  label: Text(entry == null ? 'Tout' : widget.categories[entry]!),
+                child: chip(
+                  icon: entry == null ? CategoryStyle.all : CategoryStyle.icon(entry),
+                  label: entry == null ? 'Tout' : widget.categories[entry]!,
                   selected: _selected == entry,
-                  visualDensity: VisualDensity.compact,
                   onSelected: (_) => setState(() => _selected = entry),
                 ),
               ),
@@ -127,6 +146,10 @@ class _CategorizedListState<T> extends State<CategorizedList<T>> {
         ],
       ),
     );
+    final active = [
+      if (filtering) 'Réalisables',
+      widget.categories[_selected] ?? 'Tout',
+    ].join(' · ');
 
     final selected = _selected;
     final children = <Widget>[
@@ -149,6 +172,16 @@ class _CategorizedListState<T> extends State<CategorizedList<T>> {
       children: [
         ?widget.header,
         chips,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              active,
+              style: theme.textTheme.labelMedium?.copyWith(color: Palette.textSecondary),
+            ),
+          ),
+        ),
         if (fresh > 0)
           InkWell(
             onTap: () => setState(() => _snapshot = current),
