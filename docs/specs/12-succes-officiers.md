@@ -32,7 +32,9 @@ de construction et de recherche).
 | Ingénieur | Chantier, Protection, raids repoussés | Part des défenses reconstruites (70 % de base) |
 
 - Pas de notification quand un officier devient disponible : la pastille du hero suffit.
-- Commandant (file d'attente, spec 13) et Amiral (flotte, V3) : plus tard.
+- **Commandant** (file de construction) et **Logisticien** (files de recherche et du
+  chantier) : chaque niveau ajoute un ordre à la file (spec 13), à implémenter.
+- Amiral (flotte) : V3.
 - Les officiers influenceront certains événements (spec 14, V2d).
 
 ## Données
