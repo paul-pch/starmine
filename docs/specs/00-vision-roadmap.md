@@ -43,7 +43,7 @@ Hors version, à placer :
 | --- | --- | --- |
 | Filtre « Réalisables » | Masquer ce qui n'est pas lançable maintenant (spec 10) | Livré |
 | Message de raid résolu | Le dernier remplace le précédent au lieu de s'empiler (spec 07) | Livré |
-| File d'attente d'ordres | Plusieurs ordres enchaînés par file, gagnés par le Commandant et le Logisticien (spec 13) | Spécifiée, à implémenter |
+| File d'attente d'ordres | Plusieurs ordres enchaînés par file, gagnés par le Commandant, le Directeur scientifique et le Chef de chantier (spec 13) | Livré |
 
 Transverse en cours : **refonte visuelle** — disposition cible validée (spec 10, ambiances
 Équilibrée / Immersive / Sobre), images SF réalistes pré-générées avec Higgsfield et registre

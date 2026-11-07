@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../domain/engine.dart';
 import '../../domain/events.dart';
+import '../../domain/game_data.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../resource_style.dart';
+import '../theme.dart';
 import '../widgets/in_progress_card.dart';
 
 /// Les deux files : construction et recherche.
@@ -44,6 +46,7 @@ class QueueScreen extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       children: [
         _Slot(
+          slot: Slot.construction,
           icon: Icons.factory_outlined,
           title: 'Construction',
           empty: 'Aucune construction en cours',
@@ -53,6 +56,7 @@ class QueueScreen extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         _Slot(
+          slot: Slot.research,
           icon: ResourceStyle.researchIcon,
           title: 'Recherche',
           empty: research.$1,
@@ -76,6 +80,7 @@ class QueueScreen extends StatelessWidget {
 
 class _Slot extends StatelessWidget {
   const _Slot({
+    required this.slot,
     required this.icon,
     required this.title,
     required this.empty,
@@ -85,6 +90,7 @@ class _Slot extends StatelessWidget {
     required this.now,
   });
 
+  final Slot slot;
   final IconData icon;
   final String title;
   final String empty;
@@ -135,6 +141,7 @@ class _Slot extends StatelessWidget {
                 ),
               ),
             ],
+            _QueuedList(controller: controller, slot: slot),
           ],
         ),
       ),
@@ -146,7 +153,12 @@ class _Slot extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(o is ResearchDone ? 'Annuler la recherche ?' : 'Annuler la construction ?'),
-        content: const Text('Les ressources sont remboursées intégralement.'),
+        content: Text(
+          controller.state.queued(slot).isEmpty
+              ? 'Les ressources sont remboursées intégralement.'
+              : 'Les ressources sont remboursées intégralement. L’ordre suivant de la file '
+                    'démarre tout de suite.',
+        ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Non')),
           FilledButton(
@@ -214,6 +226,7 @@ class _BatchSlot extends StatelessWidget {
                 right: 'Fin ${fmtDuration(b.finishAt.difference(now))}',
               ),
             ],
+            _QueuedList(controller: controller, slot: Slot.shipyard),
           ],
         ),
       ),
@@ -270,4 +283,63 @@ class _EmptyText extends StatelessWidget {
       ],
     );
   }
+}
+
+/// Ordres en attente d'une file (spec 13) : position, élément, retrait sans frais.
+class _QueuedList extends StatelessWidget {
+  const _QueuedList({required this.controller, required this.slot});
+
+  final GameController controller;
+  final Slot slot;
+
+  @override
+  Widget build(BuildContext context) {
+    final state = controller.state;
+    final data = controller.data;
+    final capacity = queueCapacity(state, slot, data);
+    final queued = state.queued(slot);
+    if (capacity <= 1) return const SizedBox.shrink();
+    final theme = Theme.of(context);
+    final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
+    // Niveau visé par chaque ordre, en comptant ceux placés avant lui.
+    final levels = <Unlockable, int>{};
+    int target(Unlockable item) {
+      final base = levels[item] ?? state.levelOf(item) + _running(state, item);
+      levels[item] = base + 1;
+      return base + 1;
+    }
+
+    final used = (state.current(slot) == null ? 0 : 1) + queued.length;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 12),
+        Text('File d’attente · $used / $capacity', style: secondary),
+        if (queued.isEmpty)
+          Text('Aucun ordre en attente', style: theme.textTheme.bodyMedium)
+        else
+          for (final (i, q) in queued.indexed)
+            Row(
+              children: [
+                SizedBox(width: 24, child: Text('${i + 2}.', style: mono(secondary))),
+                Expanded(
+                  child: Text(switch (q) {
+                    QueuedLevel(:final item) => '${data.spec(item).name} → ${target(item)}',
+                    QueuedBatch(:final unit, :final count) => '$count × ${data.unit(unit).name}',
+                  }),
+                ),
+                IconButton(
+                  tooltip: 'Retirer de la file',
+                  onPressed: () => controller.cancel(q.id),
+                  icon: const Icon(Icons.close),
+                ),
+              ],
+            ),
+        Text('Chaque ordre est payé à son démarrage.', style: secondary),
+      ],
+    );
+  }
+
+  static int _running(GameState s, Unlockable item) =>
+      s.pending.whereType<OrderDone>().where((e) => e.item == item).length;
 }

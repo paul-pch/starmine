@@ -4,12 +4,14 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:starmine/data/database.dart';
 import 'package:starmine/data/game_repository.dart';
+import 'package:starmine/data/save_codec.dart';
 import 'package:starmine/domain/combat.dart';
 import 'package:starmine/domain/engine.dart';
 import 'package:starmine/domain/events.dart';
 import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/domain/resources.dart';
 import 'package:starmine/ui/game_controller.dart';
+import 'package:starmine/ui/notifications.dart';
 
 import '../domain/helpers.dart';
 import 'fakes.dart';
@@ -178,5 +180,42 @@ void main() {
     final before = c.state.planet.resources;
     await expectLater(c.importJson('{"format":"autre"}'), throwsFormatException);
     expect(c.state.planet.resources, before);
+  });
+
+  test('file d’attente app fermée : fins prévues et annulation notifiées', () async {
+    // Commandant 2 ; de quoi payer deux mines de métal, pas une troisième construction.
+    await GameRepository(db).replaceAll(
+      SaveGame(
+        state: GameState(
+          planet: planet(resources: const Resources(metal: 160, crystal: 40)),
+          pending: const [],
+          officers: {OfficerKind.commander: 2},
+        ),
+        speed: 1,
+        seed: 3,
+      ),
+    );
+    final c = controller();
+    await c.init();
+    expect(await c.order(BuildingKind.metalMine), isNull);
+    expect(await c.order(BuildingKind.metalMine), isNull);
+    expect(await c.order(BuildingKind.researchLab), isNull);
+    expect(c.state.queue, hasLength(2));
+
+    await c.onHidden();
+    final second = c.state.queue.first;
+    final third = c.state.queue.last;
+    // Fin de la seconde mine prévue par simulation, et annulation de la file au tour du labo.
+    expect(notifier.scheduled.containsKey(second.id), isTrue);
+    expect(notifier.scheduled.containsKey(third.id), isFalse);
+    expect(notifier.scheduled.containsKey(queueCancelledNotificationId(second)), isFalse);
+    expect(notifier.scheduled.containsKey(queueCancelledNotificationId(third)), isTrue);
+
+    // Rattrapage : la file a bien été annulée.
+    clock.advance(const Duration(days: 1));
+    await c.onVisible();
+    expect(c.state.queue, isEmpty);
+    expect(c.state.planet.level(BuildingKind.metalMine), 2);
+    expect(c.queueCancelledCount, 1);
   });
 }

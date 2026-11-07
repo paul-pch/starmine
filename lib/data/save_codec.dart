@@ -13,7 +13,8 @@ const saveFormat = 'starmine-save';
 /// v2 (V1) : technologies et réglages de production. Une sauvegarde v1 reste lisible.
 /// v3 (V2a) : unités et lots du chantier. v4 (V2b) : raids pirates.
 /// v5 (V2c) : officiers, compteurs, relevé des raids et technos pirates.
-const saveVersion = 5;
+/// v6 : files d'attente.
+const saveVersion = 6;
 
 /// Sauvegarde complète : état de jeu et réglages persistés.
 class SaveGame {
@@ -80,6 +81,15 @@ Map<String, Object?> encodeUnits(Map<UnitKind, int> units) => {
 Map<UnitKind, int> decodeUnits(Map<String, Object?> m) => {
   for (final e in m.entries) UnitKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 0,
 };
+
+Map<String, Object?> encodeQueued(QueuedOrder q) => switch (q) {
+  QueuedLevel(:final item) => {'item': item.key},
+  QueuedBatch(:final unit, :final count) => {'unit': unit.key, 'count': count},
+};
+
+QueuedOrder decodeQueued(int id, Map<String, Object?> m) => m['unit'] == null
+    ? QueuedLevel(id, Unlockable.fromKey(_string(m, 'item')))
+    : QueuedBatch(id, UnitKind.fromKey(_string(m, 'unit')), _int(m, 'count'));
 
 Map<String, Object?> encodeTech(TechLevels tech) => {
   for (final e in tech.entries)
@@ -207,6 +217,9 @@ Map<String, Object?> encodeSave(SaveGame save, {required DateTime exportedAt}) {
         if (e.value > 0) e.key.key: e.value,
     },
     'counters': {for (final e in save.state.counters.entries) e.key.key: e.value},
+    'queue': [
+      for (final q in save.state.queue) {'id': q.id, ...encodeQueued(q)},
+    ],
     'events': [
       for (final e in save.state.pending)
         {
@@ -239,6 +252,8 @@ SaveGame decodeSave(Map<String, Object?> json) {
   // Absents avant la v5 : aucun officier, compteurs à 0.
   final officers = json['officers'] == null ? const <String, Object?>{} : _map(json, 'officers');
   final counters = json['counters'] == null ? const <String, Object?>{} : _map(json, 'counters');
+  // Absente avant la v6 : file vide.
+  final queue = json['queue'] == null ? const <Object?>[] : _list(json, 'queue');
   final planet = Planet(
     id: _int(p, 'id'),
     name: _string(p, 'name'),
@@ -272,6 +287,10 @@ SaveGame decodeSave(Map<String, Object?> json) {
       counters: {
         for (final e in counters.entries) ?Counter.tryKey(e.key): (e.value as num?)?.toInt() ?? 0,
       },
+      queue: [
+        for (final raw in queue)
+          decodeQueued(_int(_asMap(raw, 'queue[]'), 'id'), _asMap(raw, 'queue[]')),
+      ],
     ),
     speed: _double(json, 'game_speed'),
     seed: _int(json, 'rng_seed'),

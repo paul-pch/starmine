@@ -94,7 +94,10 @@ enum OfficerKind {
   geologist('geologist'),
   technocrat('technocrat'),
   architect('architect'),
-  engineer('engineer');
+  engineer('engineer'),
+  commander('commander'),
+  researchDirector('research_director'),
+  shipyardMaster('shipyard_master');
 
   const OfficerKind(this.key);
 
@@ -129,7 +132,12 @@ enum OfficerBonus {
   buildTime('build_time'),
 
   /// Part des défenses détruites reconstruites, ajoutée aux 70 % de base.
-  defenseRebuild('defense_rebuild');
+  defenseRebuild('defense_rebuild'),
+
+  /// Ordres en plus dans la file de construction, de recherche ou du chantier (spec 13).
+  constructionQueue('construction_queue'),
+  researchQueue('research_queue'),
+  shipyardQueue('shipyard_queue');
 
   const OfficerBonus(this.key);
 

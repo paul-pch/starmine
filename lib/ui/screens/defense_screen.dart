@@ -115,7 +115,7 @@ class _UnitCard extends StatelessWidget {
     final state = controller.interpolated(now);
     final spec = controller.data.unit(unit);
     final owned = state.planet.count(unit);
-    final block = checkBatch(state, unit, 1, rules);
+    final block = checkBatchPlacement(state, unit, 1, rules);
     final locked = block is RequirementsNotMet;
     final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
     final error = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error);
@@ -186,7 +186,9 @@ class _UnitCard extends StatelessWidget {
                         minimumSize: const Size.square(48),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
-                      icon: const Icon(Icons.add),
+                      icon: Icon(
+                        wouldQueue(state, Slot.shipyard) ? Icons.playlist_add : Icons.add,
+                      ),
                     ),
                   ],
                 ),
@@ -244,6 +246,7 @@ class _UnitCard extends StatelessWidget {
   String? _blockText(OrderBlock? block) => switch (block) {
     null || RequirementsNotMet() => null,
     QueueBusy() => 'Chantier occupé',
+    QueueFull(:final capacity) => 'File du chantier pleine : $capacity lots',
     ShipyardBusy() => 'Impossible pendant l’agrandissement du chantier',
     MaxReached(:final max) => 'Maximum $max par planète',
     NotEnoughResources() => 'Ressources insuffisantes',
@@ -325,7 +328,11 @@ class _QuantitySheetState extends State<_QuantitySheet> {
               alignment: Alignment.centerRight,
               child: FilledButton(
                 onPressed: () => Navigator.pop(context, _count),
-                child: Text('Construire $_count'),
+                child: Text(
+                  wouldQueue(c.state, Slot.shipyard)
+                      ? 'Ajouter $_count à la file'
+                      : 'Construire $_count',
+                ),
               ),
             ),
           ],

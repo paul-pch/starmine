@@ -66,6 +66,12 @@ class GameRepository {
         pending: events.map(_decodeRow).toList(),
         officers: {for (final o in officers) OfficerKind.fromKey(o.kind): o.level},
         counters: {for (final c in counters) ?Counter.tryKey(c.kind): c.value},
+        queue: [
+          for (final q in await (_db.select(
+            _db.queuedOrders,
+          )..orderBy([(t) => OrderingTerm.asc(t.position)])).get())
+            decodeQueued(q.id, (jsonDecode(q.payload) as Map).cast<String, Object?>()),
+        ],
       ),
       speed: double.tryParse(await _meta(_speedKey) ?? '') ?? 1,
       seed: int.tryParse(await _meta(_seedKey) ?? '') ?? 0,
@@ -111,6 +117,7 @@ class GameRepository {
       await _db.delete(_db.reports).go();
       await _db.delete(_db.officers).go();
       await _db.delete(_db.counters).go();
+      await _db.delete(_db.queuedOrders).go();
       await _db.delete(_db.buildings).go();
       await _db.delete(_db.planets).go();
       await _writeState(save.state);
@@ -133,15 +140,21 @@ class GameRepository {
   Future<void> setRealizableOnly(String screen, bool on) =>
       _setMeta('$_realizableKey.$screen', on.toString());
 
-  /// Prochain identifiant d'événement libre (historique compris).
+  /// Prochain identifiant d'événement libre (historique et ids réservés par la file
+  /// d'attente compris).
   Future<int> nextEventId() async {
     final maxId = _db.events.id.max();
     final row = await (_db.selectOnly(_db.events)..addColumns([maxId])).getSingle();
-    return (row.read(maxId) ?? 0) + 1;
+    final maxQueued = _db.queuedOrders.id.max();
+    final queued = await (_db.selectOnly(_db.queuedOrders)..addColumns([maxQueued])).getSingle();
+    final last = [row.read(maxId) ?? 0, queued.read(maxQueued) ?? 0];
+    return (last[0] > last[1] ? last[0] : last[1]) + 1;
   }
 
   Future<void> _writeState(GameState state) async {
     final p = state.planet;
+    // La file d'attente est réécrite entière (quelques lignes au plus).
+    await _db.delete(_db.queuedOrders).go();
     await _db
         .into(_db.planets)
         .insertOnConflictUpdate(
@@ -176,6 +189,14 @@ class GameRepository {
       b.insertAllOnConflictUpdate(_db.officers, [
         for (final e in state.officers.entries)
           OfficersCompanion.insert(kind: e.key.key, level: e.value),
+      ]);
+      b.insertAll(_db.queuedOrders, [
+        for (final (i, q) in state.queue.indexed)
+          QueuedOrdersCompanion.insert(
+            id: Value(q.id),
+            position: i,
+            payload: jsonEncode(encodeQueued(q)),
+          ),
       ]);
       b.insertAllOnConflictUpdate(_db.counters, [
         for (final e in state.counters.entries)

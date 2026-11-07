@@ -15,7 +15,9 @@ class GameState {
     required List<GameEvent> pending,
     Map<OfficerKind, int> officers = const {},
     Map<Counter, int> counters = const {},
-  }) : research = Map.unmodifiable({for (final k in TechKind.values) k: research[k] ?? 0}),
+    List<QueuedOrder> queue = const [],
+  }) : queue = List<QueuedOrder>.unmodifiable(queue),
+       research = Map.unmodifiable({for (final k in TechKind.values) k: research[k] ?? 0}),
        officers = Map.unmodifiable({for (final k in OfficerKind.values) k: officers[k] ?? 0}),
        counters = Map.unmodifiable({for (final k in Counter.values) k: counters[k] ?? 0}),
        pending = List<GameEvent>.unmodifiable(<GameEvent>[...pending]..sort(GameEvent.compare));
@@ -30,6 +32,23 @@ class GameState {
 
   /// Compteurs de progression (raids repoussés…), tenus par `advance()`.
   final Map<Counter, int> counters;
+
+  /// Ordres en attente, toutes files confondues, dans l'ordre d'ajout (spec 13). Rien n'est
+  /// payé tant qu'un ordre attend.
+  final List<QueuedOrder> queue;
+
+  /// Ordres en attente de [slot], dans l'ordre.
+  List<QueuedOrder> queued(Slot slot) => [
+    for (final q in queue)
+      if (q.slot == slot) q,
+  ];
+
+  /// Ordre en cours dans [slot] : [OrderDone] ou [ShipyardBatch].
+  GameEvent? current(Slot slot) => switch (slot) {
+    Slot.construction => currentConstruction,
+    Slot.research => currentResearch,
+    Slot.shipyard => currentBatch,
+  };
 
   /// Événements non encore appliqués, triés par (dueAt, id).
   final List<GameEvent> pending;
@@ -52,6 +71,7 @@ class GameState {
     var research = 0.0;
     var build = 0.0;
     var rebuild = 0.0;
+    final extra = {for (final k in Slot.values) k: 0.0};
     for (final spec in data.officers.values) {
       final value = spec.perLevel * (officers[spec.kind] ?? 0);
       switch (spec.bonus) {
@@ -63,6 +83,12 @@ class GameState {
           build += value;
         case OfficerBonus.defenseRebuild:
           rebuild += value;
+        case OfficerBonus.constructionQueue:
+          extra[Slot.construction] = extra[Slot.construction]! + value;
+        case OfficerBonus.researchQueue:
+          extra[Slot.research] = extra[Slot.research]! + value;
+        case OfficerBonus.shipyardQueue:
+          extra[Slot.shipyard] = extra[Slot.shipyard]! + value;
       }
     }
     return Modifiers(
@@ -70,6 +96,9 @@ class GameState {
       researchTime: research,
       buildTime: build,
       defenseRebuild: rebuild,
+      constructionQueue: extra[Slot.construction]!.round(),
+      researchQueue: extra[Slot.research]!.round(),
+      shipyardQueue: extra[Slot.shipyard]!.round(),
     );
   }
 
@@ -79,17 +108,19 @@ class GameState {
     List<GameEvent>? pending,
     Map<OfficerKind, int>? officers,
     Map<Counter, int>? counters,
+    List<QueuedOrder>? queue,
   }) => GameState(
     planet: planet ?? this.planet,
     research: research ?? this.research,
     pending: pending ?? this.pending,
     officers: officers ?? this.officers,
     counters: counters ?? this.counters,
+    queue: queue ?? this.queue,
   );
 }
 
 class AdvanceResult {
-  const AdvanceResult(this.state, this.applied, [this.reports = const []]);
+  const AdvanceResult(this.state, this.applied, [this.reports = const [], this.cancelled = const []]);
 
   final GameState state;
 
@@ -98,6 +129,9 @@ class AdvanceResult {
 
   /// Rapports des raids résolus pendant ce rattrapage.
   final List<RaidReport> reports;
+
+  /// Files annulées : un ordre en attente n'a pas pu démarrer à son tour.
+  final List<QueueCancelled> cancelled;
 }
 
 /// Avance la simulation jusqu'à [now], événement par événement :
@@ -109,23 +143,36 @@ AdvanceResult advance(GameState state, DateTime now, Rules rules) {
   var current = state;
   final applied = <GameEvent>[];
   final reports = <RaidReport>[];
+  final cancelled = <QueueCancelled>[];
   final queue = [...state.pending];
+  void schedule(GameEvent e) => queue
+    ..add(e)
+    ..sort(GameEvent.compare);
   while (queue.isNotEmpty && !queue.first.dueAt.isAfter(now)) {
     final event = queue.removeAt(0);
-    current = _produceUntil(current, event.dueAt, rules);
+    current = _produceUntil(current, event.dueAt, rules).copyWith(pending: queue);
     final step = _apply(current, event, rules);
     current = step.state;
     applied.add(event);
     if (step.report case final report?) reports.add(report);
     // Événement suivant de la même chaîne (lot du chantier, raid), même id.
-    if (step.next case final next?) {
-      queue
-        ..add(next)
-        ..sort(GameEvent.compare);
+    if (step.next case final next?) schedule(next);
+    // Une file qui se libère démarre son prochain ordre en attente, à cet instant.
+    final freed = switch (event) {
+      BuildingDone() => Slot.construction,
+      ResearchDone() => Slot.research,
+      ShipyardBatch() when step.next == null => Slot.shipyard,
+      _ => null,
+    };
+    if (freed != null) {
+      final start = startNextQueued(current.copyWith(pending: queue), freed, event.dueAt, rules);
+      current = start.state;
+      if (start.started case final e?) schedule(e);
+      if (start.cancelled case final c?) cancelled.add(c);
     }
   }
   current = _produceUntil(current, now, rules).copyWith(pending: queue);
-  return AdvanceResult(current, applied, reports);
+  return AdvanceResult(current, applied, reports, cancelled);
 }
 
 GameState _produceUntil(GameState s, DateTime t, Rules rules) {
@@ -183,6 +230,13 @@ class QueueBusy extends OrderBlock {
 
   /// Ordre en cours : [OrderDone] ou [ShipyardBatch].
   final GameEvent current;
+}
+
+/// File d'attente pleine (spec 13) : ordre en cours compris, [capacity] ordres au plus.
+class QueueFull extends OrderBlock {
+  const QueueFull(this.capacity);
+
+  final int capacity;
 }
 
 /// Règle OGame : le chantier ne peut pas être agrandi pendant un lot, et inversement.
@@ -254,8 +308,9 @@ OrderBlock? checkOrder(GameState state, Unlockable item, Rules rules) {
 }
 
 /// Durée du prochain niveau de [item] dans l'état courant.
-Duration orderDuration(GameState state, Unlockable item, Rules rules) {
-  final cost = rules.cost(item, state.levelOf(item) + 1);
+/// [level] : niveau de départ, par défaut le niveau actuel (file d'attente : niveau prévu).
+Duration orderDuration(GameState state, Unlockable item, Rules rules, {int? level}) {
+  final cost = rules.cost(item, (level ?? state.levelOf(item)) + 1);
   final p = state.planet;
   final mods = state.modifiers(rules.data);
   return switch (item) {
@@ -287,6 +342,13 @@ class OrderStarted extends OrderOutcome {
   final OrderDone event;
 }
 
+/// Ordre ajouté à la file d'attente de sa file occupée ; rien n'est payé.
+class OrderQueued extends OrderOutcome {
+  const OrderQueued(super.state, this.order);
+
+  final QueuedOrder order;
+}
+
 class OrderRejected extends OrderOutcome {
   const OrderRejected(super.state, this.reason);
 
@@ -303,7 +365,17 @@ OrderOutcome startOrder(
   Rules rules, {
   required int eventId,
 }) {
-  final advanced = advance(state, now, rules).state;
+  return _begin(advance(state, now, rules).state, item, now, rules, eventId: eventId);
+}
+
+/// Démarre [item] à [now] sur un état déjà avancé (commande directe ou file d'attente).
+OrderOutcome _begin(
+  GameState advanced,
+  Unlockable item,
+  DateTime now,
+  Rules rules, {
+  required int eventId,
+}) {
   final block = checkOrder(advanced, item, rules);
   if (block != null) return OrderRejected(advanced, block);
 
@@ -342,13 +414,41 @@ OrderOutcome startOrder(
 
 /// Annule l'ordre [eventId] avec remboursement intégral (le stock peut alors dépasser la
 /// capacité). Sans effet si l'événement n'est plus en attente.
-GameState cancelOrder(GameState state, int eventId, DateTime now, Rules rules) {
+GameState cancelOrder(GameState state, int eventId, DateTime now, Rules rules) =>
+    cancelOrQueue(state, eventId, now, rules).state;
+
+/// Annule [eventId] : un ordre en attente est retiré sans frais (rien n'est payé) ; l'ordre
+/// en cours est remboursé et le suivant de sa file démarre tout de suite (spec 13).
+({GameState state, QueueCancelled? cancelled}) cancelOrQueue(
+  GameState state,
+  int eventId,
+  DateTime now,
+  Rules rules,
+) {
   final advanced = advance(state, now, rules).state;
+  if (advanced.queue.any((q) => q.id == eventId)) {
+    return (
+      state: advanced.copyWith(queue: [
+        for (final q in advanced.queue)
+          if (q.id != eventId) q,
+      ]),
+      cancelled: null,
+    );
+  }
   final event = advanced.pending.whereType<OrderDone>().where((e) => e.id == eventId).firstOrNull;
-  if (event == null) return advanced;
-  return advanced.copyWith(
+  if (event == null) return (state: advanced, cancelled: null);
+  final refunded = advanced.copyWith(
     planet: advanced.planet.copyWith(resources: advanced.planet.resources + event.cost),
     pending: advanced.pending.where((e) => e.id != eventId).toList(),
+  );
+  final slot = event is BuildingDone ? Slot.construction : Slot.research;
+  final start = startNextQueued(refunded, slot, now, rules);
+  final started = start.started;
+  return (
+    state: started == null
+        ? start.state
+        : start.state.copyWith(pending: [...start.state.pending, started]),
+    cancelled: start.cancelled,
   );
 }
 
@@ -433,7 +533,17 @@ OrderOutcome startBatch(
   Rules rules, {
   required int eventId,
 }) {
-  final advanced = advance(state, now, rules).state;
+  return _beginBatch(advance(state, now, rules).state, unit, count, now, rules, eventId: eventId);
+}
+
+OrderOutcome _beginBatch(
+  GameState advanced,
+  UnitKind unit,
+  int count,
+  DateTime now,
+  Rules rules, {
+  required int eventId,
+}) {
   final block = checkBatch(advanced, unit, count, rules);
   if (block != null) return OrderRejected(advanced, block);
   final spec = rules.data.unit(unit);
@@ -500,4 +610,236 @@ SlotStatus _slot({required bool built, required bool busy, required bool blocked
   if (!built) return SlotStatus.unavailable;
   if (blocked) return SlotStatus.blocked;
   return SlotStatus.free;
+}
+
+// --- File d'attente (spec 13) ----------------------------------------------------
+
+/// Ordre en attente dans une file occupée. [id] est l'id d'événement réservé à l'ajout,
+/// repris par l'événement quand l'ordre démarre.
+sealed class QueuedOrder {
+  const QueuedOrder(this.id);
+
+  final int id;
+
+  Slot get slot;
+}
+
+/// Niveau suivant d'un bâtiment ou d'une techno.
+class QueuedLevel extends QueuedOrder {
+  const QueuedLevel(super.id, this.item);
+
+  final Unlockable item;
+
+  @override
+  Slot get slot => item is BuildingKind ? Slot.construction : Slot.research;
+}
+
+/// Lot du chantier.
+class QueuedBatch extends QueuedOrder {
+  const QueuedBatch(super.id, this.unit, this.count);
+
+  final UnitKind unit;
+  final int count;
+
+  @override
+  Slot get slot => Slot.shipyard;
+}
+
+/// Une file annulée : [first] n'a pas pu démarrer à [at] pour [reason] ; [dropped] = tous
+/// les ordres retirés de la file, [first] compris.
+class QueueCancelled {
+  const QueueCancelled({
+    required this.slot,
+    required this.at,
+    required this.first,
+    required this.reason,
+    required this.dropped,
+  });
+
+  final Slot slot;
+  final DateTime at;
+  final QueuedOrder first;
+  final OrderBlock reason;
+  final List<QueuedOrder> dropped;
+}
+
+/// Nombre d'ordres de [slot], en cours compris : 1, plus le niveau de l'officier de la file.
+int queueCapacity(GameState s, Slot slot, GameData data) {
+  final m = s.modifiers(data);
+  return 1 +
+      switch (slot) {
+        Slot.construction => m.constructionQueue,
+        Slot.research => m.researchQueue,
+        Slot.shipyard => m.shipyardQueue,
+      };
+}
+
+/// Niveau qu'aura [item] une fois l'ordre en cours et la file terminés.
+int projectedLevel(GameState s, Unlockable item) {
+  var level = s.levelOf(item);
+  for (final e in s.pending) {
+    if (e is OrderDone && e.item == item) level++;
+  }
+  for (final q in s.queue) {
+    if (q is QueuedLevel && q.item == item) level++;
+  }
+  return level;
+}
+
+/// Unités de [unit] une fois le lot en cours et la file livrés.
+int projectedCount(GameState s, UnitKind unit) {
+  var n = s.planet.count(unit);
+  final batch = s.currentBatch;
+  if (batch != null && batch.unit == unit) n += batch.remaining;
+  for (final q in s.queue) {
+    if (q is QueuedBatch && q.unit == unit) n += q.count;
+  }
+  return n;
+}
+
+Map<Unlockable, int> _unmetProjected(GameState s, Map<Unlockable, int> requires) => {
+  for (final e in requires.entries)
+    if (projectedLevel(s, e.key) < e.value) e.key: e.value,
+};
+
+OrderBlock? _checkQueueRoom(GameState s, Slot slot, Rules rules) {
+  final capacity = queueCapacity(s, slot, rules.data);
+  if (s.queued(slot).length + 1 < capacity) return null;
+  return capacity == 1 ? QueueBusy(s.current(slot)!) : QueueFull(capacity);
+}
+
+/// Vérifie l'ajout de [item] à sa file occupée : place libre et prérequis remplis en
+/// comptant les ordres placés avant. Les ressources ne sont pas vérifiées (payées au
+/// démarrage).
+OrderBlock? checkQueue(GameState s, Unlockable item, Rules rules) {
+  final slot = item is BuildingKind ? Slot.construction : Slot.research;
+  final room = _checkQueueRoom(s, slot, rules);
+  if (room != null) return room;
+  final missing = _unmetProjected(s, rules.data.spec(item).requires);
+  return missing.isEmpty ? null : RequirementsNotMet(missing);
+}
+
+/// Comme [checkQueue], pour un lot du chantier.
+OrderBlock? checkQueueBatch(GameState s, UnitKind unit, int count, Rules rules) {
+  final spec = rules.data.unit(unit);
+  if (!spec.defense) return const NotBuildable();
+  final room = _checkQueueRoom(s, Slot.shipyard, rules);
+  if (room != null) return room;
+  final missing = _unmetProjected(s, spec.requires);
+  if (missing.isNotEmpty) return RequirementsNotMet(missing);
+  final max = spec.maxCount;
+  if (max != null && projectedCount(s, unit) + count > max) return MaxReached(max);
+  return null;
+}
+
+/// Vrai si un nouvel ordre de [slot] irait dans la file d'attente (file occupée).
+bool wouldQueue(GameState s, Slot slot) => s.current(slot) != null;
+
+/// Ce qui empêche de lancer ou de mettre en file [item] maintenant (`null` : possible).
+OrderBlock? checkPlacement(GameState s, Unlockable item, Rules rules) {
+  final slot = item is BuildingKind ? Slot.construction : Slot.research;
+  return wouldQueue(s, slot) ? checkQueue(s, item, rules) : checkOrder(s, item, rules);
+}
+
+/// Comme [checkPlacement], pour [count] unités.
+OrderBlock? checkBatchPlacement(GameState s, UnitKind unit, int count, Rules rules) =>
+    wouldQueue(s, Slot.shipyard)
+    ? checkQueueBatch(s, unit, count, rules)
+    : checkBatch(s, unit, count, rules);
+
+/// Lance [item] si sa file est libre, sinon l'ajoute à la file d'attente.
+OrderOutcome placeOrder(
+  GameState state,
+  Unlockable item,
+  DateTime now,
+  Rules rules, {
+  required int eventId,
+}) {
+  final advanced = advance(state, now, rules).state;
+  final slot = item is BuildingKind ? Slot.construction : Slot.research;
+  if (!wouldQueue(advanced, slot)) return _begin(advanced, item, now, rules, eventId: eventId);
+  final block = checkQueue(advanced, item, rules);
+  if (block != null) return OrderRejected(advanced, block);
+  final order = QueuedLevel(eventId, item);
+  return OrderQueued(advanced.copyWith(queue: [...advanced.queue, order]), order);
+}
+
+/// Lance le lot si le chantier est libre, sinon l'ajoute à la file d'attente.
+OrderOutcome placeBatch(
+  GameState state,
+  UnitKind unit,
+  int count,
+  DateTime now,
+  Rules rules, {
+  required int eventId,
+}) {
+  final advanced = advance(state, now, rules).state;
+  if (!wouldQueue(advanced, Slot.shipyard)) {
+    return _beginBatch(advanced, unit, count, now, rules, eventId: eventId);
+  }
+  final block = checkQueueBatch(advanced, unit, count, rules);
+  if (block != null) return OrderRejected(advanced, block);
+  final order = QueuedBatch(eventId, unit, count);
+  return OrderQueued(advanced.copyWith(queue: [...advanced.queue, order]), order);
+}
+
+/// Démarre le premier ordre en attente de [slot] à [at] (file libérée), payé à cet instant.
+/// S'il ne peut pas démarrer (ressources, prérequis, labo ou chantier occupé, limite), toute
+/// la file est annulée. [s] est avancé à [at] ; l'événement démarré n'est pas dans
+/// `state.pending`, à l'appelant de le planifier.
+({GameState state, GameEvent? started, QueueCancelled? cancelled}) startNextQueued(
+  GameState s,
+  Slot slot,
+  DateTime at,
+  Rules rules,
+) {
+  final waiting = s.queued(slot);
+  if (waiting.isEmpty || s.current(slot) != null) return (state: s, started: null, cancelled: null);
+  final first = waiting.first;
+  final rest = s.copyWith(queue: [
+    for (final q in s.queue)
+      if (!identical(q, first)) q,
+  ]);
+  final outcome = switch (first) {
+    QueuedLevel(:final item) => _begin(rest, item, at, rules, eventId: first.id),
+    QueuedBatch(:final unit, :final count) => _beginBatch(
+      rest,
+      unit,
+      count,
+      at,
+      rules,
+      eventId: first.id,
+    ),
+  };
+  switch (outcome) {
+    case OrderStarted(:final event):
+      return (
+        state: outcome.state.copyWith(pending: rest.pending),
+        started: event,
+        cancelled: null,
+      );
+    case BatchStarted(:final batch):
+      return (
+        state: outcome.state.copyWith(pending: rest.pending),
+        started: batch,
+        cancelled: null,
+      );
+    case OrderRejected(:final reason):
+      return (
+        state: s.copyWith(queue: [
+          for (final q in s.queue)
+            if (q.slot != slot) q,
+        ]),
+        started: null,
+        cancelled: QueueCancelled(
+          slot: slot,
+          at: at,
+          first: first,
+          reason: reason,
+          dropped: waiting,
+        ),
+      );
+    case OrderQueued():
+      throw StateError('un démarrage ne met pas en file');
+  }
 }

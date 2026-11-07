@@ -91,6 +91,18 @@ class Counters extends Table {
   Set<Column<Object>> get primaryKey => {kind};
 }
 
+/// Ordres en file d'attente, pas encore démarrés ni payés (schéma v6, spec 13). [id] est
+/// l'id d'événement réservé ; [payload] : `{"item": clé}` ou `{"unit": clé, "count": n}`.
+@DataClassName('QueuedOrderRow')
+class QueuedOrders extends Table {
+  IntColumn get id => integer()();
+  IntColumn get position => integer()();
+  TextColumn get payload => text()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+}
+
 /// File unique de tous les événements, futurs et passés.
 @DataClassName('EventRow')
 class Events extends Table {
@@ -118,7 +130,18 @@ class Meta extends Table {
 }
 
 @DriftDatabase(
-  tables: [Planets, Buildings, Research, Units, Events, Reports, Officers, Counters, Meta],
+  tables: [
+    Planets,
+    Buildings,
+    Research,
+    Units,
+    Events,
+    Reports,
+    Officers,
+    Counters,
+    QueuedOrders,
+    Meta,
+  ],
 )
 class StarmineDatabase extends _$StarmineDatabase {
   StarmineDatabase(super.executor);
@@ -129,8 +152,9 @@ class StarmineDatabase extends _$StarmineDatabase {
   /// v1 : V0. v2 : technologies (table research) et réglages de production.
   /// v3 : unités (table units). v4 : rapports de raid (table reports).
   /// v5 : officiers et compteurs (tables officers, counters).
+  /// v6 : files d'attente (table queued_orders).
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -154,6 +178,9 @@ class StarmineDatabase extends _$StarmineDatabase {
           "INSERT INTO counters (kind, value) SELECT 'raids_repelled', COUNT(*) FROM reports "
           'WHERE payload LIKE \'%"winner":"defender"%\'',
         );
+      }
+      if (from < 6) {
+        await m.createTable(queuedOrders);
       }
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),

@@ -15,6 +15,9 @@ class Modifiers {
     this.researchTime = 0,
     this.buildTime = 0,
     this.defenseRebuild = 0,
+    this.constructionQueue = 0,
+    this.researchQueue = 0,
+    this.shipyardQueue = 0,
   });
 
   static const none = Modifiers();
@@ -30,6 +33,11 @@ class Modifiers {
 
   /// Ajouté à la part de défenses reconstruites après un combat.
   final double defenseRebuild;
+
+  /// Ordres en plus dans chaque file d'attente (spec 13).
+  final int constructionQueue;
+  final int researchQueue;
+  final int shipyardQueue;
 }
 
 /// Bilan d'énergie instantané de la planète.

@@ -115,6 +115,12 @@ class GameController extends ChangeNotifier {
     notifyListeners();
   });
 
+  /// Dernière file annulée (message dans l'app) et nombre d'annulations depuis le lancement.
+  QueueCancelled? get lastQueueCancelled => _lastQueueCancelled;
+  QueueCancelled? _lastQueueCancelled;
+  int get queueCancelledCount => _queueCancelledCount;
+  var _queueCancelledCount = 0;
+
   /// Rapports de raid, les plus récents d'abord.
   List<StoredReport> get reports => _reports;
   var _reports = <StoredReport>[];
@@ -149,7 +155,7 @@ class GameController extends ChangeNotifier {
     final t = now();
     final adv = advance(state, t, _rules);
     final outcome = officers.promoteOfficer(adv.state, kind, t, _rules);
-    await _commit(outcome.state, applied: adv.applied, reports: adv.reports);
+    await _commit(outcome.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
     return outcome.promoted;
   });
 
@@ -157,7 +163,7 @@ class GameController extends ChangeNotifier {
   Future<void> raidNow() => _serialized(() async {
     final t = now();
     final adv = advance(state, t, _rules);
-    await _commit(raid.raidNow(adv.state, t, _rules), applied: adv.applied, reports: adv.reports);
+    await _commit(raid.raidNow(adv.state, t, _rules), applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
   });
 
   Future<void> _ensureRaid() async {
@@ -183,17 +189,20 @@ class GameController extends ChangeNotifier {
     final t = now();
     final adv = advance(state, t, _rules);
     final id = await _repo.nextEventId();
-    final outcome = startOrder(adv.state, item, t, _rules, eventId: id);
+    final outcome = placeOrder(adv.state, item, t, _rules, eventId: id);
     switch (outcome) {
+      case OrderQueued():
+        await _commit(outcome.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
+        return null;
       case OrderRejected(:final reason):
-        await _commit(adv.state, applied: adv.applied, reports: adv.reports);
+        await _commit(adv.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
         return reason;
       case OrderStarted(:final event):
-        await _commit(outcome.state, applied: adv.applied, reports: adv.reports);
+        await _commit(outcome.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
         if (!_visible) await _notifier.schedule(event, data);
         return null;
       case BatchStarted():
-        throw StateError('startOrder ne renvoie pas de lot');
+        throw StateError('placeOrder ne renvoie pas de lot');
     }
   });
 
@@ -202,17 +211,20 @@ class GameController extends ChangeNotifier {
     final t = now();
     final adv = advance(state, t, _rules);
     final id = await _repo.nextEventId();
-    final outcome = startBatch(adv.state, unit, count, t, _rules, eventId: id);
+    final outcome = placeBatch(adv.state, unit, count, t, _rules, eventId: id);
     switch (outcome) {
+      case OrderQueued():
+        await _commit(outcome.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
+        return null;
       case OrderRejected(:final reason):
-        await _commit(adv.state, applied: adv.applied, reports: adv.reports);
+        await _commit(adv.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
         return reason;
       case BatchStarted(:final batch):
-        await _commit(outcome.state, applied: adv.applied, reports: adv.reports);
+        await _commit(outcome.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
         if (!_visible) await _notifier.schedule(batch, data);
         return null;
       case OrderStarted():
-        throw StateError('startBatch renvoie un lot');
+        throw StateError('placeBatch renvoie un lot');
     }
   });
 
@@ -224,14 +236,21 @@ class GameController extends ChangeNotifier {
       setProductionPercent(adv.state, kind, percent, t, _rules),
       applied: adv.applied,
       reports: adv.reports,
+      queueCancelled: adv.cancelled,
     );
   });
 
   Future<void> cancel(int eventId) => _serialized(() async {
     final t = now();
     final adv = advance(state, t, _rules);
-    final next = cancelOrder(adv.state, eventId, t, _rules);
-    await _commit(next, applied: adv.applied, reports: adv.reports, cancelledIds: [eventId]);
+    final out = cancelOrQueue(adv.state, eventId, t, _rules);
+    await _commit(
+      out.state,
+      applied: adv.applied,
+      reports: adv.reports,
+      queueCancelled: [...adv.cancelled, ?out.cancelled],
+      cancelledIds: [eventId],
+    );
     await _notifier.cancel(eventId);
   });
 
@@ -296,17 +315,37 @@ class GameController extends ChangeNotifier {
     if (!_visible) await _scheduleAll();
   }
 
+  /// Horizon de prévision des notifications de la file d'attente.
+  static const _forecast = Duration(days: 7);
+
   Future<void> _scheduleAll() async {
     await _notifier.cancelAll();
+    final t = now();
     for (final e in state.pending) {
-      if (notifyAt(e).isAfter(now())) await _notifier.schedule(e, data);
+      if (notifyAt(e).isAfter(t)) await _notifier.schedule(e, data);
+    }
+    // Les ordres en attente n'ont pas encore d'échéance : on simule la suite (déterministe,
+    // raids compris) pour prévoir leurs fins et une éventuelle annulation de file.
+    if (state.queue.isEmpty) return;
+    final queuedIds = {for (final q in state.queue) q.id};
+    final sim = advance(state, t.add(_forecast), _rules);
+    for (final e in [...sim.applied, ...sim.state.pending]) {
+      if (queuedIds.contains(e.id) && notifyAt(e).isAfter(t)) await _notifier.schedule(e, data);
+    }
+    for (final c in sim.cancelled) {
+      await _notifier.scheduleCancelled(c, data);
     }
   }
 
   Future<void> _advanceAndSave() async {
     final result = advance(state, now(), _rules);
     if (identical(result.state, state)) return;
-    await _commit(result.state, applied: result.applied, reports: result.reports);
+    await _commit(
+      result.state,
+      applied: result.applied,
+      reports: result.reports,
+      queueCancelled: result.cancelled,
+    );
   }
 
   Future<void> _commit(
@@ -314,9 +353,14 @@ class GameController extends ChangeNotifier {
     Iterable<GameEvent> applied = const [],
     Iterable<int> cancelledIds = const [],
     Iterable<RaidReport> reports = const [],
+    Iterable<QueueCancelled> queueCancelled = const [],
   }) async {
     await _repo.save(next, applied: applied, cancelledIds: cancelledIds, reports: reports);
     _set(_save.copyWith(state: next));
+    if (queueCancelled.isNotEmpty) {
+      _lastQueueCancelled = queueCancelled.last;
+      _queueCancelledCount += queueCancelled.length;
+    }
     if (reports.isNotEmpty) _reports = await _repo.loadReports();
     notifyListeners();
   }

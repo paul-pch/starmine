@@ -30,10 +30,11 @@ de construction et de recherche).
 | Technocrate | Labo et technos | Durée de recherche réduite |
 | Architecte | Usine de robots, puis de nanites | Durée de construction des bâtiments réduite |
 | Ingénieur | Chantier, Protection, raids repoussés | Part des défenses reconstruites (70 % de base) |
+| Commandant | Usine de robots et mines, puis nanites | +1 ordre dans la file de construction (spec 13) |
+| Directeur scientifique | Labo et Informatique | +1 ordre dans la file de recherche |
+| Chef de chantier | Chantier, puis robots et nanites | +1 lot dans la file du chantier |
 
 - Pas de notification quand un officier devient disponible : la pastille du hero suffit.
-- **Commandant** (file de construction) et **Logisticien** (files de recherche et du
-  chantier) : chaque niveau ajoute un ordre à la file (spec 13), à implémenter.
 - Amiral (flotte) : V3.
 - Les officiers influenceront certains événements (spec 14, V2d).
 
@@ -41,7 +42,7 @@ de construction et de recherche).
 
 Section `officers` du YAML : par officier `name`, `description` (infobulle), `bonus`
 (`type` : `mine_production`, `research_time`, `build_time`, `defense_rebuild` ;
-`per_level`), `levels` (liste de `requires`, clés = bâtiments, technos ou compteurs).
+`construction_queue`, `research_queue`, `shipyard_queue` ; `per_level`), `levels` (liste de `requires`, clés = bâtiments, technos ou compteurs).
 Section `counters` : libellé de chaque compteur. Seuils à équilibrer en jouant.
 
 ## UI

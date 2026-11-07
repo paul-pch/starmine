@@ -23,8 +23,13 @@ String officerBonusText(OfficerBonus bonus, double value) {
     OfficerBonus.buildTime => '−${pct(value)} de durée de construction',
     OfficerBonus.defenseRebuild =>
       '${pct(defenseRebuildChance + value)} des défenses détruites reconstruites',
+    OfficerBonus.constructionQueue => _orders(1 + value.round(), 'la file de construction'),
+    OfficerBonus.researchQueue => _orders(1 + value.round(), 'la file de recherche'),
+    OfficerBonus.shipyardQueue => _orders(1 + value.round(), 'la file du chantier'),
   };
 }
+
+String _orders(int n, String queue) => '$n ordres dans $queue';
 
 /// Liste des officiers : niveau, bonus actuel et suivant, prérequis, déblocage.
 class OfficersScreen extends StatelessWidget {

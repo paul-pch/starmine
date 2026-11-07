@@ -24,15 +24,24 @@ class ItemFacts {
   final GameState state;
 
   int get level => state.levelOf(item);
-  Resources get cost => controller.rules.cost(item, level + 1);
-  Duration get duration => orderDuration(state, item, controller.rules);
-  OrderBlock? get block => checkOrder(state, item, controller.rules);
+
+  /// Slot de l'élément ; un ordre placé maintenant irait dans la file d'attente.
+  Slot get slot => item is BuildingKind ? Slot.construction : Slot.research;
+  bool get queues => wouldQueue(state, slot);
+
+  /// Niveau de départ de l'ordre : actuel, ou prévu après la file (spec 13).
+  int get startLevel => queues ? projectedLevel(state, item) : level;
+  Resources get cost => controller.rules.cost(item, startLevel + 1);
+  Duration get duration => orderDuration(state, item, controller.rules, level: startLevel);
+  OrderBlock? get block => checkPlacement(state, item, controller.rules);
 
   /// Libellé de l'action ; aussi le libellé accessible du bouton de la carte.
-  String get verb => switch (item) {
-    TechKind() => 'Rechercher',
-    BuildingKind() => level == 0 ? 'Construire' : 'Améliorer',
-  };
+  String get verb => queues
+      ? 'Ajouter à la file'
+      : switch (item) {
+          TechKind() => 'Rechercher',
+          BuildingKind() => level == 0 ? 'Construire' : 'Améliorer',
+        };
 
   /// Réglage de production du bâtiment, 100 pour une techno.
   int get percent => switch (item) {
@@ -50,6 +59,7 @@ class ItemFacts {
     QueueBusy(current: final OrderDone current) =>
       'File occupée : ${controller.data.spec(current.item).name} ${current.targetLevel}',
     QueueBusy() => 'File occupée',
+    QueueFull(:final capacity) => 'File pleine : $capacity ordres',
     ShipyardBusy() => 'Impossible pendant une production du chantier',
     MaxReached() || NotBuildable() => null,
     LabBusy() => switch (item) {
@@ -133,6 +143,7 @@ Future<void> _order(BuildContext context, GameController controller, Unlockable 
   if (reason == null || !context.mounted) return;
   final text = switch (reason) {
     QueueBusy() => 'La file est occupée',
+    QueueFull(:final capacity) => 'La file est pleine ($capacity ordres)',
     LabBusy() => 'Le laboratoire est occupé',
     ShipyardBusy() => 'Le chantier est occupé',
     MaxReached() || NotBuildable() => 'Impossible',
@@ -235,7 +246,7 @@ class ItemCard extends StatelessWidget {
                         minimumSize: const Size.square(48),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
-                      icon: const Icon(Icons.arrow_upward),
+                      icon: Icon(facts.queues ? Icons.playlist_add : Icons.arrow_upward),
                     ),
                   ],
                 ),

@@ -36,6 +36,27 @@ void main() {
     expect(await repo.nextEventId(), 1);
   });
 
+  test('file d’attente : ordre conservé, ids réservés jamais réattribués', () async {
+    final save = fresh();
+    await repo.replaceAll(
+      SaveGame(
+        state: save.state.copyWith(
+          queue: const [
+            QueuedLevel(40, BuildingKind.solarPlant),
+            QueuedLevel(12, TechKind.energy),
+          ],
+        ),
+        speed: 1,
+        seed: 7,
+      ),
+    );
+    final loaded = (await repo.load())!;
+    expect(loaded.state.queue.map((q) => q.id), [40, 12]);
+    expect(await repo.nextEventId(), 41);
+    await repo.save(loaded.state.copyWith(queue: const []));
+    expect((await repo.load())!.state.queue, isEmpty);
+  });
+
   test('nouvelle partie puis rechargement', () async {
     await repo.replaceAll(fresh());
     final loaded = (await repo.load())!;

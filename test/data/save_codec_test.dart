@@ -43,6 +43,10 @@ void main() {
       state: withRaid.copyWith(
         officers: {OfficerKind.technocrat: 2},
         counters: {Counter.raidsRepelled: 3},
+        queue: const [
+          QueuedLevel(8, BuildingKind.metalMine),
+          QueuedBatch(9, UnitKind.rocketLauncher, 4),
+        ],
       ),
       speed: 10,
       seed: 42,
@@ -66,6 +70,10 @@ void main() {
     expect(restored.state.research, original.state.research);
     expect(restored.state.officers, original.state.officers);
     expect(restored.state.counters, original.state.counters);
+    final q = restored.state.queue;
+    expect(q.map((e) => e.id), [8, 9]);
+    expect((q[0] as QueuedLevel).item, BuildingKind.metalMine);
+    expect((q[1] as QueuedBatch).count, 4);
     expect(b.resources, a.resources);
     expect(b.lastUpdate, a.lastUpdate);
     expect(restored.speed, 10);
@@ -101,12 +109,14 @@ void main() {
     json.remove('research');
     json.remove('officers');
     json.remove('counters');
+    json.remove('queue');
     (json['planet']! as Map<String, Object?>).remove('production_percent');
     json['events'] = <Object?>[];
     final restored = decodeSave(json);
     expect(restored.state.research.values, everyElement(0));
     expect(restored.state.planet.percents.values, everyElement(100));
     expect(restored.state.officers.values, everyElement(0));
+    expect(restored.state.queue, isEmpty);
   });
 
   test('raids d’avant la V2c : sans relevé ni technos pirates', () {

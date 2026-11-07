@@ -400,3 +400,43 @@ officers:
       - requires: { shipyard: 6, armour_technology: 4, raids_repelled: 6 }
       - requires: { shipyard: 8, armour_technology: 6, raids_repelled: 10 }
       - requires: { shipyard: 10, armour_technology: 8, raids_repelled: 15 }
+  # Files d'attente (spec 13) : un ordre de plus par niveau, un officier par file.
+  commander:
+    name: Commandant
+    description: >-
+      Chef des opérations de la planète. Chaque niveau ajoute un ordre à la file de
+      construction : les bâtiments s'enchaînent sans attendre ton retour. Chaque ordre est
+      payé à son démarrage ; s'il ne peut pas démarrer, toute la file est annulée.
+    bonus: { type: construction_queue, per_level: 1 }
+    levels:
+      - requires: { robotics_factory: 3, metal_mine: 8 }
+      - requires: { robotics_factory: 5, metal_mine: 12, crystal_mine: 10 }
+      - requires: { robotics_factory: 8, metal_mine: 15, crystal_mine: 13 }
+      - requires: { robotics_factory: 10, nanite_factory: 1 }
+      - requires: { nanite_factory: 2 }
+  research_director:
+    name: Directeur scientifique
+    description: >-
+      Coordonne les équipes du laboratoire. Chaque niveau ajoute un ordre à la file de
+      recherche. Chaque recherche est payée à son démarrage ; si elle ne peut pas démarrer,
+      toute la file est annulée.
+    bonus: { type: research_queue, per_level: 1 }
+    levels:
+      - requires: { research_lab: 3, energy_technology: 2 }
+      - requires: { research_lab: 5, computer_technology: 3 }
+      - requires: { research_lab: 7, computer_technology: 5 }
+      - requires: { research_lab: 9, computer_technology: 7 }
+      - requires: { research_lab: 12, computer_technology: 10 }
+  shipyard_master:
+    name: Chef de chantier
+    description: >-
+      Organise la production du chantier spatial. Chaque niveau ajoute un lot à la file du
+      chantier. Chaque lot est payé à son démarrage ; s'il ne peut pas démarrer, toute la
+      file est annulée.
+    bonus: { type: shipyard_queue, per_level: 1 }
+    levels:
+      - requires: { shipyard: 2 }
+      - requires: { shipyard: 4, robotics_factory: 4 }
+      - requires: { shipyard: 6 }
+      - requires: { shipyard: 8, nanite_factory: 1 }
+      - requires: { shipyard: 10, nanite_factory: 2 }

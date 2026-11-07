@@ -15,10 +15,11 @@ Ne jamais perdre une partie : base locale versionnée et sauvegarde exportable.
 | `events` | File unique : type, échéance, `payload` JSON, statut | v1 |
 | `reports` | Rapports de raid (JSON), vu / non vu | v4 |
 | `officers` | Niveau par officier débloqué (spec 12) | v5 |
+| `queued_orders` | Ordres en file d'attente : id réservé, position, payload (spec 13) | v6 |
 | `counters` | Compteurs de progression (raids repoussés) ; à la migration v5, initialisé avec les raids repoussés des rapports | v5 |
 | `meta` | Vitesse de jeu, graine ; préférences d'affichage hors sauvegarde JSON (`ambiance`, `filter_realizable.<onglet>`) | v1 |
 
-- `schemaVersion` = **5**. Chaque montée de version a son étape dans `onUpgrade` et le test
+- `schemaVersion` = **6**. Chaque montée de version a son étape dans `onUpgrade` et le test
   `migration_test.dart` part d'une **base v1 réelle** jusqu'à la dernière version.
 - Chaque écriture est **une transaction** : état, statut des événements appliqués ou annulés,
   rapports produits.
@@ -28,8 +29,8 @@ Ne jamais perdre une partie : base locale versionnée et sauvegarde exportable.
 
 ## Sauvegarde JSON (export / import)
 
-- Format `starmine-save`, `version` = **5**. Contient planète (stocks, niveaux, réglages,
-  unités), technos, officiers, compteurs, événements en attente (raids : relevé et technos
+- Format `starmine-save`, `version` = **6**. Contient planète (stocks, niveaux, réglages,
+  unités), technos, officiers, compteurs, file d'attente, événements en attente (raids : relevé et technos
   pirates), vitesse, graine. Les rapports n'en font pas partie.
 - Une sauvegarde **plus ancienne** s'importe (valeurs par défaut pour les champs absents) ;
   une sauvegarde **plus récente** que l'app est refusée.

@@ -40,11 +40,14 @@ class InProgressCard extends StatelessWidget {
     };
     final batch = slot == Slot.shipyard ? state.currentBatch : null;
     final upgrade = state.currentConstruction;
+    // File d'attente (spec 13) : « · file 2 / 4 » quand l'officier de la file est recruté.
+    final capacity = queueCapacity(state, slot, data);
+    final queue = capacity > 1 ? ' · file ${1 + state.queued(slot).length} / $capacity' : '';
 
     if (order != null) {
       return _running(
         context,
-        title: 'En cours · ${data.spec(order.item).name} → ${order.targetLevel}',
+        title: 'En cours · ${data.spec(order.item).name} → ${order.targetLevel}$queue',
         left: order.dueAt.difference(now),
         progress: orderProgress(order, now),
       );
@@ -53,7 +56,7 @@ class InProgressCard extends StatelessWidget {
       final done = batch.ordered - batch.remaining;
       return _running(
         context,
-        title: 'En cours · ${data.unit(batch.unit).name} · $done / ${batch.ordered}',
+        title: 'En cours · ${data.unit(batch.unit).name} · $done / ${batch.ordered}$queue',
         left: batch.finishAt.difference(now),
         progress: done / batch.ordered,
       );

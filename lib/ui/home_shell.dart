@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'game_controller.dart';
+import 'notifications.dart';
 import '../domain/engine.dart';
 import 'resource_style.dart';
 import 'theme.dart';
@@ -43,6 +44,9 @@ class _HomeShellState extends State<HomeShell> {
   /// Dernier rapport signalé à l'écran (pour n'afficher que les nouveaux).
   int? _lastReportId;
 
+  /// Annulations de file déjà signalées.
+  var _queueCancelledSeen = 0;
+
   GameController get _c => widget.controller;
 
   @override
@@ -51,6 +55,7 @@ class _HomeShellState extends State<HomeShell> {
     _now = _c.now();
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
     _lastReportId = _c.reports.firstOrNull?.id;
+    _queueCancelledSeen = _c.queueCancelledCount;
     _c.addListener(_onChange);
     _lifecycle = AppLifecycleListener(
       onHide: () => unawaited(_c.onHidden()),
@@ -75,6 +80,7 @@ class _HomeShellState extends State<HomeShell> {
   /// Raid résolu pendant que l'app est ouverte : message avec accès au rapport. Le dernier
   /// remplace le précédent (pas de file de messages).
   void _onChange() {
+    _onQueueCancelled();
     final latest = _c.reports.firstOrNull;
     if (latest == null || latest.id == _lastReportId) return;
     _lastReportId = latest.id;
@@ -90,6 +96,18 @@ class _HomeShellState extends State<HomeShell> {
           ),
         ),
       );
+  }
+
+  /// File annulée pendant que l'app est ouverte (spec 13) : message, le dernier remplace le
+  /// précédent.
+  void _onQueueCancelled() {
+    final cancelled = _c.lastQueueCancelled;
+    if (_c.queueCancelledCount == _queueCancelledSeen || cancelled == null || !mounted) return;
+    _queueCancelledSeen = _c.queueCancelledCount;
+    final (title, body) = queueCancelledText(cancelled, _c.data);
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text('$title · $body')));
   }
 
   Future<void> _openReports() async {
