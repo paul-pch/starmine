@@ -30,7 +30,7 @@ const _v1 = [
 ];
 
 void main() {
-  test('base v1 → v5 : partie conservée, technos et officiers à 0, réglages à 100 %', () async {
+  test('base v1 → v7 : partie conservée, technos et officiers à 0, réglages à 100 %', () async {
     final db = StarmineDatabase(
       NativeDatabase.memory(
         setup: (raw) {

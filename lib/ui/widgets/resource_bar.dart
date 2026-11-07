@@ -79,7 +79,7 @@ class ResourceBar extends StatelessWidget {
   }
 
   Future<void> _showEnergy(BuildContext context) {
-    final energy = controller.rules.energy(controller.state.planet, controller.state.research);
+    final energy = controller.energyOf(controller.state);
     return _showSheet(
       context,
       icon: const Icon(ResourceStyle.energyIcon, color: ResourceStyle.energyColor),
@@ -275,7 +275,7 @@ class _EnergyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final error = Theme.of(context).colorScheme.error;
-    final energy = controller.rules.energy(controller.state.planet, controller.state.research);
+    final energy = controller.energyOf(controller.state);
     final short = energy.factor < 1;
     final detail = short ? 'Mines à ${(energy.factor * 100).floor()} %' : 'énergie';
     return _Tile(

@@ -181,6 +181,114 @@ class OfficerSpec {
   int get maxLevel => levels.length;
 }
 
+/// Sens d'un événement ponctuel (spec 14).
+enum StoryKind { bonus, malus, choice }
+
+/// Effet d'un événement ponctuel.
+enum StoryEffectType {
+  /// Production des mines d'une ressource (toutes si absente) : `value` ajouté au bonus,
+  /// pendant `hours`.
+  production,
+
+  /// Énergie produite multipliée par (1 + `value`) pendant `hours`.
+  energy,
+
+  /// Temps restant de l'ordre en cours (`target`) multiplié par (1 − `value`) ; une valeur
+  /// négative retarde.
+  shorten,
+
+  /// Stock d'une ressource (toutes si absente) multiplié par (1 + `value`).
+  stock,
+
+  /// Gain immédiat de `hours` heures de production (à ×1) d'une ressource.
+  gain,
+
+  /// Le prochain raid arrive `hours` heures plus tôt.
+  raid,
+}
+
+/// File visée par un effet `shorten`.
+enum OrderTarget { construction, research }
+
+class StoryEffectSpec {
+  const StoryEffectSpec({
+    required this.type,
+    this.resource,
+    this.target,
+    this.value = 0,
+    this.hours = 0,
+  });
+
+  final StoryEffectType type;
+  final ResourceKind? resource;
+  final OrderTarget? target;
+  final double value;
+  final double hours;
+}
+
+class StoryOptionSpec {
+  const StoryOptionSpec({required this.label, this.effects = const []});
+
+  final String label;
+  final List<StoryEffectSpec> effects;
+}
+
+/// Un événement du catalogue (`story_events.catalog`).
+class StoryEventSpec {
+  const StoryEventSpec({
+    required this.key,
+    required this.name,
+    this.description = '',
+    required this.kind,
+    this.effects = const [],
+    this.options = const [],
+    this.defaultOption = 0,
+    this.requires = const {},
+    this.officer,
+    this.officerPerLevel = 0,
+  });
+
+  final String key;
+  final String name;
+
+  /// Texte d'histoire, affiché avec l'effet.
+  final String description;
+  final StoryKind kind;
+
+  /// Effets d'un bonus ou d'un malus.
+  final List<StoryEffectSpec> effects;
+
+  /// Options d'un choix ; [defaultOption] s'applique sans réponse à l'échéance.
+  final List<StoryOptionSpec> options;
+  final int defaultOption;
+
+  /// Niveaux requis pour que l'événement puisse être tiré.
+  final Map<Unlockable, int> requires;
+
+  /// Officier lié : prolonge un bonus (durée × (1 + n × niveau)) ou atténue un malus
+  /// (valeur × (1 − n × niveau)).
+  final OfficerKind? officer;
+  final double officerPerLevel;
+}
+
+/// Section `story_events` du YAML.
+class StoryConfig {
+  const StoryConfig({
+    this.intervalHoursMin = 60,
+    this.intervalHoursMax = 108,
+    this.answerHours = 6,
+    this.catalog = const {},
+  });
+
+  /// Délai entre deux événements, en heures à ×1.
+  final double intervalHoursMin;
+  final double intervalHoursMax;
+
+  /// Délai pour répondre à un choix, en heures à ×1.
+  final double answerHours;
+  final Map<String, StoryEventSpec> catalog;
+}
+
 /// Partie commune aux bâtiments et technologies.
 abstract class ItemSpec {
   const ItemSpec({
@@ -410,6 +518,7 @@ class GameData {
     required this.pirates,
     Map<OfficerKind, OfficerSpec> officers = const {},
     this.counterNames = const {},
+    this.story = const StoryConfig(),
   }) : officers = Map.unmodifiable(officers),
        units = Map.unmodifiable(units),
        buildings = Map.unmodifiable(buildings),
@@ -445,6 +554,9 @@ class GameData {
   /// Libellé de chaque compteur (prérequis d'officiers).
   final Map<Counter, String> counterNames;
 
+  /// Événements ponctuels (spec 14).
+  final StoryConfig story;
+
   UnitSpec unit(UnitKind kind) => units[kind]!;
 
   BuildingSpec operator [](BuildingKind kind) => buildings[kind]!;
@@ -469,6 +581,7 @@ class GameData {
     final pirates = _map(map, 'pirates');
     final officers = _optMap(map, 'officers') ?? const {};
     final counters = _optMap(map, 'counters') ?? const {};
+    final story = _optMap(map, 'story_events');
     final interval = _map(pirates, 'interval_hours');
     final strength = _map(pirates, 'strength');
     Map<UnitKind, double> ships(String key) => {
@@ -535,7 +648,78 @@ class GameData {
           OfficerKind.fromKey(e.key): _officer(OfficerKind.fromKey(e.key), _asMap(e.value, e.key)),
       },
       counterNames: {for (final e in counters.entries) _counter(e.key): _string(counters, e.key)},
+      story: story == null ? const StoryConfig() : _story(story),
     );
+  }
+
+  static StoryConfig _story(Map<String, Object?> m) {
+    final interval = _map(m, 'interval_hours');
+    final catalog = _map(m, 'catalog');
+    return StoryConfig(
+      intervalHoursMin: _num(interval, 'min'),
+      intervalHoursMax: _num(interval, 'max'),
+      answerHours: _num(m, 'answer_hours'),
+      catalog: {
+        for (final e in catalog.entries) e.key: _storyEvent(e.key, _asMap(e.value, e.key)),
+      },
+    );
+  }
+
+  static StoryEventSpec _storyEvent(String key, Map<String, Object?> m) {
+    final kind = StoryKind.values.firstWhere(
+      (k) => k.name == _string(m, 'kind'),
+      orElse: () => throw FormatException('« $key.kind » inconnu'),
+    );
+    final officer = _optMap(m, 'officer');
+    final options = m['options'] == null ? const <Object?>[] : _listOf(m, 'options');
+    final spec = StoryEventSpec(
+      key: key,
+      name: _string(m, 'name'),
+      description: _stringOr(m, 'description'),
+      kind: kind,
+      effects: m['effects'] == null ? const [] : _effects(_listOf(m, 'effects'), key),
+      options: [for (final raw in options) _option(_asMap(raw, '$key.options[]'), key)],
+      defaultOption: m['default'] == null ? 0 : _num(m, 'default').toInt(),
+      requires: _requires(m),
+      officer: officer == null ? null : OfficerKind.fromKey(_string(officer, 'kind')),
+      officerPerLevel: officer == null ? 0 : _num(officer, 'per_level'),
+    );
+    if (kind == StoryKind.choice &&
+        (spec.options.length < 2 || spec.defaultOption >= spec.options.length)) {
+      throw FormatException('« $key » : un choix a au moins deux options et un défaut valide');
+    }
+    return spec;
+  }
+
+  static StoryOptionSpec _option(Map<String, Object?> m, String key) => StoryOptionSpec(
+    label: _string(m, 'label'),
+    effects: m['effects'] == null ? const [] : _effects(_listOf(m, 'effects'), key),
+  );
+
+  static List<StoryEffectSpec> _effects(List<Object?> raw, String key) => [
+    for (final r in raw) _effect(_asMap(r, '$key.effects[]'), key),
+  ];
+
+  static StoryEffectSpec _effect(Map<String, Object?> m, String key) => StoryEffectSpec(
+    type: StoryEffectType.values.firstWhere(
+      (t) => t.name == _string(m, 'type'),
+      orElse: () => throw FormatException('« $key » : effet inconnu ${m['type']}'),
+    ),
+    resource: m['resource'] == null ? null : _resourceKind(_string(m, 'resource')),
+    target: m['target'] == null
+        ? null
+        : OrderTarget.values.firstWhere(
+            (t) => t.name == _string(m, 'target'),
+            orElse: () => throw FormatException('« $key » : cible inconnue ${m['target']}'),
+          ),
+    value: _numOr(m, 'value'),
+    hours: _numOr(m, 'hours'),
+  );
+
+  static List<Object?> _listOf(Map<String, Object?> m, String key) {
+    final v = m[key];
+    if (v is List) return v.cast<Object?>();
+    throw FormatException('« $key » doit être une liste');
   }
 
   static Counter _counter(String key) =>

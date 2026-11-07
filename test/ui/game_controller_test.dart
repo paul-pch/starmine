@@ -111,8 +111,9 @@ void main() {
     await c.init();
     await c.order(BuildingKind.metalMine);
     await c.onHidden();
-    // Construction + prochain raid.
-    expect(notifier.scheduled, hasLength(2));
+    // Construction + prochain raid, plus les événements ponctuels prévus.
+    expect(notifier.scheduled.keys.where((id) => id < storyNotificationId(0)), hasLength(2));
+    expect(notifier.scheduled.keys.where((id) => id >= storyNotificationId(0)), isNotEmpty);
 
     clock.advance(const Duration(hours: 1));
     await c.onVisible();

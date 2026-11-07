@@ -20,7 +20,7 @@ servent de référence pour faire évoluer le jeu et pour la refonte visuelle.
 | 11 | [Visuels et registre](11-visuels.md) | Images pré-générées, catalogue, paliers, registre, repli (à implémenter) |
 | 12 | [Officiers](12-succes-officiers.md) | Déblocage, niveaux, bonus permanents (V2c) |
 | 13 | [File d'attente d'ordres](13-file-attente.md) | Plusieurs ordres par file, un officier par file |
-| 14 | [Événements ponctuels](14-evenements.md) | Effets temporaires, choix, lien avec les officiers (à implémenter, V2d) |
+| 14 | [Événements ponctuels](14-evenements.md) | Effets temporaires, choix, lien avec les officiers (V2d) |
 
 Statuts utilisés dans les specs non implémentées : **Décidé** (tranché par l'utilisateur),
 **Proposé** (recommandation non contestée, à confirmer), **À trancher** (question ouverte).

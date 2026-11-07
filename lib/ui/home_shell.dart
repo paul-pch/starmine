@@ -14,6 +14,8 @@ import 'screens/reports_screen.dart';
 import 'widgets/combat_report.dart';
 import 'widgets/planet_hero.dart';
 import 'widgets/raid_banner.dart';
+import 'widgets/story_banner.dart';
+import '../domain/story.dart';
 import 'screens/defense_screen.dart';
 import 'screens/items_screen.dart';
 import 'screens/queue_screen.dart';
@@ -44,8 +46,9 @@ class _HomeShellState extends State<HomeShell> {
   /// Dernier rapport signalé à l'écran (pour n'afficher que les nouveaux).
   int? _lastReportId;
 
-  /// Annulations de file déjà signalées.
+  /// Annulations de file et événements déjà signalés.
   var _queueCancelledSeen = 0;
+  var _storySeen = 0;
 
   GameController get _c => widget.controller;
 
@@ -56,6 +59,7 @@ class _HomeShellState extends State<HomeShell> {
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
     _lastReportId = _c.reports.firstOrNull?.id;
     _queueCancelledSeen = _c.queueCancelledCount;
+    _storySeen = _c.storyCount;
     _c.addListener(_onChange);
     _lifecycle = AppLifecycleListener(
       onHide: () => unawaited(_c.onHidden()),
@@ -74,13 +78,19 @@ class _HomeShellState extends State<HomeShell> {
   void _tick() {
     setState(() => _now = _c.now());
     // Une échéance passée (construction ou recherche) : rattrapage réel.
-    if (_c.state.pending.any((e) => !e.dueAt.isAfter(_now))) _refresh();
+    // Une échéance passée ou un effet d'événement terminé : rattrapage réel.
+    final s = _c.state;
+    if (s.pending.any((e) => !e.dueAt.isAfter(_now)) ||
+        s.effects.any((e) => !e.endsAt.isAfter(_now))) {
+      _refresh();
+    }
   }
 
   /// Raid résolu pendant que l'app est ouverte : message avec accès au rapport. Le dernier
   /// remplace le précédent (pas de file de messages).
   void _onChange() {
     _onQueueCancelled();
+    _onStory();
     final latest = _c.reports.firstOrNull;
     if (latest == null || latest.id == _lastReportId) return;
     _lastReportId = latest.id;
@@ -111,6 +121,33 @@ class _HomeShellState extends State<HomeShell> {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text('$title · $body')));
+  }
+
+  /// Événement ponctuel survenu app ouverte (spec 14) : message ; une décision ouvre sa
+  /// feuille depuis le message.
+  void _onStory() {
+    final o = _c.lastStory;
+    if (_c.storyCount == _storySeen || o == null || !mounted) return;
+    _storySeen = _c.storyCount;
+    if (o.kind == StoryOutcomeKind.answered) return;
+    final (title, _) = storyText(o, _c.data);
+    final spec = _c.data.story.catalog[o.key];
+    final effects = o.kind == StoryOutcomeKind.happened && spec != null
+        ? ' · ${spec.effects.map(storyEffectText).join(' · ')}'
+        : '';
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text('$title$effects'),
+          action: o.kind == StoryOutcomeKind.awaiting
+              ? SnackBarAction(
+                  label: 'Choisir',
+                  onPressed: () => unawaited(StoryBanner.showChoice(context, _c)),
+                )
+              : null,
+        ),
+      );
   }
 
   Future<void> _openReports() async {
@@ -167,6 +204,7 @@ class _HomeShellState extends State<HomeShell> {
                       children: [
                         if (_c.incomingRaid case final raid?)
                           RaidBanner(controller: _c, raid: raid, now: _now),
+                        StoryBanner(controller: _c, now: _now),
                         Expanded(child: pages[_tab]),
                       ],
                     ),

@@ -98,8 +98,8 @@ class ItemFacts {
     };
     final before = controller.hourlyRate(state);
     final after = controller.hourlyRate(next);
-    final eBefore = rules.energy(state.planet, state.research);
-    final eAfter = rules.energy(next.planet, next.research);
+    final eBefore = controller.energyOf(state);
+    final eAfter = controller.energyOf(next);
 
     final parts = <String>[];
     for (final k in ResourceKind.values) {

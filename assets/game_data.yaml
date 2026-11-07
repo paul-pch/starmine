@@ -440,3 +440,109 @@ officers:
       - requires: { shipyard: 6 }
       - requires: { shipyard: 8, nanite_factory: 1 }
       - requires: { shipyard: 10, nanite_factory: 2 }
+
+# Événements ponctuels (spec 14). Une chaîne toujours planifiée ; à chaque tirage, sens
+# positif ou négatif à parts égales (les choix comptent comme positifs), jamais deux malus
+# actifs à la fois. Effets : production, energy (pendant hours), shorten (ordre en cours),
+# stock, gain (heures de production à ×1), raid (heures d'avance du prochain raid).
+# Officier lié : prolonge un bonus ou atténue un malus de per_level × niveau.
+story_events:
+  interval_hours: { min: 60, max: 108 }
+  # Délai pour répondre à un choix ; sans réponse, l'option par défaut s'applique.
+  answer_hours: 6
+  catalog:
+    rich_vein:
+      name: Filon riche
+      kind: bonus
+      description: >-
+        Les foreuses ont percé une veine de métal d'une pureté rare. Les mines tournent à
+        plein régime tant qu'elle n'est pas épuisée.
+      requires: { metal_mine: 1 }
+      effects: [{ type: production, resource: metal, value: 0.3, hours: 12 }]
+      officer: { kind: geologist, per_level: 0.1 }
+    deuterium_geyser:
+      name: Geyser de deutérium
+      kind: bonus
+      description: >-
+        Une poche d'eau lourde jaillit près du synthétiseur. Les équipes la captent avant
+        qu'elle ne se tarisse.
+      requires: { deuterium_synthesizer: 1 }
+      effects: [{ type: production, resource: deuterium, value: 0.4, hours: 8 }]
+      officer: { kind: geologist, per_level: 0.1 }
+    archaeology:
+      name: Découverte archéologique
+      kind: bonus
+      description: >-
+        Des ruines d'une civilisation disparue livrent des notes de recherche étonnamment
+        avancées. Les chercheurs gagnent un temps précieux.
+      requires: { research_lab: 1 }
+      effects: [{ type: shorten, target: research, value: 0.2 }]
+      officer: { kind: technocrat, per_level: 0.1 }
+    drifting_wreck:
+      name: Épave à la dérive
+      kind: bonus
+      description: >-
+        Un cargo abandonné passe en orbite basse. Ses soutes sont récupérées avant qu'il ne
+        se consume dans l'atmosphère.
+      effects:
+        - { type: gain, resource: metal, hours: 4 }
+        - { type: gain, resource: crystal, hours: 4 }
+    solar_storm:
+      name: Tempête solaire
+      kind: malus
+      description: >-
+        Une éruption de l'étoile sature les capteurs et les lignes électriques. La production
+        d'énergie chute le temps que la tempête passe.
+      requires: { solar_plant: 1 }
+      effects: [{ type: energy, value: -0.25, hours: 6 }]
+      officer: { kind: engineer, per_level: 0.1 }
+    gallery_collapse:
+      name: Effondrement de galerie
+      kind: malus
+      description: >-
+        Une galerie de la mine de cristal s'est effondrée. Les équipes dégagent les puits,
+        la production tourne au ralenti.
+      requires: { crystal_mine: 1 }
+      effects: [{ type: production, resource: crystal, value: -0.5, hours: 8 }]
+      officer: { kind: geologist, per_level: 0.1 }
+    sabotage:
+      name: Sabotage
+      kind: malus
+      description: >-
+        Des agents pirates ont endommagé les échafaudages du chantier de construction. Il
+        faut reprendre une partie du travail.
+      effects: [{ type: shorten, target: construction, value: -0.25 }]
+      officer: { kind: architect, per_level: 0.1 }
+    storage_leak:
+      name: Fuite de stockage
+      kind: malus
+      description: >-
+        Une brèche dans un hangar laisse s'échapper une partie du métal entreposé avant que
+        les équipes ne la colmatent.
+      effects: [{ type: stock, resource: metal, value: -0.1 }]
+    merchant_convoy:
+      name: Convoi marchand
+      kind: choice
+      description: >-
+        Un convoi de marchands indépendants propose d'échanger une partie de ton métal contre
+        une cargaison de cristal.
+      options:
+        - label: Échanger
+          effects:
+            - { type: stock, resource: metal, value: -0.15 }
+            - { type: gain, resource: crystal, hours: 8 }
+        - label: Refuser
+      default: 1
+    escort_request:
+      name: Escorte demandée
+      kind: choice
+      description: >-
+        Un transporteur poursuivi par des pirates demande refuge. L'accueillir rapporte une
+        belle récompense, mais attire les pirates plus tôt que prévu.
+      options:
+        - label: Accueillir
+          effects:
+            - { type: gain, resource: crystal, hours: 10 }
+            - { type: raid, hours: 12 }
+        - label: Refuser
+      default: 1

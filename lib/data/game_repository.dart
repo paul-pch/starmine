@@ -7,6 +7,7 @@ import '../domain/events.dart';
 import '../domain/game_data.dart';
 import '../domain/planet.dart';
 import '../domain/raid.dart';
+import '../domain/story.dart';
 import 'database.dart';
 import 'save_codec.dart';
 
@@ -66,6 +67,10 @@ class GameRepository {
         pending: events.map(_decodeRow).toList(),
         officers: {for (final o in officers) OfficerKind.fromKey(o.kind): o.level},
         counters: {for (final c in counters) ?Counter.tryKey(c.kind): c.value},
+        effects: [
+          for (final e in await _db.select(_db.activeEffects).get())
+            decodeEffect((jsonDecode(e.payload) as Map).cast<String, Object?>()),
+        ],
         queue: [
           for (final q in await (_db.select(
             _db.queuedOrders,
@@ -85,9 +90,22 @@ class GameRepository {
     Iterable<GameEvent> applied = const [],
     Iterable<int> cancelledIds = const [],
     Iterable<RaidReport> reports = const [],
+    Iterable<StoryOutcome> stories = const [],
   }) {
     return _db.transaction(() async {
       await _writeState(state);
+      for (final o in stories) {
+        await _db
+            .into(_db.storyLog)
+            .insert(
+              StoryLogCompanion.insert(
+                atMs: o.at.millisecondsSinceEpoch,
+                key: o.key,
+                kind: o.kind.name,
+                option: Value(o.option),
+              ),
+            );
+      }
       for (final r in reports) {
         await _db
             .into(_db.reports)
@@ -118,6 +136,8 @@ class GameRepository {
       await _db.delete(_db.officers).go();
       await _db.delete(_db.counters).go();
       await _db.delete(_db.queuedOrders).go();
+      await _db.delete(_db.activeEffects).go();
+      await _db.delete(_db.storyLog).go();
       await _db.delete(_db.buildings).go();
       await _db.delete(_db.planets).go();
       await _writeState(save.state);
@@ -155,6 +175,7 @@ class GameRepository {
     final p = state.planet;
     // La file d'attente est réécrite entière (quelques lignes au plus).
     await _db.delete(_db.queuedOrders).go();
+    await _db.delete(_db.activeEffects).go();
     await _db
         .into(_db.planets)
         .insertOnConflictUpdate(
@@ -189,6 +210,10 @@ class GameRepository {
       b.insertAllOnConflictUpdate(_db.officers, [
         for (final e in state.officers.entries)
           OfficersCompanion.insert(kind: e.key.key, level: e.value),
+      ]);
+      b.insertAll(_db.activeEffects, [
+        for (final e in state.effects)
+          ActiveEffectsCompanion.insert(payload: jsonEncode(encodeEffect(e))),
       ]);
       b.insertAll(_db.queuedOrders, [
         for (final (i, q) in state.queue.indexed)
@@ -236,8 +261,26 @@ class GameRepository {
   static DateTime _createdAt(GameEvent e) => switch (e) {
     OrderDone(:final startedAt) => startedAt,
     ShipyardBatch(:final startedAt) => startedAt,
-    RaidDetected() || RaidArrival() => e.dueAt,
+    RaidDetected() || RaidArrival() || StoryEvent() => e.dueAt,
   };
+
+  /// Journal des événements ponctuels, les plus récents d'abord.
+  Future<List<StoryOutcome>> loadStoryLog({int limit = 50}) async {
+    final rows =
+        await (_db.select(_db.storyLog)
+              ..orderBy([(t) => OrderingTerm.desc(t.id)])
+              ..limit(limit))
+            .get();
+    return [
+      for (final r in rows)
+        StoryOutcome(
+          key: r.key,
+          at: fromEpochMs(r.atMs),
+          kind: StoryOutcomeKind.values.byName(r.kind),
+          option: r.option,
+        ),
+    ];
+  }
 
   /// Rapports les plus récents d'abord.
   Future<List<StoredReport>> loadReports({int limit = 50}) async {

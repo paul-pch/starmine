@@ -15,11 +15,13 @@ Ne jamais perdre une partie : base locale versionnée et sauvegarde exportable.
 | `events` | File unique : type, échéance, `payload` JSON, statut | v1 |
 | `reports` | Rapports de raid (JSON), vu / non vu | v4 |
 | `officers` | Niveau par officier débloqué (spec 12) | v5 |
+| `active_effects` | Effets temporaires des événements en cours (JSON, spec 14) | v7 |
+| `story_log` | Journal des événements ponctuels (clé, issue, option) | v7 |
 | `queued_orders` | Ordres en file d'attente : id réservé, position, payload (spec 13) | v6 |
 | `counters` | Compteurs de progression (raids repoussés) ; à la migration v5, initialisé avec les raids repoussés des rapports | v5 |
 | `meta` | Vitesse de jeu, graine ; préférences d'affichage hors sauvegarde JSON (`ambiance`, `filter_realizable.<onglet>`) | v1 |
 
-- `schemaVersion` = **6**. Chaque montée de version a son étape dans `onUpgrade` et le test
+- `schemaVersion` = **7**. Chaque montée de version a son étape dans `onUpgrade` et le test
   `migration_test.dart` part d'une **base v1 réelle** jusqu'à la dernière version.
 - Chaque écriture est **une transaction** : état, statut des événements appliqués ou annulés,
   rapports produits.
@@ -29,9 +31,10 @@ Ne jamais perdre une partie : base locale versionnée et sauvegarde exportable.
 
 ## Sauvegarde JSON (export / import)
 
-- Format `starmine-save`, `version` = **6**. Contient planète (stocks, niveaux, réglages,
-  unités), technos, officiers, compteurs, file d'attente, événements en attente (raids : relevé et technos
-  pirates), vitesse, graine. Les rapports n'en font pas partie.
+- Format `starmine-save`, `version` = **7**. Contient planète (stocks, niveaux, réglages,
+  unités), technos, officiers, compteurs, file d'attente, effets d'événements en cours,
+  événements en attente (raids : relevé et technos
+  pirates), vitesse, graine. Les rapports et le journal des événements n'en font pas partie.
 - Une sauvegarde **plus ancienne** s'importe (valeurs par défaut pour les champs absents) ;
   une sauvegarde **plus récente** que l'app est refusée.
 - Export et import passent par le presse-papiers (écran Debug).

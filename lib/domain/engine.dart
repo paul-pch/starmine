@@ -6,6 +6,7 @@ import 'planet.dart';
 import 'raid.dart';
 import 'resources.dart';
 import 'rules.dart';
+import 'story.dart';
 
 /// État complet d'une partie (une planète), technologies et événements en attente.
 class GameState {
@@ -16,7 +17,9 @@ class GameState {
     Map<OfficerKind, int> officers = const {},
     Map<Counter, int> counters = const {},
     List<QueuedOrder> queue = const [],
+    List<ActiveEffect> effects = const [],
   }) : queue = List<QueuedOrder>.unmodifiable(queue),
+       effects = List<ActiveEffect>.unmodifiable(effects),
        research = Map.unmodifiable({for (final k in TechKind.values) k: research[k] ?? 0}),
        officers = Map.unmodifiable({for (final k in OfficerKind.values) k: officers[k] ?? 0}),
        counters = Map.unmodifiable({for (final k in Counter.values) k: counters[k] ?? 0}),
@@ -36,6 +39,10 @@ class GameState {
   /// Ordres en attente, toutes files confondues, dans l'ordre d'ajout (spec 13). Rien n'est
   /// payé tant qu'un ordre attend.
   final List<QueuedOrder> queue;
+
+  /// Effets temporaires des événements en cours (spec 14), retirés à leur fin par
+  /// `advance()`.
+  final List<ActiveEffect> effects;
 
   /// Ordres en attente de [slot], dans l'ordre.
   List<QueuedOrder> queued(Slot slot) => [
@@ -72,6 +79,22 @@ class GameState {
     var build = 0.0;
     var rebuild = 0.0;
     final extra = {for (final k in Slot.values) k: 0.0};
+    var byResource = Resources.zero;
+    var energy = 1.0;
+    for (final e in effects) {
+      switch (e.type) {
+        case StoryEffectType.production:
+          byResource =
+              byResource + Resources.of((k) => e.resource == null || e.resource == k ? e.value : 0);
+        case StoryEffectType.energy:
+          energy *= 1 + e.value;
+        case StoryEffectType.shorten ||
+            StoryEffectType.stock ||
+            StoryEffectType.gain ||
+            StoryEffectType.raid:
+          break;
+      }
+    }
     for (final spec in data.officers.values) {
       final value = spec.perLevel * (officers[spec.kind] ?? 0);
       switch (spec.bonus) {
@@ -99,6 +122,8 @@ class GameState {
       constructionQueue: extra[Slot.construction]!.round(),
       researchQueue: extra[Slot.research]!.round(),
       shipyardQueue: extra[Slot.shipyard]!.round(),
+      mineByResource: byResource,
+      energyFactor: math.max(0, energy),
     );
   }
 
@@ -109,6 +134,7 @@ class GameState {
     Map<OfficerKind, int>? officers,
     Map<Counter, int>? counters,
     List<QueuedOrder>? queue,
+    List<ActiveEffect>? effects,
   }) => GameState(
     planet: planet ?? this.planet,
     research: research ?? this.research,
@@ -116,6 +142,7 @@ class GameState {
     officers: officers ?? this.officers,
     counters: counters ?? this.counters,
     queue: queue ?? this.queue,
+    effects: effects ?? this.effects,
   );
 }
 
@@ -125,6 +152,7 @@ class AdvanceResult {
     this.applied, [
     this.reports = const [],
     this.cancelled = const [],
+    this.stories = const [],
   ]);
 
   final GameState state;
@@ -137,6 +165,9 @@ class AdvanceResult {
 
   /// Files annulées : un ordre en attente n'a pas pu démarrer à son tour.
   final List<QueueCancelled> cancelled;
+
+  /// Événements ponctuels survenus (spec 14).
+  final List<StoryOutcome> stories;
 }
 
 /// Avance la simulation jusqu'à [now], événement par événement :
@@ -149,6 +180,7 @@ AdvanceResult advance(GameState state, DateTime now, Rules rules) {
   final applied = <GameEvent>[];
   final reports = <RaidReport>[];
   final cancelled = <QueueCancelled>[];
+  final stories = <StoryOutcome>[];
   final queue = [...state.pending];
   void schedule(GameEvent e) => queue
     ..add(e)
@@ -160,6 +192,12 @@ AdvanceResult advance(GameState state, DateTime now, Rules rules) {
     current = step.state;
     applied.add(event);
     if (step.report case final report?) reports.add(report);
+    if (step.story case final story?) stories.add(story);
+    // Un événement peut déplacer des échéances (événement ponctuel : ordre raccourci, raid
+    // avancé) : la file suit l'état.
+    queue
+      ..clear()
+      ..addAll(current.pending);
     // Événement suivant de la même chaîne (lot du chantier, raid), même id.
     if (step.next case final next?) schedule(next);
     // Une file qui se libère démarre son prochain ordre en attente, à cet instant.
@@ -177,39 +215,56 @@ AdvanceResult advance(GameState state, DateTime now, Rules rules) {
     }
   }
   current = _produceUntil(current, now, rules).copyWith(pending: queue);
-  return AdvanceResult(current, applied, reports, cancelled);
+  return AdvanceResult(current, applied, reports, cancelled, stories);
 }
 
+/// Production jusqu'à [t], découpée à la fin de chaque effet temporaire (retiré à cet
+/// instant) : exacte même app fermée.
 GameState _produceUntil(GameState s, DateTime t, Rules rules) {
-  final planet = s.planet;
-  if (!t.isAfter(planet.lastUpdate)) return s;
-  return s.copyWith(
-    planet: planet.copyWith(
-      resources: rules.produce(
-        planet,
-        s.research,
-        t.difference(planet.lastUpdate),
-        s.modifiers(rules.data),
+  var cur = s;
+  while (true) {
+    final planet = cur.planet;
+    if (!t.isAfter(planet.lastUpdate)) return cur;
+    var until = t;
+    for (final e in cur.effects) {
+      if (e.endsAt.isBefore(until) && e.endsAt.isAfter(planet.lastUpdate)) until = e.endsAt;
+    }
+    cur = cur.copyWith(
+      planet: planet.copyWith(
+        resources: rules.produce(
+          planet,
+          cur.research,
+          until.difference(planet.lastUpdate),
+          cur.modifiers(rules.data),
+        ),
+        lastUpdate: until,
       ),
-      lastUpdate: t,
-    ),
-  );
+      effects: [
+        for (final e in cur.effects)
+          if (e.endsAt.isAfter(until)) e,
+      ],
+    );
+  }
 }
 
-({GameState state, GameEvent? next, RaidReport? report}) _apply(
-  GameState s,
-  GameEvent event,
-  Rules rules,
-) => switch (event) {
+typedef _Step = ({GameState state, GameEvent? next, RaidReport? report, StoryOutcome? story});
+
+_Step _raid(RaidStep r) => (state: r.state, next: r.next, report: r.report, story: null);
+
+_Step _story(StoryStep r) => (state: r.state, next: r.next, report: null, story: r.outcome);
+
+_Step _apply(GameState s, GameEvent event, Rules rules) => switch (event) {
   BuildingDone(:final building, :final targetLevel) => (
     state: s.copyWith(planet: s.planet.withLevel(building, targetLevel)),
     next: null,
     report: null,
+    story: null,
   ),
   ResearchDone(:final tech, :final targetLevel) => (
     state: s.copyWith(research: {...s.research, tech: targetLevel}),
     next: null,
     report: null,
+    story: null,
   ),
   ShipyardBatch(:final unit, :final next) => (
     state: s.copyWith(
@@ -217,9 +272,11 @@ GameState _produceUntil(GameState s, DateTime t, Rules rules) {
     ),
     next: next,
     report: null,
+    story: null,
   ),
-  RaidDetected() => detectRaid(s, event, rules),
-  RaidArrival() => resolveRaid(s, event, rules),
+  RaidDetected() => _raid(detectRaid(s, event, rules)),
+  RaidArrival() => _raid(resolveRaid(s, event, rules)),
+  StoryEvent() => _story(applyStory(s, event, rules)),
 };
 
 // --- Vérifications -----------------------------------------------------------

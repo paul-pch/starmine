@@ -19,6 +19,8 @@ pas à l'écran.
 | Lot du chantier | Dernière unité | Chantier terminé | Constructions |
 | Raid détecté | Détection | Flotte pirate détectée (heure d'arrivée) | Raids pirates |
 | Raid | Arrivée | Raid pirate (voir le rapport) | Raids pirates |
+| Événement ponctuel | Tirage (prévu par simulation) | Nom, texte d'histoire ou « Décision attendue » | Événements |
+| Choix en attente | 1 h avant l'option par défaut | Décision attendue | Événements |
 | File d'attente annulée | Tour de l'ordre impossible | File de … annulée (élément, raison) | Recherches ou Constructions |
 
 - Les ordres en file d'attente n'ont pas encore d'échéance : leurs fins et une éventuelle

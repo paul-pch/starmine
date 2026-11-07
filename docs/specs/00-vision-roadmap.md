@@ -32,7 +32,7 @@ Grande fidélité aux règles OGame classiques ; on diverge seulement quand le s
 | V2a | Chantier, 8 défenses, technos de combat, simulateur de combat | Livrée |
 | V2b | Raids pirates : détection, force indexée sur les points, pillage, rapports | Livrée |
 | V2c | Officiers : écran de déblocage, prérequis indexés sur la progression, niveaux plafonnés, bonus permanents (spec 12) ; refonte de la force des raids (spec 07) | Livrée |
-| V2d | Événements ponctuels : effets temporaires positifs ou négatifs justifiés par l'histoire, certains à choix, liés aux officiers (spec 14) | Spécifiée, à implémenter |
+| V2d | Événements ponctuels : effets temporaires positifs ou négatifs justifiés par l'histoire, certains à choix, liés aux officiers (spec 14) | Livrée |
 | V3 | Flotte : vaisseaux constructibles, attaques de bases pirates (le pillage devient un revenu), champ de débris et recycleurs, technos de propulsion et d'espionnage, missions d'exploration et officiers d'exploration (spec 12) | À spécifier |
 | V4 | Galaxie : systèmes, colonisation, multi-planètes, transports, réseau de recherche intergalactique | À spécifier |
 | V5 | Fin de jeu : expéditions, objectif final | À spécifier |

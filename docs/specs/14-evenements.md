@@ -1,79 +1,100 @@
 # 14 · Événements ponctuels
 
-> **À implémenter** — version V2d, après les officiers (spec 12). Rien n'est codé.
+> Version V2d.
 
 ## Objet
 
 Dynamiser la partie par des événements justifiés par l'histoire, qui donnent un **effet
 temporaire** positif ou négatif (bump ou perte de production, durées modifiées, gain ou
 perte ponctuels). Pas de monnaie : ce sont les « accélérations » du jeu, gagnées ou subies.
-Le catalogue est appelé à s'enrichir beaucoup.
+Le catalogue est appelé à s'enrichir.
 
-## Décidé
+## Règles
 
-- **Fréquence** : environ **2 par semaine** à ×1 (`events.interval_hours`).
-- **50 / 50** entre événements positifs et négatifs (poids dans le YAML).
-- **Certains événements proposent un choix** au joueur.
-- **Lien avec les officiers** : un officier peut atténuer, amplifier ou prolonger un effet.
-- **Debug** : bouton « Événement maintenant » (tirage aléatoire immédiat).
+- **Chaîne** comme les raids (spec 07) : un `StoryEvent` est toujours planifié, même id d'un
+  tirage à l'autre, intervalle tiré dans `story_events.interval_hours` (~2 par semaine à
+  ×1). Tout aléatoire passe par la graine de l'événement.
+- **Tirage** : sens positif ou négatif **à parts égales** (les choix comptent comme
+  positifs), puis un événement **éligible** de ce sens (prérequis `requires` ; un raccourci
+  exige un ordre en cours) ; repli sur l'autre sens si aucun n'est éligible. **Jamais deux
+  malus actifs à la fois** : positif forcé si un malus est en cours.
+- **Effets** (`StoryEffectType`) :
+  - `production` (ressource ou toutes), `energy` : temporaires, pendant `hours` ; ce sont des
+    `Modifiers` ; `advance()` découpe la production à la fin de chaque effet ;
+  - `shorten` : temps restant de la construction ou de la recherche en cours × (1 − valeur)
+    (valeur négative : retard) ;
+  - `stock` : stock × (1 + valeur) ; `gain` : `hours` heures de production (à ×1), dans la
+    limite du stockage ; `raid` : le prochain raid (non détecté) arrive `hours` plus tôt.
+- **Cumul** : effets d'événements différents cumulés ; le même événement ne se cumule pas
+  (le nouveau remplace l'ancien).
+- **Officier lié** (`officer`) : un bonus est prolongé (durée × (1 + n × niveau), raccourci
+  renforcé, plafond 90 %), un malus atténué (valeur × (1 − n × niveau)). Pas d'effet sur les
+  options d'un choix.
+- **Choix** : l'événement attend la réponse jusqu'à `answer_hours` ; sans réponse,
+  l'**option par défaut** (prudente) s'applique à l'échéance. Répondre applique l'option à
+  l'instant et planifie l'événement suivant.
 
-## Règles proposées
-
-- **Chaîne d'événements** comme les raids (spec 07) : un événement est toujours planifié,
-  même id d'un tirage à l'autre ; type et paramètres tirés avec une **graine stockée**.
-- **Effet = modificateur temporaire** appliqué par les formules existantes : production d'une
-  ressource, énergie, durée de construction / recherche / chantier, ou gain / perte immédiat
-  de ressources. La fin d'un effet est elle-même une échéance de la file : `advance()`
-  découpe le temps à chaque début et fin d'effet (production exacte app fermée).
-- **Choix** : l'événement arrive avec une échéance de réponse (`answer_hours`). Sans réponse
-  à l'échéance, l'**option par défaut** (prudente, définie dans le YAML) s'applique, pour
-  que l'app fermée reste jouable.
-- **Cumul** : plusieurs effets d'événements différents peuvent coexister ; un même type ne
-  se cumule pas (le nouveau remplace l'ancien).
-- Notification à l'arrivée (app fermée), et à l'approche de l'échéance d'un choix.
-
-## Catalogue initial (proposé)
+## Catalogue
 
 | Événement | Sens | Effet | Officier lié |
 | --- | --- | --- | --- |
-| Filon riche | + | Production de métal augmentée quelques heures | Géologue : plus long |
-| Geyser de deutérium | + | Production de deutérium augmentée | Géologue |
-| Découverte archéologique | + | Recherche en cours raccourcie | Technocrate : plus fort |
-| Convoi marchand | choix | Échanger une ressource contre une autre à bon taux, ou refuser | — |
-| Escorte demandée | choix | Accepter : gain de cristal, mais raid avancé ; refuser : rien | Ingénieur |
-| Tempête solaire | − | Énergie réduite quelques heures | Ingénieur : atténuée |
-| Effondrement de galerie | − | Une mine à production réduite | Géologue : atténué |
-| Sabotage | − | Chantier ou construction en cours retardés | Architecte |
-| Fuite de stockage | − | Perte d'une part d'un stock | — |
+| Filon riche | + | +30 % de production de métal, 12 h | Géologue : plus long |
+| Geyser de deutérium | + | +40 % de deutérium, 8 h | Géologue |
+| Découverte archéologique | + | −20 % du temps restant de la recherche | Technocrate : plus fort |
+| Épave à la dérive | + | 4 h de production de métal et de cristal | — |
+| Convoi marchand | choix | Échanger 15 % du métal contre 8 h de cristal, ou refuser (défaut) | — |
+| Escorte demandée | choix | 10 h de cristal mais raid 12 h plus tôt, ou refuser (défaut) | — |
+| Tempête solaire | − | −25 % d'énergie, 6 h | Ingénieur : atténuée |
+| Effondrement de galerie | − | −50 % de cristal, 8 h | Géologue : atténué |
+| Sabotage | − | +25 % du temps restant de la construction | Architecte : atténué |
+| Fuite de stockage | − | −10 % du stock de métal | — |
+
+Valeurs dans le YAML ; à équilibrer en jouant.
 
 ## Données
 
-Section `events` du YAML : `interval_hours`, poids positif / négatif, et par événement
-`name`, `description` (texte d'histoire + infobulle), `kind` (bonus, malus, choix), effet
-(cible, valeur, durée), options de choix et option par défaut, officier lié et son effet.
+Section `story_events` : `interval_hours`, `answer_hours`, `catalog` (par événement `name`,
+`description` = texte d'histoire, `kind` : `bonus` / `malus` / `choice`, `requires`,
+`effects`, ou `options` [`label`, `effects`] et `default`, `officer` [`kind`, `per_level`]).
 
 ## UI
 
-- Bandeau des **effets actifs** (sous le bandeau de raid) : nom, effet en clair, temps
-  restant ; tap → feuille avec le texte d'histoire et l'effet chiffré (`InfoButton`).
-- Événement à choix : feuille avec les options, leurs effets chiffrés, l'échéance et
-  l'option par défaut.
-- Historique des événements : place décidée par le skill `starmine-ui` à l'implémentation.
-- Illustration éventuelle : registre d'images (spec 11), jamais porteuse d'information.
+- **Bandeau des événements** (sous le bandeau de raid) : « Décision : <nom> · <reste> ·
+  Choisir », puis une ligne par effet en cours (nom, effet, temps restant, flèche verte ou
+  rouge) ; tap → texte d'histoire et effet chiffré.
+- **Feuille de décision** : texte d'histoire, une carte par option (effets en clair, option
+  par défaut signalée), bouton par option.
+- **Message** quand un événement survient app ouverte (« Décision attendue » avec accès à
+  la feuille).
+- **Journal** : écran Rapports, onglet « Événements » (date, nom, choix ou défaut) ; tap →
+  texte et effets.
+- **Debug** : « Événement maintenant ».
+
+## Notifications
+
+À la mise en arrière-plan, les tirages des 7 jours suivants sont prévus par simulation
+(déterministe) et notifiés à leur heure ; un choix en attente a un rappel 1 h avant
+l'option par défaut (spec 09).
 
 ## Persistance
 
-Événement planifié dans la file `events` ; effets actifs (type, fin, valeur) et choix en
-attente : nouvelle table et sauvegarde JSON. Spec 08 à mettre à jour.
-
-## À trancher
-
-1. Un événement négatif peut-il tomber pendant un raid annoncé ? Recommandation : oui (le
-   hasard crée des situations), mais jamais deux négatifs actifs à la fois.
-2. Les événements peuvent-ils dépendre de la progression (ex. Geyser seulement avec un
-   synthétiseur) ? Recommandation : oui, via `requires` comme les technos.
+Événement de chaîne dans `events` (`story_event` : graine, choix en attente) ; effets en
+cours (`active_effects`) et journal (`story_log`), schéma v7 ; sauvegarde JSON v7
+(`effects`), le journal n'en fait pas partie (spec 08).
 
 ## Code
 
-À venir : `lib/domain/story_events.dart` (nom indicatif ; `GameEvent` désigne déjà la file
-d'échéances).
+`lib/domain/story.dart` (tirage, effets, choix), `StoryEvent` (`events.dart`),
+`GameState.effects` et découpage dans `_produceUntil` (`engine.dart`),
+`lib/ui/widgets/story_banner.dart`, onglet du journal dans `reports_screen.dart`.
+
+## Tests
+
+`story_test.dart` : config, parts égales et déterminisme, jamais deux malus, éligibilité,
+effet temporaire exact puis retiré, remplacement, officiers, raccourci et retard, stock et
+gain, choix par défaut, réponse, raid avancé, chaîne sur 3 semaines, debug.
+
+## Points ouverts
+
+- Enrichir le catalogue (nouveaux événements, événements liés à la progression).
+- Illustrations : registre d'images (spec 11), jamais porteuses d'information.

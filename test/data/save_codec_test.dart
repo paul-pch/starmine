@@ -8,6 +8,7 @@ import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/domain/raid.dart';
 import 'package:starmine/domain/resources.dart';
 import 'package:starmine/domain/rules.dart';
+import 'package:starmine/domain/story.dart';
 
 import '../domain/helpers.dart';
 
@@ -47,6 +48,19 @@ void main() {
           QueuedLevel(8, BuildingKind.metalMine),
           QueuedBatch(9, UnitKind.rocketLauncher, 4),
         ],
+        effects: [
+          ActiveEffect(
+            source: 'rich_vein',
+            type: StoryEffectType.production,
+            resource: ResourceKind.metal,
+            value: 0.3,
+            endsAt: t0.add(const Duration(hours: 12)),
+          ),
+        ],
+        pending: [
+          ...withRaid.pending,
+          StoryEvent(id: 10, planetId: 1, dueAt: t0, seed: 4, choiceKey: 'merchant_convoy'),
+        ],
       ),
       speed: 10,
       seed: 42,
@@ -79,7 +93,14 @@ void main() {
     expect(restored.speed, 10);
     expect(restored.seed, 42);
 
-    expect(restored.state.pending, hasLength(3));
+    expect(restored.state.pending, hasLength(4));
+    final story = restored.state.pending.whereType<StoryEvent>().single;
+    expect(story.choiceKey, 'merchant_convoy');
+    expect(story.seed, 4);
+    final effect = restored.state.effects.single;
+    expect(effect.source, 'rich_vein');
+    expect(effect.resource, ResourceKind.metal);
+    expect(effect.endsAt, t0.add(const Duration(hours: 12)));
     final raidA = pendingRaid(original.state)! as RaidDetected;
     final raidB = pendingRaid(restored.state)! as RaidDetected;
     expect(raidB.id, raidA.id);
@@ -110,6 +131,7 @@ void main() {
     json.remove('officers');
     json.remove('counters');
     json.remove('queue');
+    json.remove('effects');
     (json['planet']! as Map<String, Object?>).remove('production_percent');
     json['events'] = <Object?>[];
     final restored = decodeSave(json);

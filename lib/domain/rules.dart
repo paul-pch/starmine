@@ -18,6 +18,8 @@ class Modifiers {
     this.constructionQueue = 0,
     this.researchQueue = 0,
     this.shipyardQueue = 0,
+    this.mineByResource = Resources.zero,
+    this.energyFactor = 1,
   });
 
   static const none = Modifiers();
@@ -38,6 +40,12 @@ class Modifiers {
   final int constructionQueue;
   final int researchQueue;
   final int shipyardQueue;
+
+  /// Effets d'événements (spec 14) : ajouté au bonus des mines, par ressource.
+  final Resources mineByResource;
+
+  /// Effets d'événements : multiplie l'énergie produite.
+  final double energyFactor;
 }
 
 /// Bilan d'énergie instantané de la planète.
@@ -105,7 +113,7 @@ class Rules {
     return Duration(seconds: math.max(1, (hours * 3600).floor()));
   }
 
-  EnergyBalance energy(Planet planet, TechLevels tech) {
+  EnergyBalance energy(Planet planet, TechLevels tech, [Modifiers mods = Modifiers.none]) {
     var produced = 0.0;
     var consumed = 0.0;
     for (final spec in data.buildings.values) {
@@ -121,7 +129,7 @@ class Rules {
       }
       consumed += p * spec.energyConsumption * _scaled(level);
     }
-    return EnergyBalance(produced: produced, consumed: consumed);
+    return EnergyBalance(produced: produced * mods.energyFactor, consumed: consumed);
   }
 
   /// Bonus de production des mines apporté par les technos (0.05 = +5 %).
@@ -138,8 +146,10 @@ class Rules {
   /// − consommations (fusion). La production de base et les consommations ne dépendent pas
   /// de l'énergie.
   Resources hourlyProduction(Planet planet, TechLevels tech, [Modifiers mods = Modifiers.none]) {
-    final factor = energy(planet, tech).factor;
-    final bonus = productionBonus(tech).map((_, v) => v + mods.mineProduction);
+    final factor = energy(planet, tech, mods).factor;
+    final bonus = productionBonus(tech).map(
+      (k, v) => v + mods.mineProduction + mods.mineByResource[k],
+    );
     var mines = Resources.zero;
     var consumption = Resources.zero;
     for (final spec in data.buildings.values) {

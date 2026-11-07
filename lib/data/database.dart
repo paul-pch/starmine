@@ -103,6 +103,26 @@ class QueuedOrders extends Table {
   Set<Column<Object>> get primaryKey => {id};
 }
 
+/// Effets temporaires des événements en cours (schéma v7, spec 14), réécrits à chaque
+/// sauvegarde. [payload] : JSON de `encodeEffect`.
+@DataClassName('EffectRow')
+class ActiveEffects extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get payload => text()();
+}
+
+/// Journal des événements ponctuels (schéma v7) : clé, issue, option.
+@DataClassName('StoryLogRow')
+class StoryLog extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get atMs => integer()();
+  TextColumn get key => text()();
+
+  /// `StoryOutcomeKind.name`.
+  TextColumn get kind => text()();
+  IntColumn get option => integer().nullable()();
+}
+
 /// File unique de tous les événements, futurs et passés.
 @DataClassName('EventRow')
 class Events extends Table {
@@ -140,6 +160,8 @@ class Meta extends Table {
     Officers,
     Counters,
     QueuedOrders,
+    ActiveEffects,
+    StoryLog,
     Meta,
   ],
 )
@@ -153,8 +175,9 @@ class StarmineDatabase extends _$StarmineDatabase {
   /// v3 : unités (table units). v4 : rapports de raid (table reports).
   /// v5 : officiers et compteurs (tables officers, counters).
   /// v6 : files d'attente (table queued_orders).
+  /// v7 : événements ponctuels (tables active_effects, story_log).
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -181,6 +204,10 @@ class StarmineDatabase extends _$StarmineDatabase {
       }
       if (from < 6) {
         await m.createTable(queuedOrders);
+      }
+      if (from < 7) {
+        await m.createTable(activeEffects);
+        await m.createTable(storyLog);
       }
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),

@@ -163,3 +163,21 @@ class RaidArrival extends GameEvent {
   /// Technos de combat des pirates (vides dans les sauvegardes antérieures).
   final TechLevels tech;
 }
+
+/// Événement ponctuel (spec 14), chaîne toujours planifiée sous le même id. À [dueAt] :
+/// tirage dans le catalogue avec [seed] ; un choix attend la réponse du joueur jusqu'à une
+/// nouvelle échéance ([choiceKey] renseigné), où l'option par défaut s'applique.
+class StoryEvent extends GameEvent {
+  const StoryEvent({
+    required super.id,
+    required super.planetId,
+    required super.dueAt,
+    required this.seed,
+    this.choiceKey,
+  });
+
+  final int seed;
+
+  /// Choix en attente de réponse (clé du catalogue), sinon `null`.
+  final String? choiceKey;
+}

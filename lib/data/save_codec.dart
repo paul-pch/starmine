@@ -6,6 +6,7 @@ import '../domain/planet.dart';
 import '../domain/raid.dart';
 import '../domain/resources.dart';
 import '../domain/rules.dart';
+import '../domain/story.dart';
 
 /// Identifiant du format de sauvegarde exportée.
 const saveFormat = 'starmine-save';
@@ -13,8 +14,8 @@ const saveFormat = 'starmine-save';
 /// v2 (V1) : technologies et réglages de production. Une sauvegarde v1 reste lisible.
 /// v3 (V2a) : unités et lots du chantier. v4 (V2b) : raids pirates.
 /// v5 (V2c) : officiers, compteurs, relevé des raids et technos pirates.
-/// v6 : files d'attente.
-const saveVersion = 6;
+/// v6 : files d'attente. v7 (V2d) : événements ponctuels et effets en cours.
+const saveVersion = 7;
 
 /// Sauvegarde complète : état de jeu et réglages persistés.
 class SaveGame {
@@ -37,6 +38,7 @@ const researchDoneType = 'research_done';
 const shipyardBatchType = 'shipyard_batch';
 const raidDetectedType = 'raid_detected';
 const raidArrivalType = 'raid_arrival';
+const storyEventType = 'story_event';
 
 String eventType(GameEvent event) => switch (event) {
   BuildingDone() => buildingDoneType,
@@ -44,6 +46,7 @@ String eventType(GameEvent event) => switch (event) {
   ShipyardBatch() => shipyardBatchType,
   RaidDetected() => raidDetectedType,
   RaidArrival() => raidArrivalType,
+  StoryEvent() => storyEventType,
 };
 
 Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
@@ -71,6 +74,7 @@ Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
     'fleet': encodeUnits(event.fleet),
     'tech': encodeTech(event.tech),
   },
+  StoryEvent() => {'seed': event.seed, 'choice_key': ?event.choiceKey},
 };
 
 Map<String, Object?> encodeUnits(Map<UnitKind, int> units) => {
@@ -90,6 +94,22 @@ Map<String, Object?> encodeQueued(QueuedOrder q) => switch (q) {
 QueuedOrder decodeQueued(int id, Map<String, Object?> m) => m['unit'] == null
     ? QueuedLevel(id, Unlockable.fromKey(_string(m, 'item')))
     : QueuedBatch(id, UnitKind.fromKey(_string(m, 'unit')), _int(m, 'count'));
+
+Map<String, Object?> encodeEffect(ActiveEffect e) => {
+  'source': e.source,
+  'type': e.type.name,
+  'resource': ?e.resource?.name,
+  'value': e.value,
+  'ends_at': e.endsAt.millisecondsSinceEpoch,
+};
+
+ActiveEffect decodeEffect(Map<String, Object?> m) => ActiveEffect(
+  source: _string(m, 'source'),
+  type: StoryEffectType.values.byName(_string(m, 'type')),
+  resource: m['resource'] == null ? null : ResourceKind.values.byName(_string(m, 'resource')),
+  value: _double(m, 'value'),
+  endsAt: fromEpochMs(_int(m, 'ends_at')),
+);
 
 Map<String, Object?> encodeTech(TechLevels tech) => {
   for (final e in tech.entries)
@@ -171,6 +191,14 @@ GameEvent decodeEvent({
         fleet: decodeUnits(_map(payload, 'fleet')),
         tech: payload['tech'] == null ? const {} : decodeTech(_map(payload, 'tech')),
       );
+    case storyEventType:
+      return StoryEvent(
+        id: id,
+        planetId: planetId,
+        dueAt: fromEpochMs(dueAtMs),
+        seed: _int(payload, 'seed'),
+        choiceKey: payload['choice_key'] as String?,
+      );
     default:
       throw FormatException('Type d’événement inconnu : $type');
   }
@@ -220,6 +248,7 @@ Map<String, Object?> encodeSave(SaveGame save, {required DateTime exportedAt}) {
     'queue': [
       for (final q in save.state.queue) {'id': q.id, ...encodeQueued(q)},
     ],
+    'effects': [for (final e in save.state.effects) encodeEffect(e)],
     'events': [
       for (final e in save.state.pending)
         {
@@ -254,6 +283,8 @@ SaveGame decodeSave(Map<String, Object?> json) {
   final counters = json['counters'] == null ? const <String, Object?>{} : _map(json, 'counters');
   // Absente avant la v6 : file vide.
   final queue = json['queue'] == null ? const <Object?>[] : _list(json, 'queue');
+  // Absents avant la v7 : aucun effet en cours.
+  final effects = json['effects'] == null ? const <Object?>[] : _list(json, 'effects');
   final planet = Planet(
     id: _int(p, 'id'),
     name: _string(p, 'name'),
@@ -291,6 +322,7 @@ SaveGame decodeSave(Map<String, Object?> json) {
         for (final raw in queue)
           decodeQueued(_int(_asMap(raw, 'queue[]'), 'id'), _asMap(raw, 'queue[]')),
       ],
+      effects: [for (final raw in effects) decodeEffect(_asMap(raw, 'effects[]'))],
     ),
     speed: _double(json, 'game_speed'),
     seed: _int(json, 'rng_seed'),

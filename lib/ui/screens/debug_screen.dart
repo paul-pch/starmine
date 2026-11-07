@@ -195,6 +195,15 @@ class _DebugScreenState extends State<DebugScreen> {
           },
         ),
         ListTile(
+          leading: const Icon(Icons.auto_stories_outlined),
+          title: const Text('Événement maintenant'),
+          subtitle: const Text('Le prochain événement ponctuel survient tout de suite'),
+          onTap: () async {
+            await _c.storyNow();
+            _snack(_c.pendingChoice != null ? 'Décision attendue' : 'Événement survenu');
+          },
+        ),
+        ListTile(
           leading: const Icon(Icons.restart_alt),
           title: const Text('Nouvelle partie'),
           onTap: _reset,

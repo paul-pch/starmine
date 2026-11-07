@@ -14,6 +14,8 @@ import '../domain/resources.dart';
 import '../domain/raid.dart' as raid;
 import '../domain/raid.dart' show RaidReport;
 import '../domain/rules.dart';
+import '../domain/story.dart' as story;
+import '../domain/story.dart' show StoryOutcome;
 import 'notifications.dart';
 import 'visuals.dart';
 
@@ -80,7 +82,9 @@ class GameController extends ChangeNotifier {
     }
     await _advanceAndSave();
     await _ensureRaid();
+    await _ensureStory();
     _reports = await _repo.loadReports();
+    _storyLog = await _repo.loadStoryLog();
     _ambiance = Ambiance.fromName(await _repo.ambiance());
     for (final screen in filterScreens) {
       if (await _repo.realizableOnly(screen)) _realizableOnly.add(screen);
@@ -167,9 +171,71 @@ class GameController extends ChangeNotifier {
       applied: adv.applied,
       reports: adv.reports,
       queueCancelled: adv.cancelled,
+      stories: adv.stories,
     );
     return outcome.promoted;
   });
+
+  /// Événements ponctuels (spec 14) : journal, dernier survenu (message), effets en cours.
+  List<StoryOutcome> get storyLog => _storyLog;
+  var _storyLog = <StoryOutcome>[];
+  StoryOutcome? get lastStory => _lastStory;
+  StoryOutcome? _lastStory;
+  int get storyCount => _storyCount;
+  var _storyCount = 0;
+
+  /// Choix proposé au joueur, en attente de réponse.
+  StoryEventSpec? get pendingChoice => story.pendingChoice(state, data);
+
+  /// Échéance du choix en attente (option par défaut).
+  DateTime? get choiceDeadline => story.pendingStory(state)?.dueAt;
+
+  /// Répond au choix en attente.
+  Future<void> answerChoice(int option) => _serialized(() async {
+    final t = now();
+    final adv = advance(state, t, _rules);
+    final out = story.answerChoice(adv.state, option, t, _rules);
+    await _commit(
+      out?.state ?? adv.state,
+      applied: adv.applied,
+      reports: adv.reports,
+      queueCancelled: adv.cancelled,
+      stories: [...adv.stories, ?out?.outcome],
+    );
+  });
+
+  /// Debug : l'événement ponctuel en attente survient tout de suite.
+  Future<void> storyNow() => _serialized(() async {
+    final t = now();
+    final adv = advance(state, t, _rules);
+    final moved = story.storyNow(adv.state, t);
+    final after = advance(moved, t, _rules);
+    await _commit(
+      after.state,
+      applied: [...adv.applied, ...after.applied],
+      reports: [...adv.reports, ...after.reports],
+      queueCancelled: [...adv.cancelled, ...after.cancelled],
+      stories: [...adv.stories, ...after.stories],
+    );
+  });
+
+  Future<void> _ensureStory() async {
+    if (story.pendingStory(state) != null) return;
+    final id = await _repo.nextEventId();
+    await _commit(
+      story.ensureStoryScheduled(
+        state,
+        now(),
+        _rules,
+        seed: _random.nextInt(1 << 31),
+        eventId: id,
+      ),
+    );
+    if (!_visible) await _scheduleAll();
+  }
+
+  /// Bilan d'énergie de [s], effets d'événements compris.
+  EnergyBalance energyOf(GameState s) => _rules.energy(s.planet, s.research, s.modifiers(data));
 
   /// Debug : la prochaine flotte pirate est détectée tout de suite.
   Future<void> raidNow() => _serialized(() async {
@@ -180,6 +246,7 @@ class GameController extends ChangeNotifier {
       applied: adv.applied,
       reports: adv.reports,
       queueCancelled: adv.cancelled,
+      stories: adv.stories,
     );
   });
 
@@ -214,6 +281,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
+      stories: adv.stories,
         );
         return null;
       case OrderRejected(:final reason):
@@ -222,6 +290,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
+      stories: adv.stories,
         );
         return reason;
       case OrderStarted(:final event):
@@ -230,6 +299,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
+      stories: adv.stories,
         );
         if (!_visible) await _notifier.schedule(event, data);
         return null;
@@ -251,6 +321,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
+      stories: adv.stories,
         );
         return null;
       case OrderRejected(:final reason):
@@ -259,6 +330,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
+      stories: adv.stories,
         );
         return reason;
       case BatchStarted(:final batch):
@@ -267,6 +339,7 @@ class GameController extends ChangeNotifier {
           applied: adv.applied,
           reports: adv.reports,
           queueCancelled: adv.cancelled,
+      stories: adv.stories,
         );
         if (!_visible) await _notifier.schedule(batch, data);
         return null;
@@ -284,6 +357,7 @@ class GameController extends ChangeNotifier {
       applied: adv.applied,
       reports: adv.reports,
       queueCancelled: adv.cancelled,
+      stories: adv.stories,
     );
   });
 
@@ -296,6 +370,7 @@ class GameController extends ChangeNotifier {
       applied: adv.applied,
       reports: adv.reports,
       queueCancelled: [...adv.cancelled, ?out.cancelled],
+      stories: adv.stories,
       cancelledIds: [eventId],
     );
     await _notifier.cancel(eventId);
@@ -322,13 +397,17 @@ class GameController extends ChangeNotifier {
     await _replace(decodeSave(decoded.cast<String, Object?>()));
     await _advanceAndSave();
     await _ensureRaid();
+    await _ensureStory();
     _reports = await _repo.loadReports();
+    _storyLog = await _repo.loadStoryLog();
   });
 
   Future<void> reset() => _serialized(() async {
     await _replace(_newGame(speed: speed));
     await _ensureRaid();
+    await _ensureStory();
     _reports = await _repo.loadReports();
+    _storyLog = await _repo.loadStoryLog();
     notifyListeners();
   });
 
@@ -371,11 +450,14 @@ class GameController extends ChangeNotifier {
     for (final e in state.pending) {
       if (notifyAt(e).isAfter(t)) await _notifier.schedule(e, data);
     }
-    // Les ordres en attente n'ont pas encore d'échéance : on simule la suite (déterministe,
-    // raids compris) pour prévoir leurs fins et une éventuelle annulation de file.
-    if (state.queue.isEmpty) return;
+    // Les ordres en attente n'ont pas encore d'échéance et les événements ponctuels ne sont
+    // connus qu'au tirage : on simule la suite (déterministe, raids compris) pour prévoir
+    // les fins d'ordres, une éventuelle annulation de file et les événements.
     final queuedIds = {for (final q in state.queue) q.id};
     final sim = advance(state, t.add(_forecast), _rules);
+    for (final (i, o) in sim.stories.indexed) {
+      await _notifier.scheduleStory(o, i, data);
+    }
     for (final e in [...sim.applied, ...sim.state.pending]) {
       if (queuedIds.contains(e.id) && notifyAt(e).isAfter(t)) await _notifier.schedule(e, data);
     }
@@ -392,6 +474,7 @@ class GameController extends ChangeNotifier {
       applied: result.applied,
       reports: result.reports,
       queueCancelled: result.cancelled,
+      stories: result.stories,
     );
   }
 
@@ -401,9 +484,21 @@ class GameController extends ChangeNotifier {
     Iterable<int> cancelledIds = const [],
     Iterable<RaidReport> reports = const [],
     Iterable<QueueCancelled> queueCancelled = const [],
+    Iterable<StoryOutcome> stories = const [],
   }) async {
-    await _repo.save(next, applied: applied, cancelledIds: cancelledIds, reports: reports);
+    await _repo.save(
+      next,
+      applied: applied,
+      cancelledIds: cancelledIds,
+      reports: reports,
+      stories: stories,
+    );
     _set(_save.copyWith(state: next));
+    if (stories.isNotEmpty) {
+      _lastStory = stories.last;
+      _storyCount += stories.length;
+      _storyLog = await _repo.loadStoryLog();
+    }
     if (queueCancelled.isNotEmpty) {
       _lastQueueCancelled = queueCancelled.last;
       _queueCancelledCount += queueCancelled.length;

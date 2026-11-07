@@ -76,9 +76,12 @@ est dans la feuille de détail (un tap).
   encore … » ; bâtiment absent : invitation à le construire.
 - **Debug** : vitesse ×1/×10/×100, **ambiance** (Équilibrée / Immersive / Sobre), export /
   import (presse-papiers), simulateur de combat (flottes types → 100 batailles), raid
-  immédiat + points, événement immédiat (spec 14, à venir), nouvelle partie, alarmes
+  immédiat + points, événement immédiat (spec 14), nouvelle partie, alarmes
   exactes, dernière mise à jour.
-- **Rapports** (depuis le hero) : liste des raids → rapport complet.
+- **Rapports** (depuis le hero) : onglets « Raids » (liste → rapport complet) et
+  « Événements » (journal des événements ponctuels, spec 14).
+- **Bandeau des événements** (sous le bandeau de raid) : décision attendue et effets en
+  cours (spec 14).
 - **Officiers** (depuis le hero, spec 12) : carte par officier (nom, niveau / plafond, bonus
   actuel et du niveau suivant, prérequis en rouge s'ils manquent, « Débloquer » ou
   « Promouvoir »).
