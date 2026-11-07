@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:starmine/domain/engine.dart';
-import 'package:starmine/domain/events.dart';
 import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/domain/resources.dart';
 import 'package:starmine/domain/rules.dart';
@@ -70,7 +69,11 @@ void main() {
 
   test('ressources manquantes au démarrage : toute la file est annulée', () {
     // De quoi payer la mine de métal 1, pas la suite.
-    var s = place(start(resources: const Resources(metal: 60, crystal: 15)), BuildingKind.metalMine, 1);
+    var s = place(
+      start(resources: const Resources(metal: 60, crystal: 15)),
+      BuildingKind.metalMine,
+      1,
+    );
     s = place(s, BuildingKind.crystalMine, 2);
     s = place(s, BuildingKind.solarPlant, 3);
     final due = s.currentConstruction!.dueAt;

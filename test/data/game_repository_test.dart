@@ -41,10 +41,7 @@ void main() {
     await repo.replaceAll(
       SaveGame(
         state: save.state.copyWith(
-          queue: const [
-            QueuedLevel(40, BuildingKind.solarPlant),
-            QueuedLevel(12, TechKind.energy),
-          ],
+          queue: const [QueuedLevel(40, BuildingKind.solarPlant), QueuedLevel(12, TechKind.energy)],
         ),
         speed: 1,
         seed: 7,

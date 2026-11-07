@@ -186,9 +186,7 @@ class _UnitCard extends StatelessWidget {
                         minimumSize: const Size.square(48),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
-                      icon: Icon(
-                        wouldQueue(state, Slot.shipyard) ? Icons.playlist_add : Icons.add,
-                      ),
+                      icon: Icon(wouldQueue(state, Slot.shipyard) ? Icons.playlist_add : Icons.add),
                     ),
                   ],
                 ),

@@ -155,7 +155,12 @@ class GameController extends ChangeNotifier {
     final t = now();
     final adv = advance(state, t, _rules);
     final outcome = officers.promoteOfficer(adv.state, kind, t, _rules);
-    await _commit(outcome.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
+    await _commit(
+      outcome.state,
+      applied: adv.applied,
+      reports: adv.reports,
+      queueCancelled: adv.cancelled,
+    );
     return outcome.promoted;
   });
 
@@ -163,7 +168,12 @@ class GameController extends ChangeNotifier {
   Future<void> raidNow() => _serialized(() async {
     final t = now();
     final adv = advance(state, t, _rules);
-    await _commit(raid.raidNow(adv.state, t, _rules), applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
+    await _commit(
+      raid.raidNow(adv.state, t, _rules),
+      applied: adv.applied,
+      reports: adv.reports,
+      queueCancelled: adv.cancelled,
+    );
   });
 
   Future<void> _ensureRaid() async {
@@ -192,13 +202,28 @@ class GameController extends ChangeNotifier {
     final outcome = placeOrder(adv.state, item, t, _rules, eventId: id);
     switch (outcome) {
       case OrderQueued():
-        await _commit(outcome.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
+        await _commit(
+          outcome.state,
+          applied: adv.applied,
+          reports: adv.reports,
+          queueCancelled: adv.cancelled,
+        );
         return null;
       case OrderRejected(:final reason):
-        await _commit(adv.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
+        await _commit(
+          adv.state,
+          applied: adv.applied,
+          reports: adv.reports,
+          queueCancelled: adv.cancelled,
+        );
         return reason;
       case OrderStarted(:final event):
-        await _commit(outcome.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
+        await _commit(
+          outcome.state,
+          applied: adv.applied,
+          reports: adv.reports,
+          queueCancelled: adv.cancelled,
+        );
         if (!_visible) await _notifier.schedule(event, data);
         return null;
       case BatchStarted():
@@ -214,13 +239,28 @@ class GameController extends ChangeNotifier {
     final outcome = placeBatch(adv.state, unit, count, t, _rules, eventId: id);
     switch (outcome) {
       case OrderQueued():
-        await _commit(outcome.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
+        await _commit(
+          outcome.state,
+          applied: adv.applied,
+          reports: adv.reports,
+          queueCancelled: adv.cancelled,
+        );
         return null;
       case OrderRejected(:final reason):
-        await _commit(adv.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
+        await _commit(
+          adv.state,
+          applied: adv.applied,
+          reports: adv.reports,
+          queueCancelled: adv.cancelled,
+        );
         return reason;
       case BatchStarted(:final batch):
-        await _commit(outcome.state, applied: adv.applied, reports: adv.reports, queueCancelled: adv.cancelled);
+        await _commit(
+          outcome.state,
+          applied: adv.applied,
+          reports: adv.reports,
+          queueCancelled: adv.cancelled,
+        );
         if (!_visible) await _notifier.schedule(batch, data);
         return null;
       case OrderStarted():

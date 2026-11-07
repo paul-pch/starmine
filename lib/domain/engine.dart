@@ -120,7 +120,12 @@ class GameState {
 }
 
 class AdvanceResult {
-  const AdvanceResult(this.state, this.applied, [this.reports = const [], this.cancelled = const []]);
+  const AdvanceResult(
+    this.state,
+    this.applied, [
+    this.reports = const [],
+    this.cancelled = const [],
+  ]);
 
   final GameState state;
 
@@ -428,10 +433,12 @@ GameState cancelOrder(GameState state, int eventId, DateTime now, Rules rules) =
   final advanced = advance(state, now, rules).state;
   if (advanced.queue.any((q) => q.id == eventId)) {
     return (
-      state: advanced.copyWith(queue: [
-        for (final q in advanced.queue)
-          if (q.id != eventId) q,
-      ]),
+      state: advanced.copyWith(
+        queue: [
+          for (final q in advanced.queue)
+            if (q.id != eventId) q,
+        ],
+      ),
       cancelled: null,
     );
   }
@@ -796,10 +803,12 @@ OrderOutcome placeBatch(
   final waiting = s.queued(slot);
   if (waiting.isEmpty || s.current(slot) != null) return (state: s, started: null, cancelled: null);
   final first = waiting.first;
-  final rest = s.copyWith(queue: [
-    for (final q in s.queue)
-      if (!identical(q, first)) q,
-  ]);
+  final rest = s.copyWith(
+    queue: [
+      for (final q in s.queue)
+        if (!identical(q, first)) q,
+    ],
+  );
   final outcome = switch (first) {
     QueuedLevel(:final item) => _begin(rest, item, at, rules, eventId: first.id),
     QueuedBatch(:final unit, :final count) => _beginBatch(
@@ -826,10 +835,12 @@ OrderOutcome placeBatch(
       );
     case OrderRejected(:final reason):
       return (
-        state: s.copyWith(queue: [
-          for (final q in s.queue)
-            if (q.slot != slot) q,
-        ]),
+        state: s.copyWith(
+          queue: [
+            for (final q in s.queue)
+              if (q.slot != slot) q,
+          ],
+        ),
         started: null,
         cancelled: QueueCancelled(
           slot: slot,
