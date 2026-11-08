@@ -58,12 +58,18 @@ class ReportsScreen extends StatelessWidget {
             final at = r.at.toLocal();
             String two(int n) => n.toString().padLeft(2, '0');
             final scheme = Theme.of(context).colorScheme;
+            // Raid subi : bon si repoussé. Attaque d'une base : bon si gagnée.
+            final good = r.baseName == null
+                ? r.winner != CombatWinner.attacker
+                : r.winner == CombatWinner.attacker;
             return ListTile(
               leading: Icon(
-                r.winner == CombatWinner.attacker
-                    ? Icons.gpp_bad_outlined
-                    : Icons.gpp_good_outlined,
-                color: r.winner == CombatWinner.attacker ? scheme.error : scheme.primary,
+                r.baseName != null
+                    ? Icons.rocket_launch_outlined
+                    : good
+                    ? Icons.gpp_good_outlined
+                    : Icons.gpp_bad_outlined,
+                color: good ? scheme.primary : scheme.error,
               ),
               title: Text(CombatReport.verdict(r)),
               subtitle: Text(

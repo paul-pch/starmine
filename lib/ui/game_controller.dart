@@ -7,6 +7,7 @@ import '../data/game_repository.dart';
 import '../data/save_codec.dart';
 import '../domain/engine.dart';
 import '../domain/events.dart';
+import '../domain/fleet.dart' as fleet;
 import '../domain/game_data.dart';
 import '../domain/officers.dart' as officers;
 import '../domain/planet.dart';
@@ -83,6 +84,7 @@ class GameController extends ChangeNotifier {
     await _advanceAndSave();
     await _ensureRaid();
     await _ensureStory();
+    await _ensureBases();
     _reports = await _repo.loadReports();
     _storyLog = await _repo.loadStoryLog();
     _ambiance = Ambiance.fromName(await _repo.ambiance());
@@ -237,6 +239,57 @@ class GameController extends ChangeNotifier {
 
   /// Bilan d'énergie de [s], effets d'événements compris.
   EnergyBalance energyOf(GameState s) => _rules.energy(s.planet, s.research, s.modifiers(data));
+
+  /// Envoie une flotte (spec 15, V3b). Renvoie la raison du refus, ou `null`.
+  Future<fleet.MissionBlock?> sendMission(
+    MissionKind kind,
+    int? target,
+    Map<UnitKind, int> ships, {
+    int speedPercent = 100,
+    double shelterHours = 0,
+  }) => _serialized(() async {
+    final t = now();
+    final adv = advance(state, t, _rules);
+    final id = await _repo.nextEventId();
+    final out = fleet.sendMission(
+      adv.state,
+      kind,
+      target,
+      ships,
+      speedPercent,
+      t,
+      _rules,
+      eventId: id,
+      seed: _random.nextInt(1 << 31),
+      shelterHours: shelterHours,
+    );
+    await _commit(
+      out.state,
+      applied: adv.applied,
+      reports: adv.reports,
+      queueCancelled: adv.cancelled,
+      stories: adv.stories,
+    );
+    return out.block;
+  });
+
+  /// Fait faire demi-tour à une flotte à l'aller.
+  Future<void> recall(int missionId) => _serialized(() async {
+    final t = now();
+    final adv = advance(state, t, _rules);
+    await _commit(
+      fleet.recallMission(adv.state, missionId, t, _rules),
+      applied: adv.applied,
+      reports: adv.reports,
+      queueCancelled: adv.cancelled,
+      stories: adv.stories,
+    );
+  });
+
+  Future<void> _ensureBases() async {
+    if (state.bases.length >= data.pirateBases.list.length) return;
+    await _commit(fleet.ensureBases(state, now(), _rules, seed: _random.nextInt(1 << 31)));
+  }
 
   /// Envoie [count] recycleurs collecter le champ de débris (spec 15).
   Future<RecycleBlock?> recycle(int count) => _serialized(() async {
@@ -415,6 +468,7 @@ class GameController extends ChangeNotifier {
     await _advanceAndSave();
     await _ensureRaid();
     await _ensureStory();
+    await _ensureBases();
     _reports = await _repo.loadReports();
     _storyLog = await _repo.loadStoryLog();
   });
@@ -423,6 +477,7 @@ class GameController extends ChangeNotifier {
     await _replace(_newGame(speed: speed));
     await _ensureRaid();
     await _ensureStory();
+    await _ensureBases();
     _reports = await _repo.loadReports();
     _storyLog = await _repo.loadStoryLog();
     notifyListeners();

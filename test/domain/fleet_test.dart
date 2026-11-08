@@ -17,7 +17,10 @@ void main() {
       RaidArrival(id: 9, planetId: 1, dueAt: t0, detectedAt: t0, fleet: fleet, seed: seed);
 
   test('vaisseaux constructibles au chantier, prérequis compris', () {
-    final s = game(planet(levels: {BuildingKind.shipyard: 1}, resources: rich));
+    final s = game(
+      planet(levels: {BuildingKind.shipyard: 1}, resources: rich),
+      research: {TechKind.combustion: 1},
+    );
     final out = startBatch(s, UnitKind.lightFighter, 5, t0, rules, eventId: 1);
     expect(out, isA<BatchStarted>());
     final done = advance(out.state, (out as BatchStarted).batch.finishAt, rules).state;

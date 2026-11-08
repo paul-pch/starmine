@@ -2,7 +2,8 @@
 
 ## Objet
 
-Débloquer bâtiments, défenses et bonus via un arbre de technologies.
+Débloquer bâtiments, défenses, vaisseaux et bonus via un arbre de technologies. Propulsion
+et Espionnage (V3b) : spec 15.
 
 ## Règles
 

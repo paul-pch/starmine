@@ -196,3 +196,59 @@ class RecycleMission extends GameEvent {
   final DateTime startedAt;
   final int recyclers;
 }
+
+/// Type d'une mission de flotte (V3b).
+enum MissionKind { attack, spy, recycle, shelter }
+
+/// Flotte en vol (spec 15). Aller : à [dueAt], arrivée sur la base [target] (combat,
+/// espionnage, collecte), puis le même id revient (`returning`). Une mise à l'abri n'a que
+/// le retour.
+class FleetMission extends GameEvent {
+  const FleetMission({
+    required super.id,
+    required super.planetId,
+    required super.dueAt,
+    required this.kind,
+    this.target,
+    required this.ships,
+    this.cargo = Resources.zero,
+    this.returning = false,
+    required this.departedAt,
+    this.speedPercent = 100,
+    required this.seed,
+  });
+
+  final MissionKind kind;
+
+  /// Index de la base pirate visée (aucune pour une mise à l'abri).
+  final int? target;
+  final Map<UnitKind, int> ships;
+
+  /// Chargement rapporté (pillage, débris).
+  final Resources cargo;
+  final bool returning;
+  final DateTime departedAt;
+  final int speedPercent;
+
+  /// Graine du combat à l'arrivée.
+  final int seed;
+
+  FleetMission copyWith({
+    DateTime? dueAt,
+    Map<UnitKind, int>? ships,
+    Resources? cargo,
+    bool? returning,
+  }) => FleetMission(
+    id: id,
+    planetId: planetId,
+    dueAt: dueAt ?? this.dueAt,
+    kind: kind,
+    target: target,
+    ships: ships ?? this.ships,
+    cargo: cargo ?? this.cargo,
+    returning: returning ?? this.returning,
+    departedAt: departedAt,
+    speedPercent: speedPercent,
+    seed: seed,
+  );
+}

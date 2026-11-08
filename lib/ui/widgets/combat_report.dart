@@ -31,10 +31,13 @@ class CombatReport extends StatelessWidget {
         ),
       );
 
-  static String verdict(RaidReport r) => switch (r.winner) {
-    CombatWinner.attacker => 'Raid réussi : planète pillée',
-    CombatWinner.defender => 'Raid repoussé',
-    CombatWinner.draw => 'Match nul : les pirates repartent',
+  static String verdict(RaidReport r) => switch ((r.winner, r.baseName)) {
+    (CombatWinner.attacker, null) => 'Raid réussi : planète pillée',
+    (CombatWinner.defender, null) => 'Raid repoussé',
+    (CombatWinner.draw, null) => 'Match nul : les pirates repartent',
+    (CombatWinner.attacker, final base?) => 'Attaque réussie : $base pillée',
+    (CombatWinner.defender, final base?) => 'Attaque repoussée par $base',
+    (CombatWinner.draw, final base?) => 'Match nul contre $base',
   };
 
   @override
@@ -59,7 +62,10 @@ class CombatReport extends StatelessWidget {
         ),
         if (r.loot != Resources.zero) ...[
           const SizedBox(height: 12),
-          Text('Butin emporté', style: theme.textTheme.titleSmall),
+          Text(
+            r.baseName == null ? 'Butin emporté' : 'Butin rapporté',
+            style: theme.textTheme.titleSmall,
+          ),
           const SizedBox(height: 4),
           CostLine(cost: r.loot),
         ],
@@ -71,13 +77,23 @@ class CombatReport extends StatelessWidget {
         ],
         if ((r.attackerStrength, r.defenderStrength) case (final a?, final d?)) ...[
           const SizedBox(height: 16),
-          ForcesTable(attacker: a, defender: d),
+          ForcesTable(
+            attacker: a,
+            defender: d,
+            attackerName: r.baseName == null ? 'Pirates' : 'Ta flotte',
+            defenderName: r.baseName ?? 'Planète',
+          ),
         ],
         const SizedBox(height: 16),
-        _SideTable(title: 'Pirates', data: data, start: r.attackerStart, left: r.attackerLeft),
+        _SideTable(
+          title: r.baseName == null ? 'Pirates' : 'Ta flotte',
+          data: data,
+          start: r.attackerStart,
+          left: r.attackerLeft,
+        ),
         const SizedBox(height: 16),
         _SideTable(
-          title: 'Planète',
+          title: r.baseName ?? 'Planète',
           data: data,
           start: r.defenderStart,
           left: r.defenderLeft,

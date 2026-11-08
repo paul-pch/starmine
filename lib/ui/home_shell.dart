@@ -9,6 +9,7 @@ import 'resource_style.dart';
 import 'theme.dart';
 import 'visuals.dart';
 import 'screens/debug_screen.dart';
+import 'screens/fleet_screen.dart';
 import 'screens/officers_screen.dart';
 import 'screens/reports_screen.dart';
 import 'widgets/combat_report.dart';
@@ -192,6 +193,7 @@ class _HomeShellState extends State<HomeShell> {
           ResearchScreen(controller: _c, now: _now, onOpenQueue: _openQueue),
           DefenseScreen(controller: _c, now: _now, onOpenQueue: _openQueue),
           QueueScreen(controller: _c, now: _now),
+          FleetScreen(controller: _c, now: _now),
         ];
         return Scaffold(
           body: VisualsScope(
@@ -252,6 +254,7 @@ class _HomeShellState extends State<HomeShell> {
                 label: 'Chantier',
               ),
               const NavigationDestination(icon: Icon(Icons.schedule_outlined), label: 'File'),
+              const NavigationDestination(icon: Icon(Icons.explore_outlined), label: 'Flotte'),
             ],
           ),
         );

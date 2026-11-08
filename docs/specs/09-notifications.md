@@ -19,6 +19,7 @@ pas à l'écran.
 | Lot du chantier | Dernière unité | Chantier terminé | Constructions |
 | Raid détecté | Détection | Flotte pirate détectée (heure d'arrivée) | Raids pirates |
 | Raid | Arrivée | Raid pirate (voir le rapport) | Raids pirates |
+| Flotte | Arrivée (combat, espionnage, collecte) et retour | Flotte arrivée / de retour | Constructions |
 | Recyclage | Retour des recycleurs | Recyclage terminé | Constructions |
 | Événement ponctuel | Tirage (prévu par simulation) | Nom, texte d'histoire ou « Décision attendue » | Événements |
 | Choix en attente | 1 h avant l'option par défaut | Décision attendue | Événements |

@@ -52,6 +52,13 @@ int storyNotificationId(int index) => 3000000 + index;
   };
 }
 
+String _arrivalTitle(MissionKind kind) => switch (kind) {
+  MissionKind.attack => 'Flotte arrivée : combat terminé',
+  MissionKind.spy => 'Rapport d’espionnage reçu',
+  MissionKind.recycle => 'Débris collectés',
+  MissionKind.shelter => 'Flotte de retour',
+};
+
 /// Rappel d'un choix en attente, avant l'application de l'option par défaut.
 const choiceReminder = Duration(hours: 1);
 
@@ -209,6 +216,17 @@ class LocalBuildNotifier implements BuildNotifier {
           ),
         ],
         StoryEvent() => [],
+        FleetMission(:final returning, :final kind) => [
+          (
+            event.id,
+            event.dueAt,
+            returning ? 'Flotte de retour' : _arrivalTitle(kind),
+            returning
+                ? 'Tes vaisseaux sont rentrés et ont déchargé leur cargaison.'
+                : 'Consulte l’onglet Flotte.',
+            _buildings,
+          ),
+        ],
         RecycleMission() => [
           (
             event.id,

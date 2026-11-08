@@ -119,6 +119,7 @@ class RaidReport {
     required this.rebuilt,
     this.loot = Resources.zero,
     this.debris = Resources.zero,
+    this.baseName,
     this.simulated = false,
     this.attackerStrength,
     this.defenderStrength,
@@ -130,6 +131,7 @@ class RaidReport {
     required DateTime at,
     Resources loot = Resources.zero,
     Resources debris = Resources.zero,
+    String? baseName,
     bool simulated = false,
     SideStrength? attackerStrength,
     SideStrength? defenderStrength,
@@ -144,6 +146,7 @@ class RaidReport {
     rebuilt: r.rebuilt,
     loot: loot,
     debris: debris,
+    baseName: baseName,
     simulated: simulated,
     attackerStrength: attackerStrength,
     defenderStrength: defenderStrength,
@@ -162,6 +165,9 @@ class RaidReport {
 
   /// Champ de débris créé par le combat (V3a).
   final Resources debris;
+
+  /// Attaque du joueur contre cette base pirate (V3b) ; `null` pour un raid sur la planète.
+  final String? baseName;
 
   /// Simulation (debug, estimation) : pas un vrai raid.
   final bool simulated;

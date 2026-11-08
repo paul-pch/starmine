@@ -13,8 +13,8 @@ Produire des unités au chantier spatial : défenses en V2, vaisseaux à partir 
 - Règle du chantier : spec 03.
 - **Limite par planète** : `max` (dômes : 1 chacun).
 - **Vaisseaux** constructibles depuis la V3a (spec 15) : transporteurs, chasseurs,
-  croiseur, vaisseau de bataille, recycleur. Prérequis provisoires (chantier et technos
-  existantes) en attendant les technos de propulsion de la V3b.
+  croiseur, vaisseau de bataille, recycleur, sonde d'espionnage (V3b). Prérequis OGame
+  (chantier, réacteurs, technos).
 - Quantité commandable : bornée par les ressources et la limite (`maxOrderable`).
 - Caractéristiques d'une unité : attaque, bouclier, coque = `(M + C) / 10`, soute (vaisseaux),
   tir rapide (spec 06).

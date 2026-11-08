@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:starmine/data/save_codec.dart';
 import 'package:starmine/domain/engine.dart';
 import 'package:starmine/domain/events.dart';
+import 'package:starmine/domain/fleet.dart';
 import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/domain/raid.dart';
 import 'package:starmine/domain/resources.dart';
@@ -48,6 +49,19 @@ void main() {
           QueuedLevel(8, BuildingKind.metalMine),
           QueuedBatch(9, UnitKind.rocketLauncher, 4),
         ],
+        bases: [
+          PirateBase(
+            index: 0,
+            seed: 5,
+            generation: 2,
+            stockFraction: 0.4,
+            stockAt: t0,
+            survivors: const {UnitKind.rocketLauncher: 3},
+            survivorsUntil: t0.add(const Duration(hours: 12)),
+            debris: const Resources(metal: 900, crystal: 300),
+            spy: SpyReport(at: t0, resources: const Resources(metal: 50)),
+          ),
+        ],
         effects: [
           ActiveEffect(
             source: 'rich_vein',
@@ -61,6 +75,19 @@ void main() {
         pending: [
           ...withRaid.pending,
           StoryEvent(id: 10, planetId: 1, dueAt: t0, seed: 4, choiceKey: 'merchant_convoy'),
+          FleetMission(
+            id: 12,
+            planetId: 1,
+            dueAt: t0.add(const Duration(hours: 2)),
+            kind: MissionKind.attack,
+            target: 1,
+            ships: const {UnitKind.cruiser: 4},
+            cargo: const Resources(metal: 300),
+            returning: true,
+            departedAt: t0,
+            speedPercent: 70,
+            seed: 8,
+          ),
           RecycleMission(
             id: 11,
             planetId: 1,
@@ -101,7 +128,18 @@ void main() {
     expect(restored.speed, 10);
     expect(restored.seed, 42);
 
-    expect(restored.state.pending, hasLength(5));
+    expect(restored.state.pending, hasLength(6));
+    final fleetMission = restored.state.pending.whereType<FleetMission>().single;
+    expect(fleetMission.ships, {UnitKind.cruiser: 4});
+    expect(fleetMission.cargo, const Resources(metal: 300));
+    expect(fleetMission.returning, isTrue);
+    expect(fleetMission.speedPercent, 70);
+    final base = restored.state.bases.single;
+    expect(base.generation, 2);
+    expect(base.survivors, {UnitKind.rocketLauncher: 3});
+    expect(base.destroyedUntil, isNull);
+    expect(base.spy!.resources, const Resources(metal: 50));
+    expect(base.spy!.ships, isNull);
     expect(b.debris, const Resources(metal: 1200, crystal: 400));
     final recycle = restored.state.pending.whereType<RecycleMission>().single;
     expect(recycle.recyclers, 3);
@@ -144,6 +182,7 @@ void main() {
     json.remove('counters');
     json.remove('queue');
     json.remove('effects');
+    json.remove('bases');
     (json['planet']! as Map<String, Object?>).remove('production_percent');
     json['events'] = <Object?>[];
     final restored = decodeSave(json);

@@ -18,6 +18,7 @@ categories:
   research:
     basic: Fondamentales
     combat: Combat
+    propulsion: Propulsion
     advanced: Avancées
   defense:
     light: Légères
@@ -181,7 +182,9 @@ research:
   computer_technology:
     category: advanced
     name: Technologie Informatique
-    description: Prérequis de l'usine de nanites.
+    description: >-
+      Prérequis de l'usine de nanites. Chaque niveau ajoute une place de flotte (missions
+      simultanées).
     cost: { crystal: 400, deuterium: 600 }
     factor: 2
     requires: { research_lab: 1 }
@@ -206,6 +209,42 @@ research:
     cost: { metal: 1000 }
     factor: 2
     requires: { research_lab: 2 }
+  # Propulsion (V3b) : chaque niveau accélère les vaisseaux qui utilisent ce réacteur.
+  combustion_drive:
+    category: propulsion
+    name: Réacteur à combustion
+    description: >-
+      +10 % de vitesse par niveau pour les transporteurs, le chasseur léger, le recycleur et
+      la sonde d'espionnage.
+    cost: { metal: 400, deuterium: 600 }
+    factor: 2
+    requires: { energy_technology: 1 }
+    drive_bonus: 0.1
+  impulse_drive:
+    category: propulsion
+    name: Réacteur à impulsion
+    description: +20 % de vitesse par niveau pour le chasseur lourd et le croiseur.
+    cost: { metal: 2000, crystal: 4000, deuterium: 600 }
+    factor: 2
+    requires: { energy_technology: 1, research_lab: 2 }
+    drive_bonus: 0.2
+  hyperspace_drive:
+    category: propulsion
+    name: Propulsion hyperespace
+    description: +30 % de vitesse par niveau pour le vaisseau de bataille.
+    cost: { metal: 10000, crystal: 20000, deuterium: 6000 }
+    factor: 2
+    requires: { energy_technology: 5, shielding_technology: 5, research_lab: 7 }
+    drive_bonus: 0.3
+  espionage_technology:
+    category: advanced
+    name: Technologie Espionnage
+    description: >-
+      Détail des rapports d'espionnage : ressources dès le niveau 1, flotte au niveau 2,
+      défenses au niveau 4, technologies au niveau 6.
+    cost: { metal: 200, crystal: 1000, deuterium: 200 }
+    factor: 2
+    requires: { research_lab: 3 }
 
 # Défenses (constructibles au chantier) et vaisseaux (pirates en V2).
 # Coque = (M + C) / 10. Valeurs OGame classiques, à vérifier.
@@ -290,8 +329,10 @@ units:
     category: civil
     description: >-
       Transporteur rapide et peu armé. Sa soute sert au pillage et aux livraisons (V3b).
-    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
-    requires: { shipyard: 2 }
+    requires: { shipyard: 2, combustion_drive: 2 }
+    speed: 5000
+    fuel: 10
+    drive: combustion_drive
     name: Petit transporteur
     cost: { metal: 2000, crystal: 2000 }
     attack: 5
@@ -301,8 +342,10 @@ units:
     category: civil
     description: >-
       Grande soute, très peu armé.
-    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
-    requires: { shipyard: 4 }
+    requires: { shipyard: 4, combustion_drive: 6 }
+    speed: 7500
+    fuel: 50
+    drive: combustion_drive
     name: Grand transporteur
     cost: { metal: 6000, crystal: 6000 }
     attack: 5
@@ -312,8 +355,10 @@ units:
     category: warships
     description: >-
       Chasseur bon marché, utile en nombre pour absorber les tirs.
-    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
-    requires: { shipyard: 1 }
+    requires: { shipyard: 1, combustion_drive: 1 }
+    speed: 12500
+    fuel: 20
+    drive: combustion_drive
     name: Chasseur léger
     cost: { metal: 3000, crystal: 1000 }
     attack: 50
@@ -323,8 +368,10 @@ units:
     category: warships
     description: >-
       Chasseur mieux armé et protégé ; tir rapide contre les petits transporteurs.
-    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
-    requires: { shipyard: 3, armour_technology: 2 }
+    requires: { shipyard: 3, armour_technology: 2, impulse_drive: 2 }
+    speed: 10000
+    fuel: 75
+    drive: impulse_drive
     name: Chasseur lourd
     cost: { metal: 6000, crystal: 4000 }
     attack: 150
@@ -335,8 +382,10 @@ units:
     category: warships
     description: >-
       Vaisseau rapide et puissant ; tir rapide contre les chasseurs légers et les lanceurs de missiles.
-    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
-    requires: { shipyard: 5, ion_technology: 2 }
+    requires: { shipyard: 5, impulse_drive: 4, ion_technology: 2 }
+    speed: 15000
+    fuel: 300
+    drive: impulse_drive
     name: Croiseur
     cost: { metal: 20000, crystal: 7000, deuterium: 2000 }
     attack: 400
@@ -347,8 +396,10 @@ units:
     category: warships
     description: >-
       Pilier de la flotte : forte attaque et grosse coque.
-    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
-    requires: { shipyard: 7 }
+    requires: { shipyard: 7, hyperspace_drive: 4 }
+    speed: 10000
+    fuel: 500
+    drive: hyperspace_drive
     name: Vaisseau de bataille
     cost: { metal: 45000, crystal: 15000 }
     attack: 1000
@@ -360,11 +411,28 @@ units:
     description: >-
       Collecte le champ de débris de la planète (métal et cristal des vaisseaux détruits).
       Peu armé : il vaut mieux le garder loin des combats.
-    requires: { shipyard: 4, shielding_technology: 2 }
+    requires: { shipyard: 4, combustion_drive: 6, shielding_technology: 2 }
     cost: { metal: 10000, crystal: 6000, deuterium: 2000 }
     attack: 1
     shield: 10
     cargo: 20000
+    speed: 2000
+    fuel: 300
+    drive: combustion_drive
+  espionage_probe:
+    category: civil
+    name: Sonde d'espionnage
+    description: >-
+      Minuscule et ultra-rapide. Rapporte ce que contient une base pirate ; le détail dépend
+      de la technologie Espionnage. Sans arme.
+    requires: { shipyard: 3, combustion_drive: 3, espionage_technology: 2 }
+    cost: { crystal: 1000 }
+    attack: 0
+    shield: 0
+    cargo: 5
+    speed: 100000000
+    fuel: 1
+    drive: combustion_drive
 
 # Champ de débris (V3a) : part du métal et du cristal des vaisseaux détruits (des deux camps,
 # défenses exclues) ; collecte par les recycleurs en un temps fixe (à ×1).
@@ -599,3 +667,31 @@ story_events:
             - { type: raid, hours: 12 }
         - label: Refuser
       default: 1
+
+# Flotte (V3b). Durée d'un trajet (s, ×1) = (10 + 35 000 / %vitesse × √(distance × 10 /
+# vitesse)) × flight_factor ; distance = 2 700 + 95 × systèmes. Carburant d'un trajet =
+# Σ nombre × fuel × distance / 35 000 × (%vitesse / 100 + 1)², aller et retour payés au départ.
+fleet:
+  flight_factor: 3
+  # Places de flotte = base_slots + niveau de la technologie Informatique.
+  base_slots: 1
+  # Durées proposées pour la mise à l'abri (heures à ×1) ; carburant d'un aller-retour vers
+  # la base la plus proche.
+  shelter_hours: [1, 2, 4, 8, 12]
+
+# Bases pirates (V3b) : force = points d'économie × strength (budget comme les raids, moitié
+# vaisseaux, moitié défenses), stock = stock_hours de ta production (×1), régénéré en
+# refill_hours ; défenses relevées rebuild_hours après un combat ; base détruite remplacée
+# après respawn_hours.
+pirate_bases:
+  loot_share: 0.5
+  refill_hours: 24
+  rebuild_hours: 12
+  respawn_hours: 24
+  # Défenses disponibles selon les points du joueur (seuil minimal).
+  defenses: { rocket_launcher: 0, light_laser: 0, heavy_laser: 50, gauss_cannon: 200 }
+  list:
+    - { name: Avant-poste de Kessa, systems: 2, strength: 0.3, stock_hours: 6 }
+    - { name: Repaire du Croc, systems: 3, strength: 0.7, stock_hours: 12 }
+    - { name: Forteresse d'Ulvar, systems: 5, strength: 1.2, stock_hours: 24 }
+    - { name: Citadelle noire, systems: 6, strength: 2.0, stock_hours: 48 }

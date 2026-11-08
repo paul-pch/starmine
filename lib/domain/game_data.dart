@@ -49,7 +49,11 @@ enum TechKind implements Unlockable {
   computer('computer_technology'),
   weapons('weapons_technology'),
   shielding('shielding_technology'),
-  armour('armour_technology');
+  armour('armour_technology'),
+  combustion('combustion_drive'),
+  impulse('impulse_drive'),
+  hyperspace('hyperspace_drive'),
+  espionage('espionage_technology');
 
   const TechKind(this.key);
 
@@ -78,7 +82,8 @@ enum UnitKind {
   heavyFighter('heavy_fighter'),
   cruiser('cruiser'),
   battleship('battleship'),
-  recycler('recycler');
+  recycler('recycler'),
+  espionageProbe('espionage_probe');
 
   const UnitKind(this.key);
 
@@ -372,6 +377,59 @@ class DebrisConfig {
   final double collectHours;
 }
 
+/// Trajets de flotte (section `fleet`, V3b).
+class FleetConfig {
+  const FleetConfig({
+    this.flightFactor = 1,
+    this.baseSlots = 1,
+    this.shelterHours = const [1, 2, 4, 8, 12],
+  });
+
+  final double flightFactor;
+  final int baseSlots;
+  final List<double> shelterHours;
+}
+
+/// Une base pirate du catalogue.
+class PirateBaseSpec {
+  const PirateBaseSpec({
+    required this.name,
+    required this.systems,
+    required this.strength,
+    required this.stockHours,
+  });
+
+  final String name;
+
+  /// Écart en systèmes (distance = 2 700 + 95 × systèmes).
+  final int systems;
+  final double strength;
+  final double stockHours;
+
+  double get distance => 2700 + 95.0 * systems;
+}
+
+/// Section `pirate_bases` (V3b).
+class PirateBasesConfig {
+  const PirateBasesConfig({
+    this.lootShare = 0.5,
+    this.refillHours = 24,
+    this.rebuildHours = 12,
+    this.respawnHours = 24,
+    this.defenses = const {},
+    this.list = const [],
+  });
+
+  final double lootShare;
+  final double refillHours;
+  final double rebuildHours;
+  final double respawnHours;
+
+  /// Défenses disponibles selon les points du joueur (seuil minimal).
+  final Map<UnitKind, double> defenses;
+  final List<PirateBaseSpec> list;
+}
+
 /// Défense ou vaisseau. La coque vaut (M + C) / 10.
 class UnitSpec extends ItemSpec {
   const UnitSpec({
@@ -387,6 +445,9 @@ class UnitSpec extends ItemSpec {
     this.cargo = 0,
     this.maxCount,
     this.rapidFire = const {},
+    this.speed = 0,
+    this.fuel = 0,
+    this.drive,
   }) : super(costFactor: 1);
 
   final UnitKind kind;
@@ -403,6 +464,12 @@ class UnitSpec extends ItemSpec {
   /// Tir rapide contre un type : n = chance (n − 1) / n de tirer à nouveau.
   final Map<UnitKind, int> rapidFire;
 
+  /// Vaisseaux (V3b) : vitesse de base, consommation de deutérium, réacteur dont la techno
+  /// accélère le vaisseau.
+  final double speed;
+  final double fuel;
+  final TechKind? drive;
+
   double get hull => (baseCost.metal + baseCost.crystal) / 10;
 }
 
@@ -416,9 +483,13 @@ class TechSpec extends ItemSpec {
     super.requires = const {},
     super.category,
     this.productionBonus = Resources.zero,
+    this.driveBonus = 0,
   });
 
   final TechKind kind;
+
+  /// Réacteur : vitesse en plus par niveau pour les vaisseaux qui l'utilisent (0.1 = +10 %).
+  final double driveBonus;
 
   /// Bonus de production des mines par niveau (fraction : 0.01 = +1 %).
   final Resources productionBonus;
@@ -545,6 +616,8 @@ class GameData {
     this.story = const StoryConfig(),
     this.startBoost = const StartBoost(),
     this.debris = const DebrisConfig(),
+    this.fleet = const FleetConfig(),
+    this.pirateBases = const PirateBasesConfig(),
   }) : officers = Map.unmodifiable(officers),
        units = Map.unmodifiable(units),
        buildings = Map.unmodifiable(buildings),
@@ -589,6 +662,10 @@ class GameData {
   /// Champ de débris et recyclage (spec 15).
   final DebrisConfig debris;
 
+  /// Trajets de flotte et bases pirates (spec 15, V3b).
+  final FleetConfig fleet;
+  final PirateBasesConfig pirateBases;
+
   UnitSpec unit(UnitKind kind) => units[kind]!;
 
   BuildingSpec operator [](BuildingKind kind) => buildings[kind]!;
@@ -616,6 +693,8 @@ class GameData {
     final story = _optMap(map, 'story_events');
     final boost = _optMap(map, 'start_boost');
     final debris = _optMap(map, 'debris');
+    final fleet = _optMap(map, 'fleet');
+    final bases = _optMap(map, 'pirate_bases');
     final interval = _map(pirates, 'interval_hours');
     final strength = _map(pirates, 'strength');
     Map<UnitKind, double> ships(String key) => {
@@ -689,6 +768,17 @@ class GameData {
       debris: debris == null
           ? const DebrisConfig()
           : DebrisConfig(share: _num(debris, 'share'), collectHours: _num(debris, 'collect_hours')),
+      fleet: fleet == null
+          ? const FleetConfig()
+          : FleetConfig(
+              flightFactor: _num(fleet, 'flight_factor'),
+              baseSlots: _num(fleet, 'base_slots').toInt(),
+              shelterHours: [
+                for (final h in _listOf(fleet, 'shelter_hours'))
+                  (h is num) ? h.toDouble() : throw const FormatException('shelter_hours'),
+              ],
+            ),
+      pirateBases: bases == null ? const PirateBasesConfig() : _bases(bases),
     );
   }
 
@@ -752,6 +842,26 @@ class GameData {
           ),
     value: _numOr(m, 'value'),
     hours: _numOr(m, 'hours'),
+  );
+
+  static PirateBasesConfig _bases(Map<String, Object?> m) => PirateBasesConfig(
+    lootShare: _num(m, 'loot_share'),
+    refillHours: _num(m, 'refill_hours'),
+    rebuildHours: _num(m, 'rebuild_hours'),
+    respawnHours: _num(m, 'respawn_hours'),
+    defenses: {
+      for (final e in _map(m, 'defenses').entries)
+        UnitKind.fromKey(e.key): _num(_map(m, 'defenses'), e.key),
+    },
+    list: [
+      for (final raw in _listOf(m, 'list'))
+        PirateBaseSpec(
+          name: _string(_asMap(raw, 'list[]'), 'name'),
+          systems: _num(_asMap(raw, 'list[]'), 'systems').toInt(),
+          strength: _num(_asMap(raw, 'list[]'), 'strength'),
+          stockHours: _num(_asMap(raw, 'list[]'), 'stock_hours'),
+        ),
+    ],
   );
 
   static List<Object?> _listOf(Map<String, Object?> m, String key) {
@@ -839,6 +949,9 @@ class GameData {
       rapidFire: rf == null
           ? const {}
           : {for (final e in rf.entries) UnitKind.fromKey(e.key): _num(rf, e.key).toInt()},
+      speed: _numOr(m, 'speed'),
+      fuel: _numOr(m, 'fuel'),
+      drive: m['drive'] == null ? null : TechKind.fromKey(_string(m, 'drive')),
     );
   }
 
@@ -853,6 +966,7 @@ class GameData {
       requires: _requires(m),
       category: _stringOr(m, 'category'),
       productionBonus: bonus == null ? Resources.zero : _resources(bonus),
+      driveBonus: _numOr(m, 'drive_bonus'),
     );
   }
 

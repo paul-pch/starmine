@@ -1,6 +1,6 @@
 # 15 · Flotte (V3)
 
-> **V3a livrée**, V3b et V3c à implémenter. Les vaisseaux existent déjà dans les données
+> **V3a et V3b livrées**, V3c à implémenter. Les vaisseaux existent déjà dans les données
 > (flottes pirates, spec 07).
 
 ## Objet
@@ -75,3 +75,33 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
   champ de débris en tête ; Debug depuis le hero (icône réglages).
 - **Persistance** : colonnes de débris de `planets` (schéma v8), sauvegarde v8.
 - **Tests** : `fleet_test.dart` (construction, défense par la flotte, débris, recyclage).
+
+## V3b (implémentée)
+
+- **Technos** (`research`, catégorie Propulsion) : Réacteur à combustion, à impulsion,
+  Propulsion hyperespace (`drive_bonus` par niveau), Espionnage. Vaisseaux : `speed`,
+  `fuel`, `drive`, prérequis OGame ; **sonde d'espionnage**.
+- **Trajet** : `(10 + 35 000 / %vitesse × √(distance × 10 / vitesse)) × flight_factor`
+  secondes (×3), divisé par la vitesse de jeu ; vitesse = celle du plus lent ; distance =
+  2 700 + 95 × systèmes. **Carburant** d'un aller : Σ n × `fuel` × distance / 35 000 ×
+  (%vitesse / 100 + 1)², aller et retour payés au départ.
+- **Places de flotte** : `fleet.base_slots` + Informatique.
+- **Bases pirates** (`pirate_bases`) : 4 bases ; composition calculée à l'arrivée (points
+  d'économie × `strength`, budget comme les raids, moitié vaisseaux, moitié défenses,
+  graine de la base et de sa génération) ; technos pirates des raids ; stock = `stock_hours`
+  de ta production, remplissage en `refill_hours`. Attaque gagnée : pillage
+  (`loot_share`, dans la limite de la soute), **base détruite**, remplacée après
+  `respawn_hours` (nouvelle génération, stock plein). Attaque perdue ou nulle : les
+  survivants restent jusqu'à `rebuild_hours`. Débris en orbite de la base.
+- **Missions** (`FleetMission`, même id à l'aller et au retour) : attaque (combat, rapport
+  dans Rapports → Raids), espionnage (sondes seules ; ressources dès Espionnage 1, flotte 2,
+  défenses 4, technos 6), recyclage du champ d'une base, **mise à l'abri** (durée au choix
+  parmi `fleet.shelter_hours`, carburant d'un aller-retour vers la base la plus proche).
+  **Rappel** à l'aller : retour en autant de temps que parcouru. Retour : vaisseaux et
+  chargement déposés (au-delà du stockage possible). Une flotte détruite ne revient pas.
+- **Onglet Flotte** (5ᵉ) : places, missions en vol (rappel), mise à l'abri, bases (distance,
+  état, débris, dernier rapport d'espionnage, Espionner / Recycler / Attaquer) ; feuille
+  d'envoi (vaisseaux, vitesse ou durée d'abri, durée, carburant, soute, refus en clair).
+- **Persistance** : table `pirate_bases` (schéma v9), événement `fleet_mission`,
+  sauvegarde v9. **Notifications** : arrivée et retour.
+- **Tests** : `missions_test.dart`.

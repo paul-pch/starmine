@@ -1,6 +1,7 @@
 import '../domain/combat.dart';
 import '../domain/engine.dart';
 import '../domain/events.dart';
+import '../domain/fleet.dart';
 import '../domain/game_data.dart';
 import '../domain/planet.dart';
 import '../domain/raid.dart';
@@ -15,8 +16,8 @@ const saveFormat = 'starmine-save';
 /// v3 (V2a) : unités et lots du chantier. v4 (V2b) : raids pirates.
 /// v5 (V2c) : officiers, compteurs, relevé des raids et technos pirates.
 /// v6 : files d'attente. v7 (V2d) : événements ponctuels et effets en cours.
-/// v8 (V3a) : champ de débris, missions de recyclage.
-const saveVersion = 8;
+/// v8 (V3a) : champ de débris, missions de recyclage. v9 (V3b) : bases pirates, flottes.
+const saveVersion = 9;
 
 /// Sauvegarde complète : état de jeu et réglages persistés.
 class SaveGame {
@@ -41,6 +42,7 @@ const raidDetectedType = 'raid_detected';
 const raidArrivalType = 'raid_arrival';
 const storyEventType = 'story_event';
 const recycleMissionType = 'recycle_mission';
+const fleetMissionType = 'fleet_mission';
 
 String eventType(GameEvent event) => switch (event) {
   BuildingDone() => buildingDoneType,
@@ -50,6 +52,7 @@ String eventType(GameEvent event) => switch (event) {
   RaidArrival() => raidArrivalType,
   StoryEvent() => storyEventType,
   RecycleMission() => recycleMissionType,
+  FleetMission() => fleetMissionType,
 };
 
 Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
@@ -82,6 +85,16 @@ Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
     'started_at': event.startedAt.millisecondsSinceEpoch,
     'recyclers': event.recyclers,
   },
+  FleetMission() => {
+    'kind': event.kind.name,
+    'target': ?event.target,
+    'ships': encodeUnits(event.ships),
+    'cargo': encodeResources(event.cargo),
+    'returning': event.returning,
+    'departed_at': event.departedAt.millisecondsSinceEpoch,
+    'speed_percent': event.speedPercent,
+    'seed': event.seed,
+  },
 };
 
 Map<String, Object?> encodeUnits(Map<UnitKind, int> units) => {
@@ -101,6 +114,53 @@ Map<String, Object?> encodeQueued(QueuedOrder q) => switch (q) {
 QueuedOrder decodeQueued(int id, Map<String, Object?> m) => m['unit'] == null
     ? QueuedLevel(id, Unlockable.fromKey(_string(m, 'item')))
     : QueuedBatch(id, UnitKind.fromKey(_string(m, 'unit')), _int(m, 'count'));
+
+Map<String, Object?> encodeBase(PirateBase b) => {
+  'index': b.index,
+  'seed': b.seed,
+  'generation': b.generation,
+  'stock_fraction': b.stockFraction,
+  'stock_at': b.stockAt.millisecondsSinceEpoch,
+  if (b.survivors case final s?) 'survivors': encodeUnits(s),
+  'survivors_until': ?b.survivorsUntil?.millisecondsSinceEpoch,
+  'destroyed_until': ?b.destroyedUntil?.millisecondsSinceEpoch,
+  'debris': encodeResources(b.debris),
+  if (b.spy case final spy?)
+    'spy': {
+      'at': spy.at.millisecondsSinceEpoch,
+      if (spy.resources case final r?) 'resources': encodeResources(r),
+      if (spy.ships case final u?) 'ships': encodeUnits(u),
+      if (spy.defenses case final u?) 'defenses': encodeUnits(u),
+      if (spy.tech case final t?) 'tech': encodeTech(t),
+    },
+};
+
+DateTime? _optTime(Map<String, Object?> m, String key) =>
+    m[key] == null ? null : fromEpochMs(_int(m, key));
+
+PirateBase decodeBase(Map<String, Object?> m) {
+  final spy = m['spy'] == null ? null : _map(m, 'spy');
+  return PirateBase(
+    index: _int(m, 'index'),
+    seed: _int(m, 'seed'),
+    generation: _int(m, 'generation'),
+    stockFraction: _double(m, 'stock_fraction'),
+    stockAt: fromEpochMs(_int(m, 'stock_at')),
+    survivors: m['survivors'] == null ? null : decodeUnits(_map(m, 'survivors')),
+    survivorsUntil: _optTime(m, 'survivors_until'),
+    destroyedUntil: _optTime(m, 'destroyed_until'),
+    debris: decodeResources(_map(m, 'debris')),
+    spy: spy == null
+        ? null
+        : SpyReport(
+            at: fromEpochMs(_int(spy, 'at')),
+            resources: spy['resources'] == null ? null : decodeResources(_map(spy, 'resources')),
+            ships: spy['ships'] == null ? null : decodeUnits(_map(spy, 'ships')),
+            defenses: spy['defenses'] == null ? null : decodeUnits(_map(spy, 'defenses')),
+            tech: spy['tech'] == null ? null : decodeTech(_map(spy, 'tech')),
+          ),
+  );
+}
 
 Map<String, Object?> encodeEffect(ActiveEffect e) => {
   'source': e.source,
@@ -206,6 +266,20 @@ GameEvent decodeEvent({
         startedAt: fromEpochMs(_int(payload, 'started_at')),
         recyclers: _int(payload, 'recyclers'),
       );
+    case fleetMissionType:
+      return FleetMission(
+        id: id,
+        planetId: planetId,
+        dueAt: fromEpochMs(dueAtMs),
+        kind: MissionKind.values.byName(_string(payload, 'kind')),
+        target: (payload['target'] as num?)?.toInt(),
+        ships: decodeUnits(_map(payload, 'ships')),
+        cargo: decodeResources(_map(payload, 'cargo')),
+        returning: payload['returning'] == true,
+        departedAt: fromEpochMs(_int(payload, 'departed_at')),
+        speedPercent: _int(payload, 'speed_percent'),
+        seed: _int(payload, 'seed'),
+      );
     case storyEventType:
       return StoryEvent(
         id: id,
@@ -265,6 +339,7 @@ Map<String, Object?> encodeSave(SaveGame save, {required DateTime exportedAt}) {
       for (final q in save.state.queue) {'id': q.id, ...encodeQueued(q)},
     ],
     'effects': [for (final e in save.state.effects) encodeEffect(e)],
+    'bases': [for (final b in save.state.bases) encodeBase(b)],
     'events': [
       for (final e in save.state.pending)
         {
@@ -301,6 +376,8 @@ SaveGame decodeSave(Map<String, Object?> json) {
   final queue = json['queue'] == null ? const <Object?>[] : _list(json, 'queue');
   // Absents avant la v7 : aucun effet en cours.
   final effects = json['effects'] == null ? const <Object?>[] : _list(json, 'effects');
+  // Absentes avant la v9 : créées au chargement.
+  final bases = json['bases'] == null ? const <Object?>[] : _list(json, 'bases');
   final planet = Planet(
     id: _int(p, 'id'),
     name: _string(p, 'name'),
@@ -341,6 +418,7 @@ SaveGame decodeSave(Map<String, Object?> json) {
           decodeQueued(_int(_asMap(raw, 'queue[]'), 'id'), _asMap(raw, 'queue[]')),
       ],
       effects: [for (final raw in effects) decodeEffect(_asMap(raw, 'effects[]'))],
+      bases: [for (final raw in bases) decodeBase(_asMap(raw, 'bases[]'))],
     ),
     speed: _double(json, 'game_speed'),
     seed: _int(json, 'rng_seed'),
@@ -404,6 +482,7 @@ Map<String, Object?> encodeReport(RaidReport r) => {
   'rebuilt': encodeUnits(r.rebuilt),
   'loot': encodeResources(r.loot),
   if (r.debris != Resources.zero) 'debris': encodeResources(r.debris),
+  'base_name': ?r.baseName,
   if (r.attackerStrength case final a?) 'attacker_strength': _encodeStrength(a),
   if (r.defenderStrength case final d?) 'defender_strength': _encodeStrength(d),
   'round_details': [
@@ -466,6 +545,7 @@ RaidReport decodeReport(Map<String, Object?> m) => RaidReport(
   rebuilt: decodeUnits(_map(m, 'rebuilt')),
   loot: decodeResources(_map(m, 'loot')),
   debris: m['debris'] == null ? Resources.zero : decodeResources(_map(m, 'debris')),
+  baseName: m['base_name'] as String?,
   // Absents des rapports antérieurs.
   attackerStrength: m['attacker_strength'] == null
       ? null

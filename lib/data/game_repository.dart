@@ -69,6 +69,12 @@ class GameRepository {
         pending: events.map(_decodeRow).toList(),
         officers: {for (final o in officers) OfficerKind.fromKey(o.kind): o.level},
         counters: {for (final c in counters) ?Counter.tryKey(c.kind): c.value},
+        bases: [
+          for (final b in await (_db.select(
+            _db.pirateBases,
+          )..orderBy([(t) => OrderingTerm.asc(t.idx)])).get())
+            decodeBase((jsonDecode(b.payload) as Map).cast<String, Object?>()),
+        ],
         effects: [
           for (final e in await _db.select(_db.activeEffects).get())
             decodeEffect((jsonDecode(e.payload) as Map).cast<String, Object?>()),
@@ -140,6 +146,7 @@ class GameRepository {
       await _db.delete(_db.queuedOrders).go();
       await _db.delete(_db.activeEffects).go();
       await _db.delete(_db.storyLog).go();
+      await _db.delete(_db.pirateBases).go();
       await _db.delete(_db.buildings).go();
       await _db.delete(_db.planets).go();
       await _writeState(save.state);
@@ -215,6 +222,13 @@ class GameRepository {
         for (final e in state.officers.entries)
           OfficersCompanion.insert(kind: e.key.key, level: e.value),
       ]);
+      b.insertAllOnConflictUpdate(_db.pirateBases, [
+        for (final base in state.bases)
+          PirateBasesCompanion.insert(
+            idx: Value(base.index),
+            payload: jsonEncode(encodeBase(base)),
+          ),
+      ]);
       b.insertAll(_db.activeEffects, [
         for (final e in state.effects)
           ActiveEffectsCompanion.insert(payload: jsonEncode(encodeEffect(e))),
@@ -267,6 +281,7 @@ class GameRepository {
     ShipyardBatch(:final startedAt) => startedAt,
     RaidDetected() || RaidArrival() || StoryEvent() => e.dueAt,
     RecycleMission(:final startedAt) => startedAt,
+    FleetMission(:final departedAt) => departedAt,
   };
 
   Future<void> clearStoryLog() => _db.delete(_db.storyLog).go();

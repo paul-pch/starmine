@@ -115,6 +115,16 @@ class ActiveEffects extends Table {
   TextColumn get payload => text()();
 }
 
+/// Bases pirates (schéma v9, spec 15) : JSON de `encodeBase`, réécrites à chaque sauvegarde.
+@DataClassName('PirateBaseRow')
+class PirateBases extends Table {
+  IntColumn get idx => integer()();
+  TextColumn get payload => text()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {idx};
+}
+
 /// Journal des événements ponctuels (schéma v7) : clé, issue, option.
 @DataClassName('StoryLogRow')
 class StoryLog extends Table {
@@ -166,6 +176,7 @@ class Meta extends Table {
     QueuedOrders,
     ActiveEffects,
     StoryLog,
+    PirateBases,
     Meta,
   ],
 )
@@ -180,9 +191,9 @@ class StarmineDatabase extends _$StarmineDatabase {
   /// v5 : officiers et compteurs (tables officers, counters).
   /// v6 : files d'attente (table queued_orders).
   /// v7 : événements ponctuels (tables active_effects, story_log).
-  /// v8 : champ de débris (colonnes de planets).
+  /// v8 : champ de débris (colonnes de planets). v9 : bases pirates (table pirate_bases).
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -217,6 +228,9 @@ class StarmineDatabase extends _$StarmineDatabase {
       if (from < 8) {
         await m.addColumn(planets, planets.debrisMetal);
         await m.addColumn(planets, planets.debrisCrystal);
+      }
+      if (from < 9) {
+        await m.createTable(pirateBases);
       }
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),

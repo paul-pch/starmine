@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'events.dart';
+import 'fleet.dart';
 import 'game_data.dart';
 import 'planet.dart';
 import 'raid.dart';
@@ -18,7 +19,9 @@ class GameState {
     Map<Counter, int> counters = const {},
     List<QueuedOrder> queue = const [],
     List<ActiveEffect> effects = const [],
-  }) : queue = List<QueuedOrder>.unmodifiable(queue),
+    List<PirateBase> bases = const [],
+  }) : bases = List<PirateBase>.unmodifiable(bases),
+       queue = List<QueuedOrder>.unmodifiable(queue),
        effects = List<ActiveEffect>.unmodifiable(effects),
        research = Map.unmodifiable({for (final k in TechKind.values) k: research[k] ?? 0}),
        officers = Map.unmodifiable({for (final k in OfficerKind.values) k: officers[k] ?? 0}),
@@ -43,6 +46,9 @@ class GameState {
   /// Effets temporaires des événements en cours (spec 14), retirés à leur fin par
   /// `advance()`.
   final List<ActiveEffect> effects;
+
+  /// Bases pirates (V3b), dans l'ordre du catalogue.
+  final List<PirateBase> bases;
 
   /// Ordres en attente de [slot], dans l'ordre.
   List<QueuedOrder> queued(Slot slot) => [
@@ -136,6 +142,7 @@ class GameState {
     Map<Counter, int>? counters,
     List<QueuedOrder>? queue,
     List<ActiveEffect>? effects,
+    List<PirateBase>? bases,
   }) => GameState(
     planet: planet ?? this.planet,
     research: research ?? this.research,
@@ -144,6 +151,7 @@ class GameState {
     counters: counters ?? this.counters,
     queue: queue ?? this.queue,
     effects: effects ?? this.effects,
+    bases: bases ?? this.bases,
   );
 }
 
@@ -284,6 +292,15 @@ _Step _apply(GameState s, GameEvent event, Rules rules) => switch (event) {
     report: null,
     story: null,
   ),
+  FleetMission(returning: true) => (
+    state: missionReturn(s, event),
+    next: null,
+    report: null,
+    story: null,
+  ),
+  FleetMission() => switch (missionArrive(s, event, rules)) {
+    final r => (state: r.state, next: r.next, report: r.report, story: null),
+  },
 };
 
 // --- Vérifications -----------------------------------------------------------

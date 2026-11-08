@@ -59,7 +59,8 @@ void main() {
               RaidDetected() ||
               RaidArrival() ||
               StoryEvent() ||
-              RecycleMission():
+              RecycleMission() ||
+              FleetMission():
             throw StateError('ni lot ni raid dans ce test');
         }
       }
@@ -338,7 +339,9 @@ void main() {
       expect(checkBatch(s, UnitKind.smallShieldDome, 2, rules), isA<MaxReached>());
       expect(checkBatch(s, UnitKind.smallShieldDome, 1, rules), isNull);
       expect(checkBatch(s, UnitKind.cruiser, 1, rules), isA<RequirementsNotMet>());
-      expect(checkBatch(s, UnitKind.lightFighter, 1, rules), isNull);
+      expect(checkBatch(s, UnitKind.lightFighter, 1, rules), isA<RequirementsNotMet>());
+      final drive = withYard(research: {TechKind.combustion: 1});
+      expect(checkBatch(drive, UnitKind.lightFighter, 1, rules), isNull);
     });
 
     test('quantité maximale commandable', () {

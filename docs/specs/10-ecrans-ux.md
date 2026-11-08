@@ -27,8 +27,8 @@ Hero planète 21:9 (défile avec le contenu, 200 dp au plus) : image + bandeau o
   « Tmin à Tmax °C », icônes Debug, Officiers + disponibles et Rapports + non lus)
 [Bandeau d'alerte raid, si une flotte est en route]
 Contenu de l'onglet : [carte « En cours » de la file de l'onglet] · puces · cartes
-Navigation : Bâtiments · Recherche · Chantier · File (pastilles d'état de file) ; Debug
-  depuis le hero
+Navigation : Bâtiments · Recherche · Chantier · File · Flotte (pastilles d'état de file) ;
+  Debug depuis le hero
 ```
 
 En C, le hero est remplacé par le fond plein écran (spec 11) ; barre de ressources et contenu
