@@ -15,7 +15,8 @@ const saveFormat = 'starmine-save';
 /// v3 (V2a) : unités et lots du chantier. v4 (V2b) : raids pirates.
 /// v5 (V2c) : officiers, compteurs, relevé des raids et technos pirates.
 /// v6 : files d'attente. v7 (V2d) : événements ponctuels et effets en cours.
-const saveVersion = 7;
+/// v8 (V3a) : champ de débris, missions de recyclage.
+const saveVersion = 8;
 
 /// Sauvegarde complète : état de jeu et réglages persistés.
 class SaveGame {
@@ -39,6 +40,7 @@ const shipyardBatchType = 'shipyard_batch';
 const raidDetectedType = 'raid_detected';
 const raidArrivalType = 'raid_arrival';
 const storyEventType = 'story_event';
+const recycleMissionType = 'recycle_mission';
 
 String eventType(GameEvent event) => switch (event) {
   BuildingDone() => buildingDoneType,
@@ -47,6 +49,7 @@ String eventType(GameEvent event) => switch (event) {
   RaidDetected() => raidDetectedType,
   RaidArrival() => raidArrivalType,
   StoryEvent() => storyEventType,
+  RecycleMission() => recycleMissionType,
 };
 
 Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
@@ -75,6 +78,10 @@ Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
     'tech': encodeTech(event.tech),
   },
   StoryEvent() => {'seed': event.seed, 'choice_key': ?event.choiceKey},
+  RecycleMission() => {
+    'started_at': event.startedAt.millisecondsSinceEpoch,
+    'recyclers': event.recyclers,
+  },
 };
 
 Map<String, Object?> encodeUnits(Map<UnitKind, int> units) => {
@@ -191,6 +198,14 @@ GameEvent decodeEvent({
         fleet: decodeUnits(_map(payload, 'fleet')),
         tech: payload['tech'] == null ? const {} : decodeTech(_map(payload, 'tech')),
       );
+    case recycleMissionType:
+      return RecycleMission(
+        id: id,
+        planetId: planetId,
+        dueAt: fromEpochMs(dueAtMs),
+        startedAt: fromEpochMs(_int(payload, 'started_at')),
+        recyclers: _int(payload, 'recyclers'),
+      );
     case storyEventType:
       return StoryEvent(
         id: id,
@@ -232,6 +247,7 @@ Map<String, Object?> encodeSave(SaveGame save, {required DateTime exportedAt}) {
       'temp_max': p.tempMax,
       'last_update': p.lastUpdate.millisecondsSinceEpoch,
       'resources': encodeResources(p.resources),
+      'debris': encodeResources(p.debris),
       'buildings': {for (final e in p.levels.entries) e.key.key: e.value},
       'production_percent': {for (final e in p.percents.entries) e.key.key: e.value},
       'units': {
@@ -291,6 +307,8 @@ SaveGame decodeSave(Map<String, Object?> json) {
     tempMax: _int(p, 'temp_max'),
     lastUpdate: fromEpochMs(_int(p, 'last_update')),
     resources: decodeResources(_map(p, 'resources')),
+    // Absent avant la v8.
+    debris: p['debris'] == null ? Resources.zero : decodeResources(_map(p, 'debris')),
     levels: {
       for (final e in buildings.entries)
         BuildingKind.fromKey(e.key): (e.value as num?)?.toInt() ?? 0,
@@ -385,6 +403,7 @@ Map<String, Object?> encodeReport(RaidReport r) => {
   'defender_left': encodeUnits(r.defenderLeft),
   'rebuilt': encodeUnits(r.rebuilt),
   'loot': encodeResources(r.loot),
+  if (r.debris != Resources.zero) 'debris': encodeResources(r.debris),
   if (r.attackerStrength case final a?) 'attacker_strength': _encodeStrength(a),
   if (r.defenderStrength case final d?) 'defender_strength': _encodeStrength(d),
   'round_details': [
@@ -446,6 +465,7 @@ RaidReport decodeReport(Map<String, Object?> m) => RaidReport(
   defenderLeft: decodeUnits(_map(m, 'defender_left')),
   rebuilt: decodeUnits(_map(m, 'rebuilt')),
   loot: decodeResources(_map(m, 'loot')),
+  debris: m['debris'] == null ? Resources.zero : decodeResources(_map(m, 'debris')),
   // Absents des rapports antérieurs.
   attackerStrength: m['attacker_strength'] == null
       ? null

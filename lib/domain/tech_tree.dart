@@ -10,7 +10,7 @@ extension TechTree on GameData {
     for (final k in TechKind.values)
       if (tech(k).requires.containsKey(item)) tech(k),
     for (final k in UnitKind.values)
-      if (unit(k).defense && unit(k).requires.containsKey(item)) unit(k),
+      if (unit(k).requires.containsKey(item)) unit(k),
   ];
 
   /// Palier d'une techno : 1 + palier maximal de ses prérequis technologiques

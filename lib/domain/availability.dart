@@ -12,7 +12,7 @@ bool realizable(GameState s, Unlockable item, Rules rules) =>
 /// Défense réalisable : au moins une unité commandable (prérequis, limite, ressources).
 bool realizableUnit(GameState s, UnitKind unit, Rules rules) {
   final spec = rules.data.unit(unit);
-  if (!spec.defense || unmet(s, spec.requires).isNotEmpty || _maxed(s, spec)) return false;
+  if (unmet(s, spec.requires).isNotEmpty || _maxed(s, spec)) return false;
   return s.planet.resources.covers(spec.baseCost);
 }
 
@@ -26,7 +26,7 @@ Duration? waitFor(GameState s, Unlockable item, Rules rules) {
 /// Comme [waitFor], pour une unité de défense.
 Duration? waitForUnit(GameState s, UnitKind unit, Rules rules) {
   final spec = rules.data.unit(unit);
-  if (!spec.defense || unmet(s, spec.requires).isNotEmpty || _maxed(s, spec)) return null;
+  if (unmet(s, spec.requires).isNotEmpty || _maxed(s, spec)) return null;
   return timeToAfford(s, spec.baseCost, rules);
 }
 

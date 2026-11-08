@@ -24,7 +24,8 @@ void main() {
     const rich = Resources(metal: 1e6, crystal: 1e6, deuterium: 1e6);
     final s = game(planet(levels: {BuildingKind.shipyard: 1}, resources: rich));
     expect(realizableUnit(s, UnitKind.rocketLauncher, rules), isTrue);
-    expect(realizableUnit(s, UnitKind.lightFighter, rules), isFalse);
+    expect(realizableUnit(s, UnitKind.lightFighter, rules), isTrue);
+    expect(realizableUnit(s, UnitKind.cruiser, rules), isFalse);
     final dome = game(
       planet(
         levels: {BuildingKind.shipyard: 1},

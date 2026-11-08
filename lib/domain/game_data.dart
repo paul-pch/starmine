@@ -77,7 +77,8 @@ enum UnitKind {
   lightFighter('light_fighter'),
   heavyFighter('heavy_fighter'),
   cruiser('cruiser'),
-  battleship('battleship');
+  battleship('battleship'),
+  recycler('recycler');
 
   const UnitKind(this.key);
 
@@ -360,6 +361,17 @@ class BuildingSpec extends ItemSpec {
   bool get adjustable => produces != null || energyProduction > 0;
 }
 
+/// Champ de débris (section `debris`, V3a).
+class DebrisConfig {
+  const DebrisConfig({this.share = 0.3, this.collectHours = 1});
+
+  /// Part du métal et du cristal des vaisseaux détruits qui reste en orbite.
+  final double share;
+
+  /// Durée d'une collecte par les recycleurs, en heures à ×1.
+  final double collectHours;
+}
+
 /// Défense ou vaisseau. La coque vaut (M + C) / 10.
 class UnitSpec extends ItemSpec {
   const UnitSpec({
@@ -379,7 +391,7 @@ class UnitSpec extends ItemSpec {
 
   final UnitKind kind;
 
-  /// Défense planétaire (constructible en V2) ; sinon vaisseau.
+  /// Défense planétaire ; sinon vaisseau (constructible depuis la V3a).
   final bool defense;
   final double attack;
   final double shield;
@@ -532,6 +544,7 @@ class GameData {
     this.counterNames = const {},
     this.story = const StoryConfig(),
     this.startBoost = const StartBoost(),
+    this.debris = const DebrisConfig(),
   }) : officers = Map.unmodifiable(officers),
        units = Map.unmodifiable(units),
        buildings = Map.unmodifiable(buildings),
@@ -573,6 +586,9 @@ class GameData {
   /// Coup de pouce de production en début de partie (spec 02).
   final StartBoost startBoost;
 
+  /// Champ de débris et recyclage (spec 15).
+  final DebrisConfig debris;
+
   UnitSpec unit(UnitKind kind) => units[kind]!;
 
   BuildingSpec operator [](BuildingKind kind) => buildings[kind]!;
@@ -599,6 +615,7 @@ class GameData {
     final counters = _optMap(map, 'counters') ?? const {};
     final story = _optMap(map, 'story_events');
     final boost = _optMap(map, 'start_boost');
+    final debris = _optMap(map, 'debris');
     final interval = _map(pirates, 'interval_hours');
     final strength = _map(pirates, 'strength');
     Map<UnitKind, double> ships(String key) => {
@@ -669,6 +686,12 @@ class GameData {
       startBoost: boost == null
           ? const StartBoost()
           : StartBoost(extra: _num(boost, 'extra'), fadePoints: _num(boost, 'fade_points')),
+      debris: debris == null
+          ? const DebrisConfig()
+          : DebrisConfig(
+              share: _num(debris, 'share'),
+              collectHours: _num(debris, 'collect_hours'),
+            ),
     );
   }
 

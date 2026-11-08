@@ -13,6 +13,7 @@ class Planet {
     required Map<BuildingKind, int> levels,
     Map<BuildingKind, int> percents = const {},
     Map<UnitKind, int> units = const {},
+    this.debris = Resources.zero,
     required this.lastUpdate,
   }) : units = Map.unmodifiable({for (final k in UnitKind.values) k: units[k] ?? 0}),
        levels = Map.unmodifiable({for (final k in BuildingKind.values) k: levels[k] ?? 0}),
@@ -48,6 +49,9 @@ class Planet {
 
   /// Unités stationnées sur la planète (défenses en V2).
   final Map<UnitKind, int> units;
+
+  /// Champ de débris en orbite (métal et cristal), collecté par les recycleurs (spec 15).
+  final Resources debris;
   final DateTime lastUpdate;
 
   int level(BuildingKind kind) => levels[kind]!;
@@ -61,6 +65,7 @@ class Planet {
     Map<BuildingKind, int>? levels,
     Map<BuildingKind, int>? percents,
     Map<UnitKind, int>? units,
+    Resources? debris,
     DateTime? lastUpdate,
   }) => Planet(
     id: id,
@@ -70,6 +75,7 @@ class Planet {
     levels: levels ?? this.levels,
     percents: percents ?? this.percents,
     units: units ?? this.units,
+    debris: debris ?? this.debris,
     lastUpdate: lastUpdate ?? this.lastUpdate,
   );
 

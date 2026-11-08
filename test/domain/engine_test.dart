@@ -55,7 +55,11 @@ void main() {
             s = s.copyWith(planet: s.planet.withLevel(building, targetLevel));
           case ResearchDone(:final tech, :final targetLevel):
             s = s.copyWith(research: {...s.research, tech: targetLevel});
-          case ShipyardBatch() || RaidDetected() || RaidArrival() || StoryEvent():
+          case ShipyardBatch() ||
+              RaidDetected() ||
+              RaidArrival() ||
+              StoryEvent() ||
+              RecycleMission():
             throw StateError('ni lot ni raid dans ce test');
         }
       }
@@ -333,7 +337,8 @@ void main() {
       final s = withYard(research: {TechKind.shielding: 2});
       expect(checkBatch(s, UnitKind.smallShieldDome, 2, rules), isA<MaxReached>());
       expect(checkBatch(s, UnitKind.smallShieldDome, 1, rules), isNull);
-      expect(checkBatch(s, UnitKind.cruiser, 1, rules), isA<NotBuildable>());
+      expect(checkBatch(s, UnitKind.cruiser, 1, rules), isA<RequirementsNotMet>());
+      expect(checkBatch(s, UnitKind.lightFighter, 1, rules), isNull);
     });
 
     test('quantité maximale commandable', () {

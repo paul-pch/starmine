@@ -209,6 +209,15 @@ class LocalBuildNotifier implements BuildNotifier {
           ),
         ],
         StoryEvent() => [],
+        RecycleMission() => [
+          (
+            event.id,
+            event.dueAt,
+            'Recyclage terminé',
+            '${event.recyclers} recycleurs sont rentrés avec les débris.',
+            _buildings,
+          ),
+        ],
       },
     ];
     final exact = await canScheduleExact();

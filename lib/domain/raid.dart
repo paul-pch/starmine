@@ -89,6 +89,23 @@ Resources loot(Resources stock, double capacity, double share) {
   return max.map((_, v) => (v * capacity / total).floorToDouble());
 }
 
+/// Champ de débris d'un combat : `debris.share` du métal et du cristal des vaisseaux
+/// détruits des deux camps (défenses exclues, reconstruites ou non).
+Resources combatDebris(CombatResult r, GameData data) {
+  var metal = 0.0;
+  var crystal = 0.0;
+  for (final losses in [r.attackerLosses, r.defenderLosses]) {
+    for (final e in losses.entries) {
+      final spec = data.unit(e.key);
+      if (spec.defense) continue;
+      metal += e.value * spec.baseCost.metal;
+      crystal += e.value * spec.baseCost.crystal;
+    }
+  }
+  final k = data.debris.share;
+  return Resources(metal: (metal * k).floorToDouble(), crystal: (crystal * k).floorToDouble());
+}
+
 /// Rapport d'un combat (raid ou simulation).
 class RaidReport {
   const RaidReport({
@@ -101,6 +118,7 @@ class RaidReport {
     required this.defenderLeft,
     required this.rebuilt,
     this.loot = Resources.zero,
+    this.debris = Resources.zero,
     this.simulated = false,
     this.attackerStrength,
     this.defenderStrength,
@@ -111,6 +129,7 @@ class RaidReport {
     CombatResult r, {
     required DateTime at,
     Resources loot = Resources.zero,
+    Resources debris = Resources.zero,
     bool simulated = false,
     SideStrength? attackerStrength,
     SideStrength? defenderStrength,
@@ -124,6 +143,7 @@ class RaidReport {
     defenderLeft: r.defenderLeft,
     rebuilt: r.rebuilt,
     loot: loot,
+    debris: debris,
     simulated: simulated,
     attackerStrength: attackerStrength,
     defenderStrength: defenderStrength,
@@ -139,6 +159,9 @@ class RaidReport {
   final Map<UnitKind, int> defenderLeft;
   final Map<UnitKind, int> rebuilt;
   final Resources loot;
+
+  /// Champ de débris créé par le combat (V3a).
+  final Resources debris;
 
   /// Simulation (debug, estimation) : pas un vrai raid.
   final bool simulated;
@@ -292,9 +315,11 @@ RaidStep resolveRaid(GameState s, RaidArrival e, Rules rules) {
       ? loot(planet.resources, cargoCapacity(result.attackerLeft, data), data.pirates.lootShare)
       : Resources.zero;
   final repelled = result.winner == CombatWinner.defender;
+  final debris = combatDebris(result, data);
   final next = s.copyWith(
     planet: planet.copyWith(
       resources: planet.resources - taken,
+      debris: planet.debris + debris,
       units: {for (final k in UnitKind.values) k: result.defenderLeft[k] ?? 0},
     ),
     counters: repelled
@@ -308,6 +333,7 @@ RaidStep resolveRaid(GameState s, RaidArrival e, Rules rules) {
       result,
       at: e.dueAt,
       loot: taken,
+      debris: debris,
       attackerStrength: SideStrength.of(data, attacker),
       defenderStrength: SideStrength.of(data, defender),
     ),

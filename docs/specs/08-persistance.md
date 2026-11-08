@@ -8,7 +8,7 @@ Ne jamais perdre une partie : base locale versionnée et sauvegarde exportable.
 
 | Table | Contenu | Depuis |
 | --- | --- | --- |
-| `planets` | Nom, Tmax, stocks, `last_update_ms` | v1 |
+| `planets` | Nom, Tmax, stocks, champ de débris (v8), `last_update_ms` | v1 |
 | `buildings` | Niveau et réglage de production (`percent`) par bâtiment | v1 (`percent` v2) |
 | `research` | Niveau par techno | v2 |
 | `units` | Nombre par unité et par planète | v3 |
@@ -21,7 +21,7 @@ Ne jamais perdre une partie : base locale versionnée et sauvegarde exportable.
 | `counters` | Compteurs de progression (raids repoussés) ; à la migration v5, initialisé avec les raids repoussés des rapports | v5 |
 | `meta` | Vitesse de jeu, graine ; préférences d'affichage hors sauvegarde JSON (`ambiance`, `filter_realizable.<onglet>`) | v1 |
 
-- `schemaVersion` = **7**. Chaque montée de version a son étape dans `onUpgrade` et le test
+- `schemaVersion` = **8**. Chaque montée de version a son étape dans `onUpgrade` et le test
   `migration_test.dart` part d'une **base v1 réelle** jusqu'à la dernière version.
 - Chaque écriture est **une transaction** : état, statut des événements appliqués ou annulés,
   rapports produits.
@@ -31,8 +31,8 @@ Ne jamais perdre une partie : base locale versionnée et sauvegarde exportable.
 
 ## Sauvegarde JSON (export / import)
 
-- Format `starmine-save`, `version` = **7**. Contient planète (stocks, niveaux, réglages,
-  unités), technos, officiers, compteurs, file d'attente, effets d'événements en cours,
+- Format `starmine-save`, `version` = **8**. Contient planète (stocks, niveaux, réglages,
+  unités, débris), technos, officiers, compteurs, file d'attente, effets d'événements en cours,
   événements en attente (raids : relevé et technos
   pirates), vitesse, graine. Les rapports et le journal des événements n'en font pas partie.
 - Une sauvegarde **plus ancienne** s'importe (valeurs par défaut pour les champs absents) ;

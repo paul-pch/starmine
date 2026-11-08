@@ -30,7 +30,7 @@ const _v1 = [
 ];
 
 void main() {
-  test('base v1 → v7 : partie conservée, technos et officiers à 0, réglages à 100 %', () async {
+  test('base v1 → v8 : partie conservée, technos et officiers à 0, réglages à 100 %', () async {
     final db = StarmineDatabase(
       NativeDatabase.memory(
         setup: (raw) {
@@ -51,6 +51,7 @@ void main() {
     expect(p.percents.values, everyElement(100));
     expect(save.state.research.values, everyElement(0));
     expect(save.state.officers.values, everyElement(0));
+    expect(save.state.planet.debris, Resources.zero);
     expect(save.state.counters.values, everyElement(0));
     expect(save.speed, 10);
     expect(save.seed, 99);

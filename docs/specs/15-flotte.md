@@ -1,6 +1,6 @@
 # 15 · Flotte (V3)
 
-> **V3a en cours**, V3b et V3c à implémenter. Les vaisseaux existent déjà dans les données
+> **V3a livrée**, V3b et V3c à implémenter. Les vaisseaux existent déjà dans les données
 > (flottes pirates, spec 07).
 
 ## Objet
@@ -43,3 +43,20 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
 6. **Espionnage** : contre les bases pirates seulement, sans contre-espionnage au début.
 7. **Navigation** : un onglet **Chantier** (sections Défense et Flotte) remplace Défense ;
    Debug sort de la barre, accessible depuis le hero.
+
+## V3a (implémentée)
+
+- **Vaisseaux** constructibles au chantier comme les défenses (lots, file d'attente du Chef
+  de chantier), **recycleur** ajouté (soute 20 000). Prérequis provisoires dans le YAML.
+- **Défense** : les vaisseaux stationnés combattent avec les défenses ; détruits, ils ne sont
+  pas reconstruits. Ils ne comptent pas dans la base des raids.
+- **Champ de débris** (`Planet.debris`) : `debris.share` (30 %) du métal et du cristal des
+  vaisseaux détruits des deux camps ; affiché dans le rapport de combat.
+- **Recyclage** : « Envoyer N recycleurs » (assez pour tout le champ, dans la limite des
+  présents) ; mission `RecycleMission` de `debris.collect_hours` (1 h à ×1), recycleurs
+  absents pendant ce temps ; au retour, chargement au plus de la soute, au prorata du métal
+  et du cristal, ajouté au stock même au-delà du stockage. Une mission à la fois.
+- **UI** : onglet Chantier (défenses puis vaisseaux, catégories Civils et Combat), carte du
+  champ de débris en tête ; Debug depuis le hero (icône réglages).
+- **Persistance** : colonnes de débris de `planets` (schéma v8), sauvegarde v8.
+- **Tests** : `fleet_test.dart` (construction, défense par la flotte, débris, recyclage).

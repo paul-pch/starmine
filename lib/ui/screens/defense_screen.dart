@@ -32,17 +32,25 @@ class DefenseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final data = controller.data;
     final state = controller.interpolated(now);
+    // Onglet Chantier (V3a) : défenses puis vaisseaux, catégories des deux familles.
     return CategorizedList<UnitKind>(
-      header: InProgressCard(
-        controller: controller,
-        slot: Slot.shipyard,
-        now: now,
-        onTap: onOpenQueue,
+      header: Column(
+        children: [
+          DebrisCard(controller: controller, now: now),
+          InProgressCard(
+            controller: controller,
+            slot: Slot.shipyard,
+            now: now,
+            onTap: onOpenQueue,
+          ),
+        ],
       ),
-      categories: data.categories['defense'] ?? const {},
+      categories: {...?data.categories['defense'], ...?data.categories['fleet']},
       items: [
         for (final k in UnitKind.values)
           if (data.unit(k).defense) k,
+        for (final k in UnitKind.values)
+          if (!data.unit(k).defense) k,
       ],
       categoryOf: (k) => data.unit(k).category,
       filter: RealizableFilter<UnitKind>(
@@ -156,6 +164,8 @@ class _UnitCard extends StatelessWidget {
                             children: [
                               Text('× ${fmtAmount(owned.toDouble())}', style: mono(secondary)),
                               UnitStatsLine(stats: UnitStats.of(spec, state.research)),
+                              if (!spec.defense && spec.cargo > 0)
+                                Text('Soute ${fmtAmount(spec.cargo)}', style: mono(secondary)),
                             ],
                           ),
                           const SizedBox(height: 2),
@@ -334,6 +344,82 @@ class _QuantitySheetState extends State<_QuantitySheet> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+const debrisHelp =
+    'Quand des vaisseaux sont détruits au-dessus de la planète, une partie de leur métal et '
+    'de leur cristal reste en orbite : c’est le champ de débris. Les défenses n’en laissent '
+    'pas.\n\nEnvoie des recycleurs pour le collecter : ils partent un moment, ne combattent '
+    'pas pendant leur absence, et rapportent au plus leur soute.';
+
+/// Champ de débris de la planète et mission de recyclage (spec 15). Rien s'il n'y a ni
+/// débris ni mission.
+class DebrisCard extends StatelessWidget {
+  const DebrisCard({super.key, required this.controller, required this.now});
+
+  final GameController controller;
+  final DateTime now;
+
+  @override
+  Widget build(BuildContext context) {
+    final state = controller.state;
+    final debris = state.planet.debris;
+    final mission = currentRecycling(state);
+    if (mission == null && debris.metal + debris.crystal < 1) return const SizedBox.shrink();
+    final theme = Theme.of(context);
+    final recyclers = state.planet.count(UnitKind.recycler);
+    final cargo = controller.data.unit(UnitKind.recycler).cargo;
+    final total = debris.metal + debris.crystal;
+    // Assez de recycleurs pour tout prendre, dans la limite de ceux présents.
+    final needed = (total / cargo).ceil().clamp(1, 1 << 20);
+    final send = recyclers < needed ? recyclers : needed;
+    final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+      child: Card(
+        margin: EdgeInsets.zero,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 4, 4, 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.blur_on, size: 18),
+                  const SizedBox(width: 6),
+                  Expanded(child: Text('Champ de débris', style: theme.textTheme.titleSmall)),
+                  const InfoButton(title: 'Champ de débris', body: debrisHelp),
+                ],
+              ),
+              CostLine(cost: debris),
+              const SizedBox(height: 4),
+              if (mission != null)
+                Text(
+                  '${mission.recyclers} recycleurs en route · retour dans '
+                  '${fmtDuration(mission.dueAt.difference(now))}',
+                  style: secondary,
+                )
+              else if (recyclers == 0)
+                Text('Construis des recycleurs pour le collecter', style: secondary)
+              else
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: FilledButton.tonalIcon(
+                      style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
+                      onPressed: () => controller.recycle(send),
+                      icon: const Icon(Icons.recycling),
+                      label: Text('Envoyer $send recycleur${send > 1 ? 's' : ''}'),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

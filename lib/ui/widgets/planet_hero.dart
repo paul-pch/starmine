@@ -15,6 +15,7 @@ class PlanetHero extends StatelessWidget {
     required this.controller,
     required this.onReports,
     required this.onOfficers,
+    required this.onDebug,
   });
 
   /// Évite qu'un écran large ou un test de widgets ne donne tout l'écran au hero.
@@ -23,12 +24,18 @@ class PlanetHero extends StatelessWidget {
   final GameController controller;
   final VoidCallback onReports;
   final VoidCallback onOfficers;
+  final VoidCallback onDebug;
 
   @override
   Widget build(BuildContext context) {
     final visuals = VisualsScope.of(context);
     final planet = controller.state.planet;
-    final banner = _Banner(controller: controller, onReports: onReports, onOfficers: onOfficers);
+    final banner = _Banner(
+      controller: controller,
+      onReports: onReports,
+      onOfficers: onOfficers,
+      onDebug: onDebug,
+    );
     if (visuals.plain) return ColoredBox(color: Palette.bar, child: banner);
     final width = MediaQuery.sizeOf(context).width;
     final height = math.min(width * 9 / 21, _maxHeight);
@@ -51,11 +58,17 @@ class PlanetHero extends StatelessWidget {
 }
 
 class _Banner extends StatelessWidget {
-  const _Banner({required this.controller, required this.onReports, required this.onOfficers});
+  const _Banner({
+    required this.controller,
+    required this.onReports,
+    required this.onOfficers,
+    required this.onDebug,
+  });
 
   final GameController controller;
   final VoidCallback onReports;
   final VoidCallback onOfficers;
+  final VoidCallback onDebug;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +93,11 @@ class _Banner extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            IconButton(
+              tooltip: 'Debug',
+              onPressed: onDebug,
+              icon: const Icon(Icons.tune_outlined),
             ),
             // Pastille : un officier attend d'être débloqué ou promu.
             IconButton(

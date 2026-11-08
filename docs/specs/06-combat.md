@@ -49,4 +49,5 @@ lanceurs), reconstruction ~70 %, technos, volées cohérentes, forces.
 
 ## Points ouverts
 
-- Champ de débris (V3, recycleurs).
+- Champ de débris : `debris.share` du métal et du cristal des **vaisseaux** détruits des deux
+  camps (défenses exclues), ajouté au champ de la planète et au rapport (spec 15).

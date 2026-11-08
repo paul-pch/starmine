@@ -161,6 +161,18 @@ class _HomeShellState extends State<HomeShell> {
     context,
   ).push(MaterialPageRoute<void>(builder: (_) => OfficersScreen(controller: _c)));
 
+  Future<void> _openDebug() => Navigator.of(context).push(
+    MaterialPageRoute<void>(
+      builder: (_) => Scaffold(
+        appBar: AppBar(title: const Text('Debug')),
+        body: ListenableBuilder(
+          listenable: _c,
+          builder: (_, _) => DebugScreen(controller: _c),
+        ),
+      ),
+    ),
+  );
+
   void _refresh() {
     if (_refreshing) return;
     _refreshing = true;
@@ -180,7 +192,6 @@ class _HomeShellState extends State<HomeShell> {
           ResearchScreen(controller: _c, now: _now, onOpenQueue: _openQueue),
           DefenseScreen(controller: _c, now: _now, onOpenQueue: _openQueue),
           QueueScreen(controller: _c, now: _now),
-          DebugScreen(controller: _c),
         ];
         return Scaffold(
           body: VisualsScope(
@@ -197,6 +208,7 @@ class _HomeShellState extends State<HomeShell> {
                           controller: _c,
                           onReports: _openReports,
                           onOfficers: _openOfficers,
+                          onDebug: _openDebug,
                         ),
                       ),
                     ],
@@ -235,12 +247,11 @@ class _HomeShellState extends State<HomeShell> {
               NavigationDestination(
                 icon: _SlotBadge(
                   status: slotStatus(state, Slot.shipyard),
-                  child: const Icon(Icons.shield_outlined),
+                  child: const Icon(Icons.rocket_launch_outlined),
                 ),
-                label: 'Défense',
+                label: 'Chantier',
               ),
               const NavigationDestination(icon: Icon(Icons.schedule_outlined), label: 'File'),
-              const NavigationDestination(icon: Icon(Icons.tune_outlined), label: 'Debug'),
             ],
           ),
         );

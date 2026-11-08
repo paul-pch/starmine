@@ -238,6 +238,22 @@ class GameController extends ChangeNotifier {
   /// Bilan d'énergie de [s], effets d'événements compris.
   EnergyBalance energyOf(GameState s) => _rules.energy(s.planet, s.research, s.modifiers(data));
 
+  /// Envoie [count] recycleurs collecter le champ de débris (spec 15).
+  Future<RecycleBlock?> recycle(int count) => _serialized(() async {
+    final t = now();
+    final adv = advance(state, t, _rules);
+    final id = await _repo.nextEventId();
+    final out = startRecycling(adv.state, count, t, _rules, eventId: id);
+    await _commit(
+      out.state,
+      applied: adv.applied,
+      reports: adv.reports,
+      queueCancelled: adv.cancelled,
+      stories: adv.stories,
+    );
+    return out.block;
+  });
+
   /// Debug : la prochaine flotte pirate est détectée tout de suite.
   Future<void> raidNow() => _serialized(() async {
     final t = now();

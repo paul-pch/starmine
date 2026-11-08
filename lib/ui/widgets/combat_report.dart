@@ -63,6 +63,12 @@ class CombatReport extends StatelessWidget {
           const SizedBox(height: 4),
           CostLine(cost: r.loot),
         ],
+        if (r.debris != Resources.zero) ...[
+          const SizedBox(height: 12),
+          Text('Champ de débris créé', style: theme.textTheme.titleSmall),
+          const SizedBox(height: 4),
+          CostLine(cost: r.debris),
+        ],
         if ((r.attackerStrength, r.defenderStrength) case (final a?, final d?)) ...[
           const SizedBox(height: 16),
           ForcesTable(attacker: a, defender: d),

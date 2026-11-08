@@ -7,6 +7,7 @@ import '../domain/events.dart';
 import '../domain/game_data.dart';
 import '../domain/planet.dart';
 import '../domain/raid.dart';
+import '../domain/resources.dart';
 import '../domain/story.dart';
 import 'database.dart';
 import 'save_codec.dart';
@@ -47,6 +48,7 @@ class GameRepository {
         'crystal': row.crystal,
         'deuterium': row.deuterium,
       }),
+      debris: Resources(metal: row.debrisMetal, crystal: row.debrisCrystal),
       levels: {for (final b in buildings) BuildingKind.fromKey(b.kind): b.level},
       percents: {for (final b in buildings) BuildingKind.fromKey(b.kind): b.percent},
       units: {
@@ -186,6 +188,8 @@ class GameRepository {
             metal: Value(p.resources.metal),
             crystal: Value(p.resources.crystal),
             deuterium: Value(p.resources.deuterium),
+            debrisMetal: Value(p.debris.metal),
+            debrisCrystal: Value(p.debris.crystal),
             lastUpdateMs: Value(p.lastUpdate.millisecondsSinceEpoch),
           ),
         );
@@ -262,6 +266,7 @@ class GameRepository {
     OrderDone(:final startedAt) => startedAt,
     ShipyardBatch(:final startedAt) => startedAt,
     RaidDetected() || RaidArrival() || StoryEvent() => e.dueAt,
+    RecycleMission(:final startedAt) => startedAt,
   };
 
   Future<void> clearStoryLog() => _db.delete(_db.storyLog).go();

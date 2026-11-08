@@ -12,8 +12,9 @@ Produire des unités au chantier spatial : défenses en V2, vaisseaux à partir 
   la commande.
 - Règle du chantier : spec 03.
 - **Limite par planète** : `max` (dômes : 1 chacun).
-- Les **vaisseaux** existent dans les données (flottes pirates) mais ne sont pas
-  constructibles avant la V3 (refus `NotBuildable`).
+- **Vaisseaux** constructibles depuis la V3a (spec 15) : transporteurs, chasseurs,
+  croiseur, vaisseau de bataille, recycleur. Prérequis provisoires (chantier et technos
+  existantes) en attendant les technos de propulsion de la V3b.
 - Quantité commandable : bornée par les ressources et la limite (`maxOrderable`).
 - Caractéristiques d'une unité : attaque, bouclier, coque = `(M + C) / 10`, soute (vaisseaux),
   tir rapide (spec 06).
@@ -25,11 +26,13 @@ Produire des unités au chantier spatial : défenses en V2, vaisseaux à partir 
 | Légères | Lanceur de missiles, Laser léger |
 | Lourdes | Laser lourd, Canon de Gauss, Artillerie à ions, Lanceur de plasma |
 | Boucliers | Petit bouclier, Grand bouclier |
+| Civils (`fleet`) | Petit et grand transporteur, Recycleur |
+| Combat (`fleet`) | Chasseurs léger et lourd, Croiseur, Vaisseau de bataille |
 
 ## Données
 
 `units.<clé>` : `name`, `description`, `category`, `defense`, `cost`, `attack`, `shield`,
-`cargo`, `max`, `requires`, `rapid_fire`. `categories.defense`.
+`cargo`, `max`, `requires`, `rapid_fire`. `categories.defense`, `categories.fleet`.
 
 ## Code
 
@@ -38,7 +41,8 @@ Produire des unités au chantier spatial : défenses en V2, vaisseaux à partir 
 
 ## UI
 
-Onglet Défense : carte par défense (nombre possédé, attaque / bouclier / coque avec technos,
+Onglet **Chantier** : défenses puis vaisseaux (soute affichée), carte du champ de débris
+en tête (spec 15) ; carte par unité (nombre possédé, attaque / bouclier / coque avec technos,
 coût unitaire, durée par unité), feuille de quantité (curseur, 1 / 10 / 100 / Max, coût et
 durée totaux). File : emplacement Chantier (progression « 3 / 20 », prochaine unité, fin).
 

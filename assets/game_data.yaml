@@ -23,6 +23,10 @@ categories:
     light: Légères
     heavy: Lourdes
     shields: Boucliers
+  # Vaisseaux (V3a), affichés avec les défenses dans l'onglet Chantier.
+  fleet:
+    civil: Civils
+    warships: Combat
 
 # Coup de pouce de départ : production (base et mines) × (1 + extra × max(0, 1 − points /
 # fade_points)), points d'économie et de recherche. ×4 au départ, disparaît à 100 points.
@@ -283,24 +287,44 @@ units:
     max: 1
     requires: { shipyard: 6, shielding_technology: 6 }
   small_cargo:
+    category: civil
+    description: >-
+      Transporteur rapide et peu armé. Sa soute sert au pillage et aux livraisons (V3b).
+    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
+    requires: { shipyard: 2 }
     name: Petit transporteur
     cost: { metal: 2000, crystal: 2000 }
     attack: 5
     shield: 10
     cargo: 5000
   large_cargo:
+    category: civil
+    description: >-
+      Grande soute, très peu armé.
+    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
+    requires: { shipyard: 4 }
     name: Grand transporteur
     cost: { metal: 6000, crystal: 6000 }
     attack: 5
     shield: 25
     cargo: 25000
   light_fighter:
+    category: warships
+    description: >-
+      Chasseur bon marché, utile en nombre pour absorber les tirs.
+    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
+    requires: { shipyard: 1 }
     name: Chasseur léger
     cost: { metal: 3000, crystal: 1000 }
     attack: 50
     shield: 10
     cargo: 50
   heavy_fighter:
+    category: warships
+    description: >-
+      Chasseur mieux armé et protégé ; tir rapide contre les petits transporteurs.
+    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
+    requires: { shipyard: 3, armour_technology: 2 }
     name: Chasseur lourd
     cost: { metal: 6000, crystal: 4000 }
     attack: 150
@@ -308,6 +332,11 @@ units:
     cargo: 100
     rapid_fire: { small_cargo: 3 }
   cruiser:
+    category: warships
+    description: >-
+      Vaisseau rapide et puissant ; tir rapide contre les chasseurs légers et les lanceurs de missiles.
+    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
+    requires: { shipyard: 5, ion_technology: 2 }
     name: Croiseur
     cost: { metal: 20000, crystal: 7000, deuterium: 2000 }
     attack: 400
@@ -315,11 +344,31 @@ units:
     cargo: 800
     rapid_fire: { light_fighter: 6, rocket_launcher: 10 }
   battleship:
+    category: warships
+    description: >-
+      Pilier de la flotte : forte attaque et grosse coque.
+    # Prérequis provisoires : les technos de propulsion arrivent en V3b.
+    requires: { shipyard: 7 }
     name: Vaisseau de bataille
     cost: { metal: 45000, crystal: 15000 }
     attack: 1000
     shield: 200
     cargo: 1500
+  recycler:
+    category: civil
+    name: Recycleur
+    description: >-
+      Collecte le champ de débris de la planète (métal et cristal des vaisseaux détruits).
+      Peu armé : il vaut mieux le garder loin des combats.
+    requires: { shipyard: 4, shielding_technology: 2 }
+    cost: { metal: 10000, crystal: 6000, deuterium: 2000 }
+    attack: 1
+    shield: 10
+    cargo: 20000
+
+# Champ de débris (V3a) : part du métal et du cristal des vaisseaux détruits (des deux camps,
+# défenses exclues) ; collecte par les recycleurs en un temps fixe (à ×1).
+debris: { share: 0.3, collect_hours: 1 }
 
 # Raids pirates (V2b). Durées à ×1, divisées par la vitesse de jeu.
 pirates:

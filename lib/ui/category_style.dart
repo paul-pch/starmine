@@ -17,6 +17,8 @@ abstract final class CategoryStyle {
     'light' => Icons.shield_outlined,
     'heavy' => Icons.rocket_launch_outlined,
     'shields' => Icons.shield_moon_outlined,
+    'civil' => Icons.local_shipping_outlined,
+    'warships' => Icons.rocket_outlined,
     _ => Icons.label_outline,
   };
 }

@@ -278,6 +278,7 @@ _Step _apply(GameState s, GameEvent event, Rules rules) => switch (event) {
   RaidDetected() => _raid(detectRaid(s, event, rules)),
   RaidArrival() => _raid(resolveRaid(s, event, rules)),
   StoryEvent() => _story(applyStory(s, event, rules)),
+  RecycleMission() => (state: recycleReturn(s, event, rules), next: null, report: null, story: null),
 };
 
 // --- Vérifications -----------------------------------------------------------
@@ -568,7 +569,6 @@ int maxOrderable(GameState state, UnitKind unit, Rules rules) {
 OrderBlock? checkBatch(GameState state, UnitKind unit, int count, Rules rules) {
   assert(count >= 1);
   final spec = rules.data.unit(unit);
-  if (!spec.defense) return const NotBuildable();
   final current = state.currentBatch;
   if (current != null) return QueueBusy(current);
   if (state.currentConstruction?.building == BuildingKind.shipyard) return const ShipyardBusy();
@@ -787,7 +787,6 @@ OrderBlock? checkQueue(GameState s, Unlockable item, Rules rules) {
 /// Comme [checkQueue], pour un lot du chantier.
 OrderBlock? checkQueueBatch(GameState s, UnitKind unit, int count, Rules rules) {
   final spec = rules.data.unit(unit);
-  if (!spec.defense) return const NotBuildable();
   final room = _checkQueueRoom(s, Slot.shipyard, rules);
   if (room != null) return room;
   final missing = _unmetProjected(s, spec.requires);
@@ -911,4 +910,76 @@ OrderOutcome placeBatch(
     case OrderQueued():
       throw StateError('un démarrage ne met pas en file');
   }
+}
+
+// --- Recyclage du champ de débris (spec 15) ------------------------------------------
+
+/// Raison pour laquelle une collecte est impossible.
+enum RecycleBlock { noDebris, noRecycler, busy }
+
+/// Mission de recyclage en cours.
+RecycleMission? currentRecycling(GameState s) => s.pending.whereType<RecycleMission>().firstOrNull;
+
+RecycleBlock? checkRecycle(GameState s, int count) {
+  if (currentRecycling(s) != null) return RecycleBlock.busy;
+  final d = s.planet.debris;
+  if (d.metal + d.crystal < 1) return RecycleBlock.noDebris;
+  if (count < 1 || s.planet.count(UnitKind.recycler) < count) return RecycleBlock.noRecycler;
+  return null;
+}
+
+/// Envoie [count] recycleurs collecter le champ de la planète : absents (ils ne combattent
+/// pas) pendant `debris.collect_hours`.
+({GameState state, RecycleBlock? block}) startRecycling(
+  GameState state,
+  int count,
+  DateTime now,
+  Rules rules, {
+  required int eventId,
+}) {
+  final advanced = advance(state, now, rules).state;
+  final block = checkRecycle(advanced, count);
+  if (block != null) return (state: advanced, block: block);
+  final ms = (rules.data.debris.collectHours * Duration.millisecondsPerHour / rules.speed).round();
+  final mission = RecycleMission(
+    id: eventId,
+    planetId: advanced.planet.id,
+    dueAt: now.add(Duration(milliseconds: ms)),
+    startedAt: now,
+    recyclers: count,
+  );
+  final p = advanced.planet;
+  return (
+    state: advanced.copyWith(
+      planet: p.copyWith(
+        units: {...p.units, UnitKind.recycler: p.count(UnitKind.recycler) - count},
+      ),
+      pending: [...advanced.pending, mission],
+    ),
+    block: null,
+  );
+}
+
+/// Ce que [recyclers] recycleurs rapportent de [debris] : tout si la soute suffit, sinon au
+/// prorata du métal et du cristal.
+Resources recycleLoad(Resources debris, int recyclers, GameData data) {
+  final capacity = recyclers * data.unit(UnitKind.recycler).cargo;
+  final total = debris.metal + debris.crystal;
+  if (total <= capacity) return Resources(metal: debris.metal, crystal: debris.crystal);
+  final k = capacity / total;
+  return Resources(metal: (debris.metal * k).floorToDouble(), crystal: (debris.crystal * k).floorToDouble());
+}
+
+/// Retour des recycleurs : chargement (au-delà du stockage possible, comme un
+/// remboursement), champ réduit d'autant, recycleurs revenus.
+GameState recycleReturn(GameState s, RecycleMission m, Rules rules) {
+  final p = s.planet;
+  final load = recycleLoad(p.debris, m.recyclers, rules.data);
+  return s.copyWith(
+    planet: p.copyWith(
+      resources: p.resources + load,
+      debris: p.debris - load,
+      units: {...p.units, UnitKind.recycler: p.count(UnitKind.recycler) + m.recyclers},
+    ),
+  );
 }

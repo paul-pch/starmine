@@ -181,3 +181,18 @@ class StoryEvent extends GameEvent {
   /// Choix en attente de réponse (clé du catalogue), sinon `null`.
   final String? choiceKey;
 }
+
+/// Recycleurs partis collecter le champ de débris (spec 15) : à [dueAt], ils rentrent avec
+/// au plus leur soute de débris (métal et cristal, au prorata).
+class RecycleMission extends GameEvent {
+  const RecycleMission({
+    required super.id,
+    required super.planetId,
+    required super.dueAt,
+    required this.startedAt,
+    required this.recyclers,
+  });
+
+  final DateTime startedAt;
+  final int recyclers;
+}

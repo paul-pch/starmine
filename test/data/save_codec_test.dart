@@ -57,9 +57,17 @@ void main() {
             endsAt: t0.add(const Duration(hours: 12)),
           ),
         ],
+        planet: withRaid.planet.copyWith(debris: const Resources(metal: 1200, crystal: 400)),
         pending: [
           ...withRaid.pending,
           StoryEvent(id: 10, planetId: 1, dueAt: t0, seed: 4, choiceKey: 'merchant_convoy'),
+          RecycleMission(
+            id: 11,
+            planetId: 1,
+            dueAt: t0.add(const Duration(hours: 1)),
+            startedAt: t0,
+            recyclers: 3,
+          ),
         ],
       ),
       speed: 10,
@@ -93,7 +101,11 @@ void main() {
     expect(restored.speed, 10);
     expect(restored.seed, 42);
 
-    expect(restored.state.pending, hasLength(4));
+    expect(restored.state.pending, hasLength(5));
+    expect(b.debris, const Resources(metal: 1200, crystal: 400));
+    final recycle = restored.state.pending.whereType<RecycleMission>().single;
+    expect(recycle.recyclers, 3);
+    expect(recycle.startedAt, t0);
     final story = restored.state.pending.whereType<StoryEvent>().single;
     expect(story.choiceKey, 'merchant_convoy');
     expect(story.seed, 4);

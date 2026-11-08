@@ -14,6 +14,10 @@ class Planets extends Table {
   RealColumn get crystal => real()();
   RealColumn get deuterium => real()();
 
+  /// Champ de débris (schéma v8).
+  RealColumn get debrisMetal => real().withDefault(const Constant(0))();
+  RealColumn get debrisCrystal => real().withDefault(const Constant(0))();
+
   /// Epoch UTC en millisecondes.
   IntColumn get lastUpdateMs => integer()();
 
@@ -176,8 +180,9 @@ class StarmineDatabase extends _$StarmineDatabase {
   /// v5 : officiers et compteurs (tables officers, counters).
   /// v6 : files d'attente (table queued_orders).
   /// v7 : événements ponctuels (tables active_effects, story_log).
+  /// v8 : champ de débris (colonnes de planets).
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -208,6 +213,10 @@ class StarmineDatabase extends _$StarmineDatabase {
       if (from < 7) {
         await m.createTable(activeEffects);
         await m.createTable(storyLog);
+      }
+      if (from < 8) {
+        await m.addColumn(planets, planets.debrisMetal);
+        await m.addColumn(planets, planets.debrisCrystal);
       }
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),

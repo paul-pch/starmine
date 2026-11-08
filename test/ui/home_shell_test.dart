@@ -63,7 +63,7 @@ void main() {
     expect(find.text('Technologie Armes'), findsOneWidget);
     expect(find.text('Technologie Énergie'), findsNothing);
 
-    await tester.tap(find.text('Défense'));
+    await tester.tap(find.text('Chantier'));
     await tester.pump();
     expect(find.text('Lanceur de missiles'), findsOneWidget);
 
@@ -73,8 +73,9 @@ void main() {
     expect(find.textContaining('Construis un laboratoire'), findsOneWidget);
     expect(find.textContaining('Construis un chantier spatial'), findsOneWidget);
 
-    await tester.tap(find.text('Debug'));
+    await tester.tap(find.byTooltip('Debug'));
     await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
     expect(find.text('Vitesse de jeu'), findsOneWidget);
     expect(find.text('Ambiance'), findsOneWidget);
 
