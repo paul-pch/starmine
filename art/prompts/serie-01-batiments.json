@@ -1,0 +1,36 @@
+{
+  "series": "serie-01-batiments",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "building.metal_mine.t1",
+      "subject": "a large futuristic metal mining complex built around one wide drilling shaft sinking into the ground",
+      "detail": "Veins of raw silver and copper ore cut through the surrounding rock."
+    },
+    {
+      "id": "building.crystal_mine.t1",
+      "subject": "a large futuristic crystal mining complex built around a wide excavation",
+      "detail": "Huge clusters of pale blue crystal grow out of the exposed rock around it."
+    },
+    {
+      "id": "building.deuterium_synthesizer.t1",
+      "subject": "a large futuristic deuterium synthesis plant built around a cluster of spherical pressure tanks",
+      "detail": "Thick insulated pipes connect the tanks to the surrounding machinery."
+    },
+    {
+      "id": "building.solar_plant.t1",
+      "subject": "a large futuristic solar power station made of wide tilted arrays of dark solar panels",
+      "detail": "The panel arrays radiate outward from a central control structure."
+    },
+    {
+      "id": "building.shipyard.t1",
+      "subject": "a large futuristic spaceship construction yard built around one giant open gantry",
+      "detail": "An unfinished spaceship hull sits inside the gantry, its frame partly exposed."
+    },
+    {
+      "id": "building.research_lab.t1",
+      "subject": "a large futuristic research laboratory complex built around one large observation dome",
+      "detail": "A ring of radio antennas surrounds the dome."
+    }
+  ]
+}

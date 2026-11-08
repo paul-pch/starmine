@@ -8,6 +8,11 @@ description: Produire et faire évoluer les images de Starmine avec Higgsfield (
 Règles et formats : `docs/specs/11-visuels.md`. Intégration dans l'UI : skill `starmine-ui`.
 Style : **SF réaliste**. Seul l'utilisateur valide une image.
 
+Mise au point d'un prompt et essais locaux (ComfyUI, Qwen-Image-2.1) : skill `starmine-prompt`. Ce
+modèle est limité à la recherche et à l'évaluation : ses images ne passent pas par la boucle
+ci-dessous sans décision explicite de l'utilisateur. Le choix de l'outil de production reste ouvert ;
+tant qu'il n'est pas tranché, Higgsfield reste la référence de ce skill.
+
 ## Avant de générer
 
 - Vérifier que le connecteur Higgsfield est disponible dans la session. Sinon : le dire, et
