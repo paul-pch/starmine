@@ -1,7 +1,7 @@
 # 15 · Flotte (V3)
 
-> **À spécifier** — rien n'est implémenté. Cette page découpe la V3 et liste les décisions
-> à prendre. Les vaisseaux existent déjà dans les données (flottes pirates, spec 07).
+> **V3a en cours**, V3b et V3c à implémenter. Les vaisseaux existent déjà dans les données
+> (flottes pirates, spec 07).
 
 ## Objet
 
@@ -31,23 +31,15 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
   technologie de propulsion ; consommation de deutérium à l'aller et au retour.
 - **Pertes** : une flotte détruite est perdue avec sa cargaison.
 
-## À trancher
+## Décidé
 
-1. **Découpage** V3a / V3b / V3c : d'accord pour livrer dans cet ordre ?
-2. **Débris en V3a** sans trajet : le recycleur collecte le champ de la planète en un
-   temps fixe (mission courte, sans distance) — ou on attend les trajets de la V3b ?
-   Recommandation : collecte simple dès la V3a.
-3. **Raids et flotte** : la flotte stationnée défend automatiquement. Faut-il une option
-   « flotte à l'abri » (la retirer avant un raid, comme le *fleet save* d'OGame) ?
-   Recommandation : oui, en V3b avec les trajets.
-4. **Bases pirates (V3b)** : nombre fixe de bases à proximité, régénérées après un pillage,
-   avec une force indexée sur tes points comme les raids ? Ou une carte plus riche ?
-   Recommandation : 3 à 5 bases, force et butin croissants, régénération.
-5. **Force des raids** : la flotte compte-t-elle dans la base des raids (aujourd'hui les
-   unités en sont exclues) ? Recommandation : non, pour garder « bien défendu = tranquille ».
-6. **Espionnage** : utile seulement contre les bases pirates (rapport avant attaque) ?
-   Recommandation : oui, sans contre-espionnage pirate au début.
-7. **Écran Flotte** : nouvel onglet (la barre en a déjà 5 : Bâtiments, Recherche, Défense,
-   File, Debug) ? Recommandation : fusionner Défense et Flotte dans un onglet « Chantier »
-   avec deux sections, Debug sortant de la barre (accès depuis le hero). À confier au skill
-   `starmine-ui`.
+1. Livraison dans l'ordre **V3a, V3b, V3c**.
+2. **Débris dès la V3a** : le recycleur collecte le champ de la planète en un temps fixe
+   (mission courte, sans distance).
+3. **Flotte à l'abri** (*fleet save*) : en V3b, avec les trajets.
+4. **Bases pirates (V3b)** : 3 à 5 bases proches, force et butin croissants, régénération
+   après un pillage, force indexée sur les points comme les raids.
+5. **Base des raids** : la flotte n'y compte pas (comme les défenses).
+6. **Espionnage** : contre les bases pirates seulement, sans contre-espionnage au début.
+7. **Navigation** : un onglet **Chantier** (sections Défense et Flotte) remplace Défense ;
+   Debug sort de la barre, accessible depuis le hero.
