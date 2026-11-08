@@ -148,11 +148,8 @@ Map<UnitKind, int> pirateBaseUnits(double budget, double points, GameData data, 
 /// Ta production horaire totale (métal + cristal + deutérium), à ×1.
 double productionPerHour(GameState s, Rules rules) {
   final rate = rules.hourlyProduction(s.planet, s.research, s.modifiers(rules.data));
-  return [
-    rate.metal,
-    rate.crystal,
-    rate.deuterium,
-  ].fold(0.0, (sum, v) => sum + math.max(0.0, v)) / rules.speed;
+  return [rate.metal, rate.crystal, rate.deuterium].fold(0.0, (sum, v) => sum + math.max(0.0, v)) /
+      rules.speed;
 }
 
 /// Unités de la base [b] à [at] : valeur = `defense_hours` de ta production (plancher

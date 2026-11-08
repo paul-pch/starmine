@@ -694,7 +694,7 @@ pirate_bases:
   # Défenses disponibles selon les points du joueur (seuil minimal).
   defenses: { rocket_launcher: 0, light_laser: 0, heavy_laser: 50, gauss_cannon: 200 }
   list:
-    - { name: Avant-poste de Kessa, systems: 2, defense_hours: 8, stock_hours: 12 }
-    - { name: Repaire du Croc, systems: 3, defense_hours: 18, stock_hours: 24 }
+    - { name: Avant-poste de Kessa, systems: 2, defense_hours: 6, stock_hours: 12 }
+    - { name: Repaire du Croc, systems: 3, defense_hours: 15, stock_hours: 24 }
     - { name: Forteresse d'Ulvar, systems: 5, defense_hours: 38, stock_hours: 48 }
     - { name: Citadelle noire, systems: 6, defense_hours: 80, stock_hours: 96 }
