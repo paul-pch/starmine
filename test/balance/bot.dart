@@ -1,8 +1,11 @@
 // Joueur automatique simple pour les mesures d'équilibrage (skill starmine-balance) : il
 // construit le moins cher qui a du sens, recherche, met 30 % de son économie en lanceurs,
 // recrute les officiers dès que possible et laisse l'option par défaut aux choix.
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:starmine/data/game_data_loader.dart';
 import 'package:starmine/domain/combat.dart';
 import 'package:starmine/domain/engine.dart';
 import 'package:starmine/domain/fleet.dart';
@@ -12,6 +15,7 @@ import 'package:starmine/domain/raid.dart';
 import 'package:starmine/domain/resources.dart';
 import 'package:starmine/domain/rules.dart';
 import 'package:starmine/domain/story.dart';
+import 'package:yaml/yaml.dart';
 
 import '../domain/helpers.dart';
 
@@ -220,4 +224,68 @@ class Run {
     }
     return worst;
   }
+}
+
+/// Coût et gain d'une attaque sur [b] avec des vaisseaux [ship] seulement : plus petite
+/// flotte qui gagne 9 combats sur 10 (40 tirages), pertes moyennes, butin (50 % du stock,
+/// soute supposée suffisante), débris des vaisseaux détruits.
+({
+  double perHour,
+  double defense,
+  int count,
+  double fleet,
+  double losses,
+  double loot,
+  double debris,
+  double net,
+})
+attackCost(Run run, PirateBase b, UnitKind ship) {
+  final s = run.s;
+  final data = run.data;
+  final rules = run.rules;
+  final at = s.planet.lastUpdate;
+  final units = baseUnits(s, b, at, rules);
+  final side = CombatSide(units: units, tech: baseTech(s, rules));
+  var n = 1;
+  var losses = 0.0;
+  var debris = 0.0;
+  while (n < 20000) {
+    var wins = 0;
+    losses = 0;
+    debris = 0;
+    for (var k = 0; k < 40; k++) {
+      final r = simulateCombat(
+        data,
+        CombatSide(units: {ship: n}, tech: s.research),
+        side,
+        math.Random(k),
+      );
+      if (r.winner == CombatWinner.attacker) wins++;
+      losses += fleetValue(r.attackerLosses, data) / 40;
+      final d = combatDebris(r, data);
+      debris += (d.metal + d.crystal) / 40;
+    }
+    if (wins >= 36) break;
+    n = math.max(n + 1, (n * 1.2).ceil());
+  }
+  final loot = total(baseStock(s, b, at, rules)) * data.pirateBases.lootShare;
+  return (
+    perHour: productionPerHour(s, rules),
+    defense: fleetValue(units, data),
+    count: n,
+    fleet: fleetValue({ship: n}, data),
+    losses: losses,
+    loot: loot,
+    debris: debris,
+    net: loot + debris - losses,
+  );
+}
+
+/// Config réelle avec des clés remplacées.
+GameData variant(void Function(Map<String, dynamic> m) edit) {
+  final m =
+      (jsonDecode(jsonEncode(loadYaml(File(gameDataAsset).readAsStringSync())))
+          as Map<String, dynamic>);
+  edit(m);
+  return GameData.fromMap(m);
 }

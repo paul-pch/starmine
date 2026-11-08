@@ -30,8 +30,9 @@ categories:
     warships: Combat
 
 # Coup de pouce de départ : production (base et mines) × (1 + extra × max(0, 1 − points /
-# fade_points)), points d'économie et de recherche. ×4 au départ, disparaît à 100 points.
-start_boost: { extra: 3, fade_points: 100 }
+# fade_points)), points d'économie et de recherche. ×3 au départ, disparaît à 500 points
+# (mesuré : baisse de production bien plus douce qu'avec ×4 jusqu'à 100).
+start_boost: { extra: 2, fade_points: 500 }
 
 formulas:
   # N × growth^N, utilisé par la production, les consommations et l'énergie.
@@ -679,19 +680,21 @@ fleet:
   # la base la plus proche.
   shelter_hours: [1, 2, 4, 8, 12]
 
-# Bases pirates (V3b) : force = points d'économie × strength (budget comme les raids, moitié
-# vaisseaux, moitié défenses), stock = stock_hours de ta production (×1), régénéré en
-# refill_hours ; défenses relevées rebuild_hours après un combat ; base détruite remplacée
-# après respawn_hours.
+# Bases pirates (V3b) : unités d'une valeur de defense_hours de ta production (×1), plancher
+# min_budget ; doctrine tirée à chaque génération (part de vaisseaux, types présents) : il
+# faut espionner. Stock = stock_hours de ta production, régénéré en refill_hours ; défenses
+# relevées rebuild_hours après un combat ; base détruite remplacée après respawn_hours.
+# Dures à gagner, rentables avec la bonne flotte (mesuré : test/balance).
 pirate_bases:
   loot_share: 0.5
+  min_budget: 4000
   refill_hours: 24
   rebuild_hours: 12
   respawn_hours: 24
   # Défenses disponibles selon les points du joueur (seuil minimal).
   defenses: { rocket_launcher: 0, light_laser: 0, heavy_laser: 50, gauss_cannon: 200 }
   list:
-    - { name: Avant-poste de Kessa, systems: 2, strength: 0.3, stock_hours: 6 }
-    - { name: Repaire du Croc, systems: 3, strength: 0.7, stock_hours: 12 }
-    - { name: Forteresse d'Ulvar, systems: 5, strength: 1.2, stock_hours: 24 }
-    - { name: Citadelle noire, systems: 6, strength: 2.0, stock_hours: 48 }
+    - { name: Avant-poste de Kessa, systems: 2, defense_hours: 8, stock_hours: 12 }
+    - { name: Repaire du Croc, systems: 3, defense_hours: 18, stock_hours: 24 }
+    - { name: Forteresse d'Ulvar, systems: 5, defense_hours: 38, stock_hours: 48 }
+    - { name: Citadelle noire, systems: 6, defense_hours: 80, stock_hours: 96 }

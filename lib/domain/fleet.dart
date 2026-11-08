@@ -116,41 +116,55 @@ PirateBase _respawned(PirateBase b) {
   );
 }
 
-/// Composition complète d'une base : budget = max(plancher, points × 1000 × force), moitié
-/// vaisseaux (ceux des raids débloqués), moitié défenses (`pirate_bases.defenses`).
-Map<UnitKind, int> pirateBaseUnits(double points, double strength, GameData data, int seed) {
+/// Composition d'une base pour un budget (en ressources) : une **doctrine** tirée avec la
+/// graine (part des vaisseaux 20, 50 ou 80 %) et une partie seulement des types débloqués à
+/// [points] : deux générations ne se ressemblent pas, d'où l'intérêt d'espionner avant.
+Map<UnitKind, int> pirateBaseUnits(double budget, double points, GameData data, int seed) {
   final random = math.Random(seed);
-  final budget = math.max(data.pirates.minBudget, points * 1000 * strength);
+  final shipShare = const [0.2, 0.5, 0.8][random.nextInt(3)];
   final units = <UnitKind, int>{};
   void spend(Map<UnitKind, double> available, double share) {
-    final kinds = [
+    final unlocked = [
       for (final e in available.entries)
         if (points >= e.value) e.key,
     ];
+    final kinds = [
+      for (final k in unlocked)
+        if (random.nextDouble() < 0.6) k,
+    ];
+    if (kinds.isEmpty && unlocked.isNotEmpty) kinds.add(unlocked[random.nextInt(unlocked.length)]);
     final weights = [for (final _ in kinds) 0.5 + random.nextDouble()];
     for (final e in allocateBudget(budget * share, kinds, weights, data).entries) {
       units[e.key] = (units[e.key] ?? 0) + e.value;
     }
   }
 
-  spend(data.pirates.warships, 0.5);
-  spend(data.pirateBases.defenses, 0.5);
-  if (units.isEmpty) units[UnitKind.lightFighter] = 3;
+  spend(data.pirates.warships, shipShare);
+  spend(data.pirateBases.defenses, 1 - shipShare);
+  if (units.isEmpty) units[UnitKind.lightFighter] = 1;
   return units;
 }
 
-/// Unités de la base [b] à [at].
+/// Ta production horaire totale (métal + cristal + deutérium), à ×1.
+double productionPerHour(GameState s, Rules rules) {
+  final rate = rules.hourlyProduction(s.planet, s.research, s.modifiers(rules.data));
+  return [
+    rate.metal,
+    rate.crystal,
+    rate.deuterium,
+  ].fold(0.0, (sum, v) => sum + math.max(0.0, v)) / rules.speed;
+}
+
+/// Unités de la base [b] à [at] : valeur = `defense_hours` de ta production (plancher
+/// `pirate_bases.min_budget`), ou les survivants d'un combat récent.
 Map<UnitKind, int> baseUnits(GameState s, PirateBase b, DateTime at, Rules rules) {
   final until = b.survivorsUntil;
   final survivors = b.survivors;
   if (survivors != null && until != null && until.isAfter(at)) return survivors;
-  final spec = rules.data.pirateBases.list[b.index];
-  return pirateBaseUnits(
-    economyPoints(s, rules),
-    spec.strength,
-    rules.data,
-    b.seed + b.generation * 7919,
-  );
+  final cfg = rules.data.pirateBases;
+  final spec = cfg.list[b.index];
+  final budget = math.max(cfg.minBudget, spec.defenseHours * productionPerHour(s, rules));
+  return pirateBaseUnits(budget, economyPoints(s, rules), rules.data, b.seed + b.generation * 7919);
 }
 
 /// Stock de la base [b] à [at] : `stock_hours` de ta production (×1), au prorata de son

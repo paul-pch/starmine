@@ -29,14 +29,6 @@ void main() {
         'raid|eco=$pts|valeur=${r0(value)}|soute=${r0(cargo)}|lanceurs_equiv=${(value / 2000).toStringAsFixed(1)}',
       );
     }
-    // Bases pirates : valeur des unités selon les points d'économie.
-    for (final pts in [5, 20, 50, 100, 300, 1000]) {
-      final line = [
-        for (final (i, b) in data.pirateBases.list.indexed)
-          '${b.name}=${r0(fleetValue(pirateBaseUnits(pts.toDouble(), b.strength, data, i), data))}',
-      ].join('|');
-      out('base|eco=$pts|$line');
-    }
     // Bases à l'état final du joueur avec coup de pouce : stock et valeur.
     final s = boosted.s;
     final rules = boosted.rules;

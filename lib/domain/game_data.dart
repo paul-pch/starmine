@@ -395,7 +395,7 @@ class PirateBaseSpec {
   const PirateBaseSpec({
     required this.name,
     required this.systems,
-    required this.strength,
+    required this.defenseHours,
     required this.stockHours,
   });
 
@@ -403,7 +403,11 @@ class PirateBaseSpec {
 
   /// Écart en systèmes (distance = 2 700 + 95 × systèmes).
   final int systems;
-  final double strength;
+
+  /// Valeur des unités de la base, en heures de ta production (à ×1).
+  final double defenseHours;
+
+  /// Stock de la base, en heures de ta production (à ×1).
   final double stockHours;
 
   double get distance => 2700 + 95.0 * systems;
@@ -413,6 +417,7 @@ class PirateBaseSpec {
 class PirateBasesConfig {
   const PirateBasesConfig({
     this.lootShare = 0.5,
+    this.minBudget = 4000,
     this.refillHours = 24,
     this.rebuildHours = 12,
     this.respawnHours = 24,
@@ -421,6 +426,9 @@ class PirateBasesConfig {
   });
 
   final double lootShare;
+
+  /// Valeur minimale des unités d'une base (début de partie).
+  final double minBudget;
   final double refillHours;
   final double rebuildHours;
   final double respawnHours;
@@ -846,6 +854,7 @@ class GameData {
 
   static PirateBasesConfig _bases(Map<String, Object?> m) => PirateBasesConfig(
     lootShare: _num(m, 'loot_share'),
+    minBudget: _num(m, 'min_budget'),
     refillHours: _num(m, 'refill_hours'),
     rebuildHours: _num(m, 'rebuild_hours'),
     respawnHours: _num(m, 'respawn_hours'),
@@ -858,7 +867,7 @@ class GameData {
         PirateBaseSpec(
           name: _string(_asMap(raw, 'list[]'), 'name'),
           systems: _num(_asMap(raw, 'list[]'), 'systems').toInt(),
-          strength: _num(_asMap(raw, 'list[]'), 'strength'),
+          defenseHours: _num(_asMap(raw, 'list[]'), 'defense_hours'),
           stockHours: _num(_asMap(raw, 'list[]'), 'stock_hours'),
         ),
     ],

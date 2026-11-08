@@ -12,10 +12,10 @@ void main() {
   final rules = Rules(data);
   final boost = data.startBoost;
 
-  test('config : ×4 au départ, disparaît à 100 points', () {
-    expect(boost.factor(0), 4);
-    expect(boost.factor(50), closeTo(2.5, 1e-12));
-    expect(boost.factor(100), 1);
+  test('config : ×3 au départ, disparaît à 500 points', () {
+    expect(boost.factor(0), 3);
+    expect(boost.factor(250), closeTo(2, 1e-12));
+    expect(boost.factor(500), 1);
     expect(boost.factor(5000), 1);
   });
 
@@ -23,7 +23,7 @@ void main() {
     final s = game(planet(levels: {BuildingKind.metalMine: 1, BuildingKind.solarPlant: 1}));
     final points = economyPoints(s, rules);
     final f = boost.factor(points);
-    expect(f, greaterThan(3.9));
+    expect(f, greaterThan(2.9));
     final plain = rules.hourlyProduction(s.planet, s.research);
     final boosted = rules.hourlyProduction(s.planet, s.research, s.modifiers(data));
     expect(boosted.metal, closeTo(plain.metal * f, 1e-9));
