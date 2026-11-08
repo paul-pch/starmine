@@ -52,9 +52,10 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
 - **Trajets** : formule OGame (distance, vitesse du plus lent, vitesse réglable de 10 à
   100 %) × `fleet.flight_factor` = **×3** (rythme idle : ~1 h aller-retour) ; carburant
   (deutérium) payé au départ pour l'aller et le retour.
-- **4 bases pirates** à 2 à 6 systèmes, force croissante indexée sur tes points, stock en
-  heures de ta production, régénération (stock, défenses après 12 h, base détruite remplacée
-  après 24 h).
+- **4 bases pirates** à 2 à 6 systèmes ; force **et** stock en heures de ta production
+  (décision après mesure, remplace « force indexée sur les points ») ; dures à gagner,
+  rentables avec la bonne flotte ; il faut les espionner pour connaître leurs défenses ;
+  régénération (stock, défenses après 12 h, base détruite remplacée après 24 h).
 - **Missions** : attaque, espionnage, recyclage d'un champ de débris de base, **mise à
   l'abri** (durée au choix) ; rappel en route ; places de flotte = 1 + Informatique.
 - **5ᵉ onglet « Flotte »**.
@@ -86,9 +87,10 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
   2 700 + 95 × systèmes. **Carburant** d'un aller : Σ n × `fuel` × distance / 35 000 ×
   (%vitesse / 100 + 1)², aller et retour payés au départ.
 - **Places de flotte** : `fleet.base_slots` + Informatique.
-- **Bases pirates** (`pirate_bases`) : 4 bases ; composition calculée à l'arrivée (points
-  d'économie × `strength`, budget comme les raids, moitié vaisseaux, moitié défenses,
-  graine de la base et de sa génération) ; technos pirates des raids ; stock = `stock_hours`
+- **Bases pirates** (`pirate_bases`) : 4 bases ; unités d'une valeur de `defense_hours` de ta
+  production (×1, plancher `min_budget`), calculées à l'arrivée ; **doctrine** tirée à chaque
+  génération (part de vaisseaux 20, 50 ou 80 %, une partie des types débloqués) : deux
+  générations ne se ressemblent pas, d'où l'espionnage ; technos pirates des raids ; stock = `stock_hours`
   de ta production, remplissage en `refill_hours`. Attaque gagnée : pillage
   (`loot_share`, dans la limite de la soute), **base détruite**, remplacée après
   `respawn_hours` (nouvelle génération, stock plein). Attaque perdue ou nulle : les
@@ -104,4 +106,5 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
   d'envoi (vaisseaux, vitesse ou durée d'abri, durée, carburant, soute, refus en clair).
 - **Persistance** : table `pirate_bases` (schéma v9), événement `fleet_mission`,
   sauvegarde v9. **Notifications** : arrivée et retour.
-- **Tests** : `missions_test.dart`.
+- **Tests** : `missions_test.dart` ; équilibre mesuré et figé dans `test/balance/`
+  (flotte nécessaire plus chère que la base, gain net positif avec la bonne flotte).
