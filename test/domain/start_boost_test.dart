@@ -34,9 +34,7 @@ void main() {
     final s = game(planet(resources: Resources.zero));
     final r = advance(s, t0.add(const Duration(hours: 1)), rules).state;
     expect(r.planet.resources.metal, closeTo(30 * boost.factor(0), 1e-6));
-    final big = game(
-      planet(levels: {BuildingKind.metalMine: 12, BuildingKind.crystalMine: 10}),
-    );
+    final big = game(planet(levels: {BuildingKind.metalMine: 12, BuildingKind.crystalMine: 10}));
     expect(big.modifiers(data).productionFactor, lessThan(s.modifiers(data).productionFactor));
   });
 }

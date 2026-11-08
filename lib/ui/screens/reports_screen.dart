@@ -147,10 +147,7 @@ class _StoryLogList extends StatelessWidget {
         content: const Text('Les événements passés disparaissent ; les effets en cours restent.'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Non')),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Effacer'),
-          ),
+          FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('Effacer')),
         ],
       ),
     );
