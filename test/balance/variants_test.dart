@@ -25,11 +25,13 @@ GameData variant(void Function(Map<String, dynamic> m) edit) {
 
 void main() {
   test('variantes du coup de pouce', () {
-    for (final (extra, fade) in [(3, 100), (3, 300), (2, 300), (2, 500), (3, 500), (4, 400)]) {
+    // Sans événements (une tempête solaire fausse la mesure de baisse) ; x1 = référence.
+    for (final (extra, fade) in [(0, 100), (3, 100), (3, 300), (2, 300), (2, 500), (3, 1000)]) {
       final run = Run(
         'boost x${extra + 1}/$fade',
         variant((m) {
           m['start_boost'] = {'extra': extra, 'fade_points': fade};
+          (m['story_events'] as Map<String, dynamic>)['catalog'] = <String, dynamic>{};
         }),
       )..play(verbose: false);
       final p = run.production;
@@ -40,6 +42,60 @@ void main() {
         '|actions_j1=${run.actionsByDay[0]}|actions_j2=${run.actionsByDay[1]}'
         '|actions_j3=${run.actionsByDay[2]}|actions_j4_7=${[3, 4, 5, 6].map((d) => run.actionsByDay[d] ?? 0).join('/')}',
       );
+    }
+  });
+
+  test('bases indexées sur la production (proposition)', () {
+    // Défenses = defense_hours × production horaire (×1), stock = stock_hours × production :
+    // le rapport défense / butin reste constant toute la partie.
+    for (final days in [3, 7, 14]) {
+      final run = Run('prod', variant((_) {}))..play(days: days, verbose: false);
+      final s = run.s;
+      final data = run.data;
+      final rules = run.rules;
+      final rate = rules.hourlyProduction(s.planet, s.research, s.modifiers(data));
+      final perHour = rate.metal + rate.crystal + rate.deuterium;
+      final eco = economyPoints(s, rules);
+      for (final (i, (name, stockHours, defenseHours)) in [
+        ('Kessa', 6.0, 1.8),
+        ('Croc', 12.0, 4.8),
+        ('Ulvar', 24.0, 12.0),
+        ('Citadelle', 48.0, 28.8),
+      ].indexed) {
+        final strength = defenseHours * perHour / (eco * 1000);
+        final units = pirateBaseUnits(eco, strength, data, i);
+        final side = CombatSide(units: units, tech: baseTech(s, rules));
+        var n = 2;
+        double wins = 0;
+        double losses = 0;
+        double debris = 0;
+        while (n < 5000) {
+          wins = 0;
+          losses = 0;
+          debris = 0;
+          for (var k = 0; k < 40; k++) {
+            final r = simulateCombat(
+              data,
+              CombatSide(units: {UnitKind.lightFighter: n}, tech: s.research),
+              side,
+              math.Random(k),
+            );
+            if (r.winner == CombatWinner.attacker) wins++;
+            losses += fleetValue(r.attackerLosses, data) / 40;
+            final d = combatDebris(r, data);
+            debris += (d.metal + d.crystal) / 40;
+          }
+          if (wins / 40 >= 0.9) break;
+          n = (n * 1.25).ceil();
+        }
+        final loot = stockHours * perHour * data.pirateBases.lootShare;
+        final net = loot + debris - losses;
+        out(
+          'base_prod|j$days|$name|prod_h=${r0(perHour)}|unites=${r0(fleetValue(units, data))}'
+          '|chasseurs=$n|pertes=${r0(losses)}|butin=${r0(loot)}|debris=${r0(debris)}'
+          '|net=${r0(net)}|net_en_h_prod=${(net / perHour).toStringAsFixed(1)}',
+        );
+      }
     }
   });
 
