@@ -44,6 +44,21 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
 7. **Navigation** : un onglet **Chantier** (sections Défense et Flotte) remplace Défense ;
    Debug sort de la barre, accessible depuis le hero.
 
+## V3b : décisions
+
+- **Technos** : Réacteur à combustion (+10 %/niv.), Réacteur à impulsion (+20 %/niv.),
+  Propulsion hyperespace (+30 %/niv.), Espionnage ; prérequis des vaisseaux selon OGame.
+  Nouveau vaisseau : **sonde d'espionnage**.
+- **Trajets** : formule OGame (distance, vitesse du plus lent, vitesse réglable de 10 à
+  100 %) × `fleet.flight_factor` = **×3** (rythme idle : ~1 h aller-retour) ; carburant
+  (deutérium) payé au départ pour l'aller et le retour.
+- **4 bases pirates** à 2 à 6 systèmes, force croissante indexée sur tes points, stock en
+  heures de ta production, régénération (stock, défenses après 12 h, base détruite remplacée
+  après 24 h).
+- **Missions** : attaque, espionnage, recyclage d'un champ de débris de base, **mise à
+  l'abri** (durée au choix) ; rappel en route ; places de flotte = 1 + Informatique.
+- **5ᵉ onglet « Flotte »**.
+
 ## V3a (implémentée)
 
 - **Vaisseaux** constructibles au chantier comme les défenses (lots, file d'attente du Chef
