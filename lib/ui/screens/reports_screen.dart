@@ -178,7 +178,10 @@ class _ClearButton extends StatelessWidget {
               title: Text(question),
               content: Text(detail),
               actions: [
-                TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Non')),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Non'),
+                ),
                 FilledButton(
                   onPressed: () => Navigator.pop(context, true),
                   child: const Text('Effacer'),

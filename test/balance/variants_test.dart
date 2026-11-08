@@ -16,8 +16,9 @@ import 'bot.dart';
 
 /// Config réelle avec des clés remplacées.
 GameData variant(void Function(Map<String, dynamic> m) edit) {
-  final m = (jsonDecode(jsonEncode(loadYaml(File(gameDataAsset).readAsStringSync())))
-      as Map<String, dynamic>);
+  final m =
+      (jsonDecode(jsonEncode(loadYaml(File(gameDataAsset).readAsStringSync())))
+          as Map<String, dynamic>);
   edit(m);
   return GameData.fromMap(m);
 }
@@ -25,9 +26,12 @@ GameData variant(void Function(Map<String, dynamic> m) edit) {
 void main() {
   test('variantes du coup de pouce', () {
     for (final (extra, fade) in [(3, 100), (3, 300), (2, 300), (2, 500), (3, 500), (4, 400)]) {
-      final run = Run('boost x${extra + 1}/$fade', variant((m) {
-        m['start_boost'] = {'extra': extra, 'fade_points': fade};
-      }))..play(verbose: false);
+      final run = Run(
+        'boost x${extra + 1}/$fade',
+        variant((m) {
+          m['start_boost'] = {'extra': extra, 'fade_points': fade};
+        }),
+      )..play(verbose: false);
       final p = run.production;
       out(
         'boost|x${extra + 1}|fade=$fade|baisse_max_6h=${(run.worstDrop * 100).round()}%'

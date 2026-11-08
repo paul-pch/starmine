@@ -85,7 +85,6 @@ Map<UnitKind, int> pirateFleet(double playerPoints, GameData data, math.Random r
       if (playerPoints >= e.value) e.key,
   ];
   final weights = [for (final _ in warships) 0.5 + random.nextDouble()];
-  final weightSum = weights.fold(0.0, (a, b) => a + b);
   final combatBudget = budget * (1 - cfg.cargoShare);
 
   final fleet = allocateBudget(combatBudget, warships, weights, data);

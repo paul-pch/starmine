@@ -82,12 +82,7 @@ bool malusActive(GameState s, GameData data) =>
 /// Tirage : sens positif ou négatif à parts égales (les choix comptent comme positifs ;
 /// positif forcé si un malus est en cours), puis un événement éligible de ce sens. Repli
 /// sur l'autre sens si aucun n'est éligible.
-StoryEventSpec? drawStory(
-  GameState s,
-  GameData data,
-  math.Random random, {
-  String? exclude,
-}) {
+StoryEventSpec? drawStory(GameState s, GameData data, math.Random random, {String? exclude}) {
   final roll = random.nextDouble();
   final positive = roll < 0.5 || malusActive(s, data);
   final eligible = [
