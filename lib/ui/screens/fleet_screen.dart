@@ -108,10 +108,7 @@ class _MissionCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              [missionName(m.kind), ?target].join(' · '),
-              style: theme.textTheme.titleSmall,
-            ),
+            Text([missionName(m.kind), ?target].join(' · '), style: theme.textTheme.titleSmall),
             Text(
               m.returning ? 'Retour dans $left' : 'Arrivée dans $left',
               style: mono(theme.textTheme.bodySmall),
@@ -184,8 +181,7 @@ class _BaseCard extends StatelessWidget {
                 Text(u.isEmpty ? 'Aucun vaisseau' : _units(u, data), style: secondary),
               if (spy.defenses case final u?)
                 Text(u.isEmpty ? 'Aucune défense' : _units(u, data), style: secondary),
-              if (spy.ships == null)
-                Text('Flotte inconnue (Espionnage 2)', style: secondary),
+              if (spy.ships == null) Text('Flotte inconnue (Espionnage 2)', style: secondary),
             ],
             Wrap(
               alignment: WrapAlignment.end,
@@ -223,12 +219,7 @@ class _BaseCard extends StatelessWidget {
 
 /// Feuille d'envoi : vaisseaux, vitesse (ou durée d'abri), durée, carburant, soute.
 class SendSheet extends StatefulWidget {
-  const SendSheet({
-    super.key,
-    required this.controller,
-    required this.kind,
-    required this.target,
-  });
+  const SendSheet({super.key, required this.controller, required this.kind, required this.target});
 
   final GameController controller;
   final MissionKind kind;
@@ -288,15 +279,7 @@ class _SendSheetState extends State<SendSheet> {
     final state = c.state;
     final shelter = widget.kind == MissionKind.shelter;
     final preview = missionPreview(state, widget.kind, widget.target, _ships, _speed, c.rules);
-    final block = checkMission(
-      state,
-      widget.kind,
-      widget.target,
-      _ships,
-      _speed,
-      c.now(),
-      c.rules,
-    );
+    final block = checkMission(state, widget.kind, widget.target, _ships, _speed, c.now(), c.rules);
     final title = [
       missionName(widget.kind),
       if (widget.target case final t?) data.pirateBases.list[t].name,

@@ -165,7 +165,9 @@ Resources baseStock(GameState s, PirateBase b, DateTime at, Rules rules) {
   final rate = rules.hourlyProduction(s.planet, s.research, s.modifiers(rules.data));
   final hours = at.difference(b.stockAt).inMilliseconds / Duration.millisecondsPerHour;
   final fill = math.min(1.0, b.stockFraction + hours * rules.speed / cfg.refillHours);
-  return rate.map((_, v) => (math.max(0.0, v / rules.speed) * spec.stockHours * fill).floorToDouble());
+  return rate.map(
+    (_, v) => (math.max(0.0, v / rules.speed) * spec.stockHours * fill).floorToDouble(),
+  );
 }
 
 /// Technos des pirates d'une base : les tiennes moins le décalage des raids.
@@ -200,8 +202,8 @@ Duration flightDuration(
 ) {
   final v = fleetSpeed(ships, tech, rules.data);
   if (v <= 0) return Duration.zero;
-  final seconds = (10 + 35000 / speedPercent * math.sqrt(distance * 10 / v)) *
-      rules.data.fleet.flightFactor;
+  final seconds =
+      (10 + 35000 / speedPercent * math.sqrt(distance * 10 / v)) * rules.data.fleet.flightFactor;
   return Duration(milliseconds: (seconds * 1000 / rules.speed).round());
 }
 
@@ -326,9 +328,7 @@ MissionBlock? checkMission(
   return (
     state: s.copyWith(
       planet: p.copyWith(
-        units: {
-          for (final k in UnitKind.values) k: p.count(k) - (selected[k] ?? 0),
-        },
+        units: {for (final k in UnitKind.values) k: p.count(k) - (selected[k] ?? 0)},
         resources: p.resources - Resources(deuterium: preview.fuel),
       ),
       pending: [...s.pending, mission],

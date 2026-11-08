@@ -20,7 +20,10 @@ void main() {
     TechLevels research = const {},
     Resources resources = fuel,
   }) => ensureBases(
-    game(planet(units: units, resources: resources), research: research),
+    game(
+      planet(units: units, resources: resources),
+      research: research,
+    ),
     t0,
     rules,
     seed: 3,
@@ -58,7 +61,10 @@ void main() {
     final lf = {UnitKind.lightFighter: 1};
     final seconds = (10 + 35000 / 100 * math.sqrt(d * 10 / 12500)) * 3;
     expect(flightDuration(lf, d, 100, const {}, rules).inMilliseconds, (seconds * 1000).round());
-    expect(unitSpeed(UnitKind.lightFighter, {TechKind.combustion: 2}, gameData), closeTo(15000, 1e-6));
+    expect(
+      unitSpeed(UnitKind.lightFighter, {TechKind.combustion: 2}, gameData),
+      closeTo(15000, 1e-6),
+    );
     final mixed = {UnitKind.lightFighter: 1, UnitKind.recycler: 1};
     expect(fleetSpeed(mixed, const {}, gameData), 2000);
     expect(
@@ -75,7 +81,14 @@ void main() {
     final out = send(s, MissionKind.attack, 0, {UnitKind.lightFighter: 4});
     expect(out.block, isNull);
     expect(out.state.planet.count(UnitKind.lightFighter), 6);
-    final preview = missionPreview(s, MissionKind.attack, 0, {UnitKind.lightFighter: 4}, 100, rules);
+    final preview = missionPreview(
+      s,
+      MissionKind.attack,
+      0,
+      {UnitKind.lightFighter: 4},
+      100,
+      rules,
+    );
     expect(out.state.planet.resources.deuterium, fuel.deuterium - preview.fuel);
     // Informatique 0 : une seule place.
     final again = sendMission(
@@ -90,7 +103,10 @@ void main() {
       seed: 2,
     );
     expect(again.block, MissionBlock.noSlot);
-    expect(send(s, MissionKind.attack, 0, {UnitKind.lightFighter: 11}).block, MissionBlock.notEnoughShips);
+    expect(
+      send(s, MissionKind.attack, 0, {UnitKind.lightFighter: 11}).block,
+      MissionBlock.notEnoughShips,
+    );
     final dry = world(units: {UnitKind.lightFighter: 10}, resources: Resources.zero);
     expect(send(dry, MissionKind.attack, 0, {UnitKind.lightFighter: 4}).block, MissionBlock.noFuel);
   });
@@ -121,10 +137,7 @@ void main() {
 
   test('espionnage : détail selon la technologie', () {
     GameState spyWith(int level) {
-      final s = world(
-        units: {UnitKind.espionageProbe: 1},
-        research: {TechKind.espionage: level},
-      );
+      final s = world(units: {UnitKind.espionageProbe: 1}, research: {TechKind.espionage: level});
       final out = send(s, MissionKind.spy, 1, {UnitKind.espionageProbe: 1});
       expect(out.block, isNull);
       return advance(out.state, missions(out.state).single.dueAt, rules).state;
@@ -138,10 +151,7 @@ void main() {
     expect(high.defenses, isNotNull);
     expect(high.tech, isNotNull);
     final s = world(units: {UnitKind.lightFighter: 1, UnitKind.espionageProbe: 1});
-    expect(
-      send(s, MissionKind.spy, 1, {UnitKind.lightFighter: 1}).block,
-      MissionBlock.noProbe,
-    );
+    expect(send(s, MissionKind.spy, 1, {UnitKind.lightFighter: 1}).block, MissionBlock.noProbe);
   });
 
   test('rappel : demi-tour, retour en autant de temps que l’aller parcouru', () {
