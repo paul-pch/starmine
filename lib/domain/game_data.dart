@@ -464,6 +464,18 @@ class StartConditions {
   final int tempSpread;
 }
 
+/// Coup de pouce de départ (section `start_boost`) : production × (1 + extra × max(0,
+/// 1 − points / fadePoints)).
+class StartBoost {
+  const StartBoost({this.extra = 0, this.fadePoints = 1});
+
+  final double extra;
+  final double fadePoints;
+
+  /// Multiplicateur de production pour [points] d'économie et de recherche.
+  double factor(double points) => 1 + extra * (1 - points / fadePoints).clamp(0.0, 1.0);
+}
+
 /// Paramètres des raids pirates (section `pirates` du YAML).
 class PirateConfig {
   const PirateConfig({
@@ -519,6 +531,7 @@ class GameData {
     Map<OfficerKind, OfficerSpec> officers = const {},
     this.counterNames = const {},
     this.story = const StoryConfig(),
+    this.startBoost = const StartBoost(),
   }) : officers = Map.unmodifiable(officers),
        units = Map.unmodifiable(units),
        buildings = Map.unmodifiable(buildings),
@@ -557,6 +570,9 @@ class GameData {
   /// Événements ponctuels (spec 14).
   final StoryConfig story;
 
+  /// Coup de pouce de production en début de partie (spec 02).
+  final StartBoost startBoost;
+
   UnitSpec unit(UnitKind kind) => units[kind]!;
 
   BuildingSpec operator [](BuildingKind kind) => buildings[kind]!;
@@ -582,6 +598,7 @@ class GameData {
     final officers = _optMap(map, 'officers') ?? const {};
     final counters = _optMap(map, 'counters') ?? const {};
     final story = _optMap(map, 'story_events');
+    final boost = _optMap(map, 'start_boost');
     final interval = _map(pirates, 'interval_hours');
     final strength = _map(pirates, 'strength');
     Map<UnitKind, double> ships(String key) => {
@@ -649,6 +666,9 @@ class GameData {
       },
       counterNames: {for (final e in counters.entries) _counter(e.key): _string(counters, e.key)},
       story: story == null ? const StoryConfig() : _story(story),
+      startBoost: boost == null
+          ? const StartBoost()
+          : StartBoost(extra: _num(boost, 'extra'), fadePoints: _num(boost, 'fade_points')),
     );
   }
 

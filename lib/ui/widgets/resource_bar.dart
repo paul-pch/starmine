@@ -63,7 +63,8 @@ class ResourceBar extends StatelessWidget {
     final state = controller.interpolated(now);
     final rules = controller.rules;
     final total = controller.hourlyRate(state)[kind];
-    final base = controller.data.formulas.baseProductionPerHour[kind] * rules.speed;
+    final boost = state.modifiers(controller.data).productionFactor;
+    final base = controller.data.formulas.baseProductionPerHour[kind] * rules.speed * boost;
     final cap = rules.capacity(state.planet.levels)[kind];
     return _showSheet(
       context,
@@ -74,7 +75,9 @@ class ResourceBar extends StatelessWidget {
         _Row('Production de base', '${_signed(base)}/h'),
         _Row('Mines et consommations', '${_signed(total - base)}/h'),
         _Row('Total', '${_signed(total)}/h'),
+        if (boost > 1) _Row('Coup de pouce de départ', '×${boost.toStringAsFixed(1)}'),
       ],
+      help: boost > 1 ? _boostHelp : null,
     );
   }
 
@@ -132,6 +135,11 @@ class ResourceBar extends StatelessWidget {
     },
   );
 }
+
+const _boostHelp =
+    'Coup de pouce de départ : la production de base et des mines est multipliée en début '
+    'de partie. Le bonus diminue à mesure que ton économie et ta recherche progressent, '
+    'puis disparaît.';
 
 String _signed(double value) => '${value > 0 ? '+' : ''}${fmtAmount(value)}';
 

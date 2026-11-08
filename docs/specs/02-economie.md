@@ -11,6 +11,11 @@ Produire, stocker et consommer les ressources ; c'est la boucle de base du jeu.
 - **Production horaire** (vitesse comprise) :
   `base + mines × facteur d'énergie × (1 + bonus Plasma + Géologue) − consommations`
   (Géologue : spec 12).
+- **Coup de pouce de départ** (`start_boost`) : production de base et des mines (pas les
+  consommations) × `1 + extra × max(0, 1 − points / fade_points)`, points d'économie et de
+  recherche (spec 07). ×4 au départ, disparaît à 100 points : le début de partie offre plus
+  d'actions, la suite garde le rythme OGame. Les objectifs de départ récompensés viendront
+  avec la narration.
   - Mine de niveau N : `coefficient × N × 1.1^N`, multiplié par le réglage de production.
   - Deutérium : × `(1.44 − 0.004 × Tmax)` ; une planète froide produit plus.
   - La **production de base** ne dépend ni de l'énergie ni du réglage.

@@ -24,6 +24,10 @@ categories:
     heavy: Lourdes
     shields: Boucliers
 
+# Coup de pouce de départ : production (base et mines) × (1 + extra × max(0, 1 − points /
+# fade_points)), points d'économie et de recherche. ×4 au départ, disparaît à 100 points.
+start_boost: { extra: 3, fade_points: 100 }
+
 formulas:
   # N × growth^N, utilisé par la production, les consommations et l'énergie.
   growth: 1.1

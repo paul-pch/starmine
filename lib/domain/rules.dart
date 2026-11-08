@@ -20,6 +20,7 @@ class Modifiers {
     this.shipyardQueue = 0,
     this.mineByResource = Resources.zero,
     this.energyFactor = 1,
+    this.productionFactor = 1,
   });
 
   static const none = Modifiers();
@@ -46,6 +47,10 @@ class Modifiers {
 
   /// Effets d'événements : multiplie l'énergie produite.
   final double energyFactor;
+
+  /// Coup de pouce de départ : multiplie la production (base et mines), pas les
+  /// consommations.
+  final double productionFactor;
 }
 
 /// Bilan d'énergie instantané de la planète.
@@ -171,7 +176,7 @@ class Rules {
       }
     }
     final boosted = Resources.of((k) => mines[k] * factor * (1 + bonus[k]));
-    return (_f.baseProductionPerHour + boosted - consumption) * speed;
+    return ((_f.baseProductionPerHour + boosted) * mods.productionFactor - consumption) * speed;
   }
 
   /// Capacité d'un hangar de niveau N : base × floor(multiplier × e^(num × N / den)).

@@ -124,6 +124,7 @@ class GameState {
       shipyardQueue: extra[Slot.shipyard]!.round(),
       mineByResource: byResource,
       energyFactor: math.max(0, energy),
+      productionFactor: data.startBoost.factor(economyPoints(this, Rules(data))),
     );
   }
 
