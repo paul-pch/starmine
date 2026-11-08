@@ -95,10 +95,21 @@ class _StoryLogList extends StatelessWidget {
         final log = controller.storyLog;
         if (log.isEmpty) return const Center(child: Text('Aucun événement pour l’instant'));
         return ListView.separated(
-          itemCount: log.length,
+          itemCount: log.length + 1,
           separatorBuilder: (_, _) => const Divider(height: 1),
-          itemBuilder: (context, i) {
-            final o = log[i];
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Align(
+                alignment: Alignment.centerRight,
+                child: TextButton.icon(
+                  style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+                  onPressed: () => _clear(context),
+                  icon: const Icon(Icons.delete_sweep_outlined),
+                  label: const Text('Effacer le journal'),
+                ),
+              );
+            }
+            final o = log[index - 1];
             final (title, body) = storyText(o, controller.data);
             final at = o.at.toLocal();
             String two(int n) => n.toString().padLeft(2, '0');
@@ -126,5 +137,23 @@ class _StoryLogList extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> _clear(BuildContext context) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Effacer le journal ?'),
+        content: const Text('Les événements passés disparaissent ; les effets en cours restent.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Non')),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Effacer'),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) await controller.clearStoryLog();
   }
 }

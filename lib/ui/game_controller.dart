@@ -184,6 +184,13 @@ class GameController extends ChangeNotifier {
   int get storyCount => _storyCount;
   var _storyCount = 0;
 
+  /// Efface le journal des événements (les effets en cours ne changent pas).
+  Future<void> clearStoryLog() => _serialized(() async {
+    await _repo.clearStoryLog();
+    _storyLog = [];
+    notifyListeners();
+  });
+
   /// Choix proposé au joueur, en attente de réponse.
   StoryEventSpec? get pendingChoice => story.pendingChoice(state, data);
 

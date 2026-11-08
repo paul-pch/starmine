@@ -264,6 +264,8 @@ class GameRepository {
     RaidDetected() || RaidArrival() || StoryEvent() => e.dueAt,
   };
 
+  Future<void> clearStoryLog() => _db.delete(_db.storyLog).go();
+
   /// Journal des événements ponctuels, les plus récents d'abord.
   Future<List<StoryOutcome>> loadStoryLog({int limit = 50}) async {
     final rows =

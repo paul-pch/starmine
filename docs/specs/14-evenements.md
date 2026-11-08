@@ -67,7 +67,7 @@ Section `story_events` : `interval_hours`, `answer_hours`, `catalog` (par évén
 - **Message** quand un événement survient app ouverte (« Décision attendue » avec accès à
   la feuille).
 - **Journal** : écran Rapports, onglet « Événements » (date, nom, choix ou défaut) ; tap →
-  texte et effets.
+  texte et effets ; « Effacer le journal » (confirmation ; les effets en cours restent).
 - **Debug** : « Événement maintenant ».
 
 ## Notifications
