@@ -94,11 +94,7 @@ class _Banner extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(
-              tooltip: 'Debug',
-              onPressed: onDebug,
-              icon: const Icon(Icons.tune_outlined),
-            ),
+            IconButton(tooltip: 'Debug', onPressed: onDebug, icon: const Icon(Icons.tune_outlined)),
             // Pastille : un officier attend d'être débloqué ou promu.
             IconButton(
               tooltip: officers > 0 ? 'Officiers, $officers disponibles' : 'Officiers',

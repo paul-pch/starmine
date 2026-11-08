@@ -688,10 +688,7 @@ class GameData {
           : StartBoost(extra: _num(boost, 'extra'), fadePoints: _num(boost, 'fade_points')),
       debris: debris == null
           ? const DebrisConfig()
-          : DebrisConfig(
-              share: _num(debris, 'share'),
-              collectHours: _num(debris, 'collect_hours'),
-            ),
+          : DebrisConfig(share: _num(debris, 'share'), collectHours: _num(debris, 'collect_hours')),
     );
   }
 

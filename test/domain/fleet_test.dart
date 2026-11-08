@@ -13,14 +13,8 @@ void main() {
   final rules = Rules(gameData);
   const rich = Resources(metal: 1e6, crystal: 1e6, deuterium: 1e6);
 
-  RaidArrival arrival(Map<UnitKind, int> fleet, {int seed = 1}) => RaidArrival(
-    id: 9,
-    planetId: 1,
-    dueAt: t0,
-    detectedAt: t0,
-    fleet: fleet,
-    seed: seed,
-  );
+  RaidArrival arrival(Map<UnitKind, int> fleet, {int seed = 1}) =>
+      RaidArrival(id: 9, planetId: 1, dueAt: t0, detectedAt: t0, fleet: fleet, seed: seed);
 
   test('vaisseaux constructibles au chantier, prérequis compris', () {
     final s = game(planet(levels: {BuildingKind.shipyard: 1}, resources: rich));
@@ -42,7 +36,8 @@ void main() {
   test('débris : 30 % du métal et du cristal des vaisseaux détruits, pas des défenses', () {
     final s = game(planet(units: {UnitKind.battleship: 20}));
     final step = resolveRaid(s, arrival({UnitKind.lightFighter: 10}), rules);
-    final lost = step.report!.attackerStart[UnitKind.lightFighter]! -
+    final lost =
+        step.report!.attackerStart[UnitKind.lightFighter]! -
         (step.report!.attackerLeft[UnitKind.lightFighter] ?? 0);
     expect(lost, greaterThan(0));
     final expected = Resources(metal: lost * 3000 * 0.3, crystal: lost * 1000 * 0.3);
@@ -57,16 +52,12 @@ void main() {
   });
 
   group('recyclage', () {
-    GameState withDebris(int recyclers, Resources debris) => game(
-      planet(units: {UnitKind.recycler: recyclers}).copyWith(debris: debris),
-    );
+    GameState withDebris(int recyclers, Resources debris) =>
+        game(planet(units: {UnitKind.recycler: recyclers}).copyWith(debris: debris));
 
     test('refus : sans débris, sans recycleur, mission déjà en cours', () {
       expect(checkRecycle(withDebris(2, Resources.zero), 1), RecycleBlock.noDebris);
-      expect(
-        checkRecycle(withDebris(0, const Resources(metal: 100)), 1),
-        RecycleBlock.noRecycler,
-      );
+      expect(checkRecycle(withDebris(0, const Resources(metal: 100)), 1), RecycleBlock.noRecycler);
       final s = withDebris(2, const Resources(metal: 100));
       final out = startRecycling(s, 1, t0, rules, eventId: 1);
       expect(checkRecycle(out.state, 1), RecycleBlock.busy);

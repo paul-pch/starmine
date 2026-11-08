@@ -278,7 +278,12 @@ _Step _apply(GameState s, GameEvent event, Rules rules) => switch (event) {
   RaidDetected() => _raid(detectRaid(s, event, rules)),
   RaidArrival() => _raid(resolveRaid(s, event, rules)),
   StoryEvent() => _story(applyStory(s, event, rules)),
-  RecycleMission() => (state: recycleReturn(s, event, rules), next: null, report: null, story: null),
+  RecycleMission() => (
+    state: recycleReturn(s, event, rules),
+    next: null,
+    report: null,
+    story: null,
+  ),
 };
 
 // --- Vérifications -----------------------------------------------------------
@@ -967,7 +972,10 @@ Resources recycleLoad(Resources debris, int recyclers, GameData data) {
   final total = debris.metal + debris.crystal;
   if (total <= capacity) return Resources(metal: debris.metal, crystal: debris.crystal);
   final k = capacity / total;
-  return Resources(metal: (debris.metal * k).floorToDouble(), crystal: (debris.crystal * k).floorToDouble());
+  return Resources(
+    metal: (debris.metal * k).floorToDouble(),
+    crystal: (debris.crystal * k).floorToDouble(),
+  );
 }
 
 /// Retour des recycleurs : chargement (au-delà du stockage possible, comme un

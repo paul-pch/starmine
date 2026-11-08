@@ -28,7 +28,7 @@ void main() {
       'Canon de Gauss',
     ]);
     expect(names(BuildingKind.roboticsFactory), ['Usine de nanites', 'Chantier spatial']);
-    expect(names(TechKind.armour), isEmpty);
+    expect(names(TechKind.armour), ['Chasseur lourd']);
     expect(gameData.unlockedBy(BuildingKind.researchLab), [
       for (final k in TechKind.values) gameData.tech(k),
     ]);

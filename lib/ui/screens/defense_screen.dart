@@ -37,12 +37,7 @@ class DefenseScreen extends StatelessWidget {
       header: Column(
         children: [
           DebrisCard(controller: controller, now: now),
-          InProgressCard(
-            controller: controller,
-            slot: Slot.shipyard,
-            now: now,
-            onTap: onOpenQueue,
-          ),
+          InProgressCard(controller: controller, slot: Slot.shipyard, now: now, onTap: onOpenQueue),
         ],
       ),
       categories: {...?data.categories['defense'], ...?data.categories['fleet']},
