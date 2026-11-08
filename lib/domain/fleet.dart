@@ -127,13 +127,9 @@ Map<UnitKind, int> pirateBaseUnits(double points, double strength, GameData data
       for (final e in available.entries)
         if (points >= e.value) e.key,
     ];
-    if (kinds.isEmpty) return;
     final weights = [for (final _ in kinds) 0.5 + random.nextDouble()];
-    final sum = weights.fold(0.0, (a, b) => a + b);
-    for (var i = 0; i < kinds.length; i++) {
-      final c = data.unit(kinds[i]).baseCost;
-      final n = (budget * share * weights[i] / sum / (c.metal + c.crystal + c.deuterium)).floor();
-      if (n > 0) units[kinds[i]] = (units[kinds[i]] ?? 0) + n;
+    for (final e in allocateBudget(budget * share, kinds, weights, data).entries) {
+      units[e.key] = (units[e.key] ?? 0) + e.value;
     }
   }
 

@@ -186,6 +186,13 @@ class GameController extends ChangeNotifier {
   int get storyCount => _storyCount;
   var _storyCount = 0;
 
+  /// Efface les rapports de combat (raids et attaques).
+  Future<void> clearReports() => _serialized(() async {
+    await _repo.clearReports();
+    _reports = [];
+    notifyListeners();
+  });
+
   /// Efface le journal des événements (les effets en cours ne changent pas).
   Future<void> clearStoryLog() => _serialized(() async {
     await _repo.clearStoryLog();

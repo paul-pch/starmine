@@ -51,10 +51,18 @@ class ReportsScreen extends StatelessWidget {
           return const Center(child: Text('Aucun raid pour l’instant'));
         }
         return ListView.separated(
-          itemCount: reports.length,
+          itemCount: reports.length + 1,
           separatorBuilder: (_, _) => const Divider(height: 1),
-          itemBuilder: (context, i) {
-            final r = reports[i].report;
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return _ClearButton(
+                label: 'Effacer les rapports',
+                question: 'Effacer les rapports ?',
+                detail: 'Les rapports de combat passés disparaissent.',
+                onConfirm: controller.clearReports,
+              );
+            }
+            final r = reports[index - 1].report;
             final at = r.at.toLocal();
             String two(int n) => n.toString().padLeft(2, '0');
             final scheme = Theme.of(context).colorScheme;
@@ -105,14 +113,11 @@ class _StoryLogList extends StatelessWidget {
           separatorBuilder: (_, _) => const Divider(height: 1),
           itemBuilder: (context, index) {
             if (index == 0) {
-              return Align(
-                alignment: Alignment.centerRight,
-                child: TextButton.icon(
-                  style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
-                  onPressed: () => _clear(context),
-                  icon: const Icon(Icons.delete_sweep_outlined),
-                  label: const Text('Effacer le journal'),
-                ),
+              return _ClearButton(
+                label: 'Effacer le journal',
+                question: 'Effacer le journal ?',
+                detail: 'Les événements passés disparaissent ; les effets en cours restent.',
+                onConfirm: controller.clearStoryLog,
               );
             }
             final o = log[index - 1];
@@ -144,19 +149,48 @@ class _StoryLogList extends StatelessWidget {
       },
     );
   }
+}
 
-  Future<void> _clear(BuildContext context) async {
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Effacer le journal ?'),
-        content: const Text('Les événements passés disparaissent ; les effets en cours restent.'),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Non')),
-          FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('Effacer')),
-        ],
+/// En tête des onglets Raids et Événements : même effacement, avec confirmation.
+class _ClearButton extends StatelessWidget {
+  const _ClearButton({
+    required this.label,
+    required this.question,
+    required this.detail,
+    required this.onConfirm,
+  });
+
+  final String label;
+  final String question;
+  final String detail;
+  final Future<void> Function() onConfirm;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton.icon(
+        style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+        onPressed: () async {
+          final ok = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(question),
+              content: Text(detail),
+              actions: [
+                TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Non')),
+                FilledButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Effacer'),
+                ),
+              ],
+            ),
+          );
+          if (ok == true) await onConfirm();
+        },
+        icon: const Icon(Icons.delete_sweep_outlined),
+        label: Text(label),
       ),
     );
-    if (ok == true) await controller.clearStoryLog();
   }
 }

@@ -80,7 +80,11 @@ Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
     'fleet': encodeUnits(event.fleet),
     'tech': encodeTech(event.tech),
   },
-  StoryEvent() => {'seed': event.seed, 'choice_key': ?event.choiceKey},
+  StoryEvent() => {
+    'seed': event.seed,
+    'choice_key': ?event.choiceKey,
+    'last_key': ?event.lastKey,
+  },
   RecycleMission() => {
     'started_at': event.startedAt.millisecondsSinceEpoch,
     'recyclers': event.recyclers,
@@ -287,6 +291,7 @@ GameEvent decodeEvent({
         dueAt: fromEpochMs(dueAtMs),
         seed: _int(payload, 'seed'),
         choiceKey: payload['choice_key'] as String?,
+        lastKey: payload['last_key'] as String?,
       );
     default:
       throw FormatException('Type d’événement inconnu : $type');

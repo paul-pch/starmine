@@ -174,12 +174,16 @@ class StoryEvent extends GameEvent {
     required super.dueAt,
     required this.seed,
     this.choiceKey,
+    this.lastKey,
   });
 
   final int seed;
 
   /// Choix en attente de réponse (clé du catalogue), sinon `null`.
   final String? choiceKey;
+
+  /// Événement précédent : il n'est pas retiré deux fois d'affilée.
+  final String? lastKey;
 }
 
 /// Recycleurs partis collecter le champ de débris (spec 15) : à [dueAt], ils rentrent avec

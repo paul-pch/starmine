@@ -43,6 +43,36 @@ TechLevels pirateTech(TechLevels player, PirateConfig cfg) => {
 
 double _total(Resources r) => r.metal + r.crystal + r.deuterium;
 
+/// Répartit [budget] entre [kinds] selon [weights], arrondi à l'unité inférieure ; le reste
+/// est dépensé en unités du type le moins cher, pour qu'un petit budget ne se perde pas en
+/// arrondis (une flotte ne vaut jamais moins qu'avec un seul type).
+Map<UnitKind, int> allocateBudget(
+  double budget,
+  List<UnitKind> kinds,
+  List<double> weights,
+  GameData data,
+) {
+  final units = <UnitKind, int>{};
+  if (kinds.isEmpty) return units;
+  final sum = weights.fold(0.0, (a, b) => a + b);
+  var spent = 0.0;
+  for (var i = 0; i < kinds.length; i++) {
+    final cost = _total(data.unit(kinds[i]).baseCost);
+    final n = (budget * weights[i] / sum / cost).floor();
+    if (n > 0) {
+      units[kinds[i]] = n;
+      spent += n * cost;
+    }
+  }
+  var cheapest = kinds.first;
+  for (final k in kinds) {
+    if (_total(data.unit(k).baseCost) < _total(data.unit(cheapest).baseCost)) cheapest = k;
+  }
+  final extra = ((budget - spent) / _total(data.unit(cheapest).baseCost)).floor();
+  if (extra > 0) units[cheapest] = (units[cheapest] ?? 0) + extra;
+  return units;
+}
+
 /// Composition d'une flotte pirate pour un joueur à [playerPoints] points.
 /// Budget = max(plancher, points × 1000 × force) ; une part va aux transporteurs.
 Map<UnitKind, int> pirateFleet(double playerPoints, GameData data, math.Random random) {
@@ -58,12 +88,7 @@ Map<UnitKind, int> pirateFleet(double playerPoints, GameData data, math.Random r
   final weightSum = weights.fold(0.0, (a, b) => a + b);
   final combatBudget = budget * (1 - cfg.cargoShare);
 
-  final fleet = <UnitKind, int>{};
-  for (var i = 0; i < warships.length; i++) {
-    final n = (combatBudget * weights[i] / weightSum / _total(data.unit(warships[i]).baseCost))
-        .floor();
-    if (n > 0) fleet[warships[i]] = n;
-  }
+  final fleet = allocateBudget(combatBudget, warships, weights, data);
   if (fleet.isEmpty) fleet[warships.first] = 1;
 
   UnitKind? cargo;

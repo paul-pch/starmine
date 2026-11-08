@@ -82,12 +82,17 @@ bool malusActive(GameState s, GameData data) =>
 /// Tirage : sens positif ou négatif à parts égales (les choix comptent comme positifs ;
 /// positif forcé si un malus est en cours), puis un événement éligible de ce sens. Repli
 /// sur l'autre sens si aucun n'est éligible.
-StoryEventSpec? drawStory(GameState s, GameData data, math.Random random) {
+StoryEventSpec? drawStory(
+  GameState s,
+  GameData data,
+  math.Random random, {
+  String? exclude,
+}) {
   final roll = random.nextDouble();
   final positive = roll < 0.5 || malusActive(s, data);
   final eligible = [
     for (final spec in data.story.catalog.values)
-      if (storyEligible(s, spec)) spec,
+      if (storyEligible(s, spec) && spec.key != exclude) spec,
   ];
   bool isPositive(StoryEventSpec e) => e.kind != StoryKind.malus;
   var pool = [
@@ -250,7 +255,14 @@ GameState applyStoryEffects(
 }
 
 /// Prochain événement de la chaîne, `story_events.interval_hours` après [after].
-StoryEvent nextStory(int id, int planetId, DateTime after, math.Random random, Rules rules) {
+StoryEvent nextStory(
+  int id,
+  int planetId,
+  DateTime after,
+  math.Random random,
+  Rules rules, {
+  String? lastKey,
+}) {
   final cfg = rules.data.story;
   final delay =
       cfg.intervalHoursMin + random.nextDouble() * (cfg.intervalHoursMax - cfg.intervalHoursMin);
@@ -259,6 +271,7 @@ StoryEvent nextStory(int id, int planetId, DateTime after, math.Random random, R
     planetId: planetId,
     dueAt: after.add(_hours(delay, rules)),
     seed: random.nextInt(1 << 31),
+    lastKey: lastKey,
   );
 }
 
@@ -274,7 +287,7 @@ StoryStep applyStory(GameState s, StoryEvent e, Rules rules) {
         : applyStoryEffects(s, spec, spec.options[spec.defaultOption].effects, e.dueAt, rules);
     return (
       state: state,
-      next: nextStory(e.id, e.planetId, e.dueAt, random, rules),
+      next: nextStory(e.id, e.planetId, e.dueAt, random, rules, lastKey: key),
       outcome: spec == null
           ? null
           : StoryOutcome(
@@ -285,9 +298,13 @@ StoryStep applyStory(GameState s, StoryEvent e, Rules rules) {
             ),
     );
   }
-  final spec = drawStory(s, data, random);
+  final spec = drawStory(s, data, random, exclude: e.lastKey);
   if (spec == null) {
-    return (state: s, next: nextStory(e.id, e.planetId, e.dueAt, random, rules), outcome: null);
+    return (
+      state: s,
+      next: nextStory(e.id, e.planetId, e.dueAt, random, rules, lastKey: e.lastKey),
+      outcome: null,
+    );
   }
   if (spec.kind == StoryKind.choice) {
     return (
@@ -298,13 +315,14 @@ StoryStep applyStory(GameState s, StoryEvent e, Rules rules) {
         dueAt: e.dueAt.add(_hours(data.story.answerHours, rules)),
         seed: random.nextInt(1 << 31),
         choiceKey: spec.key,
+        lastKey: spec.key,
       ),
       outcome: StoryOutcome(key: spec.key, at: e.dueAt, kind: StoryOutcomeKind.awaiting),
     );
   }
   return (
     state: applyStoryEffects(s, spec, spec.effects, e.dueAt, rules),
-    next: nextStory(e.id, e.planetId, e.dueAt, random, rules),
+    next: nextStory(e.id, e.planetId, e.dueAt, random, rules, lastKey: spec.key),
     outcome: StoryOutcome(key: spec.key, at: e.dueAt, kind: StoryOutcomeKind.happened),
   );
 }
@@ -325,7 +343,14 @@ StoryStep applyStory(GameState s, StoryEvent e, Rules rules) {
     return null;
   }
   final applied = applyStoryEffects(advanced, spec, spec.options[option].effects, now, rules);
-  final next = nextStory(pending.id, pending.planetId, now, math.Random(pending.seed), rules);
+  final next = nextStory(
+    pending.id,
+    pending.planetId,
+    now,
+    math.Random(pending.seed),
+    rules,
+    lastKey: spec.key,
+  );
   return (
     state: applied.copyWith(
       pending: [for (final p in applied.pending) p.id == pending.id ? next : p],
@@ -351,6 +376,12 @@ GameState ensureStoryScheduled(
 GameState storyNow(GameState s, DateTime now) {
   final e = pendingStory(s);
   if (e == null || e.choiceKey != null) return s;
-  final moved = StoryEvent(id: e.id, planetId: e.planetId, dueAt: now, seed: e.seed);
+  final moved = StoryEvent(
+    id: e.id,
+    planetId: e.planetId,
+    dueAt: now,
+    seed: e.seed,
+    lastKey: e.lastKey,
+  );
   return s.copyWith(pending: [for (final p in s.pending) p.id == e.id ? moved : p]);
 }
