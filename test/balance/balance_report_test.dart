@@ -12,9 +12,11 @@ import 'package:starmine/domain/officers.dart';
 import 'package:starmine/domain/raid.dart';
 import 'package:starmine/domain/resources.dart';
 import 'package:starmine/domain/rules.dart';
+import 'package:starmine/domain/story.dart';
 
 import '../domain/helpers.dart';
 
+// ignore: avoid_print
 void out(String s) => print('BALANCE|$s');
 
 String r0(double v) => v.round().toString();
@@ -196,7 +198,9 @@ class Run {
     for (final e in milestones.entries) {
       out('$label|jalon|${e.key}|${e.value.toStringAsFixed(1)}h');
     }
-    out('$label|actions_par_jour|${[for (var d = 0; d < days; d++) actionsByDay[d] ?? 0].join(',')}');
+    out(
+      '$label|actions_par_jour|${[for (var d = 0; d < days; d++) actionsByDay[d] ?? 0].join(',')}',
+    );
     out('$label|evenements|${stories.entries.map((e) => '${e.key}:${e.value}').join(',')}');
   }
 }
@@ -216,7 +220,9 @@ void main() {
         value += fleetValue(f, data) / 20;
         cargo += cargoCapacity(f, data) / 20;
       }
-      out('raid|eco=$pts|valeur=${r0(value)}|soute=${r0(cargo)}|lanceurs_equiv=${(value / 2000).toStringAsFixed(1)}');
+      out(
+        'raid|eco=$pts|valeur=${r0(value)}|soute=${r0(cargo)}|lanceurs_equiv=${(value / 2000).toStringAsFixed(1)}',
+      );
     }
     // Bases pirates : valeur des unités selon les points d'économie.
     for (final pts in [5, 20, 50, 100, 300, 1000]) {
@@ -239,12 +245,16 @@ void main() {
     // Officiers : prérequis du niveau 1 (coût cumulé, en points).
     for (final o in data.officers.values) {
       final reqs = o.levels.first.requires;
-      out('officier|${o.name}|niv1=${reqs.entries.map((e) => '${e.key.key}:${e.value}').join(',')}'
-          '|${o.levels.first.counters.entries.map((e) => '${e.key.key}:${e.value}').join(',')}');
+      out(
+        'officier|${o.name}|niv1=${reqs.entries.map((e) => '${e.key.key}:${e.value}').join(',')}'
+        '|${o.levels.first.counters.entries.map((e) => '${e.key.key}:${e.value}').join(',')}',
+      );
     }
     // Événements : effets exprimés en heures de production (×1).
     for (final e in data.story.catalog.values) {
-      out('evenement|${e.key}|${e.kind.name}|${e.effects.map((x) => '${x.type.name}:${x.value}:${x.hours}h').join(',')}');
+      out(
+        'evenement|${e.key}|${e.kind.name}|${e.effects.map((x) => '${x.type.name}:${x.value}:${x.hours}h').join(',')}',
+      );
     }
     expect(boosted.s.planet.level(BuildingKind.metalMine), greaterThan(0));
   });
