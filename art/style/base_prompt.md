@@ -29,8 +29,7 @@ Far-future high-tech industry in active use, with seamless composite panels, pol
   de planète.
 - **Roche grise pour l'instant** : l'utilisateur prévoit 3 déclinaisons de chaque image (froid,
   tempéré, chaud), après la mise au point sur la roche. Cela changera le catalogue de la spec 11.
-- **Modèle en test** : Qwen-Image-2.1, sous licence Qwen Research, limitée à la recherche et à
-  l'évaluation. Aucune image de ce modèle n'est publiée sans décision explicite de l'utilisateur.
+- **Modèle en test** : Qwen-Image-2.1.
 
 Les séries 01 et 02 ont utilisé des bases précédentes, conservées dans l'historique Git et dans le
 `run.json` de chaque série.

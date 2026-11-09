@@ -52,4 +52,4 @@ lumières.
 
 ## Retour de l'utilisateur
 
-`crystal_mine-4242` est sélectionnée, en recherche et évaluation (licence Qwen).
+`crystal_mine-4242` est sélectionnée.

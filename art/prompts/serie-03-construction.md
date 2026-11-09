@@ -56,7 +56,7 @@ décor terrestre.
 
 ## Retour de l'utilisateur
 
-Sélection provisoire, en recherche et évaluation (licence Qwen) ; rien n'entre dans `assets/` ni
+Sélection provisoire ; rien n'entre dans `assets/` ni
 `art/masters/` :
 
 - `shipyard-4242` : la fosse droite, « beaucoup mieux » que le cratère ;

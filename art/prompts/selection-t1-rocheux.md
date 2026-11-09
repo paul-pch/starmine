@@ -1,8 +1,6 @@
 # Sélection t1, roche grise
 
-Première version des 12 bâtiments, choisie par l'utilisateur. Sélection de travail en recherche et
-évaluation : Qwen-Image-2.1 est sous licence Qwen Research. Rien n'entre dans `assets/` ni dans
-`art/masters/` sans décision explicite de l'utilisateur, et rien n'est `validated` au registre.
+Première version des 12 bâtiments, choisie par l'utilisateur. Sélection de travail en recherche et évaluation.
 
 Images dans `~/ComfyUI/output/starmine_test/<série>/`, hors du dépôt. Seed et prompt complet dans le
 `run.json` de chaque série.

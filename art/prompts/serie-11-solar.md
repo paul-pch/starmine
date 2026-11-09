@@ -52,5 +52,5 @@ et la falaise garde le lien avec la roche.
 
 ## Retour de l'utilisateur
 
-`solar_plant-7777` est sélectionnée, en recherche et évaluation (licence Qwen). Plateau brun laissé
+`solar_plant-7777` est sélectionnée. Plateau brun laissé
 tel quel.

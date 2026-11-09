@@ -51,4 +51,4 @@ Hypothèse : le dôme vitré reprend la réussite de la série 01 dans la charte
 
 ## Retour de l'utilisateur
 
-`research_lab-7777` est sélectionnée, en recherche et évaluation (licence Qwen).
+`research_lab-7777` est sélectionnée.

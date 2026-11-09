@@ -227,8 +227,6 @@ Qwen-Image-2.1 et accepte sa licence de recherche pour ce test, sans rien publie
 
 Génération directe, sans base SDXL. `qwen_image_2.1_int8_convrot`, encodeur
 `qwen3vl_8b_int8_convrot`, 25 passes, cfg 1, `euler` / `simple`, réécriture de prompt désactivée.
-Licence : Qwen Research, usage limité à la recherche et à l'évaluation. Avec cfg 1, le négatif n'a
-probablement pas d'effet.
 
 Prompt :
 

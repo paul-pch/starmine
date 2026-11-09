@@ -46,4 +46,4 @@ Hypothèse : la paroi vitrée garde la famille des silos tout en distinguant le 
 
 ## Retour de l'utilisateur
 
-`crystal_storage-4242` est sélectionnée, en recherche et évaluation (licence Qwen).
+`crystal_storage-4242` est sélectionnée.

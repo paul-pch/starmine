@@ -52,4 +52,4 @@ Hypothèse : le site garde le lien avec la roche tout en montrant la mer.
 
 ## Retour de l'utilisateur
 
-`deuterium_synthesizer-4242` est sélectionnée, en recherche et évaluation (licence Qwen).
+`deuterium_synthesizer-4242` est sélectionnée.

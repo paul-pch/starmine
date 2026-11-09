@@ -9,9 +9,6 @@ Objectif : un prompt **précis**, c'est-à-dire qui donne le résultat voulu sur
 pas une image réussie par chance. Formats et registre : `docs/specs/11-visuels.md`.
 Seul l'utilisateur valide une image.
 
-**Licence** : Qwen-Image-2.1 est limité à la recherche et à l'évaluation. Rien produit avec ce
-modèle n'entre dans `assets/` ni dans `art/masters/` sans décision explicite de l'utilisateur.
-
 ## 1. Fiche
 
 Une image à mettre au point a une fiche, validée par l'utilisateur avant de générer :

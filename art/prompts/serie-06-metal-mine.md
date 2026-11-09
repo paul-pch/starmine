@@ -74,5 +74,5 @@ raccord.
 
 ## Retour de l'utilisateur
 
-`serie-08-metal-mine/metal_mine-4242` est sélectionnée, en recherche et évaluation (licence Qwen),
+`serie-08-metal-mine/metal_mine-4242` est sélectionnée, en recherche et évaluation,
 sans ajout de projecteurs.

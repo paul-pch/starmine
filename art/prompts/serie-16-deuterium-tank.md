@@ -29,4 +29,4 @@ Hypothèse : donner un repère de hauteur par rapport à la falaise agrandit les
 
 ## Retour de l'utilisateur
 
-`deuterium_tank-4242` est sélectionnée, en recherche et évaluation (licence Qwen).
+`deuterium_tank-4242` est sélectionnée.

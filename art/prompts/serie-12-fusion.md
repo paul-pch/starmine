@@ -49,5 +49,5 @@ debout (« upright »).
 
 ## Retour de l'utilisateur
 
-`fusion_reactor-4242` est sélectionnée, en recherche et évaluation (licence Qwen). L'anneau à plat
+`fusion_reactor-4242` est sélectionnée. L'anneau à plat
 est accepté.

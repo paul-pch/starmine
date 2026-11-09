@@ -37,9 +37,7 @@ Chaque case donne 4242 / 7777.
 
 ## Retour de l'utilisateur
 
-`robotics_factory-4242` de cette série remplace celle de la série 03 dans la sélection provisoire
-(recherche et évaluation, licence Qwen). Les voitures restent : elles ne se verront pas sur
-téléphone.
+`robotics_factory-4242` de cette série remplace celle de la série 03 dans la sélection provisoire. Les voitures restent : elles ne se verront pas sur téléphone.
 
 Sélection de la famille Construction : `serie-03-construction/shipyard-4242`,
 `serie-03-construction/nanite_factory-4242`, `serie-04-robotics/robotics_factory-4242`.

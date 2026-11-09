@@ -46,4 +46,4 @@ Hypothèse : montrer le produit stocké suffit à reconnaître un dépôt de mé
 
 ## Retour de l'utilisateur
 
-`metal_storage-4242` est sélectionnée, en recherche et évaluation (licence Qwen).
+`metal_storage-4242` est sélectionnée.
