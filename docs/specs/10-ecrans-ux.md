@@ -70,7 +70,8 @@ est dans la feuille de détail (un tap).
 
 - **Bâtiments** : cartes ; réglage de production dans la feuille de détail.
 - **Recherche** : cartes + étiquette « Palier N » (tap = explication).
-- **Défense** : cartes d'unités (× possédé, attaque / bouclier / coque) + feuille de quantité.
+- **Défense** : cartes d'unités (vignette de la défense ou du vaisseau, × possédé, attaque / bouclier /
+  coque) + feuille de quantité.
 - **File** : Construction, Recherche, Chantier. En cours : nom → niveau ou « 3 / 20 »,
   barre de progression, reste, heure de fin, Annuler (pas pour le chantier). Vide : message ;
   bloquée : cadenas rouge « Laboratoire / Chantier en agrandissement : impossible pendant

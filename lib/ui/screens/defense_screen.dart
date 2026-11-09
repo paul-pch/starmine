@@ -137,7 +137,7 @@ class _UnitCard extends StatelessWidget {
                 child: Row(
                   children: [
                     GameImage(
-                      path: VisualsScope.of(context).unit(unit),
+                      path: VisualsScope.of(context).unit(spec),
                       icon: ItemStyle.unitIcon,
                       width: 64,
                       radius: 10,

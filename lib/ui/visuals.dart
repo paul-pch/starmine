@@ -87,7 +87,9 @@ class Visuals {
     final TechKind tech => _resolve('research.${tech.key}'),
   };
 
-  String? unit(UnitKind kind) => _resolve('defense.${kind.key}');
+  /// Défense (`defense.<clé>`) ou vaisseau (`ship.<clé>`), sans climat.
+  String? unit(UnitSpec spec) =>
+      _resolve('${spec.defense ? 'defense' : 'ship'}.${spec.kind.key}');
 }
 
 /// Donne les [Visuals] de l'ambiance courante aux écrans.

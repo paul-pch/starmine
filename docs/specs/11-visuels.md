@@ -40,8 +40,9 @@ dans le code, alignement vérifié par un test.
 | `planet_hero` | `planet_hero.<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 3 |
 | `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 |
 
-Défenses et vaisseaux : images produites (série 58, charte `art/style/unit_prompt.md`) ; leur intégration
-dans l'UI reste à faire. Pas d'icône de ressource générée (vectorielles, spec 10).
+Défenses et vaisseaux : images produites (série 58, charte `art/style/unit_prompt.md`), affichées en vignette
+sur les cartes d'unités du chantier ; `Visuals.unit` choisit `defense.` ou `ship.` selon le champ `defense`
+du YAML. Pas d'icône de ressource générée (vectorielles, spec 10).
 
 ### Paliers de bâtiment
 

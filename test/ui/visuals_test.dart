@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:starmine/data/game_data_loader.dart';
 import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/ui/visuals.dart';
 
@@ -46,6 +49,16 @@ void main() {
     expect(const Visuals(assets: {t2}).building(mine, 25, temperate), t2);
     expect(const Visuals(assets: {t2}).building(mine, 1, temperate), isNull);
     expect(const Visuals().building(mine, 1, temperate), isNull);
+  });
+
+  test('unité : défense ou vaisseau selon le YAML', () {
+    final data = parseGameData(File(gameDataAsset).readAsStringSync());
+    const defense = 'assets/visuels/defense.rocket_launcher.webp';
+    const ship = 'assets/visuels/ship.small_cargo.webp';
+    const visuals = Visuals(assets: {defense, ship});
+    expect(visuals.unit(data.unit(UnitKind.rocketLauncher)), defense);
+    expect(visuals.unit(data.unit(UnitKind.smallCargo)), ship);
+    expect(visuals.unit(data.unit(UnitKind.cruiser)), isNull);
   });
 
   test('ambiance Sobre : aucune image', () {
