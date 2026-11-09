@@ -12,9 +12,10 @@ Mise au point d'un prompt et génération (ComfyUI, Qwen-Image-2.1) : skill `sta
 modèle est limité à la recherche et à l'évaluation : ses images ne passent pas par la boucle
 ci-dessous sans décision explicite de l'utilisateur.
 
-État actuel : 36 images t1 retenues (12 bâtiments × froid, tempéré, chaud), hors registre, listées dans
-`art/prompts/selection-t1-rocheux.md` et copiées en PNG dans
-`assets/visuels/buildings/<bâtiment>/t1_<temperate|cold|hot>.png`. Le jeu ne les charge pas encore.
+État actuel : 36 images t1 retenues (12 bâtiments × froid, tempéré, chaud), listées dans
+`art/prompts/selection-t1-rocheux.md` et inscrites au registre. Masters dans
+`art/masters/building.<bâtiment>.t1.<temperate|cold|hot>/v1.png`, WebP chargés par le jeu dans
+`assets/visuels/`.
 
 ## Avant de générer
 
@@ -35,10 +36,9 @@ ci-dessous sans décision explicite de l'utilisateur.
    - master PNG → `art/masters/<id>/v<N>.png` (Git LFS). Si la session ne peut pas
      télécharger l'image (réseau restreint) ou pousser l'objet LFS, demander à
      l'utilisateur de déposer / pousser le master, et continuer avec le reste ;
-   - WebP → `assets/visuels/<id>.webp` aux dimensions du format, qualité 80
-     (`python3` + Pillow : `Image.open(m).convert("RGB").resize(size, Image.LANCZOS)
-     .save(out, "WEBP", quality=80, method=6)`) ;
-   - entrée `validated`, `version` = N, chemins `master` / `build`.
+   - entrée `validated`, `version` = N, chemins `master` / `build` ;
+   - WebP → `assets/visuels/<id>.webp` aux dimensions du format, qualité 80 :
+     `python3 tool/export_visuals.py`.
 5. **Retouche d'une image validée** : nouvelle version N+1 (jamais d'écrasement du master) ;
    le WebP `build` est remplacé, l'ancienne version reste décrite dans `notes`.
 

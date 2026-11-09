@@ -188,10 +188,13 @@ class ItemCard extends StatelessWidget {
                 child: Row(
                   children: [
                     GameImage(
-                      path: VisualsScope.of(context).unlockable(item, level),
+                      path: VisualsScope.of(
+                        context,
+                      ).unlockable(item, level, facts.state.planet.tempMax),
                       icon: ItemStyle.icon(item),
                       width: 64,
                       radius: 10,
+                      grayed: item is BuildingKind && level == 0,
                     ),
                     const SizedBox(width: 12),
                     Expanded(

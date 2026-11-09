@@ -71,17 +71,19 @@ class Visuals {
 
   String? hero(int tempMax) => _resolve('planet_hero.${TemperatureBand.of(tempMax).name}');
 
-  /// Palier sans image validée : palier inférieur, sinon repli.
-  String? building(BuildingKind kind, int level) {
+  /// Image du climat de la planète. Palier sans image validée : palier inférieur du même
+  /// climat, sinon repli.
+  String? building(BuildingKind kind, int level, int tempMax) {
+    final band = TemperatureBand.of(tempMax).name;
     for (var t = buildingTier(kind, level); t >= 1; t--) {
-      final path = _resolve('building.${kind.key}.t$t');
+      final path = _resolve('building.${kind.key}.t$t.$band');
       if (path != null) return path;
     }
     return null;
   }
 
-  String? unlockable(Unlockable item, int level) => switch (item) {
-    final BuildingKind kind => building(kind, level),
+  String? unlockable(Unlockable item, int level, int tempMax) => switch (item) {
+    final BuildingKind kind => building(kind, level, tempMax),
     final TechKind tech => _resolve('research.${tech.key}'),
   };
 
@@ -113,9 +115,35 @@ class GameImage extends StatelessWidget {
     this.height,
     this.radius = 0,
     this.iconSize = 28,
+    this.grayed = false,
   });
 
+  /// Matrice de luminance : vignette d'un bâtiment pas encore construit.
+  static const _grayscale = ColorFilter.matrix([
+    0.2126,
+    0.7152,
+    0.0722,
+    0,
+    0,
+    0.2126,
+    0.7152,
+    0.0722,
+    0,
+    0,
+    0.2126,
+    0.7152,
+    0.0722,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+  ]);
+
   final String? path;
+  final bool grayed;
   final IconData icon;
   final double width;
   final double? height;
@@ -131,28 +159,31 @@ class GameImage extends StatelessWidget {
       ),
     );
     final asset = path;
+    final Widget image = asset == null
+        ? fallback
+        : Image.asset(
+            asset,
+            fit: BoxFit.cover,
+            gaplessPlayback: true,
+            excludeFromSemantics: true,
+            cacheWidth: (width * MediaQuery.devicePixelRatioOf(context)).round(),
+            errorBuilder: (_, _, _) => fallback,
+            frameBuilder: (_, child, frame, sync) => sync
+                ? child
+                : AnimatedOpacity(
+                    opacity: frame == null ? 0 : 1,
+                    duration: const Duration(milliseconds: 150),
+                    child: child,
+                  ),
+          );
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius),
       child: SizedBox(
         width: width,
         height: height ?? width,
-        child: asset == null
-            ? fallback
-            : Image.asset(
-                asset,
-                fit: BoxFit.cover,
-                gaplessPlayback: true,
-                excludeFromSemantics: true,
-                cacheWidth: (width * MediaQuery.devicePixelRatioOf(context)).round(),
-                errorBuilder: (_, _, _) => fallback,
-                frameBuilder: (_, child, frame, sync) => sync
-                    ? child
-                    : AnimatedOpacity(
-                        opacity: frame == null ? 0 : 1,
-                        duration: const Duration(milliseconds: 150),
-                        child: child,
-                      ),
-              ),
+        child: grayed && asset != null
+            ? ColorFiltered(colorFilter: _grayscale, child: image)
+            : image,
       ),
     );
   }

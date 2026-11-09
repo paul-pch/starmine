@@ -5,8 +5,13 @@ import 'package:starmine/ui/visuals.dart';
 
 void main() {
   const mine = BuildingKind.metalMine;
-  const t1 = 'assets/visuels/building.metal_mine.t1.webp';
-  const t2 = 'assets/visuels/building.metal_mine.t2.webp';
+  const temperate = 20;
+  const cold = -10;
+  const hot = 60;
+  const t1 = 'assets/visuels/building.metal_mine.t1.temperate.webp';
+  const t2 = 'assets/visuels/building.metal_mine.t2.temperate.webp';
+  const t1Cold = 'assets/visuels/building.metal_mine.t1.cold.webp';
+  const t1Hot = 'assets/visuels/building.metal_mine.t1.hot.webp';
 
   test('palier selon le niveau et les seuils', () {
     expect(buildingTier(mine, 0), 1);
@@ -24,17 +29,28 @@ void main() {
     expect(TemperatureBand.of(40), TemperatureBand.hot);
   });
 
+  test('image du climat de la planète', () {
+    const visuals = Visuals(assets: {t1, t1Cold, t1Hot});
+    expect(visuals.building(mine, 1, cold), t1Cold);
+    expect(visuals.building(mine, 1, temperate), t1);
+    expect(visuals.building(mine, 1, hot), t1Hot);
+  });
+
+  test('climat sans image : repli, jamais un autre climat', () {
+    expect(const Visuals(assets: {t1}).building(mine, 1, cold), isNull);
+  });
+
   test('palier sans image : palier inférieur, sinon repli', () {
     const visuals = Visuals(assets: {t1});
-    expect(visuals.building(mine, 25), t1);
-    expect(const Visuals(assets: {t2}).building(mine, 25), t2);
-    expect(const Visuals(assets: {t2}).building(mine, 1), isNull);
-    expect(const Visuals().building(mine, 1), isNull);
+    expect(visuals.building(mine, 25, temperate), t1);
+    expect(const Visuals(assets: {t2}).building(mine, 25, temperate), t2);
+    expect(const Visuals(assets: {t2}).building(mine, 1, temperate), isNull);
+    expect(const Visuals().building(mine, 1, temperate), isNull);
   });
 
   test('ambiance Sobre : aucune image', () {
     const visuals = Visuals(assets: {t1}, ambiance: Ambiance.plain);
-    expect(visuals.building(mine, 1), isNull);
+    expect(visuals.building(mine, 1, temperate), isNull);
   });
 
   test('ambiance inconnue : Équilibrée', () {
@@ -49,5 +65,19 @@ void main() {
     );
     expect(find.byIcon(Icons.public), findsOneWidget);
     expect(find.byType(Image), findsNothing);
+  });
+
+  testWidgets('vignette grisée : seulement avec une image', (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: GameImage(path: t1, icon: Icons.public, width: 64, grayed: true),
+      ),
+    );
+    expect(find.byType(ColorFiltered), findsOneWidget);
+
+    await tester.pumpWidget(
+      const MaterialApp(home: GameImage(path: null, icon: Icons.public, width: 64, grayed: true)),
+    );
+    expect(find.byType(ColorFiltered), findsNothing);
   });
 }

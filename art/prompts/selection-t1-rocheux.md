@@ -51,7 +51,8 @@ Travail bâtiment par bâtiment, décidé par l'utilisateur.
 | `shipyard` | froid | `serie-41-shipyard` | `d90-shipyard_cold-4242` | retenue |
 | `shipyard` | chaud | `serie-41-shipyard` | `d90-shipyard_hot-4242` | retenue |
 
-Copies dans le dépôt : `assets/visuels/buildings/<bâtiment>/t1_<temperate|cold|hot>.png`.
+Copies dans le dépôt : masters `art/masters/building.<bâtiment>.t1.<temperate|cold|hot>/v1.png`, WebP
+`assets/visuels/building.<bâtiment>.t1.<temperate|cold|hot>.webp`, entrées dans `art/registry.yaml`.
 
 Le deutérium froid précède la règle « seed t1 et départ depuis l'image validée » : il a été généré sans image
 de départ. Réglage des déclinaisons : `denoise` 0,90, retenu par l'utilisateur.
@@ -59,5 +60,5 @@ de départ. Réglage des déclinaisons : `denoise` 0,90, retenu par l'utilisateu
 ## Reste à faire
 
 - Paliers t2 et t3 : grandissent par ajouts d'éléments, pas par la taille seule.
-- Catalogue de la spec 11 à adapter aux 3 climats, puis registre et export WebP.
-- Licence : décider du modèle des images finales avant tout packaging.
+- Licence : décider du modèle des images finales avant toute release. Ces 36 images sont packagées
+  depuis l'intégration à l'APK, à la demande de l'utilisateur.
