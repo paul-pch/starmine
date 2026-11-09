@@ -54,3 +54,5 @@ et la falaise garde le lien avec la roche.
 
 `solar_plant-7777` est sélectionnée. Plateau brun laissé
 tel quel.
+
+Choix révisé ensuite : `solar_plant-4242` remplace 7777, car elle est plus centrée.

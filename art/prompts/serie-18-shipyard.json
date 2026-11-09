@@ -1,0 +1,25 @@
+{
+  "series": "serie-18-shipyard",
+  "seeds": [
+    4242,
+    7777
+  ],
+  "variants": [
+    {
+      "variant": "A"
+    },
+    {
+      "variant": "B",
+      "state": "Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor."
+    }
+  ],
+  "images": [
+    {
+      "id": "building.shipyard.t1",
+      "view": "High aerial view from a distance, with the whole shipyard visible inside the frame.",
+      "subject": "A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim.",
+      "detail": "A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow.",
+      "site": "The dock is cut into a plateau of dark neutral grey rock on a lifeless alien planet of bare rock."
+    }
+  ]
+}
