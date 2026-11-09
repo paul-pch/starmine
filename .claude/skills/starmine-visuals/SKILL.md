@@ -1,6 +1,6 @@
 ---
 name: starmine-visuals
-description: Produire et faire évoluer les images de Starmine avec Higgsfield (connecteur MCP) — générer un brouillon, le faire valider, exporter le WebP, tenir le registre art/registry.yaml. À utiliser pour toute nouvelle image, nouveau palier, retouche d'une image validée ou point d'avancement des visuels.
+description: Produire et faire évoluer les images de Starmine avec ComfyUI en local — générer un brouillon, le faire valider, exporter le WebP, tenir le registre art/registry.yaml. À utiliser pour toute nouvelle image, nouveau palier, retouche d'une image validée ou point d'avancement des visuels.
 ---
 
 # Visuels Starmine
@@ -8,19 +8,16 @@ description: Produire et faire évoluer les images de Starmine avec Higgsfield (
 Règles et formats : `docs/specs/11-visuels.md`. Intégration dans l'UI : skill `starmine-ui`.
 Style : **SF réaliste**. Seul l'utilisateur valide une image.
 
-Mise au point d'un prompt et essais locaux (ComfyUI, Qwen-Image-2.1) : skill `starmine-prompt`. Ce
+Mise au point d'un prompt et génération (ComfyUI, Qwen-Image-2.1) : skill `starmine-prompt`. Ce
 modèle est limité à la recherche et à l'évaluation : ses images ne passent pas par la boucle
-ci-dessous sans décision explicite de l'utilisateur. Le choix de l'outil de production reste ouvert ;
-tant qu'il n'est pas tranché, Higgsfield reste la référence de ce skill.
+ci-dessous sans décision explicite de l'utilisateur.
 
 ## Avant de générer
 
-- Vérifier que le connecteur Higgsfield est disponible dans la session. Sinon : le dire, et
-  rappeler l'ajout (claude.ai → Paramètres → Connecteurs → connecteur personnalisé,
-  `https://mcp.higgsfield.ai/mcp`). Ne pas contourner par un autre service.
+- Vérifier que ComfyUI répond sur `localhost:8188`. Sinon : le dire. Ne pas contourner par un
+  autre service.
 - Lire `art/style/base_prompt.md` et l'entrée du registre ; la créer en `todo` si absente.
-- Les générations consomment les crédits Higgsfield de l'utilisateur : annoncer le nombre
-  d'images avant un lot (> 4).
+- Annoncer le nombre d'images et le temps estimé avant un lot (> 4).
 
 ## Boucle d'une image
 
@@ -29,7 +26,7 @@ tant qu'il n'est pas tranché, Higgsfield reste la référence de ce skill.
 2. **Références** : images de `art/style/refs/` ; pour un palier N+1, l'image validée du
    palier N (`parent`) pour garder le même bâtiment, en plus grand / plus avancé.
 3. **Brouillon** : 2 à 4 propositions, montrées à l'utilisateur. Entrée `draft` avec
-   `job_id`, modèle, seed, prompt. Rien d'autre n'est commité.
+   `prompt_id`, modèle, seed, prompt. Rien d'autre n'est commité.
 4. **Validation** par l'utilisateur (explicite). Alors :
    - master PNG → `art/masters/<id>/v<N>.png` (Git LFS). Si la session ne peut pas
      télécharger l'image (réseau restreint) ou pousser l'objet LFS, demander à

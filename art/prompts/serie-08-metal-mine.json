@@ -1,0 +1,12 @@
+{
+  "series": "serie-08-metal-mine",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "building.metal_mine.t1",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouth.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips."
+    }
+  ]
+}

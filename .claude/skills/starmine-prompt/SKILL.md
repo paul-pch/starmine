@@ -30,40 +30,48 @@ critères:                    # 3 à 6, chacun vérifiable par réussi ou raté
 Si un mot peut désigner deux images différentes, poser la question : « mine » peut donner une
 carrière vide ou une installation, et seul l'utilisateur sait laquelle il veut.
 
+Les fiches se définissent **un bâtiment à la fois**, par des questions à réponses proposées. Quand
+l'utilisateur soumet ses réponses, sans autre validation : écrire le prompt, générer, vérifier les
+images en taille réelle, puis lui faire un retour avec les notes et la galerie.
+
 Pour une **série d'exploration** demandée par l'utilisateur, le fichier de série tient lieu de
 fiche ; les critères communs sont ceux de la section 4.
 
 ## 2. Prompt
 
-Le prompt est composé de `art/style/base_prompt.md` (point de vue, roche, charte), commun à toutes
-les images, et de deux champs propres à chaque image :
+Le prompt est composé de la charte `art/style/base_prompt.md`, commune aux images, et d'une fiche par
+bâtiment, définie avec l'utilisateur, dans le fichier de série :
 
+- `view`, `site`, `state` : valeurs par défaut dans la charte ; une image ou une variante peut y
+  déroger ;
 - `subject` : le type d'installation et **un seul élément fonctionnel nommé** ;
 - `detail` : une phrase sur l'élément qui identifie l'image en jeu.
 
 Une modification de la base s'applique à tout le set : la tester sur plusieurs images.
 
-**À faire avant la prochaine série** : la base actuelle impose une cuvette rocheuse, une charte
-usée et un point de vue plongeant à toutes les images, ce qui contredit la direction ci-dessous.
-La scinder : le commun (cadrage du set, lumière, réalisme) dans la base, et l'environnement, l'état
-et la distance dans chaque famille. Adapter `tool/comfy_series.py` et le fichier de série en
-conséquence, puis noter le résultat au journal.
-
 ### Direction artistique par famille
 
-Décidée par l'utilisateur sur la série 01 ; aucune image ne l'a encore testée. Un bâtiment absent
-d'une famille n'a pas encore de direction : la lui demander avant de générer.
+Décidée par l'utilisateur et testée sur les 12 bâtiments en t1. Images retenues et journaux :
+`art/prompts/selection-t1-rocheux.md`.
+
+Toutes les images se mettent au point en roche grise. L'utilisateur prévoit ensuite 3 déclinaisons
+de chaque image (froid, tempéré, chaud). Cela changera le catalogue de la spec 11.
+
+Paliers : t1 est déjà monumental ; t2 et t3 grandissent par ajouts d'éléments, pas par la taille
+seule.
 
 | Famille | Bâtiments | Environnement | État | Ce qu'on doit voir |
 | --- | --- | --- | --- | --- |
-| Mines | `metal_mine`, `crystal_mine` | planète rocheuse | poussiéreux, moins marqué pour le cristal | installation en contrebas, filons ou cristaux |
-| Deutérium | `deuterium_synthesizer` | en mer | à préciser | installation posée sur l'eau |
-| Énergie solaire et recherche | `solar_plant`, `research_lab` | à préciser | high-tech, ni usé ni abandonné | technologie avancée lisible |
-| Construction | `shipyard` | à préciser | à préciser | grand hangar vu de loin, avec machines ou vaisseaux |
+| Mines | `metal_mine`, `crystal_mine` | adossé à une falaise | high-tech poussiéreux, moins marqué pour le cristal | bâtiment autour d'une entrée de galerie, convoyeur, filons ou cristaux |
+| Deutérium | `deuterium_synthesizer`, `deuterium_tank` | falaise plongeant dans une mer gris sombre | charte | sphère de pression ; silos vitrés à liquide lumineux |
+| Énergie | `fusion_reactor` | adossé à une falaise | charte | anneau de confinement, plasma bleu-blanc |
+| Énergie solaire et recherche | `solar_plant`, `research_lab` | plateau au sommet d'une falaise, vue haute | charte | tour et miroirs ; dôme vitré et antennes |
+| Stockage | `metal_storage`, `crystal_storage` | adossé à une falaise | charte | rangée de silos : lingots ; paroi vitrée sur le cristal |
+| Construction | `robotics_factory`, `nanite_factory` | adossé à une falaise | high-tech, en activité | l'usine et ce qu'elle produit, monumentale |
+| Construction, dérogation | `shipyard` | cale à ciel ouvert, taillée dans la roche | high-tech, en activité | un vaisseau qui sort de la cale, vu de haut |
 
-Points à confirmer avec l'utilisateur :
+Point à confirmer avec l'utilisateur :
 
-- la famille Construction couvre-t-elle aussi `robotics_factory` et `nanite_factory` ?
 - la mer du deutérium s'affiche sur toutes les planètes, y compris froides et chaudes : est-ce
   accepté, ou faut-il une mer peu marquée (spec 11 : une image par bâtiment) ?
 
@@ -75,10 +83,15 @@ Serveur ComfyUI lancé, puis :
 ~/ComfyUI/.venv/bin/python tool/comfy_series.py art/prompts/<serie>.json
 ```
 
-- Le fichier de série donne les seeds et la liste `id`, `subject`, `detail`.
+- Le fichier de série donne les seeds, des `variants` facultatives et la liste `id`, `subject`,
+  `detail`, avec `view`, `site` ou `state` en cas de dérogation à la charte.
 - 2 images par prompt, seeds **4242** et **7777**, jamais changées au cours d'une série.
 - Compter environ 30 s par image : annoncer le temps avant un grand lot.
-- Sorties : `~/ComfyUI/output/starmine_test/<serie>/`, avec `run.json` et `sheet_512.png`.
+- Sorties : `~/ComfyUI/output/starmine_test/<serie>/`, avec `run.json`, `sheet_512.png` et
+  `index.html`.
+- Sélection : donner à l'utilisateur le chemin de la galerie locale
+  (`\\wsl.localhost\Debian\home\paul\ComfyUI\output\starmine_test\<serie>\index.html`). Il cite les
+  codes affichés sous les images. Ne pas publier ces images en Artifact : licence, voir plus haut.
 
 ## 4. Revue
 
@@ -134,8 +147,28 @@ Chaque règle ajoutée ici vient d'un défaut réellement observé. Journal :
 - **Pas de base unique pour l'ambiance** (série 01) : une même charte rend tout poussiéreux et
   post-apocalyptique, ce qui ne convient qu'aux mines. L'état et l'environnement dépendent de la
   famille. Hypothèse non testée : « gritty » et « weathered » causent l'effet d'abandon.
-- **Adjectif de taille et paliers** (série 01) : « large » sur un t1 ne laisse aucune marge pour t2 et
-  t3. Réserver l'échelle au palier.
+- **Échelle par repères** (série 03) : caméra basse et minuscules humains et véhicules à la base font
+  monumental, là où la série 02 restait à la taille d'un entrepôt. Ne remplace pas la décision sur
+  les paliers (voir la direction artistique).
+- **Matières contre entrepôt** (série 03) : « composite panels, polished metal, light strips » retire
+  le bardage ; un mot d'état ne suffisait pas (série 02).
+- **Fonction visible** (série 03) : une usine se reconnaît à ce qu'on voit fabriquer ; un bâtiment à
+  grande porte ne se distingue que par son contenu (série 02).
+- **Hauteur par la falaise** (séries 03 et 16) : « rise almost to the top of the cliff » agrandit le
+  sujet, sur 4242 surtout. Un adjectif de taille seul n'y suffit pas.
+- **Orientation non obtenue** (série 12) : « upright » n'a pas redressé l'anneau de fusion, resté à
+  plat sur les 2 seeds.
+- **Forme allongée** (série 03) : « long ... along its facade » donne un bâtiment bas, écrasé par la
+  falaise. « towering multi-level structure anchored into the cliff » donne hauteur et ancrage sur
+  les 2 seeds (série 04).
+- **Raccord entre deux objets** (séries 06 à 08) : une foreuse reliée à un bâtiment et entrant dans
+  la roche échoue (elle pointe dehors ou longe la paroi). Un bâtiment construit autour d'une ouverture
+  avec un convoyeur marche : préférer un élément qui ne dépend pas d'un raccord précis.
+- **Lumières** (séries 05 à 09) : avec beaucoup de poussière, les « light strips » ne ressortent pas.
+  « very light coat of rock dust, and bright floodlights switched on » les ramène, sans séparer les
+  deux effets.
+- **Planète à nommer** (série 02) : sans « alien planet », arbres et herbes apparaissent. « lifeless
+  alien planet of bare rock » les retire (série 03).
 - **Couleur de roche** (essais 4 et 5) : le terrain doit rester neutre, car l'image s'affiche sur
   toutes les planètes.
 - **Point de vue** (essai 3) : le fixer explicitement, sinon le modèle recule la caméra.

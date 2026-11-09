@@ -3,7 +3,7 @@
 Série d'exploration demandée par l'utilisateur : garder Qwen-Image-2.1 et la base « planète
 rocheuse », tester plusieurs prompts de bâtiments.
 
-Fichiers : `serie-01-batiments.json`, base `art/style/base_prompt.md`, seeds 4242 et 7777, 1024 ×
+Fichiers : fichier de série supprimé, prompts dans `run.json`, base `art/style/base_prompt.md`, seeds 4242 et 7777, 1024 ×
 1024, 25 passes, cfg 1, `euler` / `simple`. Environ 30 s par image.
 
 Hypothèse : le type d'installation et un seul élément fonctionnel nommé suffisent à rendre chaque

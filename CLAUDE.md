@@ -12,7 +12,7 @@
   - `starmine-feature` : toute évolution de gameplay, de la spec au push ;
   - `starmine-ci` : boucle CI sans SDK (`tool/ci.sh`) ;
   - `starmine-ui` : conventions d'interface et disposition de la refonte visuelle ;
-  - `starmine-visuals` : production des images (Higgsfield), registre, validation ;
+  - `starmine-visuals` : production des images (ComfyUI local), registre, validation ;
   - `starmine-balance` : équilibrage par le YAML et des simulations.
 
 ## Règles

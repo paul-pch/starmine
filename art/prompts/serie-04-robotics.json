@@ -1,0 +1,11 @@
+{
+  "series": "serie-04-robotics",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "building.robotics_factory.t1",
+      "subject": "An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light.",
+      "detail": "A line of finished bipedal robots walks out from its base."
+    }
+  ]
+}

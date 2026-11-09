@@ -1,0 +1,11 @@
+{
+  "series": "serie-14-crystal-storage",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "building.crystal_storage.t1",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "series": "serie-16-deuterium-tank",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "building.deuterium_tank.t1",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock."
+    }
+  ]
+}

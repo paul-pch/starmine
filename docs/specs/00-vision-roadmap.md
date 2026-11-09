@@ -46,7 +46,7 @@ Hors version, à placer :
 | File d'attente d'ordres | Plusieurs ordres enchaînés par file, gagnés par le Commandant, le Directeur scientifique et le Chef de chantier (spec 13) | Livré |
 
 Transverse en cours : **refonte visuelle** — disposition cible validée (spec 10, ambiances
-Équilibrée / Immersive / Sobre), images SF réalistes pré-générées avec Higgsfield et registre
+Équilibrée / Immersive / Sobre), images SF réalistes pré-générées avec ComfyUI et registre
 `art/registry.yaml` (spec 11). Décisions et historique : projet claude.ai,
 `claude/visuels-decisions.md`.
 

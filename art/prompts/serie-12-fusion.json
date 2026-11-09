@@ -1,0 +1,11 @@
+{
+  "series": "serie-12-fusion",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "building.fusion_reactor.t1",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "series": "serie-03-construction",
+  "seeds": [
+    4242,
+    7777
+  ],
+  "images": [
+    {
+      "id": "building.shipyard.t1",
+      "view": "High aerial view from a distance, with the whole shipyard visible inside the frame.",
+      "subject": "A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim.",
+      "detail": "A sleek newly finished spaceship rises vertically out of the dock on bright engine glow.",
+      "site": "The dock is cut into a plateau of dark neutral grey rock on a lifeless alien planet of bare rock."
+    },
+    {
+      "id": "building.nanite_factory.t1",
+      "subject": "A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff.",
+      "detail": "A swirling cloud of silver nanoparticles glows inside the cylinder."
+    }
+  ]
+}

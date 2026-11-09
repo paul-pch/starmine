@@ -1,0 +1,13 @@
+{
+  "series": "serie-11-solar",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "building.solar_plant.t1",
+      "view": "High aerial view from a distance, with the whole solar plant visible inside the frame.",
+      "subject": "A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top.",
+      "detail": "Concentric rings of tilted polished mirrors surround the tower and all face toward its top.",
+      "site": "It stands on a flat plateau at the top of a towering dark neutral grey rock cliff, open to the sky, on a lifeless alien planet of bare rock."
+    }
+  ]
+}

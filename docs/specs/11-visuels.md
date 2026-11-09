@@ -3,7 +3,7 @@
 ## Objet
 
 Rendre le jeu plus immersif avec des images SF réalistes, sans toucher à la lisibilité d'un
-idle de ressources. Les images sont générées hors du jeu (Higgsfield), validées une par une,
+idle de ressources. Les images sont générées hors du jeu (ComfyUI en local), validées une par une,
 puis packagées dans l'APK.
 
 État : code d'affichage implémenté (`lib/ui/visuals.dart`, repli) ; **aucune image ni registre

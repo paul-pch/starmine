@@ -1,0 +1,11 @@
+{
+  "series": "serie-13-metal-storage",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "building.metal_storage.t1",
+      "subject": "A metal storage depot built around one row of giant armored silos standing side by side against the cliff.",
+      "detail": "Wide open bays at the base of each silo reveal stacks of huge silver metal ingots."
+    }
+  ]
+}
