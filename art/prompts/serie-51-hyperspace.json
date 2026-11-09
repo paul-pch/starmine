@@ -1,0 +1,43 @@
+{
+  "series": "serie-51-hyperspace",
+  "base": "art/style/research_prompt.md",
+  "seeds": [7777],
+  "images": [
+    {
+      "id": "research.hyperspace_drive",
+      "variant": "streaks",
+      "source": "serie-42-recherches/hyperspace_drive-7777_00001_.png",
+      "denoise": 0.90,
+      "subject": "A prototype hyperspace drive dominates the image: one huge upright metal ring standing on the test bench.",
+      "detail": "The whole opening of the ring is filled with hundreds of long bright streaks of light rushing inward and converging on one blazing point at its exact center, like stars stretched by a jump to light speed.",
+      "glow": "bright blue-white light"
+    },
+    {
+      "id": "research.hyperspace_drive",
+      "variant": "vortex",
+      "source": "serie-42-recherches/hyperspace_drive-7777_00001_.png",
+      "denoise": 0.90,
+      "subject": "A prototype hyperspace drive dominates the image: one huge upright metal ring standing on the test bench.",
+      "detail": "The whole opening of the ring is filled with one bright swirling spiral vortex of energy, whose luminous arms twist inward to a dark center.",
+      "glow": "bright blue-white light"
+    },
+    {
+      "id": "research.hyperspace_drive",
+      "variant": "singularity",
+      "source": "serie-42-recherches/hyperspace_drive-7777_00001_.png",
+      "denoise": 0.90,
+      "subject": "A prototype hyperspace drive dominates the image: one huge upright metal ring standing on the test bench.",
+      "detail": "At the center of the ring hangs one perfectly black sphere surrounded by a thin blazing halo of bent light, the space around it visibly warped.",
+      "glow": "bright blue-white light"
+    },
+    {
+      "id": "research.hyperspace_drive",
+      "variant": "portal",
+      "source": "serie-42-recherches/hyperspace_drive-7777_00001_.png",
+      "denoise": 0.90,
+      "subject": "A prototype hyperspace drive dominates the image: one huge upright metal ring standing on the test bench.",
+      "detail": "The ring is an open portal: through it there is no hall but deep black outer space, filled with bright stars and a distant blue-white nebula.",
+      "glow": "bright blue-white light"
+    }
+  ]
+}

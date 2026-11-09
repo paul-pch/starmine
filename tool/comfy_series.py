@@ -7,6 +7,11 @@ Usage, avec le serveur ComfyUI lancé et le Python de son environnement (Pillow)
 La série donne les seeds, des `variants` facultatives et, pour chaque image, un `id`, un `subject`
 et un `detail`, insérés dans le prompt de `art/style/base_prompt.md`. Les valeurs par défaut de
 `view`, `site` et `state` viennent de cette base ; une variante ou une image peut les remplacer.
+Une série peut désigner une autre charte avec `base`, chemin relatif à la racine du dépôt. Une variante
+ou une image peut limiter ses seeds avec `seeds`, quand sa `source` vient d'une seule seed.
+
+Une série peut s'itérer : ajouter une entrée à `images`, avec son propre `variant`, puis relancer. Un code
+déjà présent dans `run.json` n'est pas régénéré ; galerie et planche montrent tous les essais.
 Une variante ou une image peut aussi donner `source`, image de départ relative au dossier de sortie,
 et `denoise`, part de l'image transformée, de 0 à 1. Chaque image est générée pour chaque variante et chaque seed. Sorties
 dans `~/ComfyUI/output/starmine_test/<serie>/` : les PNG, `run.json`, une planche `sheet_512.png`
@@ -36,11 +41,11 @@ SIZE = 1024
 SHEET_CELL = 512
 
 
-def load_base():
+def load_base(path=BASE_PROMPT):
     """Renvoie le gabarit du bloc `text` et les valeurs par défaut données par les autres blocs."""
-    blocks = dict(re.findall(r"```(\w+)\n(.+?)\n```", BASE_PROMPT.read_text(encoding="utf-8"), re.DOTALL))
+    blocks = dict(re.findall(r"```(\w+)\n(.+?)\n```", path.read_text(encoding="utf-8"), re.DOTALL))
     if "text" not in blocks:
-        sys.exit(f"aucun bloc text dans {BASE_PROMPT}")
+        sys.exit(f"aucun bloc text dans {path}")
     template = blocks.pop("text")
     return template, blocks
 
@@ -159,24 +164,28 @@ def main():
     args = parser.parse_args()
 
     series = json.loads(args.series.read_text(encoding="utf-8"))
-    template, defaults = load_base()
+    template, defaults = load_base(REPO / series["base"]) if "base" in series else load_base()
     name = series["series"]
     out = OUTPUT / name
     out.mkdir(parents=True, exist_ok=True)
 
-    rows, log = [], []
+    run_path = out / "run.json"
+    log = json.loads(run_path.read_text(encoding="utf-8")) if run_path.exists() else []
+    done = {entry["code"] for entry in log}
     for variant in series.get("variants", [{}]):
-        tag = variant.get("variant", "")
         for item in series["images"]:
+            tag = {**variant, **item}.get("variant", "")
             try:
                 prompt = template.format(**{**defaults, **variant, **item})
             except KeyError as missing:
                 sys.exit(f"champ {missing} absent de {args.series} pour {item['id']}")
-            cells = []
-            for seed in series["seeds"]:
-                started = time.time()
+            for seed in {**variant, **item}.get("seeds", series["seeds"]):
                 building = item["id"].split(".")[1]
                 code = "-".join(part for part in (tag, building, str(seed)) if part)
+                if code in done:
+                    print(f"{code}: déjà généré", flush=True)
+                    continue
+                started = time.time()
                 prefix = f"starmine_test/{name}/{code}"
                 source = {**variant, **item}.get("source")
                 denoise = {**variant, **item}.get("denoise", 1)
@@ -184,16 +193,17 @@ def main():
                 prompt_id = call("/prompt", {"prompt": graph})["prompt_id"]
                 entry = wait_for(prompt_id)
                 saved = entry["outputs"]["save"]["images"][0]
-                cells.append((code, fetch(saved)))
                 elapsed = round(time.time() - started, 1)
                 print(f"{code}: {elapsed}s", flush=True)
                 log.append({"code": code, "id": item["id"], "variant": tag, "seed": seed,
                             "source": source, "denoise": denoise, "seconds": elapsed, "prompt_id": prompt_id, "file": saved["filename"],
                             "prompt": prompt})
-            rows.append(cells)
-    (out / "run.json").write_text(json.dumps(log, indent=1, ensure_ascii=False), encoding="utf-8")
-    contact_sheet(rows, len(series["seeds"]), out / "sheet_512.png")
-    gallery(name, log, len(series["seeds"]), out / "index.html")
+                run_path.write_text(json.dumps(log, indent=1, ensure_ascii=False), encoding="utf-8")
+    columns = len(series["seeds"])
+    cells = [(entry["code"], Image.open(out / entry["file"]).convert("RGB")) for entry in log]
+    rows = [cells[start:start + columns] for start in range(0, len(cells), columns)]
+    contact_sheet(rows, columns, out / "sheet_512.png")
+    gallery(name, log, columns, out / "index.html")
     print(f"galerie : {out / 'index.html'}")
     print(f"planche : {out / 'sheet_512.png'}")
 

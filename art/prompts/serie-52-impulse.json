@@ -1,0 +1,25 @@
+{
+  "series": "serie-52-impulse",
+  "base": "art/style/research_prompt.md",
+  "seeds": [7777],
+  "images": [
+    {
+      "id": "research.impulse_drive",
+      "variant": "grow-d45",
+      "source": "serie-52-impulse/source-grow.png",
+      "denoise": 0.45,
+      "subject": "A large prototype impulse engine dominates the image, built from a row of concentric metal rings, mounted horizontally on a test stand.",
+      "detail": "A pulsing shockwave of light expands out of the rings.",
+      "glow": "indigo-blue light"
+    },
+    {
+      "id": "research.impulse_drive",
+      "variant": "grow-d60",
+      "source": "serie-52-impulse/source-grow.png",
+      "denoise": 0.60,
+      "subject": "A large prototype impulse engine dominates the image, built from a row of concentric metal rings, mounted horizontally on a test stand.",
+      "detail": "A pulsing shockwave of light expands out of the rings.",
+      "glow": "indigo-blue light"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "series": "serie-43-armour",
+  "base": "art/style/research_prompt.md",
+  "seeds": [7777],
+  "variants": [
+    { "variant": "zoom-d30", "source": "serie-43-armour/source-zoom.png", "denoise": 0.30 },
+    { "variant": "grow-d30", "source": "serie-43-armour/source-grow.png", "denoise": 0.30 },
+    { "variant": "grow-d45", "source": "serie-43-armour/source-grow.png", "denoise": 0.45 },
+    { "variant": "grow-d60", "source": "serie-43-armour/source-grow.png", "denoise": 0.60 }
+  ],
+  "images": [
+    {
+      "id": "research.armour_technology",
+      "subject": "One huge thick prototype armour plate stands upright on the test bench and dominates the image.",
+      "detail": "The plate is made of heavy bevelled composite panels, its edges glowing with heat.",
+      "glow": "deep amber light"
+    }
+  ]
+}

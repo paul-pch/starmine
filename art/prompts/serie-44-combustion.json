@@ -1,0 +1,18 @@
+{
+  "series": "serie-44-combustion",
+  "base": "art/style/research_prompt.md",
+  "seeds": [7777],
+  "variants": [
+    { "variant": "d60", "source": "serie-42-recherches/combustion_drive-7777_00001_.png", "denoise": 0.60 },
+    { "variant": "d75", "source": "serie-42-recherches/combustion_drive-7777_00001_.png", "denoise": 0.75 },
+    { "variant": "d90", "source": "serie-42-recherches/combustion_drive-7777_00001_.png", "denoise": 0.90 }
+  ],
+  "images": [
+    {
+      "id": "research.combustion_drive",
+      "subject": "A sleek far-future spacecraft combustion engine with a seamless streamlined armoured casing that encloses all of its machinery and ends in one wide faceted thrust nozzle, mounted horizontally on a test stand.",
+      "detail": "A long roaring flame shoots out of the nozzle, and thin illuminated light strips run along the casing.",
+      "glow": "bright orange flame and light"
+    }
+  ]
+}

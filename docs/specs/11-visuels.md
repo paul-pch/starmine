@@ -8,7 +8,8 @@ puis packagées dans l'APK.
 
 État : registre `art/registry.yaml` et code d'affichage (`lib/ui/visuals.dart`, repli) en place. Les 36
 images t1 des bâtiments (12 × 3 climats, liste : `art/prompts/selection-t1-rocheux.md`) sont packagées
-en WebP ; les autres catégories restent en repli. Les seuils `tiers` et `temperature_bands` sont repris
+en WebP, ainsi que les 12 images des recherches (liste : `art/prompts/selection-recherches.md`, charte
+`art/style/research_prompt.md`) ; les autres catégories restent en repli. Les seuils `tiers` et `temperature_bands` sont repris
 dans le code, alignement vérifié par un test.
 
 ## Règles
@@ -32,7 +33,7 @@ dans le code, alignement vérifié par un test.
 | --- | --- | --- | --- |
 | `building` | `building.<clé YAML>.t<1-3>.<cold\|temperate\|hot>` | 1:1, 512 px (B, A) | 12 × 3 paliers × 3 climats |
 | `building_wide` | `building_wide.<clé>.t<1-3>.<cold\|temperate\|hot>` | 4:3, 640 × 480 (C) — facultatif, sinon recadrage du 1:1 | — |
-| `research` | `research.<clé YAML>` | 1:1, 512 px | 8 |
+| `research` | `research.<clé YAML>` | 1:1, 512 px, sans climat | 12 |
 | `defense` | `defense.<clé YAML>` | 1:1, 512 px | 8 |
 | `pirate` | `pirate.<clé YAML>` | 1:1, 512 px (bandeau de raid, rapports) | 6 |
 | `planet_hero` | `planet_hero.<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 3 |

@@ -1,0 +1,63 @@
+{
+  "series": "serie-56-shielding",
+  "base": "art/style/research_prompt.md",
+  "seeds": [
+    7777
+  ],
+  "images": [
+    {
+      "id": "research.shielding_technology",
+      "variant": "d75",
+      "source": "serie-42-recherches/shielding_technology-7777_00001_.png",
+      "denoise": 0.75,
+      "subject": "A prototype shield generator: one compact machine projecting a large bright dome of force field over itself.",
+      "detail": "The dome is a clearly visible glowing violet energy shell with a bright luminous rim and a faint hexagonal pattern across its whole surface, and an incoming energy bolt bursts into bright ripples against its outer surface.",
+      "glow": "brilliant violet light"
+    },
+    {
+      "id": "research.shielding_technology",
+      "variant": "d85",
+      "source": "serie-42-recherches/shielding_technology-7777_00001_.png",
+      "denoise": 0.85,
+      "subject": "A prototype shield generator: one compact machine projecting a large bright dome of force field over itself.",
+      "detail": "The dome is a clearly visible glowing violet energy shell with a bright luminous rim and a faint hexagonal pattern across its whole surface, and an incoming energy bolt bursts into bright ripples against its outer surface.",
+      "glow": "brilliant violet light"
+    },
+    {
+      "id": "research.shielding_technology",
+      "variant": "tint-d90",
+      "source": "serie-56-shielding/d85-shielding_technology-7777_00001_.png",
+      "denoise": 0.9,
+      "subject": "A prototype shield generator: one compact machine projecting a large bright dome of force field over itself.",
+      "detail": "The dome is a thick glowing shell of violet energy, tinted violet all over and clearly visible against the dark hall, with a blazing bright rim where it meets the bench and a glowing hexagonal pattern across its whole surface, and an incoming energy bolt bursts into bright ripples against its outer surface.",
+      "glow": "brilliant violet light"
+    },
+    {
+      "id": "research.shielding_technology",
+      "variant": "tint-d95",
+      "source": "serie-56-shielding/d85-shielding_technology-7777_00001_.png",
+      "denoise": 0.95,
+      "subject": "A prototype shield generator: one compact machine projecting a large bright dome of force field over itself.",
+      "detail": "The dome is a thick glowing shell of violet energy, tinted violet all over and clearly visible against the dark hall, with a blazing bright rim where it meets the bench and a glowing hexagonal pattern across its whole surface, and an incoming energy bolt bursts into bright ripples against its outer surface.",
+      "glow": "brilliant violet light"
+    },
+    {
+      "id": "research.shielding_technology",
+      "variant": "front-d55",
+      "source": "serie-56-shielding/source-front.png",
+      "denoise": 0.55,
+      "subject": "A prototype shield generator: one compact machine projecting a large bright dome of force field over itself.",
+      "detail": "The machine sits fully inside the dome and is seen through its translucent violet near side: the front of the glowing violet energy shell passes in front of the machine, and the dome base forms a bright glowing ring on the bench all around the machine, in front of it and behind it.",
+      "glow": "brilliant violet light"
+    },
+    {
+      "id": "research.shielding_technology",
+      "variant": "front-d70",
+      "source": "serie-56-shielding/source-front.png",
+      "denoise": 0.7,
+      "subject": "A prototype shield generator: one compact machine projecting a large bright dome of force field over itself.",
+      "detail": "The machine sits fully inside the dome and is seen through its translucent violet near side: the front of the glowing violet energy shell passes in front of the machine, and the dome base forms a bright glowing ring on the bench all around the machine, in front of it and behind it.",
+      "glow": "brilliant violet light"
+    }
+  ]
+}

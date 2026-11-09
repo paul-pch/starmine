@@ -82,7 +82,8 @@ def main():
 
     out = OUTPUT / args.series
     out.mkdir(parents=True, exist_ok=True)
-    log = []
+    run_path = out / "run.json"
+    log = json.loads(run_path.read_text(encoding="utf-8")) if run_path.exists() else []
     for seed in args.seeds:
         prefix = f"starmine_test/{args.series}/raw-{args.code}-{seed}"
         graph = workflow(source_name, mask_name, args.prompt, seed, args.denoise, prefix)
@@ -98,7 +99,7 @@ def main():
                     "keep_box": args.keep_box, "keep_ellipse": args.keep_ellipse,
                     "denoise": args.denoise, "seed": seed, "prompt": args.prompt,
                     "prompt_id": prompt_id, "file": target.name})
-    (out / "run.json").write_text(json.dumps(log, indent=1, ensure_ascii=False), encoding="utf-8")
+    run_path.write_text(json.dumps(log, indent=1, ensure_ascii=False), encoding="utf-8")
 
 
 if __name__ == "__main__":

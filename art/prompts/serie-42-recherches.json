@@ -1,0 +1,79 @@
+{
+  "series": "serie-42-recherches",
+  "base": "art/style/research_prompt.md",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "research.energy_technology",
+      "subject": "A prototype energy core: one upright glass-walled cylinder holding a bright contained sphere of pure energy.",
+      "detail": "Thin controlled electric arcs link the sphere to the heavy metal collar around it.",
+      "glow": "golden-yellow light"
+    },
+    {
+      "id": "research.laser_technology",
+      "subject": "A prototype laser cannon mounted on a heavy pedestal.",
+      "detail": "It fires one thin straight continuous beam onto a small metal target plate, which glows where the beam hits it.",
+      "glow": "pure red laser light"
+    },
+    {
+      "id": "research.ion_technology",
+      "subject": "A prototype ion accelerator: one long straight open tube of magnetic coils.",
+      "detail": "A narrow stream of glowing ions flows along its axis and out of its muzzle.",
+      "glow": "pale ice-blue light"
+    },
+    {
+      "id": "research.plasma_technology",
+      "subject": "A prototype plasma containment ring: one large metal torus with an open inner channel.",
+      "detail": "A twisting filament of plasma circles inside the channel without touching its walls.",
+      "glow": "magenta-pink plasma light"
+    },
+    {
+      "id": "research.computer_technology",
+      "subject": "A prototype computing core made of a tight cluster of tall luminous columns.",
+      "detail": "Bundles of fine glowing optical fibres run between the columns.",
+      "glow": "soft cyan light"
+    },
+    {
+      "id": "research.espionage_technology",
+      "subject": "A prototype stealth reconnaissance probe: a small matte black angular drone held in a test cradle.",
+      "detail": "Its single large sensor lens glows and sweeps a thin fan of scanning light across the bench.",
+      "glow": "emerald-green light"
+    },
+    {
+      "id": "research.weapons_technology",
+      "subject": "A prototype heavy kinetic cannon on a reinforced mount.",
+      "detail": "A thick steel target plate in front of it is riddled with smoking impact holes, glowing at their edges.",
+      "glow": "white-hot light"
+    },
+    {
+      "id": "research.shielding_technology",
+      "subject": "A prototype shield generator: one compact machine projecting a translucent dome of force field over itself.",
+      "detail": "An incoming energy bolt bursts into ripples against the surface of the dome.",
+      "glow": "violet light"
+    },
+    {
+      "id": "research.armour_technology",
+      "subject": "A massive hydraulic press testing one thick prototype armour plate.",
+      "detail": "The plate holds under the press, its edges glowing with heat.",
+      "glow": "deep amber light"
+    },
+    {
+      "id": "research.combustion_drive",
+      "subject": "A prototype chemical rocket engine with one large bell nozzle, mounted horizontally on a test stand.",
+      "detail": "A long roaring flame shoots out of the nozzle.",
+      "glow": "bright orange flame"
+    },
+    {
+      "id": "research.impulse_drive",
+      "subject": "A prototype impulse engine built from a row of concentric metal rings, mounted horizontally on a test stand.",
+      "detail": "A pulsing shockwave of light expands out of the rings.",
+      "glow": "indigo-blue light"
+    },
+    {
+      "id": "research.hyperspace_drive",
+      "subject": "A prototype hyperspace drive: one huge upright metal ring standing on the test bench.",
+      "detail": "Inside the ring, space itself is warped: light bends into a swirling lens and the hall behind it appears distorted.",
+      "glow": "blue-white light"
+    }
+  ]
+}

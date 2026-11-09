@@ -1,0 +1,34 @@
+{
+  "series": "serie-53-ion",
+  "base": "art/style/research_prompt.md",
+  "seeds": [7777],
+  "images": [
+    {
+      "id": "research.ion_technology",
+      "variant": "short-d75",
+      "source": "serie-53-ion/source-short.png",
+      "denoise": 0.75,
+      "subject": "A large prototype ion accelerator centered in the image: one short thick open tube of magnetic coils, mounted horizontally on a test stand.",
+      "detail": "The whole inside of the tube blazes with a thick brilliant beam of ions, which leaves its muzzle and crosses the hall as one thick bright beam up to the edge of the image.",
+      "glow": "brilliant electric ice-blue light"
+    },
+    {
+      "id": "research.ion_technology",
+      "variant": "short-d90",
+      "source": "serie-53-ion/source-short.png",
+      "denoise": 0.90,
+      "subject": "A large prototype ion accelerator centered in the image: one short thick open tube of magnetic coils, mounted horizontally on a test stand.",
+      "detail": "The whole inside of the tube blazes with a thick brilliant beam of ions, which leaves its muzzle and crosses the hall as one thick bright beam up to the edge of the image.",
+      "glow": "brilliant electric ice-blue light"
+    },
+    {
+      "id": "research.ion_technology",
+      "variant": "blue-d80",
+      "source": "serie-53-ion/short-d90-ion_technology-7777_00001_.png",
+      "denoise": 0.80,
+      "subject": "A large prototype ion accelerator centered in the image: one short thick clear glass tube held between two polished steel flanges, mounted horizontally on a test stand.",
+      "detail": "The glass tube is completely filled from end to end with one thick blazing ice-blue beam of ions, with no copper and no coils inside it, and the beam leaves the muzzle and crosses the hall as one thick bright beam up to the edge of the image.",
+      "glow": "brilliant electric ice-blue light"
+    }
+  ]
+}

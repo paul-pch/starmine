@@ -1,0 +1,23 @@
+{
+  "series": "serie-54-laser",
+  "base": "art/style/research_prompt.md",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "research.laser_technology",
+      "variant": "new",
+      "view": "Close three-quarter view at eye level from slightly behind and to the left of the prototype, with the whole prototype centred in the frame and filling most of it.",
+      "subject": "A sleek far-future high-tech laser emitter with a seamless streamlined armoured casing and illuminated light strips, mounted on a compact pedestal.",
+      "detail": "It fires one thick blazing beam of red light with a white-hot core, which recedes in perspective across the hall and leaves the frame on the right side, with no target in sight.",
+      "glow": "pure red laser light"
+    },
+    {
+      "id": "research.laser_technology",
+      "variant": "new-low",
+      "view": "Low three-quarter view at eye level, close to the prototype, with the whole prototype centred in the frame and filling most of it.",
+      "subject": "A sleek far-future high-tech laser emitter with a seamless streamlined armoured casing and illuminated light strips, mounted on a compact pedestal.",
+      "detail": "It fires one thick blazing beam of red light with a white-hot core, which shoots away from the camera in strong perspective and exits the frame on the right edge, with no target in sight.",
+      "glow": "pure red laser light"
+    }
+  ]
+}

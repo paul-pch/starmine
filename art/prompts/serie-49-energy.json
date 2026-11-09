@@ -1,0 +1,25 @@
+{
+  "series": "serie-49-energy",
+  "base": "art/style/research_prompt.md",
+  "seeds": [7777],
+  "images": [
+    {
+      "id": "research.energy_technology",
+      "variant": "grow-d45",
+      "source": "serie-49-energy/source-grow.png",
+      "denoise": 0.45,
+      "subject": "A huge prototype energy core dominates the image: one upright glass-walled cylinder holding a bright contained sphere of pure energy.",
+      "detail": "Thin controlled electric arcs link the sphere to the heavy metal collar around it.",
+      "glow": "golden-yellow light"
+    },
+    {
+      "id": "research.energy_technology",
+      "variant": "grow-d60",
+      "source": "serie-49-energy/source-grow.png",
+      "denoise": 0.60,
+      "subject": "A huge prototype energy core dominates the image: one upright glass-walled cylinder holding a bright contained sphere of pure energy.",
+      "detail": "Thin controlled electric arcs link the sphere to the heavy metal collar around it.",
+      "glow": "golden-yellow light"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "series": "serie-57-weapons",
+  "base": "art/style/research_prompt.md",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "research.weapons_technology",
+      "variant": "railgun",
+      "subject": "A sleek far-future high-tech railgun prototype with a seamless armoured casing and two long parallel electromagnetic rails as its barrel, mounted on a compact pedestal and centred in the frame.",
+      "detail": "Crackling electric arcs run between the rails as it fires a white-hot projectile, which leaves a bright straight trail across the hall and exits the frame on the right.",
+      "glow": "white-hot light"
+    },
+    {
+      "id": "research.weapons_technology",
+      "variant": "autocannon",
+      "subject": "A sleek far-future high-tech heavy twin-barrel autocannon turret with a seamless armoured casing and illuminated light strips, mounted on a compact pedestal and centred in the frame.",
+      "detail": "Both barrels fire at once with a bright muzzle flash, and a stream of glowing white-hot tracer rounds flies across the hall and exits the frame on the right.",
+      "glow": "white-hot light"
+    },
+    {
+      "id": "research.weapons_technology",
+      "variant": "missile",
+      "subject": "A sleek far-future high-tech missile launcher prototype: one compact armoured launch pod with a grid of missile tubes, mounted on a pedestal and centred in the frame.",
+      "detail": "One missile has just launched from the pod and streaks away on a white-hot exhaust trail that curves out of the frame on the right.",
+      "glow": "white-hot light"
+    },
+    {
+      "id": "research.weapons_technology",
+      "variant": "cannon",
+      "subject": "A massive far-future high-tech cannon prototype with one huge thick barrel and a seamless armoured breech, mounted on a heavy pedestal and centred in the frame.",
+      "detail": "It fires: a blinding white-hot muzzle blast bursts from the end of the barrel with a ring-shaped shockwave of hot air around it.",
+      "glow": "white-hot light"
+    }
+  ]
+}

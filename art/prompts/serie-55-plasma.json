@@ -1,0 +1,45 @@
+{
+  "series": "serie-55-plasma",
+  "base": "art/style/research_prompt.md",
+  "seeds": [
+    7777
+  ],
+  "images": [
+    {
+      "id": "research.plasma_technology",
+      "variant": "d60",
+      "source": "serie-42-recherches/plasma_technology-7777_00001_.png",
+      "denoise": 0.6,
+      "subject": "A large prototype plasma containment ring dominates the image: one large metal torus with an open inner channel.",
+      "detail": "The whole inner channel is packed with thick, dense, blazing ropes of magenta-pink plasma that twist around the entire ring and glow brightly, lighting the metal and the bench.",
+      "glow": "brilliant magenta-pink plasma light"
+    },
+    {
+      "id": "research.plasma_technology",
+      "variant": "d75",
+      "source": "serie-42-recherches/plasma_technology-7777_00001_.png",
+      "denoise": 0.75,
+      "subject": "A large prototype plasma containment ring dominates the image: one large metal torus with an open inner channel.",
+      "detail": "The whole inner channel is packed with thick, dense, blazing ropes of magenta-pink plasma that twist around the entire ring and glow brightly, lighting the metal and the bench.",
+      "glow": "brilliant magenta-pink plasma light"
+    },
+    {
+      "id": "research.plasma_technology",
+      "variant": "d85",
+      "source": "serie-55-plasma/d75-plasma_technology-7777_00001_.png",
+      "denoise": 0.85,
+      "subject": "A large prototype plasma containment ring dominates the image: one large metal torus with an open inner channel.",
+      "detail": "A wide, thick, blazing band of dense magenta-pink plasma fills the whole inner channel all the way around the ring, a bright continuous glowing torus of plasma with swirling filaments, casting strong magenta light on the metal ring and the bench.",
+      "glow": "brilliant magenta-pink plasma light"
+    },
+    {
+      "id": "research.plasma_technology",
+      "variant": "d90",
+      "source": "serie-42-recherches/plasma_technology-7777_00001_.png",
+      "denoise": 0.9,
+      "subject": "A large prototype plasma containment ring dominates the image: one large metal torus with an open inner channel.",
+      "detail": "A wide, thick, blazing band of dense magenta-pink plasma fills the whole inner channel all the way around the ring, a bright continuous glowing torus of plasma with swirling filaments, casting strong magenta light on the metal ring and the bench.",
+      "glow": "brilliant magenta-pink plasma light"
+    }
+  ]
+}

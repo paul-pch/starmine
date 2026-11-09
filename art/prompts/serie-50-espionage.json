@@ -1,0 +1,16 @@
+{
+  "series": "serie-50-espionage",
+  "base": "art/style/research_prompt.md",
+  "seeds": [7777],
+  "images": [
+    {
+      "id": "research.espionage_technology",
+      "variant": "grow-d60",
+      "source": "serie-50-espionage/source-grow.png",
+      "denoise": 0.60,
+      "subject": "A large prototype stealth reconnaissance probe dominates the image: a matte black angular faceted drone held in a test cradle.",
+      "detail": "Its single large sensor lens glows and projects one wide bright fan of scanning green rays across the hall.",
+      "glow": "emerald-green light"
+    }
+  ]
+}

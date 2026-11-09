@@ -17,6 +17,11 @@ pour un usage non commercial uniquement (spec 11).
 `art/masters/building.<bâtiment>.t1.<temperate|cold|hot>/v1.png`, WebP chargés par le jeu dans
 `assets/visuels/`.
 
+Recherches : 12 images validées, une par technologie, sans climat, listées dans
+`art/prompts/selection-recherches.md` (charte `art/style/research_prompt.md`, séries 42 à 57). Masters dans
+`art/masters/research.<clé>/v1.png`. Règle de l'utilisateur : l'élément montré doit rester lisible en
+miniature (vérifier à 128 px) ; une seule série par technologie, les essais s'y ajoutent.
+
 ## Avant de générer
 
 - Vérifier que ComfyUI répond sur `localhost:8188`. Sinon : le dire. Ne pas contourner par un

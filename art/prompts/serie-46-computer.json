@@ -1,0 +1,13 @@
+{
+  "series": "serie-46-computer",
+  "base": "art/style/research_prompt.md",
+  "seeds": [4242, 7777],
+  "images": [
+    {
+      "id": "research.computer_technology",
+      "subject": "A prototype computing core: one huge thick upright last-generation printed circuit board of matte black composite, held in a slim frame, dominates the image and fills most of the frame.",
+      "detail": "Dense, razor-fine circuit traces glow across its whole surface and converge on large plain square processor chips.",
+      "glow": "soft cyan light"
+    }
+  ]
+}

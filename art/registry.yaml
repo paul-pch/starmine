@@ -940,3 +940,215 @@ images:
     denoise: 0.9
   master: art/masters/building.research_lab.t1.hot/v1.png
   build: assets/visuels/building.research_lab.t1.hot.webp
+- id: research.energy_technology
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view at eye level, with the whole prototype visible inside the frame and filling most of it. A huge prototype energy core dominates the image: one upright glass-walled cylinder holding a bright contained sphere of pure energy. Thin controlled electric arcs link the sphere to the heavy metal collar around it. It stands alone on a bolted steel test bench in a vast dark windowless research hall, whose dark neutral grey walls fall out of focus behind it. Far-future experimental hardware running a live test, with seamless composite panels, polished metal and plain unmarked surfaces, in an empty hall with nobody in sight. Art direction: realistic sci-fi concept art, dark muted neutral grey palette, soft volumetric haze, with golden-yellow light as the only saturated color in the image."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 975d82c9-01d1-4120-b261-ac0944b50132
+    series: serie-49-energy
+    code: grow-d60-energy_technology-7777
+    source: serie-49-energy/source-grow.png
+    denoise: 0.6
+  master: art/masters/research.energy_technology/v1.png
+  build: assets/visuels/research.energy_technology.webp
+- id: research.laser_technology
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view at eye level from slightly behind and to the left of the prototype, with the whole prototype centred in the frame and filling most of it. A sleek far-future high-tech laser emitter with a seamless streamlined armoured casing and illuminated light strips, mounted on a compact pedestal. It fires one thick blazing beam of red light with a white-hot core, which recedes in perspective across the hall and leaves the frame on the right side, with no target in sight. It stands alone on a bolted steel test bench in a vast dark windowless research hall, whose dark neutral grey walls fall out of focus behind it. Far-future experimental hardware running a live test, with seamless composite panels, polished metal and plain unmarked surfaces, in an empty hall with nobody in sight. Art direction: realistic sci-fi concept art, dark muted neutral grey palette, soft volumetric haze, with pure red laser light as the only saturated color in the image."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: cbc3bc1c-84b6-4122-baf5-9f2d1253bef1
+    series: serie-54-laser
+    code: new-laser_technology-4242
+  master: art/masters/research.laser_technology/v1.png
+  build: assets/visuels/research.laser_technology.webp
+- id: research.ion_technology
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "A clear glass tube completely filled from end to end with one thick blazing beam of electric ice-blue light, a bright glowing stream of ions, blue-white at its core."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 67ce210d-14bf-4054-9e89-c8479f06574f
+    series: serie-53-ion
+    code: raw-tube-4242
+    source: /home/paul/ComfyUI/output/starmine_test/serie-53-ion/blue-d80-ion_technology-7777_00001_.png
+    denoise: 0.95
+  master: art/masters/research.ion_technology/v1.png
+  build: assets/visuels/research.ion_technology.webp
+- id: research.plasma_technology
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view at eye level, with the whole prototype visible inside the frame and filling most of it. A large prototype plasma containment ring dominates the image: one large metal torus with an open inner channel. A wide, thick, blazing band of dense magenta-pink plasma fills the whole inner channel all the way around the ring, a bright continuous glowing torus of plasma with swirling filaments, casting strong magenta light on the metal ring and the bench. It stands alone on a bolted steel test bench in a vast dark windowless research hall, whose dark neutral grey walls fall out of focus behind it. Far-future experimental hardware running a live test, with seamless composite panels, polished metal and plain unmarked surfaces, in an empty hall with nobody in sight. Art direction: realistic sci-fi concept art, dark muted neutral grey palette, soft volumetric haze, with brilliant magenta-pink plasma light as the only saturated color in the image."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: beabfa30-5e1d-4525-9da4-ef587141df33
+    series: serie-55-plasma
+    code: d90-plasma_technology-7777
+    source: serie-42-recherches/plasma_technology-7777_00001_.png
+    denoise: 0.9
+  master: art/masters/research.plasma_technology/v1.png
+  build: assets/visuels/research.plasma_technology.webp
+- id: research.computer_technology
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view at eye level, with the whole prototype visible inside the frame and filling most of it. A prototype computing core: one huge thick upright last-generation printed circuit board, held in a slim frame, dominates the image and fills most of the frame. Thousands of bright turquoise-cyan circuit traces shine like neon tubes across the whole surface of the board, and every large plain square processor chip radiates turquoise-cyan light, which the board casts onto the bench. It stands alone on a bolted steel test bench in a vast dark windowless research hall, whose dark neutral grey walls fall out of focus behind it. Far-future experimental hardware running a live test, with seamless composite panels, polished metal and plain unmarked surfaces, in an empty hall with nobody in sight. Art direction: realistic sci-fi concept art, dark muted neutral grey palette, soft volumetric haze, with bright turquoise-cyan neon light as the only saturated color in the image."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 5e276f05-3953-45b8-bdf4-da1faba438d9
+    series: serie-48-computer
+    code: d90-computer_technology-7777
+    source: serie-47-computer/d75-computer_technology-7777_00001_.png
+    denoise: 0.9
+  master: art/masters/research.computer_technology/v1.png
+  build: assets/visuels/research.computer_technology.webp
+- id: research.espionage_technology
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view at eye level, with the whole prototype visible inside the frame and filling most of it. A large prototype stealth reconnaissance probe dominates the image: a matte black angular faceted drone held in a test cradle. Its single large sensor lens glows and projects one wide bright fan of scanning green rays across the hall. It stands alone on a bolted steel test bench in a vast dark windowless research hall, whose dark neutral grey walls fall out of focus behind it. Far-future experimental hardware running a live test, with seamless composite panels, polished metal and plain unmarked surfaces, in an empty hall with nobody in sight. Art direction: realistic sci-fi concept art, dark muted neutral grey palette, soft volumetric haze, with emerald-green light as the only saturated color in the image."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 8bcd66f9-462f-493b-83d8-f9829a92cae0
+    series: serie-50-espionage
+    code: grow-d60-espionage_technology-7777
+    source: serie-50-espionage/source-grow.png
+    denoise: 0.6
+  master: art/masters/research.espionage_technology/v1.png
+  build: assets/visuels/research.espionage_technology.webp
+- id: research.weapons_technology
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view at eye level, with the whole prototype visible inside the frame and filling most of it. A sleek far-future high-tech heavy twin-barrel autocannon turret with a seamless armoured casing and illuminated light strips, mounted on a compact pedestal and centred in the frame. Both barrels fire at once with a bright muzzle flash, and a stream of glowing white-hot tracer rounds flies across the hall and exits the frame on the right. It stands alone on a bolted steel test bench in a vast dark windowless research hall, whose dark neutral grey walls fall out of focus behind it. Far-future experimental hardware running a live test, with seamless composite panels, polished metal and plain unmarked surfaces, in an empty hall with nobody in sight. Art direction: realistic sci-fi concept art, dark muted neutral grey palette, soft volumetric haze, with white-hot light as the only saturated color in the image."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: a754575a-db72-476b-9f72-78d08d042d19
+    series: serie-57-weapons
+    code: autocannon-weapons_technology-4242
+  master: art/masters/research.weapons_technology/v1.png
+  build: assets/visuels/research.weapons_technology.webp
+- id: research.shielding_technology
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view at eye level, with the whole prototype visible inside the frame and filling most of it. A prototype shield generator: one compact machine projecting a large bright dome of force field over itself. The machine sits fully inside the dome and is seen through its translucent violet near side: the front of the glowing violet energy shell passes in front of the machine, and the dome base forms a bright glowing ring on the bench all around the machine, in front of it and behind it. It stands alone on a bolted steel test bench in a vast dark windowless research hall, whose dark neutral grey walls fall out of focus behind it. Far-future experimental hardware running a live test, with seamless composite panels, polished metal and plain unmarked surfaces, in an empty hall with nobody in sight. Art direction: realistic sci-fi concept art, dark muted neutral grey palette, soft volumetric haze, with brilliant violet light as the only saturated color in the image."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: e000f7b8-8861-483a-bd37-0ab41ea2184d
+    series: serie-56-shielding
+    code: front-d55-shielding_technology-7777
+    source: serie-56-shielding/source-front.png
+    denoise: 0.55
+  master: art/masters/research.shielding_technology/v1.png
+  build: assets/visuels/research.shielding_technology.webp
+- id: research.armour_technology
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view at eye level, with the whole prototype visible inside the frame and filling most of it. One huge thick prototype armour plate stands upright on the test bench and dominates the image. The plate is made of heavy bevelled composite panels, its edges glowing with heat. It stands alone on a bolted steel test bench in a vast dark windowless research hall, whose dark neutral grey walls fall out of focus behind it. Far-future experimental hardware running a live test, with seamless composite panels, polished metal and plain unmarked surfaces, in an empty hall with nobody in sight. Art direction: realistic sci-fi concept art, dark muted neutral grey palette, soft volumetric haze, with deep amber light as the only saturated color in the image."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 2e4eeb2f-5e82-48bb-89de-d7760eec0d78
+    series: serie-43-armour
+    code: grow-d60-armour_technology-7777
+    source: serie-43-armour/source-grow.png
+    denoise: 0.6
+  master: art/masters/research.armour_technology/v1.png
+  build: assets/visuels/research.armour_technology.webp
+- id: research.combustion_drive
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view at eye level, with the whole prototype visible inside the frame and filling most of it. A sleek far-future high-tech chemical rocket engine, centred in the frame and filling most of it, with a seamless armoured casing, illuminated light strips and one short bell nozzle of polished white ceramic glowing with heat bands, mounted horizontally on a compact test stand. A long roaring orange flame with bright shock diamonds shoots out of it and exits the frame on the right. It stands alone on a bolted steel test bench in a vast dark windowless research hall, whose dark neutral grey walls fall out of focus behind it. Far-future experimental hardware running a live test, with seamless composite panels, polished metal and plain unmarked surfaces, in an empty hall with nobody in sight. Art direction: realistic sci-fi concept art, dark muted neutral grey palette, soft volumetric haze, with bright orange flame and light as the only saturated color in the image."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 5f759698-59c9-4ea1-8d9b-451616a09083
+    series: serie-45-combustion
+    code: new-bell-combustion_drive-4242
+    source: serie-44-combustion/d90-combustion_drive-7777_00001_.png
+    denoise: 0.85
+  master: art/masters/research.combustion_drive/v1.png
+  build: assets/visuels/research.combustion_drive.webp
+- id: research.impulse_drive
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view at eye level, with the whole prototype visible inside the frame and filling most of it. A large prototype impulse engine dominates the image, built from a row of concentric metal rings, mounted horizontally on a test stand. A pulsing shockwave of light expands out of the rings. It stands alone on a bolted steel test bench in a vast dark windowless research hall, whose dark neutral grey walls fall out of focus behind it. Far-future experimental hardware running a live test, with seamless composite panels, polished metal and plain unmarked surfaces, in an empty hall with nobody in sight. Art direction: realistic sci-fi concept art, dark muted neutral grey palette, soft volumetric haze, with indigo-blue light as the only saturated color in the image."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: cbef103e-2c67-4a6a-b31d-15a0b35a4889
+    series: serie-52-impulse
+    code: grow-d45-impulse_drive-7777
+    source: serie-52-impulse/source-grow.png
+    denoise: 0.45
+  master: art/masters/research.impulse_drive/v1.png
+  build: assets/visuels/research.impulse_drive.webp
+- id: research.hyperspace_drive
+  category: research
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view at eye level, with the whole prototype visible inside the frame and filling most of it. A prototype hyperspace drive dominates the image: one huge upright metal ring standing on the test bench. The whole opening of the ring is filled with one bright swirling spiral vortex of energy, whose luminous arms twist inward to a dark center. It stands alone on a bolted steel test bench in a vast dark windowless research hall, whose dark neutral grey walls fall out of focus behind it. Far-future experimental hardware running a live test, with seamless composite panels, polished metal and plain unmarked surfaces, in an empty hall with nobody in sight. Art direction: realistic sci-fi concept art, dark muted neutral grey palette, soft volumetric haze, with bright blue-white light as the only saturated color in the image."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 78c61c6d-2217-49d7-b6ae-1278ddc39f10
+    series: serie-51-hyperspace
+    code: vortex-hyperspace_drive-7777
+    source: serie-42-recherches/hyperspace_drive-7777_00001_.png
+    denoise: 0.9
+  master: art/masters/research.hyperspace_drive/v1.png
+  build: assets/visuels/research.hyperspace_drive.webp

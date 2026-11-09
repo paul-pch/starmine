@@ -1,0 +1,71 @@
+{
+  "series": "serie-45-combustion",
+  "base": "art/style/research_prompt.md",
+  "seeds": [
+    7777
+  ],
+  "variants": [
+    {
+      "variant": "r85",
+      "source": "serie-44-combustion/d90-combustion_drive-7777_00001_.png",
+      "denoise": 0.85
+    },
+    {
+      "variant": "r95",
+      "source": "serie-44-combustion/d90-combustion_drive-7777_00001_.png",
+      "denoise": 0.95
+    }
+  ],
+  "images": [
+    {
+      "id": "research.combustion_drive",
+      "subject": "A sleek far-future spacecraft engine shaped like one single smooth streamlined armoured capsule, with no pipes and no exposed machinery, mounted horizontally on a test stand.",
+      "detail": "A long roaring flame shoots out of a compact ring-shaped exhaust port set flush into the end of the capsule, and thin illuminated light strips run along its casing.",
+      "glow": "bright orange flame and light"
+    },
+    {
+      "id": "research.combustion_drive",
+      "variant": "new-bell",
+      "seeds": [
+        4242,
+        7777
+      ],
+      "subject": "A sleek far-future high-tech chemical rocket engine, centred in the frame and filling most of it, with a seamless armoured casing, illuminated light strips and one short bell nozzle of polished white ceramic glowing with heat bands, mounted horizontally on a compact test stand.",
+      "detail": "A long roaring orange flame with bright shock diamonds shoots out of it and exits the frame on the right.",
+      "glow": "bright orange flame and light"
+    },
+    {
+      "id": "research.combustion_drive",
+      "variant": "new-cluster",
+      "seeds": [
+        4242,
+        7777
+      ],
+      "subject": "A sleek far-future high-tech rocket engine block, centred in the frame and filling most of it, with a seamless armoured casing and illuminated light strips, ending in a tight cluster of three compact glowing nozzles, mounted horizontally on a compact test stand.",
+      "detail": "A long roaring orange flame with bright shock diamonds shoots out of it and exits the frame on the right.",
+      "glow": "bright orange flame and light"
+    },
+    {
+      "id": "research.combustion_drive",
+      "variant": "new-chamber",
+      "seeds": [
+        4242,
+        7777
+      ],
+      "subject": "A sleek far-future high-tech combustion engine, centred in the frame and filling most of it, with a seamless armoured casing whose open side ports reveal the blazing combustion chamber inside, mounted horizontally on a compact test stand.",
+      "detail": "A long roaring orange flame with bright shock diamonds shoots out of it and exits the frame on the right.",
+      "glow": "bright orange flame and light"
+    },
+    {
+      "id": "research.combustion_drive",
+      "variant": "new-spike",
+      "seeds": [
+        4242,
+        7777
+      ],
+      "subject": "A sleek far-future high-tech aerospike rocket engine, centred in the frame and filling most of it, with a seamless armoured casing and illuminated light strips, its exhaust ring wrapped around one central tapered metal spike, mounted horizontally on a compact test stand.",
+      "detail": "A long roaring orange flame with bright shock diamonds shoots out of it and exits the frame on the right.",
+      "glow": "bright orange flame and light"
+    }
+  ]
+}
