@@ -3,7 +3,7 @@
 
 Usage : python3 tool/export_visuals.py
 Dépendances : Pillow et PyYAML. Lit chaque `master`, écrit son `build` aux dimensions du `format`,
-qualité 80. Échoue si un master manque ou n'est qu'un pointeur LFS non récupéré, et signale les
+qualité 80. Les masters sont locaux, ignorés par Git. Échoue si un master manque, et signale les
 WebP de `assets/visuels/` absents du registre.
 """
 import sys

@@ -50,3 +50,6 @@ app.*.map.json
 # Code généré (build_runner)
 *.g.dart
 .vscode
+
+# Masters des visuels (PNG pleine résolution) : gardés en local, jamais versionnés (spec 11)
+/art/masters/

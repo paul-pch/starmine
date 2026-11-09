@@ -1,2 +1,0 @@
-# Masters des visuels (PNG pleine résolution) : Git LFS, jamais dans l'APK (spec 11).
-art/masters/** filter=lfs diff=lfs merge=lfs -text

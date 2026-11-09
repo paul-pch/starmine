@@ -1,6 +1,6 @@
 # Sélection t1, roche grise
 
-Première version des 12 bâtiments, choisie par l'utilisateur. Sélection de travail en recherche et évaluation.
+Première version des 12 bâtiments, choisie par l'utilisateur. Licence : voir spec 11.
 
 Images générées dans `~/ComfyUI/output/starmine_test/<série>/`. Seed et prompt complet dans le `run.json` de
 chaque série.
@@ -60,5 +60,3 @@ de départ. Réglage des déclinaisons : `denoise` 0,90, retenu par l'utilisateu
 ## Reste à faire
 
 - Paliers t2 et t3 : grandissent par ajouts d'éléments, pas par la taille seule.
-- Licence : décider du modèle des images finales avant toute release. Ces 36 images sont packagées
-  depuis l'intégration à l'APK, à la demande de l'utilisateur.

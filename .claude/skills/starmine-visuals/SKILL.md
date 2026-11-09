@@ -9,8 +9,8 @@ Règles et formats : `docs/specs/11-visuels.md`. Intégration dans l'UI : skill 
 Style : **SF réaliste**. Seul l'utilisateur valide une image.
 
 Mise au point d'un prompt et génération (ComfyUI, Qwen-Image-2.1) : skill `starmine-prompt`. Ce
-modèle est limité à la recherche et à l'évaluation : ses images ne passent pas par la boucle
-ci-dessous sans décision explicite de l'utilisateur.
+modèle est limité à la recherche et à l'évaluation. L'utilisateur a accepté ses images dans l'APK,
+pour un usage non commercial uniquement (spec 11).
 
 État actuel : 36 images t1 retenues (12 bâtiments × froid, tempéré, chaud), listées dans
 `art/prompts/selection-t1-rocheux.md` et inscrites au registre. Masters dans
@@ -33,9 +33,9 @@ ci-dessous sans décision explicite de l'utilisateur.
 3. **Brouillon** : 2 à 4 propositions, montrées à l'utilisateur. Entrée `draft` avec
    `prompt_id`, modèle, seed, prompt. Rien d'autre n'est commité.
 4. **Validation** par l'utilisateur (explicite). Alors :
-   - master PNG → `art/masters/<id>/v<N>.png` (Git LFS). Si la session ne peut pas
-     télécharger l'image (réseau restreint) ou pousser l'objet LFS, demander à
-     l'utilisateur de déposer / pousser le master, et continuer avec le reste ;
+   - master PNG → `art/masters/<id>/v<N>.png`, local et ignoré par Git. Si la session ne peut
+     pas récupérer l'image, demander à l'utilisateur de déposer le master, et continuer avec le
+     reste ;
    - entrée `validated`, `version` = N, chemins `master` / `build` ;
    - WebP → `assets/visuels/<id>.webp` aux dimensions du format, qualité 80 :
      `python3 tool/export_visuals.py`.

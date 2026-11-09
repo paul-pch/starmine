@@ -28,5 +28,5 @@
 - `pubspec.lock` est commité ; le code Drift (`*.g.dart`) n'est jamais commité.
 - UX mobile : toute mécanique non évidente a une infobulle au tap (`InfoButton`). Pas de
   Tooltip à l'appui long seul. Cibles tactiles ≥ 48 dp. L'image ne porte jamais d'information.
-- Images : seules les entrées `validated` du registre sont packagées ; masters en Git LFS
-  (`art/masters/`), jamais dans l'APK.
+- Images : seules les entrées `validated` du registre sont packagées ; masters en local
+  (`art/masters/`, ignoré par Git), jamais versionnés ni dans l'APK.

@@ -5,8 +5,8 @@ import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/ui/visuals.dart';
 import 'package:yaml/yaml.dart';
 
-/// Cohérence du registre et des fichiers packagés (spec 11). Ne lit jamais les masters, que la
-/// CI ne récupère pas (Git LFS).
+/// Cohérence du registre et des fichiers packagés (spec 11). Ne lit jamais les masters, locaux
+/// et absents de la CI.
 void main() {
   final registry = loadYaml(File('art/registry.yaml').readAsStringSync()) as YamlMap;
   final images = (registry['images'] as YamlList).cast<YamlMap>();

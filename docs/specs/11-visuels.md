@@ -76,13 +76,13 @@ images:
     notes: "v1 trop saturée"
 ```
 
-- `master` : PNG source pleine résolution, suivi par **Git LFS** (`art/masters/**`).
+- `master` : PNG source pleine résolution, gardé **en local** dans `art/masters/`, ignoré par Git.
+  Aucune copie versionnée : l'export ne fonctionne que sur la machine qui détient les masters.
 - `build` : WebP qualité 80, dimensions du format, Git normal ; nommé par id **sans
   version** : le code charge `assets/visuels/<id>.webp`. Généré depuis le master par
   `python3 tool/export_visuals.py`.
 - Brouillons (`draft`) : pas de fichier commité, seulement l'entrée et le `job_id`.
-- La CI ne récupère pas LFS (`actions/checkout` par défaut) : les masters n'entrent jamais
-  dans le build.
+- La CI n'a pas les masters : ils n'entrent jamais dans le build, et le WebP commité suffit.
 
 ## Code
 
@@ -98,10 +98,14 @@ climat, repli quand l'asset manque, vignette grisée, ambiance « Sobre » sans 
 inversement, t1 de chaque bâtiment dans chaque climat, seuils alignés sur le code, poids total
 sous 15 Mo.
 
+## Licence
+
+Images générées avec Qwen-Image-2.1, modèle limité à la recherche et à l'évaluation. Décision de
+l'utilisateur (2026-11-09) : packagées dans l'APK, pour un usage non commercial uniquement. Tout
+projet d'usage commercial rouvre la question.
+
 ## Points ouverts
 
-- Licence du modèle des images finales : à décider avant toute release (voir
-  `art/prompts/selection-t1-rocheux.md`).
 - Images 4:3 dédiées à C ou recadrage du 1:1 : à trancher sur les premiers rendus.
 - Portraits des officiers (spec 12) : nouvelle catégorie `character` au registre, à prévoir
   avec la V2c.
