@@ -1,0 +1,21 @@
+{
+  "series": "serie-30-deuterium",
+  "seeds": [
+    4242
+  ],
+  "variants": [
+    {
+      "variant": "d90",
+      "denoise": 0.9
+    }
+  ],
+  "images": [
+    {
+      "id": "building.deuterium_synthesizer_hot.t1",
+      "subject": "A deuterium synthesis plant built around one cluster of giant spherical pressure tanks.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform at the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks that plunges straight into a dark slate-grey sea with heavy swell and thick white steam rising from its surface, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance.",
+      "source": "serie-10-deuterium/deuterium_synthesizer-4242_00001_.png"
+    }
+  ]
+}

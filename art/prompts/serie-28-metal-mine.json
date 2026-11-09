@@ -1,0 +1,30 @@
+{
+  "series": "serie-28-metal-mine",
+  "seeds": [
+    4242
+  ],
+  "variants": [
+    {
+      "variant": "d90",
+      "denoise": 0.9
+    }
+  ],
+  "images": [
+    {
+      "id": "building.metal_mine_cold.t1",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouth.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "source": "serie-08-metal-mine/metal_mine-4242_00001_.png"
+    },
+    {
+      "id": "building.metal_mine_hot.t1",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouth.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "site": "It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance.",
+      "source": "serie-08-metal-mine/metal_mine-4242_00001_.png"
+    }
+  ]
+}

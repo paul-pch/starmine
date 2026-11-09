@@ -1,0 +1,43 @@
+{
+  "series": "serie-20-temperature",
+  "seeds": [
+    4242,
+    7777
+  ],
+  "images": [
+    {
+      "id": "building.metal_mine_cold.t1",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouth.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow."
+    },
+    {
+      "id": "building.metal_mine_hot.t1",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouth.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "site": "It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked terracotta-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance."
+    },
+    {
+      "id": "building.research_lab_cold.t1",
+      "view": "High aerial view from a distance, with the whole research complex visible inside the frame.",
+      "subject": "A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it.",
+      "detail": "A ring of slender antennas surrounds the dome.",
+      "site": "It stands on a flat plateau blanketed in deep white snow and snowdrifts at the top of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, open to the sky, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow."
+    },
+    {
+      "id": "building.research_lab_hot.t1",
+      "view": "High aerial view from a distance, with the whole research complex visible inside the frame.",
+      "subject": "A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it.",
+      "detail": "A ring of slender antennas surrounds the dome.",
+      "site": "It stands on a flat plateau of baked terracotta-red earth at the top of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, open to the sky, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance."
+    },
+    {
+      "id": "building.deuterium_synthesizer_hot.t1",
+      "subject": "A deuterium synthesis plant built around one cluster of giant spherical pressure tanks.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform on baked terracotta-red earth at the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks that plunges straight into a dark slate-grey sea with heavy swell and thick white steam rising from its surface, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance."
+    }
+  ]
+}

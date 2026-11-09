@@ -1,0 +1,32 @@
+{
+  "series": "serie-41-shipyard",
+  "seeds": [
+    4242
+  ],
+  "variants": [
+    {
+      "variant": "d90",
+      "denoise": 0.9
+    }
+  ],
+  "images": [
+    {
+      "id": "building.shipyard_cold.t1",
+      "source": "serie-18-shipyard/B-shipyard-4242_00001_.png",
+      "view": "High aerial view from a distance, with the whole shipyard visible inside the frame.",
+      "subject": "A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim.",
+      "detail": "A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow.",
+      "state": "Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor.",
+      "site": "The dock is cut into a plateau of dark neutral grey rock blanketed in deep white snow and snowdrifts, with its rock walls streaked with ice, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow."
+    },
+    {
+      "id": "building.shipyard_hot.t1",
+      "source": "serie-18-shipyard/B-shipyard-4242_00001_.png",
+      "view": "High aerial view from a distance, with the whole shipyard visible inside the frame.",
+      "subject": "A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim.",
+      "detail": "A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow.",
+      "state": "Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor.",
+      "site": "The dock is cut into a plateau of baked deep muted oxblood-red earth, with scorched dark basalt rock walls with a few thin glowing orange lava cracks, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance."
+    }
+  ]
+}

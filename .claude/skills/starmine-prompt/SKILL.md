@@ -82,7 +82,15 @@ Serveur ComfyUI lancé, puis :
 
 - Le fichier de série donne les seeds, des `variants` facultatives et la liste `id`, `subject`,
   `detail`, avec `view`, `site` ou `state` en cas de dérogation à la charte.
-- 2 images par prompt, seeds **4242** et **7777**, jamais changées au cours d'une série.
+- Nouvelle image : 2 images par prompt, seeds **4242** et **7777**, jamais changées au cours d'une
+  série.
+- Modification ou déclinaison d'une image retenue : **uniquement sa seed, en repartant de cette image**
+  (`source`, `denoise`), pour limiter la dérive du paysage. Décision de l'utilisateur. Sélection :
+  `art/prompts/selection-t1-rocheux.md`. Déclinaisons froid et chaud : `denoise` 0,90, retenu par
+  l'utilisateur (séries 26 et 27).
+- Un bâtiment à la fois, avec sa galerie.
+- Retoucher une petite zone : `tool/comfy_inpaint.py`. Essayer plusieurs seeds : sur la tente du labo,
+  le résultat dépendait de la seed, pas du `denoise` (séries 24 et 25).
 - Compter environ 30 s par image : annoncer le temps avant un grand lot.
 - Sorties : `~/ComfyUI/output/starmine_test/<serie>/`, avec `run.json`, `sheet_512.png` et
   `index.html`.

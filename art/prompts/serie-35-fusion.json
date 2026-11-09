@@ -1,0 +1,28 @@
+{
+  "series": "serie-35-fusion",
+  "seeds": [
+    4242
+  ],
+  "variants": [
+    {
+      "variant": "d90",
+      "denoise": 0.9
+    }
+  ],
+  "images": [
+    {
+      "id": "building.fusion_reactor_cold.t1",
+      "source": "serie-12-fusion/fusion_reactor-4242_00001_.png",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow."
+    },
+    {
+      "id": "building.fusion_reactor_hot.t1",
+      "source": "serie-12-fusion/fusion_reactor-4242_00001_.png",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "site": "It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance."
+    }
+  ]
+}

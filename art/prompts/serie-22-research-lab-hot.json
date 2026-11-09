@@ -1,0 +1,16 @@
+{
+  "series": "serie-22-research-lab-hot",
+  "seeds": [
+    4242,
+    7777
+  ],
+  "images": [
+    {
+      "id": "building.research_lab_hot.t1",
+      "view": "High aerial view from a distance, with the whole research complex visible inside the frame.",
+      "subject": "A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it.",
+      "detail": "A ring of slender antennas surrounds the dome.",
+      "site": "It stands on a flat plateau of baked deep muted oxblood-red earth at the top of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, open to the sky, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance."
+    }
+  ]
+}

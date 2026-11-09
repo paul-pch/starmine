@@ -1,0 +1,28 @@
+{
+  "series": "serie-38-deuterium-tank",
+  "seeds": [
+    4242
+  ],
+  "variants": [
+    {
+      "variant": "d90",
+      "denoise": 0.9
+    }
+  ],
+  "images": [
+    {
+      "id": "building.deuterium_tank_cold.t1",
+      "source": "serie-16-deuterium-tank/deuterium_tank-4242_00001_.png",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff streaked with ice that plunges straight into a frozen sea of cracked pale ice with ice floes and pressure ridges, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow."
+    },
+    {
+      "id": "building.deuterium_tank_hot.t1",
+      "source": "serie-16-deuterium-tank/deuterium_tank-4242_00001_.png",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks that plunges straight into a dark slate-grey sea with heavy swell and thick white steam rising from its surface, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance."
+    }
+  ]
+}

@@ -2,8 +2,8 @@
 
 Première version des 12 bâtiments, choisie par l'utilisateur. Sélection de travail en recherche et évaluation.
 
-Images dans `~/ComfyUI/output/starmine_test/<série>/`, hors du dépôt. Seed et prompt complet dans le
-`run.json` de chaque série.
+Images générées dans `~/ComfyUI/output/starmine_test/<série>/`. Seed et prompt complet dans le `run.json` de
+chaque série.
 
 | Bâtiment | Série | Image | Journal |
 | --- | --- | --- | --- |
@@ -19,6 +19,42 @@ Images dans `~/ComfyUI/output/starmine_test/<série>/`, hors du dépôt. Seed et
 | `nanite_factory` | `serie-03-construction` | `nanite_factory-4242` | `serie-03-construction.md` |
 | `shipyard` | `serie-18-shipyard` | `B-shipyard-4242` | `serie-18-shipyard.md` |
 | `research_lab` | `serie-17-research-lab` | `research_lab-7777` | `serie-17-research-lab.md` |
+
+## Déclinaisons de température retenues
+
+Travail bâtiment par bâtiment, décidé par l'utilisateur.
+
+| Bâtiment | Climat | Série | Image | État |
+| --- | --- | --- | --- | --- |
+| `metal_mine` | froid | `serie-28-metal-mine` | `d90-metal_mine_cold-4242` | retenue |
+| `metal_mine` | chaud | `serie-28-metal-mine` | `d90-metal_mine_hot-4242` | retenue |
+| `crystal_mine` | froid | `serie-27-crystal-mine` | `d90-crystal_mine_cold-4242` | retenue |
+| `crystal_mine` | chaud | `serie-27-crystal-mine` | `d90-crystal_mine_hot-4242` | retenue |
+| `research_lab` | froid | `serie-29-research-lab` | `d90-research_lab_cold-7777` | retenue |
+| `research_lab` | chaud | `serie-29-research-lab` | `d90-research_lab_hot-7777` | retenue |
+| `deuterium_synthesizer` | froid | `serie-19-temperature` | `deuterium_synthesizer_cold-4242` | retenue |
+| `deuterium_synthesizer` | chaud | `serie-30-deuterium` | `d90-deuterium_synthesizer_hot-4242` | retenue |
+| `solar_plant` | froid | `serie-33-solar-cold-masque` | `raw-solar_plant_cold-4242` | retenue |
+| `solar_plant` | chaud | `serie-31-solar` | `d90-solar_plant_hot-4242` | retenue |
+| `fusion_reactor` | froid | `serie-35-fusion` | `d90-fusion_reactor_cold-4242` | retenue |
+| `fusion_reactor` | chaud | `serie-35-fusion` | `d90-fusion_reactor_hot-4242` | retenue |
+| `metal_storage` | froid | `serie-36-metal-storage` | `d90-metal_storage_cold-4242` | retenue |
+| `metal_storage` | chaud | `serie-36-metal-storage` | `d90-metal_storage_hot-4242` | retenue |
+| `crystal_storage` | froid | `serie-37-crystal-storage` | `d90-crystal_storage_cold-4242` | retenue |
+| `crystal_storage` | chaud | `serie-37-crystal-storage` | `d90-crystal_storage_hot-4242` | retenue |
+| `deuterium_tank` | froid | `serie-38-deuterium-tank` | `d90-deuterium_tank_cold-4242` | retenue |
+| `deuterium_tank` | chaud | `serie-38-deuterium-tank` | `d90-deuterium_tank_hot-4242` | retenue |
+| `robotics_factory` | froid | `serie-39-robotics` | `d90-robotics_factory_cold-4242` | retenue |
+| `robotics_factory` | chaud | `serie-39-robotics` | `d90-robotics_factory_hot-4242` | retenue |
+| `nanite_factory` | froid | `serie-40-nanite` | `d90-nanite_factory_cold-4242` | retenue |
+| `nanite_factory` | chaud | `serie-40-nanite` | `d90-nanite_factory_hot-4242` | retenue |
+| `shipyard` | froid | `serie-41-shipyard` | `d90-shipyard_cold-4242` | retenue |
+| `shipyard` | chaud | `serie-41-shipyard` | `d90-shipyard_hot-4242` | retenue |
+
+Copies dans le dépôt : `assets/visuels/buildings/<bâtiment>/t1_<temperate|cold|hot>.png`.
+
+Le deutérium froid précède la règle « seed t1 et départ depuis l'image validée » : il a été généré sans image
+de départ. Réglage des déclinaisons : `denoise` 0,90, retenu par l'utilisateur.
 
 ## Reste à faire
 

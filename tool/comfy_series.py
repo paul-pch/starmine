@@ -7,7 +7,8 @@ Usage, avec le serveur ComfyUI lancé et le Python de son environnement (Pillow)
 La série donne les seeds, des `variants` facultatives et, pour chaque image, un `id`, un `subject`
 et un `detail`, insérés dans le prompt de `art/style/base_prompt.md`. Les valeurs par défaut de
 `view`, `site` et `state` viennent de cette base ; une variante ou une image peut les remplacer.
-Chaque image est générée pour chaque variante et chaque seed. Sorties
+Une variante ou une image peut aussi donner `source`, image de départ relative au dossier de sortie,
+et `denoise`, part de l'image transformée, de 0 à 1. Chaque image est générée pour chaque variante et chaque seed. Sorties
 dans `~/ComfyUI/output/starmine_test/<serie>/` : les PNG, `run.json`, une planche `sheet_512.png`
 et une galerie `index.html` où chaque image porte un code à citer pour la sélectionner.
 """
@@ -16,6 +17,7 @@ import html
 import io
 import json
 import re
+import shutil
 import sys
 import time
 import urllib.error
@@ -29,6 +31,7 @@ SERVER = "http://127.0.0.1:8188"
 REPO = Path(__file__).resolve().parent.parent
 BASE_PROMPT = REPO / "art" / "style" / "base_prompt.md"
 OUTPUT = Path.home() / "ComfyUI" / "output" / "starmine_test"
+COMFY_INPUT = Path.home() / "ComfyUI" / "input"
 SIZE = 1024
 SHEET_CELL = 512
 
@@ -42,9 +45,12 @@ def load_base():
     return template, blocks
 
 
-def workflow(prompt, seed, prefix):
-    """Réglages du template ComfyUI image_qwen_image_2_1_t2i, réécriture de prompt désactivée."""
-    return {
+def workflow(prompt, seed, prefix, source=None, denoise=1):
+    """Réglages du template ComfyUI image_qwen_image_2_1_t2i, réécriture de prompt désactivée.
+
+    Avec `source`, nom d'une image du dossier d'entrée de ComfyUI, on part de cette image.
+    """
+    graph = {
         "unet": {"class_type": "UNETLoader", "inputs": {
             "unet_name": "qwen_image_2.1_int8_convrot.safetensors", "weight_dtype": "default"}},
         "cache": {"class_type": "QwenImage21Cache", "inputs": {
@@ -59,10 +65,26 @@ def workflow(prompt, seed, prefix):
         "sample": {"class_type": "KSampler", "inputs": {
             "model": ["cache", 0], "positive": ["encode", 0], "negative": ["encode", 1],
             "latent_image": ["latent", 0], "seed": seed, "steps": 25, "cfg": 1,
-            "sampler_name": "euler", "scheduler": "simple", "denoise": 1}},
+            "sampler_name": "euler", "scheduler": "simple", "denoise": denoise}},
         "decode": {"class_type": "VAEDecode", "inputs": {"samples": ["sample", 0], "vae": ["vae", 0]}},
         "save": {"class_type": "SaveImage", "inputs": {"images": ["decode", 0], "filename_prefix": prefix}},
     }
+    if source:
+        graph["image"] = {"class_type": "LoadImage", "inputs": {"image": source}}
+        graph["latent"] = {"class_type": "VAEEncode", "inputs": {"pixels": ["image", 0], "vae": ["vae", 0]}}
+    return graph
+
+
+def load_source(source):
+    """Copie une image de `OUTPUT` dans le dossier d'entrée de ComfyUI et renvoie son nom."""
+    if not source:
+        return None
+    path = OUTPUT / source
+    if not path.is_file():
+        sys.exit(f"image source introuvable : {path}")
+    name = "starmine_source_" + source.replace("/", "_")
+    shutil.copyfile(path, COMFY_INPUT / name)
+    return name
 
 
 def call(path, payload=None):
@@ -156,14 +178,17 @@ def main():
                 building = item["id"].split(".")[1]
                 code = "-".join(part for part in (tag, building, str(seed)) if part)
                 prefix = f"starmine_test/{name}/{code}"
-                prompt_id = call("/prompt", {"prompt": workflow(prompt, seed, prefix)})["prompt_id"]
+                source = {**variant, **item}.get("source")
+                denoise = {**variant, **item}.get("denoise", 1)
+                graph = workflow(prompt, seed, prefix, load_source(source), denoise)
+                prompt_id = call("/prompt", {"prompt": graph})["prompt_id"]
                 entry = wait_for(prompt_id)
                 saved = entry["outputs"]["save"]["images"][0]
                 cells.append((code, fetch(saved)))
                 elapsed = round(time.time() - started, 1)
                 print(f"{code}: {elapsed}s", flush=True)
                 log.append({"code": code, "id": item["id"], "variant": tag, "seed": seed,
-                            "seconds": elapsed, "prompt_id": prompt_id, "file": saved["filename"],
+                            "source": source, "denoise": denoise, "seconds": elapsed, "prompt_id": prompt_id, "file": saved["filename"],
                             "prompt": prompt})
             rows.append(cells)
     (out / "run.json").write_text(json.dumps(log, indent=1, ensure_ascii=False), encoding="utf-8")

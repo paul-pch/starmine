@@ -1,0 +1,28 @@
+{
+  "series": "serie-40-nanite",
+  "seeds": [
+    4242
+  ],
+  "variants": [
+    {
+      "variant": "d90",
+      "denoise": 0.9
+    }
+  ],
+  "images": [
+    {
+      "id": "building.nanite_factory_cold.t1",
+      "source": "serie-03-construction/nanite_factory-4242_00001_.png",
+      "subject": "A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff.",
+      "detail": "A swirling cloud of silver nanoparticles glows inside the cylinder.",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow."
+    },
+    {
+      "id": "building.nanite_factory_hot.t1",
+      "source": "serie-03-construction/nanite_factory-4242_00001_.png",
+      "subject": "A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff.",
+      "detail": "A swirling cloud of silver nanoparticles glows inside the cylinder.",
+      "site": "It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance."
+    }
+  ]
+}
