@@ -1,0 +1,422 @@
+{
+  "series": "serie-58-unites",
+  "base": "art/style/unit_prompt.md",
+  "seeds": [
+    4242,
+    7777,
+    1234
+  ],
+  "images": [
+    {
+      "id": "defense.rocket_launcher",
+      "variant": "e1",
+      "subject": "A far-future high-tech planetary defense missile battery: one compact armoured turret carrying a large launch pod with a grid of missile tubes, on a low armoured base anchored into the rock, centred in the frame.",
+      "detail": "Its launch pod is raised toward the sky, with the dark openings of its missile tubes clearly visible.",
+      "view": "Close low three-quarter view, with the whole unit visible inside the frame and filling most of it.",
+      "scale": ""
+    },
+    {
+      "id": "defense.light_laser",
+      "variant": "e1",
+      "subject": "A far-future high-tech planetary defense light laser turret: one compact armoured rotating turret carrying a single long slender laser emitter barrel with a glowing lens at its tip, on a low armoured base anchored into the rock, centred in the frame.",
+      "detail": "The laser emitter points up toward the sky, and its lens glows bright red.",
+      "view": "Very low three-quarter view from close to the ground, looking up at the unit, with the whole unit visible inside the frame and filling most of it.",
+      "site": "It stands alone on bare dark neutral grey rock on a lifeless alien planet of bare rock, under a hazy sky, with the rocky ground falling out of focus behind it."
+    },
+    {
+      "id": "defense.light_laser",
+      "variant": "e2",
+      "subject": "A far-future high-tech planetary defense light laser turret: one compact armoured rotating turret carrying a single long slender laser emitter barrel with a glowing lens at its tip, on a low armoured base anchored into the rock, centred in the frame.",
+      "detail": "The laser emitter points up toward the sky, and its lens glows bright red.",
+      "view": "Low three-quarter view from a distance with a long lens, looking slightly up at the unit, with the whole unit visible inside the frame and filling most of it, and only a thin strip of flat ground in front of it.",
+      "scale": "The defense is monumental, several storeys tall, and towers over the tiny rocks and pebbles scattered at its base.",
+      "state": "Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces, with nobody in sight."
+    },
+    {
+      "id": "defense.light_laser",
+      "variant": "e3",
+      "subject": "A far-future high-tech planetary defense light laser turret: one compact armoured rotating turret carrying a single long slender laser emitter barrel with a glowing lens at its tip, on a low armoured base anchored into the rock, centred in the frame.",
+      "detail": "The laser emitter points up toward the sky, and its lens glows bright red."
+    },
+    {
+      "id": "defense.heavy_laser",
+      "variant": "e1",
+      "subject": "A far-future high-tech planetary defense heavy laser turret: one huge heavily armoured rotating turret carrying a single short, very thick heavy laser emitter barrel with a large glowing lens at its tip, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The heavy laser emitter points up toward the sky, and its large lens glows bright red."
+    },
+    {
+      "id": "defense.heavy_laser",
+      "variant": "grow-d55",
+      "seeds": [
+        7777
+      ],
+      "source": "serie-58-unites/grow-heavy_laser-7777.png",
+      "denoise": 0.55,
+      "subject": "A far-future high-tech planetary defense heavy laser turret: one huge heavily armoured rotating turret carrying a single short, very thick heavy laser emitter barrel with a large glowing lens at its tip, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The heavy laser emitter points up toward the sky, and its large lens glows bright red."
+    },
+    {
+      "id": "defense.heavy_laser",
+      "variant": "grow-d65",
+      "seeds": [
+        7777
+      ],
+      "source": "serie-58-unites/grow-heavy_laser-7777.png",
+      "denoise": 0.65,
+      "subject": "A far-future high-tech planetary defense heavy laser turret: one huge heavily armoured rotating turret carrying a single short, very thick heavy laser emitter barrel with a large glowing lens at its tip, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The heavy laser emitter points up toward the sky, and its large lens glows bright red."
+    },
+    {
+      "id": "defense.heavy_laser",
+      "variant": "grow-d75",
+      "seeds": [
+        7777
+      ],
+      "source": "serie-58-unites/grow-heavy_laser-7777.png",
+      "denoise": 0.75,
+      "subject": "A far-future high-tech planetary defense heavy laser turret: one huge heavily armoured rotating turret carrying a single short, very thick heavy laser emitter barrel with a large glowing lens at its tip, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The heavy laser emitter points up toward the sky, and its large lens glows bright red."
+    },
+    {
+      "id": "defense.heavy_laser",
+      "variant": "bg7777-d50",
+      "seeds": [
+        7777
+      ],
+      "source": "serie-58-unites/bg-heavy_laser-7777.png",
+      "denoise": 0.5,
+      "subject": "A far-future high-tech planetary defense heavy laser turret: one huge heavily armoured rotating turret carrying a single short, very thick heavy laser emitter barrel with a large glowing lens at its tip, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The heavy laser emitter points up toward the sky, and its large lens glows bright red."
+    },
+    {
+      "id": "defense.heavy_laser",
+      "variant": "bg4242-d50",
+      "seeds": [
+        7777
+      ],
+      "source": "serie-58-unites/bg-heavy_laser-4242.png",
+      "denoise": 0.5,
+      "subject": "A far-future high-tech planetary defense heavy laser turret: one huge heavily armoured rotating turret carrying a single short, very thick heavy laser emitter barrel with a large glowing lens at its tip, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The heavy laser emitter points up toward the sky, and its large lens glows bright red."
+    },
+    {
+      "id": "defense.heavy_laser",
+      "variant": "bg1234-d50",
+      "seeds": [
+        7777
+      ],
+      "source": "serie-58-unites/bg-heavy_laser-1234.png",
+      "denoise": 0.5,
+      "subject": "A far-future high-tech planetary defense heavy laser turret: one huge heavily armoured rotating turret carrying a single short, very thick heavy laser emitter barrel with a large glowing lens at its tip, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The heavy laser emitter points up toward the sky, and its large lens glows bright red."
+    },
+    {
+      "id": "defense.gauss_cannon",
+      "variant": "e1",
+      "subject": "A far-future high-tech planetary defense gauss cannon: one huge heavily armoured rotating turret carrying a single very long heavy barrel wrapped along its whole length in a row of thick electromagnetic coil rings, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The gauss barrel points up toward the sky, and its coil rings glow bright electric blue."
+    },
+    {
+      "id": "defense.gauss_cannon",
+      "variant": "tilt-d85",
+      "seeds": [
+        1234
+      ],
+      "source": "serie-58-unites/e1-gauss_cannon-1234_00001_.png",
+      "denoise": 0.85,
+      "subject": "A far-future high-tech planetary defense gauss cannon: one huge heavily armoured rotating turret carrying a single very long heavy barrel wrapped along its whole length in a row of thick electromagnetic coil rings, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The gauss barrel is tilted at a 45-degree angle and points diagonally toward the upper right of the frame, seen from the side along its whole length, and its coil rings glow bright electric blue."
+    },
+    {
+      "id": "defense.gauss_cannon",
+      "variant": "tilt-d90",
+      "seeds": [
+        1234
+      ],
+      "source": "serie-58-unites/e1-gauss_cannon-1234_00001_.png",
+      "denoise": 0.9,
+      "subject": "A far-future high-tech planetary defense gauss cannon: one huge heavily armoured rotating turret carrying a single very long heavy barrel wrapped along its whole length in a row of thick electromagnetic coil rings, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The gauss barrel is tilted at a 45-degree angle and points diagonally toward the upper right of the frame, seen from the side along its whole length, and its coil rings glow bright electric blue."
+    },
+    {
+      "id": "defense.gauss_cannon",
+      "variant": "tilt-d95",
+      "seeds": [
+        1234
+      ],
+      "source": "serie-58-unites/e1-gauss_cannon-1234_00001_.png",
+      "denoise": 0.95,
+      "subject": "A far-future high-tech planetary defense gauss cannon: one huge heavily armoured rotating turret carrying a single very long heavy barrel wrapped along its whole length in a row of thick electromagnetic coil rings, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The gauss barrel is tilted at a 45-degree angle and points diagonally toward the upper right of the frame, seen from the side along its whole length, and its coil rings glow bright electric blue."
+    },
+    {
+      "id": "defense.gauss_cannon",
+      "variant": "tilt-d93",
+      "seeds": [
+        1234
+      ],
+      "source": "serie-58-unites/e1-gauss_cannon-1234_00001_.png",
+      "denoise": 0.93,
+      "subject": "A far-future high-tech planetary defense gauss cannon: one huge heavily armoured rotating turret carrying a single very long heavy barrel wrapped along its whole length in a row of thick electromagnetic coil rings, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The gauss barrel is tilted at a 45-degree angle and points diagonally toward the upper right of the frame, seen from the side along its whole length, and its coil rings glow bright electric blue."
+    },
+    {
+      "id": "defense.gauss_cannon",
+      "variant": "tilt-d97",
+      "seeds": [
+        1234
+      ],
+      "source": "serie-58-unites/e1-gauss_cannon-1234_00001_.png",
+      "denoise": 0.97,
+      "subject": "A far-future high-tech planetary defense gauss cannon: one huge heavily armoured rotating turret carrying a single very long heavy barrel wrapped along its whole length in a row of thick electromagnetic coil rings, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The gauss barrel is tilted at a 45-degree angle and points diagonally toward the upper right of the frame, seen from the side along its whole length, and its coil rings glow bright electric blue."
+    },
+    {
+      "id": "defense.ion_cannon",
+      "variant": "e1",
+      "subject": "A far-future high-tech planetary defense ion cannon: one huge heavily armoured rotating turret carrying a short, very wide barrel that ends in a large open ring-shaped ion emitter, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The barrel is tilted at a 45-degree angle and points diagonally toward the upper right of the frame, seen from the side, and a swirling ball of brilliant electric ice-blue ion energy glows inside its ring emitter."
+    },
+    {
+      "id": "defense.plasma_turret",
+      "variant": "e1",
+      "subject": "A far-future high-tech planetary defense plasma turret: one huge heavily armoured rotating turret carrying a thick barrel that splits at its end into two parallel heavy prongs, on a wide armoured base anchored into the rock, centred in the frame.",
+      "detail": "The barrel is tilted at a 45-degree angle and points diagonally toward the upper right of the frame, seen from the side, and a large crackling sphere of brilliant magenta-pink plasma floats between its two prongs."
+    },
+    {
+      "id": "defense.small_shield_dome",
+      "variant": "e1",
+      "subject": "A far-future high-tech planetary shield generator: one squat heavily armoured generator tower with a glowing emitter at its top, on a wide armoured base anchored into the rock, centred in the frame, projecting a translucent dome of force field over itself.",
+      "detail": "The glowing violet energy dome is just wide enough to cover the generator and its base: its translucent near side passes in front of the generator, and its edge forms a bright glowing violet ring on the ground all around it.",
+      "scale": "The shield generator is monumental, several storeys tall: tiny vehicles and tiny human figures outside the dome give the scale."
+    },
+    {
+      "id": "defense.small_shield_dome",
+      "variant": "e2",
+      "subject": "A far-future high-tech planetary surface shield: four tall slender armoured energy pylons stand in a wide circle on the rock, each with a glowing emitter at its top, centred in the frame, and together they hold up one translucent dome of force field over the open ground between them.",
+      "detail": "Bright violet energy beams link the tops of the pylons to the glowing violet dome, whose translucent near side passes in front of the far pylons and whose edge forms a bright glowing violet ring on the ground through the foot of each pylon.",
+      "scale": "The pylons are monumental, several storeys tall: tiny vehicles and tiny human figures on the ground under the dome give the scale."
+    },
+    {
+      "id": "defense.small_shield_dome",
+      "variant": "e3",
+      "view": "Very wide high aerial view from a great distance, looking toward the horizon, with the sky taking the upper half of the frame.",
+      "subject": "A far-future high-tech planetary shield: a long row of tall slender armoured energy towers, each with a glowing emitter at its top, stretches across the rocky plain from the foreground as far as the eye can see to the horizon.",
+      "detail": "Bright violet energy beams rise from the top of every tower into one immense translucent glowing violet shield of force field that covers the whole sky and curves down beyond the horizon.",
+      "scale": "The nearest towers are monumental, many storeys tall: tiny vehicles and tiny human figures at their base give the scale.",
+      "site": "They stand on bare dark neutral grey rock on a lifeless alien planet of bare rock, with a flat rocky plain stretching to distant mountains."
+    },
+    {
+      "id": "defense.large_shield_dome",
+      "variant": "e1",
+      "view": "View from space at a great distance, with the whole planet visible inside the frame and filling most of it, centred.",
+      "subject": "A lifeless grey rocky alien planet entirely enclosed in one immense planetary shield: a translucent glowing violet sphere of force field that surrounds the whole planet a little above its surface.",
+      "detail": "The planet is clearly seen through the translucent violet shield, whose rim glows brightest all around the planet, and faint violet energy beams rise from many tiny points on the surface up to the shield.",
+      "scale": "",
+      "site": "It floats in the dark of space, with a few distant stars behind it.",
+      "state": "Far-future high-tech planetary defense, the planet lit from one side by a distant sun."
+    },
+    {
+      "id": "defense.large_shield_dome",
+      "variant": "e2",
+      "view": "View from space at a great distance, with the whole planet visible inside the frame and filling most of it, centred.",
+      "subject": "An alien planet with wide dark blue-grey oceans and continents of bare grey rock with very subtle, faintly marked relief, entirely enclosed in one immense planetary shield: a translucent glowing violet sphere of force field that surrounds the whole planet a little above its surface.",
+      "detail": "The planet is clearly seen through the translucent violet shield, whose rim glows brightest all around the planet, and faint violet energy beams rise from many tiny points on the surface up to the shield.",
+      "scale": "",
+      "site": "It floats in the dark of space, with a few distant stars behind it.",
+      "state": "Far-future high-tech planetary defense, the planet lit from one side by a distant sun."
+    },
+    {
+      "id": "ship.small_cargo",
+      "variant": "e1",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in dark space in high orbit above a lifeless grey rocky planet, whose curved horizon fills the lower part of the background, out of focus.",
+      "scale": "",
+      "subject": "A far-future high-tech small cargo spaceship: a compact, wide and flat hull built around one large boxy cargo container section, with short swept wings and a small cockpit at the front, centred in the frame.",
+      "detail": "It flies level from left to right, and its two rear engines glow bright blue-white."
+    },
+    {
+      "id": "ship.small_cargo",
+      "variant": "e2-d85",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in dark space in high orbit above a lifeless grey rocky planet, whose curved horizon fills the lower part of the background, out of focus.",
+      "scale": "",
+      "subject": "A far-future high-tech small cargo spaceship: a long hull with a streamlined pointed nose and cockpit at the front, its middle section carrying a row of large modular cargo containers clamped along both sides of the hull, and one large engine block at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left.",
+      "seeds": [
+        7777
+      ],
+      "source": "serie-58-unites/e1-small_cargo-7777_00001_.png",
+      "denoise": 0.85
+    },
+    {
+      "id": "ship.small_cargo",
+      "variant": "e2-d90",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in dark space in high orbit above a lifeless grey rocky planet, whose curved horizon fills the lower part of the background, out of focus.",
+      "scale": "",
+      "subject": "A far-future high-tech small cargo spaceship: a long hull with a streamlined pointed nose and cockpit at the front, its middle section carrying a row of large modular cargo containers clamped along both sides of the hull, and one large engine block at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left.",
+      "seeds": [
+        7777
+      ],
+      "source": "serie-58-unites/e1-small_cargo-7777_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "ship.small_cargo",
+      "variant": "e2-d95",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in dark space in high orbit above a lifeless grey rocky planet, whose curved horizon fills the lower part of the background, out of focus.",
+      "scale": "",
+      "subject": "A far-future high-tech small cargo spaceship: a long hull with a streamlined pointed nose and cockpit at the front, its middle section carrying a row of large modular cargo containers clamped along both sides of the hull, and one large engine block at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left.",
+      "seeds": [
+        7777
+      ],
+      "source": "serie-58-unites/e1-small_cargo-7777_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "ship.large_cargo",
+      "variant": "e1-h50",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in dark space in high orbit above a lifeless grey rocky planet, whose curved horizon fills the lower part of the background, out of focus.",
+      "scale": "",
+      "subject": "A far-future high-tech large cargo spaceship, much bigger and heavier than a small freighter: a very long and massive hull with a streamlined pointed nose and cockpit at the front, its long middle section carrying many rows of large modular cargo containers stacked two high along both sides of the hull, and a wide block of three big engines at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left.",
+      "seeds": [
+        1234
+      ],
+      "source": "serie-58-unites/e1-large_cargo-1234.png",
+      "denoise": 0.5
+    },
+    {
+      "id": "ship.large_cargo",
+      "variant": "e1-h50",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in dark space in high orbit above a lifeless grey rocky planet, whose curved horizon fills the lower part of the background, out of focus.",
+      "scale": "",
+      "subject": "A far-future high-tech large cargo spaceship, much bigger and heavier than a small freighter: a very long and massive hull with a streamlined pointed nose and cockpit at the front, its long middle section carrying many rows of large modular cargo containers stacked two high along both sides of the hull, and a wide block of three big engines at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left.",
+      "seeds": [
+        4242
+      ],
+      "source": "serie-58-unites/e1-large_cargo-4242.png",
+      "denoise": 0.5
+    },
+    {
+      "id": "ship.large_cargo",
+      "variant": "e1-h50",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in dark space in high orbit above a lifeless grey rocky planet, whose curved horizon fills the lower part of the background, out of focus.",
+      "scale": "",
+      "subject": "A far-future high-tech large cargo spaceship, much bigger and heavier than a small freighter: a very long and massive hull with a streamlined pointed nose and cockpit at the front, its long middle section carrying many rows of large modular cargo containers stacked two high along both sides of the hull, and a wide block of three big engines at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left.",
+      "seeds": [
+        7777
+      ],
+      "source": "serie-58-unites/e1-large_cargo-7777.png",
+      "denoise": 0.5
+    },
+    {
+      "id": "ship.large_cargo",
+      "variant": "e2",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "scale": "",
+      "subject": "A far-future high-tech large cargo spaceship, much bigger and heavier than a small freighter: a very long and massive hull with a streamlined pointed nose and cockpit at the front, its long middle section carrying many rows of large modular cargo containers stacked two high along both sides of the hull, and a wide block of three big engines at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left."
+    },
+    {
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "scale": "",
+      "id": "ship.light_fighter",
+      "variant": "e1",
+      "subject": "A far-future high-tech light fighter spacecraft: a small, sleek and agile single-seat fighter with a pointed nose, a bubble cockpit canopy, sharply swept-back wings carrying two slim laser cannons at their tips, and one engine at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzle at its rear end glows bright blue-white behind it, on the left."
+    },
+    {
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "scale": "",
+      "id": "ship.heavy_fighter",
+      "variant": "e1",
+      "subject": "A far-future high-tech heavy fighter spacecraft: a larger, bulky and heavily armoured fighter with a thick armoured hull, a pointed nose with a small armoured cockpit, short broad swept-back wings each carrying two heavy cannons, and two big engines side by side at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the two engine nozzles at its rear end glow bright blue-white behind it, on the left."
+    },
+    {
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "scale": "",
+      "id": "ship.cruiser",
+      "variant": "e1",
+      "subject": "A far-future high-tech cruiser warship: a long, sleek, armoured capital ship with a sharp wedge-shaped prow, a raised command bridge tower in the middle of its upper hull, and several rotating twin-barrelled gun turrets along its top and flanks, with a row of big engines at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, prow first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left."
+    },
+    {
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "scale": "",
+      "id": "ship.battleship",
+      "variant": "e1",
+      "subject": "A far-future high-tech battleship: a colossal, very broad and heavily armoured capital warship with a massive blunt armoured prow, thick layered armour plates, a tall fortified command tower, and several huge triple-barrelled main gun turrets along its long upper deck, with a wide bank of many big engines at the rear, filling the frame from side to side.",
+      "detail": "It flies forward toward the right of the frame, prow first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left."
+    },
+    {
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "scale": "",
+      "id": "ship.recycler",
+      "variant": "e1",
+      "subject": "A far-future high-tech recycler spaceship: a bulky industrial salvage ship with a wide open collector scoop at its front and several large articulated robotic grappling arms reaching forward from its hull, a large cargo hold in its middle and big engines at the rear, centred in the frame.",
+      "detail": "It flies slowly forward toward the right of the frame through a field of floating metal debris and broken hull plates, its robotic arms grabbing a large piece of wreckage, and the engine nozzles at its rear end glow bright blue-white behind it, on the left."
+    },
+    {
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "scale": "",
+      "id": "ship.recycler",
+      "variant": "e2",
+      "subject": "A far-future high-tech recycler spaceship: a bulky industrial salvage ship with a wide open collector scoop at its front and several large articulated robotic grappling arms reaching forward from its hull, a large cargo hold in its middle, and big engines at the very back end of the hull, aligned with the hull's long axis, centred in the frame.",
+      "detail": "It flies slowly forward toward the right of the frame through a field of floating metal debris and broken hull plates, its robotic arms grabbing a large piece of wreckage, and the bright blue-white exhaust of its engines streams straight backward along the hull's axis, out of its rear end toward the left."
+    },
+    {
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "scale": "",
+      "id": "ship.espionage_probe",
+      "variant": "e1",
+      "subject": "A far-future high-tech unmanned espionage probe: a small, sleek, sharp-nosed drone without any cockpit, with a cluster of sensor lenses glowing at its nose, a small dish antenna and long thin antennas on its back, and one small engine at the very back end of the hull, aligned with the hull's long axis, centred in the frame and filling most of it.",
+      "detail": "It flies fast toward the right of the frame, nose first, its sensor lenses glowing bright cyan, and the bright blue-white exhaust of its engine streams straight backward along the hull's axis, out of its rear end toward the left."
+    },
+    {
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "scale": "",
+      "id": "ship.espionage_probe",
+      "variant": "e2",
+      "subject": "A far-future high-tech unmanned espionage space probe, shaped like a satellite and not like a ship: one compact faceted spherical sensor core with a large glowing camera eye, a big dish antenna, two folded-out solar panel wings, and several long thin sensor booms and antennas sticking out in all directions, centred in the frame and filling most of it.",
+      "detail": "Its camera eye glows bright cyan as it scans the planet below, and one tiny thruster at its back gives a small bright blue-white puff of exhaust toward the left."
+    },
+    {
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "scale": "",
+      "id": "ship.espionage_probe",
+      "variant": "e3",
+      "subject": "A far-future high-tech unmanned espionage space probe with an elegant, sleek, sculpted industrial design, shaped like a satellite drone and not like a ship: one smooth flowing teardrop-shaped shell of seamless polished white and grey composite panels with thin illuminated light strips, a large glowing camera eye set into its front, and two slender swept solar fins and one small integrated dish antenna that flow out of the shell as part of its streamlined shape, centred in the frame and filling most of it.",
+      "detail": "Its camera eye glows bright cyan as it scans the planet below, and one small thruster at its back gives a bright blue-white glow toward the left."
+    },
+    {
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "scale": "",
+      "id": "ship.espionage_probe",
+      "variant": "e4",
+      "subject": "A far-future high-tech unmanned espionage space probe, shaped like a satellite and not like a ship: one compact, slightly elongated, faceted hexagonal sensor body with a large glowing camera eye, a big dish antenna, two folded-out solar panel wings, and several long thin sensor booms and antennas sticking out in all directions, centred in the frame and filling most of it.",
+      "detail": "Its camera eye glows bright cyan as it scans the planet below, and one tiny thruster at its back gives a small bright blue-white puff of exhaust toward the left."
+    }
+  ]
+}

@@ -34,12 +34,14 @@ dans le code, alignement vérifié par un test.
 | `building` | `building.<clé YAML>.t<1-3>.<cold\|temperate\|hot>` | 1:1, 512 px (B, A) | 12 × 3 paliers × 3 climats |
 | `building_wide` | `building_wide.<clé>.t<1-3>.<cold\|temperate\|hot>` | 4:3, 640 × 480 (C) — facultatif, sinon recadrage du 1:1 | — |
 | `research` | `research.<clé YAML>` | 1:1, 512 px, sans climat | 12 |
-| `defense` | `defense.<clé YAML>` | 1:1, 512 px | 8 |
+| `defense` | `defense.<clé YAML>` | 1:1, 512 px, sans climat | 8 |
+| `ship` | `ship.<clé YAML>` | 1:1, 512 px, sans climat | 8 |
 | `pirate` | `pirate.<clé YAML>` | 1:1, 512 px (bandeau de raid, rapports) | 6 |
 | `planet_hero` | `planet_hero.<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 3 |
 | `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 |
 
-Vaisseaux du joueur : V3. Pas d'icône de ressource générée (vectorielles, spec 10).
+Défenses et vaisseaux : images produites (série 58, charte `art/style/unit_prompt.md`) ; leur intégration
+dans l'UI reste à faire. Pas d'icône de ressource générée (vectorielles, spec 10).
 
 ### Paliers de bâtiment
 

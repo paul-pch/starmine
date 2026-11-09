@@ -22,6 +22,11 @@ Recherches : 12 images validées, une par technologie, sans climat, listées dan
 `art/masters/research.<clé>/v1.png`. Règle de l'utilisateur : l'élément montré doit rester lisible en
 miniature (vérifier à 128 px) ; une seule série par technologie, les essais s'y ajoutent.
 
+Unités du chantier spatial : 16 images validées, 8 défenses (`defense.<clé>`) et 8 vaisseaux
+(`ship.<clé>`), sans climat, dans la série 58 (`art/prompts/serie-58-unites.md`, charte
+`art/style/unit_prompt.md`). Règle de l'utilisateur : jamais d'assemblage d'images (retouche de zone,
+collage) ; un fond commun se décrit dans le prompt.
+
 ## Avant de générer
 
 - Vérifier que ComfyUI répond sur `localhost:8188`. Sinon : le dire. Ne pas contourner par un

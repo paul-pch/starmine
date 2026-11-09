@@ -1152,3 +1152,259 @@ images:
     denoise: 0.9
   master: art/masters/research.hyperspace_drive/v1.png
   build: assets/visuels/research.hyperspace_drive.webp
+- id: defense.rocket_launcher
+  category: defense
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close low three-quarter view, with the whole unit visible inside the frame and filling most of it. A far-future high-tech planetary defense missile battery: one compact armoured turret carrying a large launch pod with a grid of missile tubes, on a low armoured base anchored into the rock, centred in the frame. Its launch pod is raised toward the sky, with the dark openings of its missile tubes clearly visible. It stands alone on bare dark neutral grey rock on a lifeless alien planet of bare rock, under a hazy sky, with the rocky ground falling out of focus behind it. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces, with nobody in sight. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 1234
+    job_id: a449b062-00cd-4cb2-a0aa-bf7811c1df10
+    series: serie-58-unites
+    code: e1-rocket_launcher-1234
+  master: art/masters/defense.rocket_launcher/v1.png
+  build: assets/visuels/defense.rocket_launcher.webp
+- id: defense.light_laser
+  category: defense
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Wide three-quarter aerial view from a distance and from above, with the whole unit visible inside the frame. A far-future high-tech planetary defense light laser turret: one compact armoured rotating turret carrying a single long slender laser emitter barrel with a glowing lens at its tip, on a low armoured base anchored into the rock, centred in the frame. The laser emitter points up toward the sky, and its lens glows bright red. The defense is monumental, several storeys tall: tiny vehicles and tiny human figures at its base give the scale. It stands alone on bare dark neutral grey rock on a lifeless alien planet of bare rock, under a hazy sky, with a flat rocky plain stretching behind it to distant mountains. Deep depth of field: the whole image is in sharp focus, with no blurred foreground. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 1234
+    job_id: 900be743-1edd-48df-82ff-e68148699278
+    series: serie-58-unites
+    code: e3-light_laser-1234
+  master: art/masters/defense.light_laser/v1.png
+  build: assets/visuels/defense.light_laser.webp
+- id: defense.heavy_laser
+  category: defense
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Wide three-quarter aerial view from a distance and from above, with the whole unit visible inside the frame. A far-future high-tech planetary defense heavy laser turret: one huge heavily armoured rotating turret carrying a single short, very thick heavy laser emitter barrel with a large glowing lens at its tip, on a wide armoured base anchored into the rock, centred in the frame. The heavy laser emitter points up toward the sky, and its large lens glows bright red. The defense is monumental, several storeys tall: tiny vehicles and tiny human figures at its base give the scale. It stands alone on bare dark neutral grey rock on a lifeless alien planet of bare rock, under a hazy sky, with a flat rocky plain stretching behind it to distant mountains. Deep depth of field: the whole image is in sharp focus, with no blurred foreground. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 1234
+    job_id: 14ade200-e044-499c-8a7b-92aac8dcf4c0
+    series: serie-58-unites
+    code: e1-heavy_laser-1234
+  master: art/masters/defense.heavy_laser/v1.png
+  build: assets/visuels/defense.heavy_laser.webp
+- id: defense.gauss_cannon
+  category: defense
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Wide three-quarter aerial view from a distance and from above, with the whole unit visible inside the frame. A far-future high-tech planetary defense gauss cannon: one huge heavily armoured rotating turret carrying a single very long heavy barrel wrapped along its whole length in a row of thick electromagnetic coil rings, on a wide armoured base anchored into the rock, centred in the frame. The gauss barrel is tilted at a 45-degree angle and points diagonally toward the upper right of the frame, seen from the side along its whole length, and its coil rings glow bright electric blue. The defense is monumental, several storeys tall: tiny vehicles and tiny human figures at its base give the scale. It stands alone on bare dark neutral grey rock on a lifeless alien planet of bare rock, under a hazy sky, with a flat rocky plain stretching behind it to distant mountains. Deep depth of field: the whole image is in sharp focus, with no blurred foreground. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 1234
+    job_id: 00d78225-eea4-415d-ae18-68ea8fc7704a
+    series: serie-58-unites
+    code: tilt-d97-gauss_cannon-1234
+  master: art/masters/defense.gauss_cannon/v1.png
+  build: assets/visuels/defense.gauss_cannon.webp
+- id: defense.ion_cannon
+  category: defense
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Wide three-quarter aerial view from a distance and from above, with the whole unit visible inside the frame. A far-future high-tech planetary defense ion cannon: one huge heavily armoured rotating turret carrying a short, very wide barrel that ends in a large open ring-shaped ion emitter, on a wide armoured base anchored into the rock, centred in the frame. The barrel is tilted at a 45-degree angle and points diagonally toward the upper right of the frame, seen from the side, and a swirling ball of brilliant electric ice-blue ion energy glows inside its ring emitter. The defense is monumental, several storeys tall: tiny vehicles and tiny human figures at its base give the scale. It stands alone on bare dark neutral grey rock on a lifeless alien planet of bare rock, under a hazy sky, with a flat rocky plain stretching behind it to distant mountains. Deep depth of field: the whole image is in sharp focus, with no blurred foreground. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 836f85bc-c961-4baa-9acd-ba7a4c067d90
+    series: serie-58-unites
+    code: e1-ion_cannon-7777
+  master: art/masters/defense.ion_cannon/v1.png
+  build: assets/visuels/defense.ion_cannon.webp
+- id: defense.plasma_turret
+  category: defense
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Wide three-quarter aerial view from a distance and from above, with the whole unit visible inside the frame. A far-future high-tech planetary defense plasma turret: one huge heavily armoured rotating turret carrying a thick barrel that splits at its end into two parallel heavy prongs, on a wide armoured base anchored into the rock, centred in the frame. The barrel is tilted at a 45-degree angle and points diagonally toward the upper right of the frame, seen from the side, and a large crackling sphere of brilliant magenta-pink plasma floats between its two prongs. The defense is monumental, several storeys tall: tiny vehicles and tiny human figures at its base give the scale. It stands alone on bare dark neutral grey rock on a lifeless alien planet of bare rock, under a hazy sky, with a flat rocky plain stretching behind it to distant mountains. Deep depth of field: the whole image is in sharp focus, with no blurred foreground. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 195f0b7f-3e93-4371-9002-1ace3a541171
+    series: serie-58-unites
+    code: e1-plasma_turret-4242
+  master: art/masters/defense.plasma_turret/v1.png
+  build: assets/visuels/defense.plasma_turret.webp
+- id: defense.small_shield_dome
+  category: defense
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Very wide high aerial view from a great distance, looking toward the horizon, with the sky taking the upper half of the frame. A far-future high-tech planetary shield: a long row of tall slender armoured energy towers, each with a glowing emitter at its top, stretches across the rocky plain from the foreground as far as the eye can see to the horizon. Bright violet energy beams rise from the top of every tower into one immense translucent glowing violet shield of force field that covers the whole sky and curves down beyond the horizon. The nearest towers are monumental, many storeys tall: tiny vehicles and tiny human figures at their base give the scale. They stand on bare dark neutral grey rock on a lifeless alien planet of bare rock, with a flat rocky plain stretching to distant mountains. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 1234
+    job_id: 516fc7f2-5831-44ab-898a-2f9ffcc04d48
+    series: serie-58-unites
+    code: e3-small_shield_dome-1234
+  master: art/masters/defense.small_shield_dome/v1.png
+  build: assets/visuels/defense.small_shield_dome.webp
+- id: defense.large_shield_dome
+  category: defense
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "View from space at a great distance, with the whole planet visible inside the frame and filling most of it, centred. An alien planet with wide dark blue-grey oceans and continents of bare grey rock with very subtle, faintly marked relief, entirely enclosed in one immense planetary shield: a translucent glowing violet sphere of force field that surrounds the whole planet a little above its surface. The planet is clearly seen through the translucent violet shield, whose rim glows brightest all around the planet, and faint violet energy beams rise from many tiny points on the surface up to the shield.  It floats in the dark of space, with a few distant stars behind it. Far-future high-tech planetary defense, the planet lit from one side by a distant sun. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: a4cf10da-9bdd-4b31-a1bb-bb34b4d8fe93
+    series: serie-58-unites
+    code: e2-large_shield_dome-7777
+  master: art/masters/defense.large_shield_dome/v1.png
+  build: assets/visuels/defense.large_shield_dome.webp
+- id: ship.small_cargo
+  category: ship
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it. A far-future high-tech small cargo spaceship: a long hull with a streamlined pointed nose and cockpit at the front, its middle section carrying a row of large modular cargo containers clamped along both sides of the hull, and one large engine block at the very rear, centred in the frame. It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left.  It flies alone in dark space in high orbit above a lifeless grey rocky planet, whose curved horizon fills the lower part of the background, out of focus. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 4b87fe0a-2cc7-44f4-830b-5d472c4cf406
+    series: serie-58-unites
+    code: e2-d95-small_cargo-7777
+  master: art/masters/ship.small_cargo/v1.png
+  build: assets/visuels/ship.small_cargo.webp
+- id: ship.large_cargo
+  category: ship
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it. A far-future high-tech large cargo spaceship, much bigger and heavier than a small freighter: a very long and massive hull with a streamlined pointed nose and cockpit at the front, its long middle section carrying many rows of large modular cargo containers stacked two high along both sides of the hull, and a wide block of three big engines at the very rear, centred in the frame. It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left.  It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 6c60d17e-524f-4627-b048-e4a3e755302b
+    series: serie-58-unites
+    code: e2-large_cargo-4242
+  master: art/masters/ship.large_cargo/v1.png
+  build: assets/visuels/ship.large_cargo.webp
+- id: ship.light_fighter
+  category: ship
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it. A far-future high-tech light fighter spacecraft: a small, sleek and agile single-seat fighter with a pointed nose, a bubble cockpit canopy, sharply swept-back wings carrying two slim laser cannons at their tips, and one engine at the rear, centred in the frame. It flies forward toward the right of the frame, nose first, and the engine nozzle at its rear end glows bright blue-white behind it, on the left.  It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 1234
+    job_id: 11852abd-3c2d-4782-a073-92012cd05906
+    series: serie-58-unites
+    code: e1-light_fighter-1234
+  master: art/masters/ship.light_fighter/v1.png
+  build: assets/visuels/ship.light_fighter.webp
+- id: ship.heavy_fighter
+  category: ship
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it. A far-future high-tech heavy fighter spacecraft: a larger, bulky and heavily armoured fighter with a thick armoured hull, a pointed nose with a small armoured cockpit, short broad swept-back wings each carrying two heavy cannons, and two big engines side by side at the rear, centred in the frame. It flies forward toward the right of the frame, nose first, and the two engine nozzles at its rear end glow bright blue-white behind it, on the left.  It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 1234
+    job_id: 61e8d63e-e096-4414-a5f4-e3ae86426efd
+    series: serie-58-unites
+    code: e1-heavy_fighter-1234
+  master: art/masters/ship.heavy_fighter/v1.png
+  build: assets/visuels/ship.heavy_fighter.webp
+- id: ship.cruiser
+  category: ship
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it. A far-future high-tech cruiser warship: a long, sleek, armoured capital ship with a sharp wedge-shaped prow, a raised command bridge tower in the middle of its upper hull, and several rotating twin-barrelled gun turrets along its top and flanks, with a row of big engines at the rear, centred in the frame. It flies forward toward the right of the frame, prow first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left.  It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 1234
+    job_id: d06c7d7c-a27c-4a10-8dd2-f8a96a10fa35
+    series: serie-58-unites
+    code: e1-cruiser-1234
+  master: art/masters/ship.cruiser/v1.png
+  build: assets/visuels/ship.cruiser.webp
+- id: ship.battleship
+  category: ship
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it. A far-future high-tech battleship: a colossal, very broad and heavily armoured capital warship with a massive blunt armoured prow, thick layered armour plates, a tall fortified command tower, and several huge triple-barrelled main gun turrets along its long upper deck, with a wide bank of many big engines at the rear, filling the frame from side to side. It flies forward toward the right of the frame, prow first, and the engine nozzles at its rear end glow bright blue-white behind it, on the left.  It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 0f8bdf1a-e2f5-414e-83cc-3cae6d912d40
+    series: serie-58-unites
+    code: e1-battleship-7777
+  master: art/masters/ship.battleship/v1.png
+  build: assets/visuels/ship.battleship.webp
+- id: ship.recycler
+  category: ship
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it. A far-future high-tech recycler spaceship: a bulky industrial salvage ship with a wide open collector scoop at its front and several large articulated robotic grappling arms reaching forward from its hull, a large cargo hold in its middle, and big engines at the very back end of the hull, aligned with the hull's long axis, centred in the frame. It flies slowly forward toward the right of the frame through a field of floating metal debris and broken hull plates, its robotic arms grabbing a large piece of wreckage, and the bright blue-white exhaust of its engines streams straight backward along the hull's axis, out of its rear end toward the left.  It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 1234
+    job_id: c3a06ed5-989b-4e5d-8e9f-990b26251bf5
+    series: serie-58-unites
+    code: e2-recycler-1234
+  master: art/masters/ship.recycler/v1.png
+  build: assets/visuels/ship.recycler.webp
+- id: ship.espionage_probe
+  category: ship
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it. A far-future high-tech unmanned espionage space probe, shaped like a satellite and not like a ship: one compact, slightly elongated, faceted hexagonal sensor body with a large glowing camera eye, a big dish antenna, two folded-out solar panel wings, and several long thin sensor booms and antennas sticking out in all directions, centred in the frame and filling most of it. Its camera eye glows bright cyan as it scans the planet below, and one tiny thruster at its back gives a small bright blue-white puff of exhaust toward the left.  It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame. Far-future high-tech military hardware, with seamless composite panels, polished metal, illuminated light strips and plain unmarked surfaces. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: b4006c46-6d21-4145-a30e-ad6bdb9b8432
+    series: serie-58-unites
+    code: e4-espionage_probe-7777
+  master: art/masters/ship.espionage_probe/v1.png
+  build: assets/visuels/ship.espionage_probe.webp
