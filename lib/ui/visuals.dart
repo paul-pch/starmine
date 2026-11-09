@@ -88,8 +88,7 @@ class Visuals {
   };
 
   /// Défense (`defense.<clé>`) ou vaisseau (`ship.<clé>`), sans climat.
-  String? unit(UnitSpec spec) =>
-      _resolve('${spec.defense ? 'defense' : 'ship'}.${spec.kind.key}');
+  String? unit(UnitSpec spec) => _resolve('${spec.defense ? 'defense' : 'ship'}.${spec.kind.key}');
 }
 
 /// Donne les [Visuals] de l'ambiance courante aux écrans.
