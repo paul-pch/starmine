@@ -12,6 +12,10 @@ Mise au point d'un prompt et génération (ComfyUI, Qwen-Image-2.1) : skill `sta
 modèle est limité à la recherche et à l'évaluation : ses images ne passent pas par la boucle
 ci-dessous sans décision explicite de l'utilisateur.
 
+État actuel : 36 images t1 retenues (12 bâtiments × froid, tempéré, chaud), hors registre, listées dans
+`art/prompts/selection-t1-rocheux.md` et copiées en PNG dans
+`assets/visuels/buildings/<bâtiment>/t1_<temperate|cold|hot>.png`. Le jeu ne les charge pas encore.
+
 ## Avant de générer
 
 - Vérifier que ComfyUI répond sur `localhost:8188`. Sinon : le dire. Ne pas contourner par un

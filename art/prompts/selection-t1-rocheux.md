@@ -59,5 +59,5 @@ de départ. Réglage des déclinaisons : `denoise` 0,90, retenu par l'utilisateu
 ## Reste à faire
 
 - Paliers t2 et t3 : grandissent par ajouts d'éléments, pas par la taille seule.
-- Déclinaisons froid, tempéré et chaud de chaque image, avec la mise à jour du catalogue de la spec 11.
+- Catalogue de la spec 11 à adapter aux 3 climats, puis registre et export WebP.
 - Licence : décider du modèle des images finales avant tout packaging.

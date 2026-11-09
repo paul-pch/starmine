@@ -6,8 +6,10 @@ Rendre le jeu plus immersif avec des images SF réalistes, sans toucher à la li
 idle de ressources. Les images sont générées hors du jeu (ComfyUI en local), validées une par une,
 puis packagées dans l'APK.
 
-État : code d'affichage implémenté (`lib/ui/visuals.dart`, repli) ; **aucune image ni registre
-dans le dépôt pour l'instant**. Les seuils `tiers` et `temperature_bands` sont repris dans le
+État : code d'affichage implémenté (`lib/ui/visuals.dart`, repli) ; **pas encore de registre**. Les
+36 images de travail t1 sont en PNG dans `assets/visuels/buildings/<clé>/t1_<temperate|cold|hot>.png`
+(liste : `art/prompts/selection-t1-rocheux.md`). Hors du format attendu, elles ne sont pas chargées par le
+jeu, qui reste en repli. Les seuils `tiers` et `temperature_bands` sont repris dans le
 code, à garder alignés sur le registre quand il existera.
 
 ## Règles
@@ -95,6 +97,8 @@ cohérence vérifiant que chaque entrée `validated` a son fichier `build` et in
 
 ## Points ouverts
 
+- Décision de l'utilisateur : chaque bâtiment a une image par climat (froid, tempéré, chaud). Le catalogue,
+  les ids du registre et `lib/ui/visuals.dart` restent à adapter (bâtiment affiché selon la tranche de température).
 - Poids total de l'APK à surveiller (cible : < 15 Mo d'images).
 - Images 4:3 dédiées à C ou recadrage du 1:1 : à trancher sur les premiers rendus.
 - Portraits des officiers (spec 12) : nouvelle catégorie `character` au registre, à prévoir

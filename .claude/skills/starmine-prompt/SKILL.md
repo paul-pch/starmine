@@ -51,8 +51,8 @@ Une modification de la base s'applique à tout le set : la tester sur plusieurs 
 Décidée par l'utilisateur et testée sur les 12 bâtiments en t1. Images retenues et journaux :
 `art/prompts/selection-t1-rocheux.md`.
 
-Toutes les images se mettent au point en roche grise. L'utilisateur prévoit ensuite 3 déclinaisons
-de chaque image (froid, tempéré, chaud). Cela changera le catalogue de la spec 11.
+Toutes les images se mettent au point en roche grise (tempéré), puis chacune est déclinée en froid et
+en chaud. Textes de `site` : `art/style/base_prompt.md`. Le catalogue de la spec 11 reste à adapter.
 
 Paliers : t1 est déjà monumental ; t2 et t3 grandissent par ajouts d'éléments, pas par la taille
 seule.
@@ -67,10 +67,8 @@ seule.
 | Construction | `robotics_factory`, `nanite_factory` | adossé à une falaise | high-tech, en activité | l'usine et ce qu'elle produit, monumentale |
 | Construction, dérogation | `shipyard` | cale à ciel ouvert, taillée dans la roche | high-tech, en activité | un vaisseau qui sort de la cale, vu de haut |
 
-Point à confirmer avec l'utilisateur :
-
-- la mer du deutérium s'affiche sur toutes les planètes, y compris froides et chaudes : est-ce
-  accepté, ou faut-il une mer peu marquée (spec 11 : une image par bâtiment) ?
+Mer du deutérium, décidée par l'utilisateur : gelée en froid, sombre et fumante en chaud, jamais de
+lave sur la mer.
 
 ## 3. Génération
 
@@ -89,8 +87,10 @@ Serveur ComfyUI lancé, puis :
   `art/prompts/selection-t1-rocheux.md`. Déclinaisons froid et chaud : `denoise` 0,90, retenu par
   l'utilisateur (séries 26 et 27).
 - Un bâtiment à la fois, avec sa galerie.
-- Retoucher une petite zone : `tool/comfy_inpaint.py`. Essayer plusieurs seeds : sur la tente du labo,
-  le résultat dépendait de la seed, pas du `denoise` (séries 24 et 25).
+- Une image déclinée ne se génère que sur sa seed : le critère « les 2 seeds » ne s'y applique pas.
+- Retoucher une petite zone (`--box`) ou tout sauf des zones protégées (`--keep-box`, `--keep-ellipse`) :
+  `tool/comfy_inpaint.py`. Pour une petite zone, essayer plusieurs seeds : sur la tente du labo, le résultat
+  dépendait de la seed, pas du `denoise` (séries 24 et 25).
 - Compter environ 30 s par image : annoncer le temps avant un grand lot.
 - Sorties : `~/ComfyUI/output/starmine_test/<serie>/`, avec `run.json`, `sheet_512.png` et
   `index.html`.
@@ -108,7 +108,9 @@ communs :
   fusionnent ;
 - on reconnaît l'élément du jeu à 512 px, sans son nom ;
 - aucune matière ambiguë (minerai pris pour de l'eau ou de la lave, par exemple) ;
-- les 2 seeds respectent les mêmes critères.
+- les 2 seeds respectent les mêmes critères ;
+- l'image reste lisible en vignette de téléphone (à vérifier vers 256 px) : un champ trop dense passe mal,
+  retour de l'utilisateur en série 31.
 
 Regarder les images en taille réelle avant de noter. Ne pas noter un critère de goût à la place de
 l'utilisateur : le lui demander. Montrer les images et les notes ; il a le dernier mot.
@@ -174,8 +176,31 @@ Chaque règle ajoutée ici vient d'un défaut réellement observé. Journal :
   deux effets.
 - **Planète à nommer** (série 02) : sans « alien planet », arbres et herbes apparaissent. « lifeless
   alien planet of bare rock » les retire (série 03).
-- **Couleur de roche** (essais 4 et 5) : le terrain doit rester neutre, car l'image s'affiche sur
-  toutes les planètes.
+- **Couleur de roche** (essais 4 et 5) : l'image tempérée garde un terrain neutre ; le climat vient des
+  déclinaisons.
+- **Dérive sans image de départ** (séries 19 à 23) : changer seulement `site` avec la même seed conserve à peu
+  près la composition, mais le bâtiment et le paysage bougent. Repartir de l'image validée règle le problème.
+- **Seuil du climat** (séries 26 et 27) : jusqu'à 0,85, givre et teinte seulement ; à 0,90, le climat s'installe
+  et le paysage reste en place. Le bâtiment se simplifie un peu et ses détails changent : toits, façades, lingots
+  arrondis (série 36).
+- **Neige** (séries 19 et 20) : « streaked with ice » reste discret ; « heavily covered with thick white snow » et
+  « blanketed in deep white snow and snowdrifts » se lisent à 512 px. Le sol de la cale du chantier reste sans neige
+  (série 41).
+- **Chaud** (séries 19 à 21) : « scorched » et « steam » font un désert aride. « terracotta-red » est lisible mais
+  trop saturé, façon Mars ; « deep muted oxblood-red » donne le rouge sourd voulu, et teinte aussi falaise et brume.
+- **Lave en quantité** (séries 20 et suivantes) : « a few thin » n'empêche pas une vraie coulée, marquée sur
+  certaines images. Elle reste acceptée par l'utilisateur.
+- **Terre contre mer** (séries 20 et 23) : décrire la terre rouge repousse la mer hors du cadre et casse la composition
+  du deutérium. Sans terre décrite, la mer revient. « far in the distance » éloigne les fumées, mais la mer au loin peut
+  virer au beige (séries 30 et 38).
+- **Fusée ou vaisseau** (série 18) : « rises vertically » donne une fusée ; une coque large et plate, à ailes en flèche,
+  en vol à plat, donne un vaisseau. « spotlessly clean », « clear air » et un sol propre retirent la poussière du sol et
+  de l'air, peu de la roche nue.
+- **Densité au `denoise` élevé** (séries 31 et 32) : à 0,90, le champ de miroirs se resserre en bloc qui sort du cadre, et
+  « a few widely spaced » n'y change rien. À 0,80, les miroirs restent aérés, mais sans neige. Protéger l'élément par
+  un masque règle le conflit (série 33).
+- **Recoloration par pixels** (série 33) : passer le sol brun en blanc par script brouille les miroirs et laisse des
+  taches ; une passe du modèle à 0,60 l'harmonise (série 34), mais l'utilisateur a préféré le masque seul, plus fidèle.
 - **Point de vue** (essai 3) : le fixer explicitement, sinon le modèle recule la caméra.
 - **Négatif** (essai 6) : avec Qwen en cfg 1, le prompt négatif n'a probablement pas d'effet. Décrire
   ce qu'on veut voir.
