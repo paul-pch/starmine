@@ -232,4 +232,36 @@ void main() {
 
     await close(tester, db);
   });
+
+  testWidgets('feuille de détail : vignette de l’élément (scope des images hors de l’écran)', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 3;
+    tester.view.physicalSize = const Size(1170, 2532);
+    addTearDown(tester.view.reset);
+    final db = StarmineDatabase(NativeDatabase.memory());
+    final controller = GameController(
+      repository: GameRepository(db),
+      data: gameData,
+      notifier: FakeNotifier(),
+      clock: FakeClock(t0).call,
+      random: math.Random(1),
+    );
+    await tester.runAsync(controller.init);
+    const path = 'assets/visuels/research.energy_technology.webp';
+    await tester.pumpWidget(
+      StarmineApp(controller: controller, visuals: const Visuals(assets: {path})),
+    );
+
+    await tester.tap(find.text('Recherche'));
+    await tester.pump();
+    bool withPath(Widget w) => w is GameImage && w.path == path;
+    expect(find.byWidgetPredicate(withPath), findsOneWidget);
+    await tester.tap(find.text('Technologie Énergie'));
+    await tester.pump(const Duration(milliseconds: 500));
+    // La carte et la feuille de détail.
+    expect(find.byWidgetPredicate(withPath), findsNWidgets(2));
+
+    await close(tester, db);
+  });
 }

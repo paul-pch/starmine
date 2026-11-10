@@ -36,6 +36,15 @@ class StarmineApp extends StatelessWidget {
       title: 'Starmine',
       debugShowCheckedModeBanner: false,
       theme: buildTheme(),
+      // Au-dessus du Navigator : les feuilles, popovers et écrans poussés voient les images
+      // (spec 11) ; l'ambiance suit le contrôleur.
+      builder: (context, child) => ListenableBuilder(
+        listenable: controller,
+        builder: (_, _) => VisualsScope(
+          visuals: visuals.withAmbiance(controller.ambiance),
+          child: child ?? const SizedBox.shrink(),
+        ),
+      ),
       home: HomeShell(controller: controller, visuals: visuals),
     );
   }

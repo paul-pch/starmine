@@ -113,6 +113,8 @@ images:
 ## Code
 
 `lib/ui/visuals.dart` (id → chemin d'asset, palier, tranche de température, repli) ;
+`VisualsScope` posé au-dessus du Navigator (`MaterialApp.builder`) : feuilles, popovers et
+écrans poussés y ont accès ;
 `assets/visuels/` déclaré dans `pubspec.yaml`, liste lue dans le manifeste d'assets au
 démarrage. Le domaine n'en sait rien.
 
