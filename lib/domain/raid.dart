@@ -148,6 +148,9 @@ class RaidReport {
     this.attackerStrength,
     this.defenderStrength,
     this.roundDetails = const [],
+    this.expedition,
+    this.found = const {},
+    this.patrol = false,
   });
 
   factory RaidReport.fromCombat(
@@ -159,6 +162,8 @@ class RaidReport {
     bool simulated = false,
     SideStrength? attackerStrength,
     SideStrength? defenderStrength,
+    ExpeditionOutcome? expedition,
+    bool patrol = false,
   }) => RaidReport(
     at: at,
     winner: r.winner,
@@ -175,6 +180,8 @@ class RaidReport {
     attackerStrength: attackerStrength,
     defenderStrength: defenderStrength,
     roundDetails: r.rounds,
+    expedition: expedition,
+    patrol: patrol,
   );
 
   final DateTime at;
@@ -202,6 +209,19 @@ class RaidReport {
 
   /// Détail des rounds (vide pour les rapports antérieurs).
   final List<CombatRound> roundDetails;
+
+  /// Rapport d'expédition (V3c) : résultat ; combat seulement pour une embuscade. Ta flotte
+  /// est le camp attaquant ([attackerStart] : envoyée, [attackerLeft] : rentrée).
+  final ExpeditionOutcome? expedition;
+
+  /// Vaisseaux trouvés en expédition.
+  final Map<UnitKind, int> found;
+
+  /// Patrouille pirate surprise au recyclage du champ de [baseName] (V3c).
+  final bool patrol;
+
+  /// Le rapport contient un combat.
+  bool get hasCombat => rounds > 0;
 }
 
 /// Valeur en ressources (M + C + D) d'un ensemble d'unités.

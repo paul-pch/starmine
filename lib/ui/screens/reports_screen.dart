@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../data/game_repository.dart';
-import '../../domain/combat.dart';
 import '../../domain/resources.dart';
 import '../../domain/story.dart';
 import '../format.dart';
@@ -95,22 +94,15 @@ class _ReportTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final r = entry.stored.report;
     final scheme = Theme.of(context).colorScheme;
-    // Raid subi : bon si repoussé. Attaque d'une base : bon si gagnée.
-    final good = r.baseName == null
-        ? r.winner != CombatWinner.attacker
-        : r.winner == CombatWinner.attacker;
+    final good = CombatReport.good(r);
     return ListTile(
-      leading: Icon(
-        r.baseName != null
-            ? Icons.rocket_launch_outlined
-            : good
-            ? Icons.gpp_good_outlined
-            : Icons.gpp_bad_outlined,
-        color: good ? scheme.primary : scheme.error,
-      ),
+      leading: Icon(CombatReport.icon(r), color: good ? scheme.primary : scheme.error),
       title: Text(CombatReport.verdict(r)),
       subtitle: Text(
-        [_date(r.at), if (r.loot != Resources.zero) 'pillé ${fmtCost(r.loot)}'].join(' · '),
+        [
+          _date(r.at),
+          if (r.loot != Resources.zero) '${r.expedition == null ? 'pillé' : 'rapporté'} ${fmtCost(r.loot)}',
+        ].join(' · '),
       ),
       onTap: () => CombatReport.show(context, controller.data, r),
     );

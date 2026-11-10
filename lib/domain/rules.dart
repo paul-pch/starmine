@@ -18,6 +18,7 @@ class Modifiers {
     this.constructionQueue = 0,
     this.researchQueue = 0,
     this.shipyardQueue = 0,
+    this.expeditionSlots = 0,
     this.mineByResource = Resources.zero,
     this.energyFactor = 1,
     this.productionFactor = 1,
@@ -41,6 +42,9 @@ class Modifiers {
   final int constructionQueue;
   final int researchQueue;
   final int shipyardQueue;
+
+  /// Places d'expédition en plus (Amiral, V3c).
+  final int expeditionSlots;
 
   /// Effets d'événements (spec 14) : ajouté au bonus des mines, par ressource.
   final Resources mineByResource;

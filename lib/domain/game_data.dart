@@ -103,7 +103,8 @@ enum OfficerKind {
   engineer('engineer'),
   commander('commander'),
   researchDirector('research_director'),
-  shipyardMaster('shipyard_master');
+  shipyardMaster('shipyard_master'),
+  admiral('admiral');
 
   const OfficerKind(this.key);
 
@@ -117,7 +118,10 @@ enum OfficerKind {
 
 /// Compteurs de progression tenus par `advance()`, prérequis possibles des officiers.
 enum Counter {
-  raidsRepelled('raids_repelled');
+  raidsRepelled('raids_repelled'),
+
+  /// Expéditions revenues (spec 15, prérequis de l'Amiral).
+  expeditions('expeditions');
 
   const Counter(this.key);
 
@@ -143,7 +147,10 @@ enum OfficerBonus {
   /// Ordres en plus dans la file de construction, de recherche ou du chantier (spec 13).
   constructionQueue('construction_queue'),
   researchQueue('research_queue'),
-  shipyardQueue('shipyard_queue');
+  shipyardQueue('shipyard_queue'),
+
+  /// Places d'expédition en plus (V3c).
+  expeditionSlots('expedition_slots');
 
   const OfficerBonus(this.key);
 
@@ -420,13 +427,85 @@ class DebrisConfig {
 class FleetConfig {
   const FleetConfig({
     this.flightFactor = 1,
-    this.baseSlots = 1,
+    this.attackSlots = 1,
+    this.shipsBase = 20,
+    this.shipsPerLevel = 15,
+    this.shipsMaxLevel = 10,
     this.shelterHours = const [1, 2, 4, 8, 12],
   });
 
   final double flightFactor;
-  final int baseSlots;
+
+  /// Attaques en vol en même temps (V3c).
+  final int attackSlots;
+
+  /// Plafond de vaisseaux par mission = shipsBase + shipsPerLevel × min(Informatique,
+  /// shipsMaxLevel) ; sondes et recycleurs exclus (V3c).
+  final int shipsBase;
+  final int shipsPerLevel;
+  final int shipsMaxLevel;
   final List<double> shelterHours;
+}
+
+/// Résultat d'une expédition (spec 15, V3c).
+enum ExpeditionOutcome {
+  nothing,
+  resources,
+  ships,
+  ambush,
+  delay,
+  early,
+  blackHole;
+
+  static ExpeditionOutcome fromKey(String key) => values.firstWhere(
+    (o) => _snake(o.name) == key,
+    orElse: () => throw FormatException('Résultat d’expédition inconnu : $key'),
+  );
+
+  String get key => _snake(name);
+
+  static String _snake(String s) =>
+      s.replaceAllMapped(RegExp('[A-Z]'), (m) => '_${m[0]!.toLowerCase()}');
+}
+
+/// Section `expedition` du YAML (V3c).
+class ExpeditionConfig {
+  const ExpeditionConfig({
+    this.systems = 8,
+    this.hours = const [1, 2, 4, 8],
+    this.outcomes = const {ExpeditionOutcome.nothing: 1},
+    this.resourceHours = 1,
+    this.shipHours = 1,
+    this.ambushMin = 0.3,
+    this.ambushMax = 0.8,
+    this.delayFactor = 2,
+    this.earlyFactor = 0.5,
+  });
+
+  /// Distance de l'« Espace profond », en systèmes.
+  final int systems;
+
+  /// Durées d'exploration proposées, en heures à ×1.
+  final List<double> hours;
+
+  /// Poids de chaque résultat ; celui de `nothing` est divisé par la durée en heures.
+  final Map<ExpeditionOutcome, double> outcomes;
+
+  /// Butin : heures de production par heure d'exploration.
+  final double resourceHours;
+
+  /// Vaisseaux trouvés : valeur en heures de production par heure d'exploration.
+  final double shipHours;
+
+  /// Embuscade : valeur de la flotte pirate en part de la flotte envoyée.
+  final double ambushMin;
+  final double ambushMax;
+
+  /// Retour retardé ou anticipé : durée du retour multipliée.
+  final double delayFactor;
+  final double earlyFactor;
+
+  double get distance => 2700 + 95.0 * systems;
 }
 
 /// Une base pirate du catalogue.
@@ -460,6 +539,8 @@ class PirateBasesConfig {
     this.refillHours = 24,
     this.rebuildHours = 12,
     this.respawnHours = 24,
+    this.patrolChance = 0,
+    this.patrolStrength = 0.3,
     this.defenses = const {},
     this.list = const [],
   });
@@ -471,6 +552,11 @@ class PirateBasesConfig {
   final double refillHours;
   final double rebuildHours;
   final double respawnHours;
+
+  /// Recyclage du champ d'une base : probabilité d'une patrouille pirate et sa valeur en
+  /// part du budget de la base (V3c).
+  final double patrolChance;
+  final double patrolStrength;
 
   /// Défenses disponibles selon les points du joueur (seuil minimal).
   final Map<UnitKind, double> defenses;
@@ -673,6 +759,7 @@ class GameData {
     this.startBoost = const StartBoost(),
     this.debris = const DebrisConfig(),
     this.fleet = const FleetConfig(),
+    this.expedition = const ExpeditionConfig(),
     this.pirateBases = const PirateBasesConfig(),
   }) : officers = Map.unmodifiable(officers),
        units = Map.unmodifiable(units),
@@ -720,6 +807,7 @@ class GameData {
 
   /// Trajets de flotte et bases pirates (spec 15, V3b).
   final FleetConfig fleet;
+  final ExpeditionConfig expedition;
   final PirateBasesConfig pirateBases;
 
   UnitSpec unit(UnitKind kind) => units[kind]!;
@@ -751,6 +839,7 @@ class GameData {
     final debris = _optMap(map, 'debris');
     final fleet = _optMap(map, 'fleet');
     final bases = _optMap(map, 'pirate_bases');
+    final expedition = _optMap(map, 'expedition');
     final interval = _map(pirates, 'interval_hours');
     final strength = _map(pirates, 'strength');
     final late = _optMap(pirates, 'late');
@@ -833,12 +922,13 @@ class GameData {
           ? const FleetConfig()
           : FleetConfig(
               flightFactor: _num(fleet, 'flight_factor'),
-              baseSlots: _num(fleet, 'base_slots').toInt(),
-              shelterHours: [
-                for (final h in _listOf(fleet, 'shelter_hours'))
-                  (h is num) ? h.toDouble() : throw const FormatException('shelter_hours'),
-              ],
+              attackSlots: _num(fleet, 'attack_slots').toInt(),
+              shipsBase: _num(fleet, 'ships_base').toInt(),
+              shipsPerLevel: _num(fleet, 'ships_per_level').toInt(),
+              shipsMaxLevel: _num(fleet, 'ships_max_level').toInt(),
+              shelterHours: _hoursList(fleet, 'shelter_hours'),
             ),
+      expedition: expedition == null ? const ExpeditionConfig() : _expedition(expedition),
       pirateBases: bases == null ? const PirateBasesConfig() : _bases(bases),
     );
   }
@@ -924,8 +1014,32 @@ class GameData {
     lose: m['lose'] == null ? const [] : _effects(_listOf(m, 'lose'), key),
   );
 
+  static List<double> _hoursList(Map<String, Object?> m, String key) => [
+    for (final h in _listOf(m, key)) (h is num) ? h.toDouble() : throw FormatException(key),
+  ];
+
+  static ExpeditionConfig _expedition(Map<String, Object?> m) {
+    final outcomes = _map(m, 'outcomes');
+    final ambush = _map(m, 'ambush_strength');
+    return ExpeditionConfig(
+      systems: _num(m, 'systems').toInt(),
+      hours: _hoursList(m, 'hours'),
+      outcomes: {
+        for (final e in outcomes.entries) ExpeditionOutcome.fromKey(e.key): _num(outcomes, e.key),
+      },
+      resourceHours: _num(m, 'resource_hours'),
+      shipHours: _num(m, 'ship_hours'),
+      ambushMin: _num(ambush, 'min'),
+      ambushMax: _num(ambush, 'max'),
+      delayFactor: _num(m, 'delay_factor'),
+      earlyFactor: _num(m, 'early_factor'),
+    );
+  }
+
   static PirateBasesConfig _bases(Map<String, Object?> m) => PirateBasesConfig(
     lootShare: _num(m, 'loot_share'),
+    patrolChance: _numOr(m, 'patrol_chance'),
+    patrolStrength: _numOr(m, 'patrol_strength', 0.3),
     minBudget: _num(m, 'min_budget'),
     refillHours: _num(m, 'refill_hours'),
     rebuildHours: _num(m, 'rebuild_hours'),
@@ -1084,7 +1198,8 @@ class GameData {
     throw FormatException('« $key » doit être un nombre');
   }
 
-  static double _numOr(Map<String, Object?> m, String key) => m[key] == null ? 0 : _num(m, key);
+  static double _numOr(Map<String, Object?> m, String key, [double fallback = 0]) =>
+      m[key] == null ? fallback : _num(m, key);
 
   static String _string(Map<String, Object?> m, String key) {
     final v = m[key];

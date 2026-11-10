@@ -87,6 +87,7 @@ class GameState {
     final extra = {for (final k in Slot.values) k: 0.0};
     var byResource = Resources.zero;
     var energy = 1.0;
+    var expeditions = 0.0;
     for (final e in effects) {
       switch (e.type) {
         case StoryEffectType.production:
@@ -122,6 +123,8 @@ class GameState {
           extra[Slot.research] = extra[Slot.research]! + value;
         case OfficerBonus.shipyardQueue:
           extra[Slot.shipyard] = extra[Slot.shipyard]! + value;
+        case OfficerBonus.expeditionSlots:
+          expeditions += value;
       }
     }
     return Modifiers(
@@ -132,6 +135,7 @@ class GameState {
       constructionQueue: extra[Slot.construction]!.round(),
       researchQueue: extra[Slot.research]!.round(),
       shipyardQueue: extra[Slot.shipyard]!.round(),
+      expeditionSlots: expeditions.round(),
       mineByResource: byResource,
       energyFactor: math.max(0, energy),
       productionFactor: data.startBoost.factor(economyPoints(this, Rules(data))),

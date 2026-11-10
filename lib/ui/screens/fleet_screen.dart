@@ -8,6 +8,7 @@ import '../format.dart';
 import '../game_controller.dart';
 import '../resource_style.dart';
 import '../theme.dart';
+import '../visuals.dart';
 import '../widgets/info_button.dart';
 
 const fleetHelp =
@@ -16,19 +17,34 @@ const fleetHelp =
     'Un trajet dure selon la distance et le vaisseau le plus lent ; plus lent, il consomme '
     'moins de deutérium (payé au départ, aller et retour). Une flotte en vol ne défend pas la '
     'planète : la mise à l’abri l’éloigne pendant un raid.\n\n'
-    'Places de flotte : une, plus une par niveau de la technologie Informatique.';
+    'Attaques : une à la fois. Expéditions : une à la fois, plus une par niveau d’Amiral. '
+    'Recyclage, espionnage et mise à l’abri : sans limite.\n\n'
+    'Plafond de vaisseaux par attaque, expédition ou escorte de recyclage : il augmente avec '
+    'la technologie Informatique (jusqu’au niveau 10). Les sondes et les recycleurs ne '
+    'comptent pas.';
+
+const expeditionHelp =
+    'Une expédition explore l’espace profond pendant la durée choisie. Au retour : '
+    'ressources (dans la limite de la soute), vaisseaux trouvés, ou rien. Elle peut aussi '
+    'tomber dans une embuscade pirate, revenir plus tôt ou plus tard, et, rarement, '
+    'disparaître dans un trou noir avec toute la flotte.\n\n'
+    'Plus l’exploration est longue, plus le butin est gros et moins on rentre bredouille.';
 
 String missionName(MissionKind k) => switch (k) {
   MissionKind.attack => 'Attaque',
   MissionKind.spy => 'Espionnage',
   MissionKind.recycle => 'Recyclage',
   MissionKind.shelter => 'Mise à l’abri',
+  MissionKind.expedition => 'Expédition',
 };
 
 String missionBlockText(MissionBlock b) => switch (b) {
   MissionBlock.noShips => 'Choisis au moins un vaisseau',
   MissionBlock.notEnoughShips => 'Vaisseaux indisponibles',
-  MissionBlock.noSlot => 'Plus de place de flotte',
+  MissionBlock.attackBusy => 'Une attaque est déjà en vol',
+  MissionBlock.expeditionsFull => 'Toutes les places d’expédition sont occupées',
+  MissionBlock.overCap => 'Trop de vaisseaux pour une mission (plafond de l’Informatique)',
+  MissionBlock.noRecycler => 'Il faut au moins un recycleur',
   MissionBlock.noFuel => 'Pas assez de deutérium',
   MissionBlock.unavailable => 'Base détruite pour l’instant',
   MissionBlock.noDebris => 'Aucun débris à collecter',
@@ -40,7 +56,8 @@ String _units(Map<UnitKind, int> units, GameData data) => units.entries
     .map((e) => '${fmtAmount(e.value.toDouble())} ${data.unit(e.key).name}')
     .join(' · ');
 
-/// Onglet Flotte (spec 15) : places, missions en vol, mise à l'abri, bases pirates.
+/// Onglet Flotte (spec 15) : état de la flotte, limites, missions en vol, mise à l'abri,
+/// expédition, bases pirates.
 class FleetScreen extends StatelessWidget {
   const FleetScreen({super.key, required this.controller, required this.now});
 
@@ -53,23 +70,37 @@ class FleetScreen extends StatelessWidget {
     final state = controller.state;
     final data = controller.data;
     final flying = missions(state);
+    final cap = shipCap(state, data);
     final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
     final hasShips = UnitKind.values.any((k) => !data.unit(k).defense && state.planet.count(k) > 0);
     return ListView(
       padding: EdgeInsets.fromLTRB(12, 8, 12, 16 + MediaQuery.paddingOf(context).bottom),
       children: [
+        FleetStatusCard(controller: controller),
         Row(
           children: [
             Expanded(
               child: Text(
-                'Places de flotte : ${flying.length} / ${fleetSlots(state, data)}',
-                style: theme.textTheme.titleSmall,
+                'Attaques ${missionsOf(state, MissionKind.attack)} / ${data.fleet.attackSlots} · '
+                'Expéditions ${missionsOf(state, MissionKind.expedition)} / '
+                '${expeditionSlots(state, data)} · $cap vaisseaux par mission',
+                style: theme.textTheme.bodySmall,
               ),
             ),
-            const InfoButton(title: 'Flotte', body: fleetHelp),
+            const InfoButton(title: 'Limites de la flotte', body: fleetHelp),
           ],
         ),
         for (final m in flying) _MissionCard(controller: controller, mission: m, now: now),
+        Card(
+          child: ListTile(
+            leading: const Icon(Icons.travel_explore),
+            title: const Text('Expédition dans l’espace profond'),
+            subtitle: Text('Ressources, vaisseaux… ou embuscade', style: secondary),
+            trailing: const Icon(Icons.chevron_right),
+            enabled: hasShips,
+            onTap: () => SendSheet.show(context, controller, MissionKind.expedition, null),
+          ),
+        ),
         Card(
           child: ListTile(
             leading: const Icon(Icons.shield_moon_outlined),
@@ -110,7 +141,11 @@ class _MissionCard extends StatelessWidget {
           children: [
             Text([missionName(m.kind), ?target].join(' · '), style: theme.textTheme.titleSmall),
             Text(
-              m.returning ? 'Retour dans $left' : 'Arrivée dans $left',
+              m.returning
+                  ? 'Retour dans $left'
+                  : m.exploring
+                  ? 'Exploration · fin dans $left'
+                  : 'Arrivée dans $left',
               style: mono(theme.textTheme.bodySmall),
             ),
             Text(_units(m.ships, data), style: theme.textTheme.bodySmall),
@@ -245,6 +280,7 @@ class _SendSheetState extends State<SendSheet> {
   final _ships = <UnitKind, int>{};
   var _speed = 100;
   late double _hours = widget.controller.data.fleet.shelterHours.first;
+  late double _explore = widget.controller.data.expedition.hours.first;
 
   List<UnitKind> get _available {
     final c = widget.controller;
@@ -254,8 +290,9 @@ class _SendSheetState extends State<SendSheet> {
             c.state.planet.count(k) > 0 &&
             switch (widget.kind) {
               MissionKind.spy => k == UnitKind.espionageProbe,
-              MissionKind.recycle => k == UnitKind.recycler,
-              MissionKind.attack => k != UnitKind.espionageProbe,
+              MissionKind.recycle ||
+              MissionKind.attack ||
+              MissionKind.expedition => k != UnitKind.espionageProbe,
               MissionKind.shelter => true,
             })
           k,
@@ -265,9 +302,21 @@ class _SendSheetState extends State<SendSheet> {
   @override
   void initState() {
     super.initState();
-    // Par défaut : tout ce qui convient à la mission.
+    // Par défaut : tout ce qui convient à la mission, dans la limite du plafond ; un
+    // recyclage part sans escorte.
+    final c = widget.controller;
+    var room = shipCap(c.state, c.data);
     for (final k in _available) {
-      _ships[k] = widget.controller.state.planet.count(k);
+      final have = c.state.planet.count(k);
+      final free = k == UnitKind.espionageProbe || k == UnitKind.recycler;
+      if (widget.kind == MissionKind.recycle && !free) {
+        _ships[k] = 0;
+      } else if (!isCapped(widget.kind) || free) {
+        _ships[k] = have;
+      } else {
+        _ships[k] = have < room ? have : room;
+        room -= _ships[k]!;
+      }
     }
   }
 
@@ -291,7 +340,19 @@ class _SendSheetState extends State<SendSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: theme.textTheme.titleLarge),
+            Row(
+              children: [
+                Expanded(child: Text(title, style: theme.textTheme.titleLarge)),
+                if (widget.kind == MissionKind.expedition)
+                  const InfoButton(title: 'Expédition', body: expeditionHelp),
+              ],
+            ),
+            if (isCapped(widget.kind))
+              Text(
+                'Vaisseaux : ${cappedShips(_ships)} / ${shipCap(state, data)}'
+                '${widget.kind == MissionKind.recycle ? ' (escorte ; recycleurs sans limite)' : ''}',
+                style: mono(theme.textTheme.bodySmall),
+              ),
             const SizedBox(height: 8),
             // Tout ou rien en un tap ; par type : curseur 0 → max, − / + pour l'unité.
             Wrap(
@@ -370,6 +431,20 @@ class _SendSheetState extends State<SendSheet> {
                 ],
               ),
             ] else ...[
+              if (widget.kind == MissionKind.expedition) ...[
+                Text('Durée d’exploration', style: theme.textTheme.titleSmall),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    for (final h in data.expedition.hours)
+                      ChoiceChip(
+                        label: Text('${h.round()} h'),
+                        selected: _explore == h,
+                        onSelected: (_) => setState(() => _explore = h),
+                      ),
+                  ],
+                ),
+              ],
               Text('Vitesse : $_speed %', style: theme.textTheme.titleSmall),
               Slider(
                 value: _speed.toDouble(),
@@ -383,6 +458,10 @@ class _SendSheetState extends State<SendSheet> {
             Text(
               shelter
                   ? 'Absence ${fmtDuration(Duration(milliseconds: (_hours * Duration.millisecondsPerHour / c.rules.speed).round()))}'
+                  : widget.kind == MissionKind.expedition
+                  ? 'Aller ${fmtDuration(preview.oneWay)} · exploration '
+                        '${fmtDuration(Duration(milliseconds: (_explore * Duration.millisecondsPerHour / c.rules.speed).round()))}'
+                        ' · retour ${fmtDuration(preview.oneWay)}'
                   : 'Aller ${fmtDuration(preview.oneWay)} · retour ${fmtDuration(preview.oneWay)}',
               style: mono(theme.textTheme.bodySmall),
             ),
@@ -412,11 +491,84 @@ class _SendSheetState extends State<SendSheet> {
                           Map.of(_ships),
                           speedPercent: _speed,
                           shelterHours: _hours,
+                          exploreHours: _explore,
                         );
                       },
                 child: const Text('Envoyer'),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// État de la flotte (spec 15) : par type de vaisseau, à quai et en vol. Seuls les types
+/// possédés apparaissent.
+class FleetStatusCard extends StatelessWidget {
+  const FleetStatusCard({super.key, required this.controller});
+
+  final GameController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final data = controller.data;
+    final state = controller.state;
+    final away = <UnitKind, int>{};
+    for (final m in missions(state)) {
+      for (final e in m.ships.entries) {
+        away[e.key] = (away[e.key] ?? 0) + e.value;
+      }
+    }
+    final kinds = [
+      for (final k in UnitKind.values)
+        if (!data.unit(k).defense && state.planet.count(k) + (away[k] ?? 0) > 0) k,
+    ];
+    final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Ta flotte', style: theme.textTheme.titleSmall),
+            if (kinds.isEmpty)
+              Text('Aucun vaisseau : construis-en au chantier.', style: secondary)
+            else ...[
+              Text('À quai · en vol', style: secondary),
+              const SizedBox(height: 4),
+              for (final k in kinds)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Row(
+                    children: [
+                      GameImage(
+                        path: VisualsScope.of(context).unit(data.unit(k)),
+                        icon: ItemStyle.unitIcon,
+                        width: 32,
+                        radius: 6,
+                        iconSize: 18,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(child: Text(data.unit(k).name)),
+                      Text(
+                        fmtAmount(state.planet.count(k).toDouble()),
+                        style: mono(theme.textTheme.bodyMedium),
+                      ),
+                      SizedBox(
+                        width: 72,
+                        child: Text(
+                          (away[k] ?? 0) > 0 ? '· ${fmtAmount(away[k]!.toDouble())} en vol' : '',
+                          textAlign: TextAlign.right,
+                          style: mono(secondary),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
           ],
         ),
       ),

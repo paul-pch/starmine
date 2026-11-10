@@ -81,6 +81,8 @@ est dans la feuille de détail (un tap).
   import (presse-papiers), simulateur de combat (flottes types → 100 batailles), raid
   immédiat + points, événement immédiat (spec 14), nouvelle partie, alarmes
   exactes, dernière mise à jour.
+- **Flotte** (spec 15) : état de la flotte (à quai, en vol), limites de missions, missions
+  en vol, mise à l'abri, expédition, bases pirates.
 - **Rapports** (depuis le hero) : **une seule liste** (journal) mêlant rapports de combat
   (→ rapport complet) et événements ponctuels (spec 14), les plus récents d'abord, avec un
   seul bouton « Effacer le journal » (confirmation ; effets en cours et décision en attente

@@ -469,6 +469,7 @@ pirates:
 # Libellés des compteurs de progression (prérequis d'officiers).
 counters:
   raids_repelled: Raids repoussés
+  expeditions: Expéditions terminées
 
 # Officiers (spec 12) : gagnés en jouant, débloqués par le joueur quand les prérequis d'un
 # niveau sont remplis. Bonus = per_level × niveau ; le plafond est le nombre de niveaux.
@@ -565,6 +566,18 @@ officers:
       - requires: { shipyard: 6 }
       - requires: { shipyard: 8, nanite_factory: 1 }
       - requires: { shipyard: 10, nanite_factory: 2 }
+  # V3c : places d'expédition (1 sans Amiral).
+  admiral:
+    name: Amiral
+    description: >-
+      Commandant des expéditions dans l'espace profond. Chaque niveau permet une expédition
+      de plus en même temps. Se débloque en menant des expéditions et avec l'Informatique.
+    bonus: { type: expedition_slots, per_level: 1 }
+    levels:
+      - requires: { shipyard: 4, computer_technology: 2, expeditions: 3 }
+      - requires: { shipyard: 6, computer_technology: 4, expeditions: 10 }
+      - requires: { shipyard: 8, computer_technology: 6, expeditions: 25 }
+      - requires: { shipyard: 10, computer_technology: 8, expeditions: 50 }
 
 # Événements ponctuels (spec 14). Une chaîne toujours planifiée ; à chaque tirage, sens
 # positif ou négatif à parts égales (les choix comptent comme positifs), jamais deux malus
@@ -771,8 +784,15 @@ story_events:
 # Σ nombre × fuel × distance / 35 000 × (%vitesse / 100 + 1)², aller et retour payés au départ.
 fleet:
   flight_factor: 3
-  # Places de flotte = base_slots + niveau de la technologie Informatique.
-  base_slots: 1
+  # Attaques en vol en même temps (V3c). Expéditions : 1 + Amiral. Recyclage, espionnage et
+  # mise à l'abri : sans limite.
+  attack_slots: 1
+  # Plafond de vaisseaux par mission (attaque, expédition, escorte d'un recyclage) =
+  # ships_base + ships_per_level × min(Informatique, ships_max_level) ; sondes et recycleurs
+  # exclus.
+  ships_base: 20
+  ships_per_level: 15
+  ships_max_level: 10
   # Durées proposées pour la mise à l'abri (heures à ×1) ; carburant d'un aller-retour vers
   # la base la plus proche.
   shelter_hours: [1, 2, 4, 8, 12]
@@ -784,6 +804,10 @@ fleet:
 # Dures à gagner, rentables avec la bonne flotte (mesuré : test/balance).
 pirate_bases:
   loot_share: 0.5
+  # Recyclage du champ d'une base : probabilité d'une patrouille pirate (vaisseaux d'une
+  # valeur de patrol_strength × le budget de la base), invisible à l'espionnage (V3c).
+  patrol_chance: 0.25
+  patrol_strength: 0.3
   min_budget: 4000
   refill_hours: 24
   rebuild_hours: 12
@@ -795,3 +819,28 @@ pirate_bases:
     - { name: Repaire du Croc, systems: 3, defense_hours: 15, stock_hours: 24 }
     - { name: Forteresse d'Ulvar, systems: 5, defense_hours: 38, stock_hours: 48 }
     - { name: Citadelle noire, systems: 6, defense_hours: 80, stock_hours: 96 }
+
+# Expéditions (V3c, spec 15) : destination « Espace profond » à `systems` systèmes, durée
+# d'exploration au choix (heures à ×1). Résultat tiré à la fin de l'exploration selon les
+# poids ; le poids de `nothing` est divisé par la durée en heures.
+expedition:
+  systems: 8
+  hours: [1, 2, 4, 8]
+  outcomes:
+    nothing: 30
+    resources: 35
+    ships: 12
+    ambush: 12
+    delay: 5
+    early: 5
+    black_hole: 1
+  # Butin : heures de production (toutes ressources) par heure d'exploration, dans la limite
+  # de la soute envoyée.
+  resource_hours: 1.5
+  # Vaisseaux trouvés : valeur en heures de production par heure d'exploration.
+  ship_hours: 1
+  # Embuscade : valeur de la flotte pirate, en part de la flotte envoyée.
+  ambush_strength: { min: 0.3, max: 0.8 }
+  # Retour retardé ou anticipé : durée du retour multipliée.
+  delay_factor: 2
+  early_factor: 0.5

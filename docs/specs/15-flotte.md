@@ -1,6 +1,6 @@
 # 15 · Flotte (V3)
 
-> **V3a et V3b livrées**, V3c spécifiée (décidé le 2026-11-10), à implémenter. Les vaisseaux existent déjà dans les données
+> **V3a, V3b et V3c livrées** (V3c décidée et implémentée le 2026-11-10). Les vaisseaux existent déjà dans les données
 > (flottes pirates, spec 07).
 
 ## Objet
@@ -86,7 +86,7 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
   secondes (×3), divisé par la vitesse de jeu ; vitesse = celle du plus lent ; distance =
   2 700 + 95 × systèmes. **Carburant** d'un aller : Σ n × `fuel` × distance / 35 000 ×
   (%vitesse / 100 + 1)², aller et retour payés au départ.
-- **Places de flotte** : `fleet.base_slots` + Informatique.
+- **Places de flotte** : remplacées en V3c (limites par type de mission, plafond de vaisseaux).
 - **Bases pirates** (`pirate_bases`) : 4 bases ; unités d'une valeur de `defense_hours` de ta
   production (×1, plancher `min_budget`), calculées à l'arrivée ; **doctrine** tirée à chaque
   génération (part de vaisseaux 20, 50 ou 80 %, une partie des types débloqués) : deux
@@ -111,7 +111,7 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
 - **Tests** : `missions_test.dart` ; équilibre mesuré et figé dans `test/balance/`
   (flotte nécessaire plus chère que la base, gain net positif avec la bonne flotte).
 
-## V3c (décidée, à implémenter)
+## V3c (implémentée)
 
 ### Limites de missions (remplace « places de flotte = 1 + Informatique »)
 
@@ -153,7 +153,11 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
   - **trou noir** (rare) : toute la flotte est perdue.
 - Au retour : popover et rapport d'expédition dans le journal (résultat, texte d'histoire,
   butin ou pertes ; rapport de combat en cas d'embuscade). Notification du retour (spec 09).
-- Compteur `expeditions` : expéditions revenues (prérequis de l'Amiral).
+- Compteur `expeditions` : expéditions terminées, trou noir compris (prérequis de l'Amiral).
+- Vaisseaux trouvés : types sans prérequis manquant (hors sondes) ; aucun débloqué : types
+  de la flotte envoyée.
+- Rappel pendant l'exploration : retour direct, durée d'un aller.
+- Notification : retour de l'expédition seulement, prévu par la simulation (déterministe).
 
 ### Amiral (spec 12)
 
@@ -176,11 +180,16 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
 
 ### UI
 
+- Onglet Flotte, en tête : carte **Ta flotte** (vignette, nom, nombre à quai, nombre en vol,
+  pour chaque type de vaisseau possédé ; « Aucun vaisseau » sinon).
 - Onglet Flotte : ligne de limites « Attaques 0 / 1 · Expéditions 0 / N · N vaisseaux par
   mission » (infobulle : Informatique et Amiral) ; carte **Expédition** (bouton
   « Explorer ») ; missions en vol avec phase (aller, exploration, retour).
 - Feuille d'envoi : puces de durée d'exploration ; compteur « n / plafond » ; recyclage :
-  recycleurs et vaisseaux de combat.
+  recycleurs et vaisseaux de combat (escorte à 0 par défaut). Sélection par défaut : tous
+  les vaisseaux adaptés, dans la limite du plafond.
+- Rapports d'expédition et de patrouille dans le journal (icône, verdict, butin, vaisseaux
+  trouvés, combat le cas échéant) et en popover.
 
 ### Données, persistance, tests
 

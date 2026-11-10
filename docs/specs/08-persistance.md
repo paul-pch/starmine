@@ -32,7 +32,8 @@ Ne jamais perdre une partie : base locale versionnée et sauvegarde exportable.
 
 ## Sauvegarde JSON (export / import)
 
-- Format `starmine-save`, `version` = **10** (v10 : chaîne des événements avec stock,
+- Format `starmine-save`, `version` = **11** (v11 : expédition — durée et phase
+  d'exploration de `fleet_mission`, rapports d'expédition et de patrouille ; v10 : chaîne des événements avec stock,
   échéances du stock, du choix et du service ; effet `delayed` avec son montant). Contient planète (stocks, niveaux, réglages,
   unités, débris), technos, officiers, compteurs, file d'attente, effets d'événements en cours, bases pirates,
   événements en attente (raids : relevé et technos

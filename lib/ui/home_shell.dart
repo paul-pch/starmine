@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'game_controller.dart';
 import 'notifications.dart';
-import '../domain/combat.dart';
 import '../domain/engine.dart';
 import '../domain/resources.dart';
 import 'format.dart';
@@ -119,19 +118,18 @@ class _HomeShellState extends State<HomeShell> {
     _lastReportId = latest.id;
     if (!mounted) return;
     final r = latest.report;
-    final good = r.baseName == null
-        ? r.winner != CombatWinner.attacker
-        : r.winner == CombatWinner.attacker;
+    final good = CombatReport.good(r);
     _enqueue(
       () => EventPopover(
-        icon: r.baseName != null
-            ? Icons.rocket_launch_outlined
-            : good
-            ? Icons.gpp_good_outlined
-            : Icons.gpp_bad_outlined,
+        icon: CombatReport.icon(r),
         iconColor: good ? null : Theme.of(context).colorScheme.error,
         title: CombatReport.verdict(r),
-        lines: [if (r.loot != Resources.zero) 'Pillage : ${fmtCost(r.loot)}'],
+        lines: [
+          if (r.loot != Resources.zero)
+            '${r.expedition == null && r.baseName == null ? 'Pillage' : 'Butin'} : '
+                '${fmtCost(r.loot)}',
+          for (final e in r.found.entries) '+${e.value} ${_c.data.unit(e.key).name}',
+        ],
         actions: [
           const PopoverAction('Fermer', null),
           PopoverAction('Rapport', primary: true, () {

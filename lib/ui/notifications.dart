@@ -64,6 +64,7 @@ String _arrivalTitle(MissionKind kind) => switch (kind) {
   MissionKind.spy => 'Rapport d’espionnage reçu',
   MissionKind.recycle => 'Débris collectés',
   MissionKind.shelter => 'Flotte de retour',
+  MissionKind.expedition => 'Expédition arrivée',
 };
 
 /// Moment de la (première) notification : fin de l'ordre, dernière unité d'un lot,
@@ -200,9 +201,13 @@ class LocalBuildNotifier implements BuildNotifier {
           (
             event.id,
             event.dueAt,
-            returning ? 'Flotte de retour' : _arrivalTitle(kind),
             returning
-                ? 'Tes vaisseaux sont rentrés et ont déchargé leur cargaison.'
+                ? (kind == MissionKind.expedition ? 'Expédition de retour' : 'Flotte de retour')
+                : _arrivalTitle(kind),
+            returning
+                ? (kind == MissionKind.expedition
+                      ? 'Consulte le rapport d’expédition.'
+                      : 'Tes vaisseaux sont rentrés et ont déchargé leur cargaison.')
                 : 'Consulte l’onglet Flotte.',
             _buildings,
           ),

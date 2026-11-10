@@ -228,20 +228,56 @@ double fuelCost(Map<UnitKind, int> ships, double distance, int speedPercent, Gam
 double shipsCargo(Map<UnitKind, int> ships, GameData data) =>
     ships.entries.fold(0.0, (sum, e) => sum + e.value * data.unit(e.key).cargo);
 
-/// Places de flotte : `fleet.base_slots` + niveau de la technologie Informatique.
-int fleetSlots(GameState s, GameData data) =>
-    data.fleet.baseSlots + (s.research[TechKind.computer] ?? 0);
-
 List<FleetMission> missions(GameState s) => s.pending.whereType<FleetMission>().toList();
+
+/// Missions de [kind] en vol (aller, exploration ou retour).
+int missionsOf(GameState s, MissionKind kind) => missions(s).where((m) => m.kind == kind).length;
+
+/// Plafond de vaisseaux par mission (V3c) : `ships_base` + `ships_per_level` ×
+/// min(Informatique, `ships_max_level`).
+int shipCap(GameState s, GameData data) {
+  final cfg = data.fleet;
+  final level = math.min(s.research[TechKind.computer] ?? 0, cfg.shipsMaxLevel);
+  return cfg.shipsBase + cfg.shipsPerLevel * level;
+}
+
+/// Vaisseaux comptés dans le plafond : ni sondes ni recycleurs.
+int cappedShips(Map<UnitKind, int> ships) => ships.entries
+    .where((e) => e.key != UnitKind.espionageProbe && e.key != UnitKind.recycler)
+    .fold(0, (sum, e) => sum + e.value);
+
+/// Les missions soumises au plafond de vaisseaux.
+bool isCapped(MissionKind kind) =>
+    kind == MissionKind.attack || kind == MissionKind.expedition || kind == MissionKind.recycle;
+
+/// Places d'expédition : 1 + Amiral.
+int expeditionSlots(GameState s, GameData data) => 1 + s.modifiers(data).expeditionSlots;
 
 // --- Missions --------------------------------------------------------------------------
 
-enum MissionBlock { noShips, notEnoughShips, noSlot, noFuel, unavailable, noDebris, noProbe }
+enum MissionBlock {
+  noShips,
+  notEnoughShips,
+  attackBusy,
+  expeditionsFull,
+  overCap,
+  noFuel,
+  unavailable,
+  noDebris,
+  noProbe,
+  noRecycler,
+}
 
 /// Distance d'une mise à l'abri : celle de la base la plus proche.
 double shelterDistance(GameData data) => data.pirateBases.list.isEmpty
     ? 2700
     : data.pirateBases.list.map((b) => b.distance).reduce(math.min);
+
+double _distance(MissionKind kind, int? target, GameData data) => switch (kind) {
+  MissionKind.expedition => data.expedition.distance,
+  MissionKind.shelter => shelterDistance(data),
+  _ => target == null ? shelterDistance(data) : data.pirateBases.list[target].distance,
+};
 
 /// Prévision d'un envoi : durée d'un aller, carburant aller-retour, soute.
 ({Duration oneWay, double fuel, double cargo}) missionPreview(
@@ -253,7 +289,7 @@ double shelterDistance(GameData data) => data.pirateBases.list.isEmpty
   Rules rules,
 ) {
   final data = rules.data;
-  final distance = target == null ? shelterDistance(data) : data.pirateBases.list[target].distance;
+  final distance = _distance(kind, target, data);
   return (
     oneWay: flightDuration(ships, distance, speedPercent, s.research, rules),
     fuel: 2 * fuelCost(ships, distance, speedPercent, data),
@@ -278,13 +314,20 @@ MissionBlock? checkMission(
   for (final e in selected.entries) {
     if (s.planet.count(e.key) < e.value) return MissionBlock.notEnoughShips;
   }
-  if (missions(s).length >= fleetSlots(s, rules.data)) return MissionBlock.noSlot;
+  final data = rules.data;
+  if (kind == MissionKind.attack && missionsOf(s, kind) >= data.fleet.attackSlots) {
+    return MissionBlock.attackBusy;
+  }
+  if (kind == MissionKind.expedition && missionsOf(s, kind) >= expeditionSlots(s, data)) {
+    return MissionBlock.expeditionsFull;
+  }
+  if (isCapped(kind) && cappedShips(selected) > shipCap(s, data)) return MissionBlock.overCap;
   if (target != null && !baseAvailable(s.bases[target], at)) return MissionBlock.unavailable;
   if (kind == MissionKind.spy && selected.keys.any((k) => k != UnitKind.espionageProbe)) {
     return MissionBlock.noProbe;
   }
   if (kind == MissionKind.recycle) {
-    if (selected.keys.any((k) => k != UnitKind.recycler)) return MissionBlock.notEnoughShips;
+    if ((selected[UnitKind.recycler] ?? 0) == 0) return MissionBlock.noRecycler;
     final d = s.bases[target!].debris;
     if (d.metal + d.crystal < 1) return MissionBlock.noDebris;
   }
@@ -306,6 +349,7 @@ MissionBlock? checkMission(
   required int eventId,
   required int seed,
   double shelterHours = 0,
+  double exploreHours = 0,
 }) {
   final s = advance(state, now, rules).state;
   final block = checkMission(s, kind, target, ships, speedPercent, now, rules);
@@ -324,12 +368,13 @@ MissionBlock? checkMission(
     planetId: s.planet.id,
     dueAt: now.add(shelter ? away : preview.oneWay),
     kind: kind,
-    target: shelter ? null : target,
+    target: shelter || kind == MissionKind.expedition ? null : target,
     ships: selected,
     returning: shelter,
     departedAt: now,
     speedPercent: speedPercent,
     seed: seed,
+    exploreHours: kind == MissionKind.expedition ? exploreHours : 0,
   );
   final p = s.planet;
   return (
@@ -349,7 +394,17 @@ GameState recallMission(GameState state, int id, DateTime now, Rules rules) {
   final s = advance(state, now, rules).state;
   final m = missions(s).where((e) => e.id == id && !e.returning).firstOrNull;
   if (m == null) return s;
-  final back = m.copyWith(dueAt: now.add(now.difference(m.departedAt)), returning: true);
+  // En exploration : retour direct, durée d'un aller.
+  final elapsed = m.exploring
+      ? flightDuration(
+          m.ships,
+          _distance(m.kind, m.target, rules.data),
+          m.speedPercent,
+          s.research,
+          rules,
+        )
+      : now.difference(m.departedAt);
+  final back = m.copyWith(dueAt: now.add(elapsed), returning: true, exploring: false);
   return s.copyWith(pending: [for (final e in s.pending) e.id == id ? back : e]);
 }
 
@@ -365,6 +420,7 @@ GameState _withBase(GameState s, PirateBase b) =>
 ) {
   final data = rules.data;
   final at = m.dueAt;
+  if (m.kind == MissionKind.expedition) return _expedition(s, m, rules);
   final target = m.target!;
   final spec = data.pirateBases.list[target];
   final base = _respawned(s.bases[target]);
@@ -402,13 +458,17 @@ GameState _withBase(GameState s, PirateBase b) =>
         report: null,
       );
     case MissionKind.recycle:
+      final random = math.Random(m.seed);
+      if (random.nextDouble() < data.pirateBases.patrolChance) {
+        return _patrol(s, m, base, at, rules, random, back);
+      }
       final load = recycleLoad(base.debris, m.ships[UnitKind.recycler] ?? 0, data);
       return (
         state: _withBase(s, base.copyWith(debris: base.debris - load)),
         next: back(m.ships, load),
         report: null,
       );
-    case MissionKind.shelter:
+    case MissionKind.shelter || MissionKind.expedition:
       return (state: s, next: back(m.ships, Resources.zero), report: null);
     case MissionKind.attack:
       final random = math.Random(m.seed);
@@ -456,6 +516,197 @@ GameState _withBase(GameState s, PirateBase b) =>
           baseName: spec.name,
         ),
       );
+  }
+}
+
+/// Flotte pirate de vaisseaux seulement, d'une valeur de [budget], types débloqués aux
+/// points d'économie du joueur.
+Map<UnitKind, int> _pirateShips(double budget, GameState s, Rules rules, math.Random random) {
+  final points = economyPoints(s, rules);
+  final kinds = [
+    for (final e in rules.data.pirates.warships.entries)
+      if (points >= e.value) e.key,
+  ];
+  if (kinds.isEmpty) kinds.add(UnitKind.lightFighter);
+  final weights = [for (final _ in kinds) 0.5 + random.nextDouble()];
+  final units = allocateBudget(budget, kinds, weights, rules.data);
+  if (units.isEmpty) units[kinds.first] = 1;
+  return units;
+}
+
+/// Patrouille pirate surprise au recyclage d'un champ de base (V3c) : combat contre les
+/// recycleurs et leur escorte. Gagné : collecte ; sinon les survivants rentrent à vide. Les
+/// débris du combat s'ajoutent au champ.
+({GameState state, GameEvent? next, RaidReport? report}) _patrol(
+  GameState s,
+  FleetMission m,
+  PirateBase base,
+  DateTime at,
+  Rules rules,
+  math.Random random,
+  FleetMission Function(Map<UnitKind, int>, Resources) back,
+) {
+  final data = rules.data;
+  final cfg = data.pirateBases;
+  final budget = math.max(cfg.minBudget, cfg.list[base.index].defenseHours * productionPerHour(s, rules));
+  final attacker = CombatSide(units: m.ships, tech: s.research);
+  final defender = CombatSide(
+    units: _pirateShips(budget * cfg.patrolStrength, s, rules, random),
+    tech: baseTech(s, rules),
+  );
+  final result = simulateCombat(data, attacker, defender, random);
+  final debris = combatDebris(result, data);
+  final left = result.attackerLeft;
+  final won = result.winner == CombatWinner.attacker;
+  final load = won ? recycleLoad(base.debris, left[UnitKind.recycler] ?? 0, data) : Resources.zero;
+  return (
+    state: _withBase(s, base.copyWith(debris: base.debris - load + debris)),
+    next: left.values.any((n) => n > 0) ? back(left, load) : null,
+    report: RaidReport.fromCombat(
+      result,
+      at: at,
+      loot: load,
+      debris: debris,
+      attackerStrength: SideStrength.of(data, attacker),
+      defenderStrength: SideStrength.of(data, defender),
+      baseName: data.pirateBases.list[base.index].name,
+      patrol: true,
+    ),
+  );
+}
+
+/// Tirage du résultat d'une expédition, selon les poids (`nothing` ÷ durée en heures).
+ExpeditionOutcome drawExpedition(double hours, GameData data, math.Random random) {
+  final weights = {
+    for (final e in data.expedition.outcomes.entries)
+      e.key: e.key == ExpeditionOutcome.nothing ? e.value / math.max(1, hours) : e.value,
+  };
+  final total = weights.values.fold(0.0, (a, b) => a + b);
+  var roll = random.nextDouble() * total;
+  for (final e in weights.entries) {
+    roll -= e.value;
+    if (roll < 0) return e.key;
+  }
+  return ExpeditionOutcome.nothing;
+}
+
+/// Expédition : arrivée (début de l'exploration), puis fin de l'exploration (résultat tiré
+/// avec la graine de la mission) et retour.
+({GameState state, GameEvent? next, RaidReport? report}) _expedition(
+  GameState s,
+  FleetMission m,
+  Rules rules,
+) {
+  final data = rules.data;
+  final cfg = data.expedition;
+  final at = m.dueAt;
+  if (!m.exploring) {
+    final explore = Duration(
+      milliseconds: (m.exploreHours * Duration.millisecondsPerHour / rules.speed).round(),
+    );
+    return (state: s, next: m.copyWith(dueAt: at.add(explore), exploring: true), report: null);
+  }
+  final random = math.Random(m.seed);
+  final outcome = drawExpedition(m.exploreHours, data, random);
+  final counted = s.copyWith(
+    counters: {...s.counters, Counter.expeditions: s.counters[Counter.expeditions]! + 1},
+  );
+  Duration flight(Map<UnitKind, int> ships) =>
+      flightDuration(ships, cfg.distance, m.speedPercent, s.research, rules);
+  FleetMission back(Map<UnitKind, int> ships, Resources cargo, [double factor = 1]) => m.copyWith(
+    dueAt: at.add(flight(ships) * factor),
+    ships: ships,
+    cargo: cargo,
+    returning: true,
+    exploring: false,
+  );
+  RaidReport report({
+    Map<UnitKind, int>? left,
+    Resources loot = Resources.zero,
+    Map<UnitKind, int> found = const {},
+  }) => RaidReport(
+    at: at,
+    winner: CombatWinner.attacker,
+    rounds: 0,
+    attackerStart: m.ships,
+    attackerLeft: left ?? m.ships,
+    defenderStart: const {},
+    defenderLeft: const {},
+    rebuilt: const {},
+    loot: loot,
+    expedition: outcome,
+    found: found,
+  );
+  final rate = rules.hourlyProduction(s.planet, s.research, s.modifiers(data));
+  switch (outcome) {
+    case ExpeditionOutcome.nothing:
+      return (state: counted, next: back(m.ships, Resources.zero), report: report());
+    case ExpeditionOutcome.resources:
+      final hours = cfg.resourceHours * m.exploreHours;
+      final found = rate.map((_, v) => math.max(0.0, v / rules.speed) * hours);
+      final cargo = shipsCargo(m.ships, data);
+      final total = found.metal + found.crystal + found.deuterium;
+      final scale = total <= cargo || total <= 0 ? 1.0 : cargo / total;
+      final loot = found.map((_, v) => (v * scale).floorToDouble());
+      return (state: counted, next: back(m.ships, loot), report: report(loot: loot));
+    case ExpeditionOutcome.ships:
+      final budget = productionPerHour(s, rules) * cfg.shipHours * m.exploreHours;
+      final kinds = [
+        for (final k in UnitKind.values)
+          if (!data.unit(k).defense &&
+              k != UnitKind.espionageProbe &&
+              unmet(s, data.unit(k).requires).isEmpty)
+            k,
+      ];
+      // Aucun type débloqué au chantier : des vaisseaux semblables à ceux envoyés.
+      if (kinds.isEmpty) {
+        kinds.addAll(m.ships.keys.where((k) => k != UnitKind.espionageProbe));
+      }
+      final weights = [for (final _ in kinds) 0.5 + random.nextDouble()];
+      final found = allocateBudget(budget, kinds, weights, data);
+      final ships = {
+        for (final k in {...m.ships.keys, ...found.keys}) k: (m.ships[k] ?? 0) + (found[k] ?? 0),
+      };
+      return (
+        state: counted,
+        next: back(ships, Resources.zero),
+        report: report(left: ships, found: found),
+      );
+    case ExpeditionOutcome.ambush:
+      final share = cfg.ambushMin + random.nextDouble() * (cfg.ambushMax - cfg.ambushMin);
+      final budget = math.max(1000.0, fleetValue(m.ships, data) * share);
+      final attacker = CombatSide(units: m.ships, tech: s.research);
+      final defender = CombatSide(
+        units: _pirateShips(budget, s, rules, random),
+        tech: pirateTech(s.research, data.pirates),
+      );
+      final result = simulateCombat(data, attacker, defender, random);
+      final left = result.attackerLeft;
+      return (
+        state: counted,
+        next: left.values.any((n) => n > 0) ? back(left, Resources.zero) : null,
+        report: RaidReport.fromCombat(
+          result,
+          at: at,
+          attackerStrength: SideStrength.of(data, attacker),
+          defenderStrength: SideStrength.of(data, defender),
+          expedition: outcome,
+        ),
+      );
+    case ExpeditionOutcome.delay:
+      return (
+        state: counted,
+        next: back(m.ships, Resources.zero, cfg.delayFactor),
+        report: report(),
+      );
+    case ExpeditionOutcome.early:
+      return (
+        state: counted,
+        next: back(m.ships, Resources.zero, cfg.earlyFactor),
+        report: report(),
+      );
+    case ExpeditionOutcome.blackHole:
+      return (state: counted, next: null, report: report(left: const {}));
   }
 }
 

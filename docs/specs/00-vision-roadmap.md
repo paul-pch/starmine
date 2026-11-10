@@ -34,7 +34,7 @@ Grande fidélité aux règles OGame classiques ; on diverge seulement quand le s
 | V2c | Officiers : écran de déblocage, prérequis indexés sur la progression, niveaux plafonnés, bonus permanents (spec 12) ; refonte de la force des raids (spec 07) | Livrée |
 | V2d | Événements ponctuels : effets temporaires positifs ou négatifs justifiés par l'histoire, certains à choix, liés aux officiers (spec 14) | Livrée |
 | V2e | Événements app ouverte (stock hors ligne, effets cumulables, paris, unités, débris, versements différés, 6 nouveaux événements) ; raids 12-24 h au milieu de partie ; popover d'événement, journal unique (spec 07, 10, 14) | Livrée |
-| V3 | Flotte : vaisseaux constructibles, attaques de bases pirates (le pillage devient un revenu), champ de débris et recycleurs, technos de propulsion et d'espionnage, missions d'exploration et officiers d'exploration (spec 12, spec 15) | V3a, V3b livrées ; V3c à implémenter |
+| V3 | Flotte : vaisseaux constructibles, attaques de bases pirates (le pillage devient un revenu), champ de débris et recycleurs, technos de propulsion et d'espionnage, missions d'exploration et officiers d'exploration (spec 12, spec 15) | Livrée (V3a, V3b, V3c) |
 | V4 | Galaxie : systèmes, colonisation, multi-planètes, transports, réseau de recherche intergalactique | À spécifier |
 | V5 | Fin de jeu : expéditions, objectif final | À spécifier |
 
@@ -54,7 +54,7 @@ Transverse en cours : **refonte visuelle** — disposition cible validée (spec 
 Prochaines étapes, dans l'ordre :
 
 1. **Visuels** : finir les catégories manquantes (spec 11).
-2. **Exploration** : V3c (spec 15).
+2. **Exploration** : V3c (spec 15) — livrée.
 3. **Narratif** : illustrations et textes de la popover, arcs d'événements enchaînés.
 4. **Scénarios** : nouveaux événements à choix (spec 14).
 

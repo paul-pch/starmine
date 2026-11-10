@@ -26,6 +26,8 @@ String officerBonusText(OfficerBonus bonus, double value) {
     OfficerBonus.constructionQueue => _orders(1 + value.round(), 'la file de construction'),
     OfficerBonus.researchQueue => _orders(1 + value.round(), 'la file de recherche'),
     OfficerBonus.shipyardQueue => _orders(1 + value.round(), 'la file du chantier'),
+    OfficerBonus.expeditionSlots =>
+      '${1 + value.round()} expédition${value.round() > 0 ? 's' : ''} en même temps',
   };
 }
 

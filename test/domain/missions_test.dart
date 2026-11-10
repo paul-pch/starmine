@@ -22,7 +22,8 @@ void main() {
   }) => ensureBases(
     game(
       planet(units: units, resources: resources),
-      research: research,
+      // Informatique 10 : plafond de 170 vaisseaux par mission, sauf mention contraire.
+      research: {TechKind.computer: 10, ...research},
     ),
     t0,
     rules,
@@ -36,6 +37,7 @@ void main() {
     Map<UnitKind, int> ships, {
     int speed = 100,
     double hours = 0,
+    double explore = 0,
   }) => sendMission(
     s,
     kind,
@@ -47,6 +49,7 @@ void main() {
     eventId: 50,
     seed: 1,
     shelterHours: hours,
+    exploreHours: explore,
   );
 
   test('bases : quatre, créées une fois', () {
@@ -76,7 +79,7 @@ void main() {
     expect(fuelCost(lf, d, 50, gameData), lessThan(fuelCost(lf, d, 100, gameData)));
   });
 
-  test('envoi : vaisseaux retirés, carburant aller-retour payé, place de flotte', () {
+  test('envoi : vaisseaux retirés, carburant aller-retour payé, une attaque à la fois', () {
     final s = world(units: {UnitKind.lightFighter: 10});
     final out = send(s, MissionKind.attack, 0, {UnitKind.lightFighter: 4});
     expect(out.block, isNull);
@@ -90,7 +93,7 @@ void main() {
       rules,
     );
     expect(out.state.planet.resources.deuterium, fuel.deuterium - preview.fuel);
-    // Informatique 0 : une seule place.
+    // Une seule attaque en vol ; espionnage et mise à l'abri restent possibles.
     final again = sendMission(
       out.state,
       MissionKind.attack,
@@ -102,7 +105,11 @@ void main() {
       eventId: 51,
       seed: 2,
     );
-    expect(again.block, MissionBlock.noSlot);
+    expect(again.block, MissionBlock.attackBusy);
+    expect(
+      send(out.state, MissionKind.shelter, null, {UnitKind.lightFighter: 6}, hours: 1).block,
+      isNull,
+    );
     expect(
       send(s, MissionKind.attack, 0, {UnitKind.lightFighter: 11}).block,
       MissionBlock.notEnoughShips,
@@ -186,5 +193,150 @@ void main() {
     expect(r.reports.single.winner, CombatWinner.defender);
     expect(missions(r.state), isEmpty);
     expect(r.state.bases[3].survivors, isNotNull);
+  });
+
+  test('plafond : Informatique, sondes et recycleurs exclus, mise à l’abri libre', () {
+    final s = world(
+      units: {UnitKind.lightFighter: 100, UnitKind.recycler: 50, UnitKind.espionageProbe: 30},
+      research: {TechKind.computer: 0},
+    );
+    expect(shipCap(s, gameData), 20);
+    expect(send(s, MissionKind.attack, 0, {UnitKind.lightFighter: 21}).block, MissionBlock.overCap);
+    expect(
+      send(s, MissionKind.attack, 0, {UnitKind.lightFighter: 20, UnitKind.espionageProbe: 30})
+          .block,
+      isNull,
+    );
+    expect(
+      send(s, MissionKind.shelter, null, {UnitKind.lightFighter: 100}, hours: 1).block,
+      isNull,
+    );
+    final capped = world(research: {TechKind.computer: 30});
+    expect(shipCap(capped, gameData), 20 + 15 * 10);
+  });
+
+  test('expédition : aller, exploration, résultat à graine, retour ; places et Amiral', () {
+    final ships = {UnitKind.largeCargo: 10, UnitKind.cruiser: 10};
+    final s = world(units: {UnitKind.largeCargo: 20, UnitKind.cruiser: 20});
+    final out = send(s, MissionKind.expedition, null, ships, explore: 4);
+    expect(out.block, isNull);
+    final m = missions(out.state).single;
+    expect(m.exploreHours, 4);
+    expect(send(out.state, MissionKind.expedition, null, ships, explore: 1).block,
+        MissionBlock.expeditionsFull);
+    final admiral = out.state.copyWith(officers: {OfficerKind.admiral: 1});
+    expect(expeditionSlots(admiral, gameData), 2);
+    expect(send(admiral, MissionKind.expedition, null, ships, explore: 1).block, isNull);
+
+    final arrived = advance(out.state, m.dueAt, rules).state;
+    final exploring = missions(arrived).single;
+    expect(exploring.exploring, isTrue);
+    expect(exploring.dueAt, m.dueAt.add(const Duration(hours: 4)));
+    final done = advance(arrived, exploring.dueAt, rules);
+    final again = advance(arrived, exploring.dueAt, rules);
+    expect(done.reports.single.expedition, again.reports.single.expedition);
+    expect(done.state.counters[Counter.expeditions], 1);
+  });
+
+  test('expédition : chaque résultat', () {
+    final ships = {UnitKind.largeCargo: 10, UnitKind.cruiser: 10};
+    final s = ensureBases(
+      game(
+        planet(
+          levels: {
+            BuildingKind.metalMine: 10,
+            BuildingKind.crystalMine: 8,
+            BuildingKind.solarPlant: 12,
+            BuildingKind.shipyard: 4,
+          },
+          units: ships,
+          resources: fuel,
+        ),
+        research: {TechKind.computer: 10},
+      ),
+      t0,
+      rules,
+      seed: 3,
+    );
+    final seen = <ExpeditionOutcome>{};
+    for (var seed = 0; seed < 400 && seen.length < ExpeditionOutcome.values.length; seed++) {
+      final out = sendMission(s, MissionKind.expedition, null, ships, 100, t0, rules,
+          eventId: 60, seed: seed, exploreHours: 8);
+      final m = missions(out.state).single;
+      final arrived = advance(out.state, m.dueAt, rules).state;
+      final end = missions(arrived).single.dueAt;
+      final r = advance(arrived, end, rules);
+      final report = r.reports.single;
+      final outcome = report.expedition!;
+      seen.add(outcome);
+      final back = missions(r.state).firstOrNull;
+      switch (outcome) {
+        case ExpeditionOutcome.blackHole:
+          expect(back, isNull);
+        case ExpeditionOutcome.resources:
+          expect(back!.cargo.metal, greaterThan(0));
+          expect(back.cargo.metal + back.cargo.crystal + back.cargo.deuterium,
+              lessThanOrEqualTo(shipsCargo(ships, gameData)));
+        case ExpeditionOutcome.ships:
+          expect(report.found, isNotEmpty);
+          expect(cappedShips(back!.ships), greaterThan(cappedShips(ships)));
+        case ExpeditionOutcome.ambush:
+          expect(report.hasCombat, isTrue);
+        case ExpeditionOutcome.delay || ExpeditionOutcome.early:
+          final normal = flightDuration(ships, gameData.expedition.distance, 100, s.research, rules);
+          final factor = outcome == ExpeditionOutcome.delay
+              ? gameData.expedition.delayFactor
+              : gameData.expedition.earlyFactor;
+          expect(back!.dueAt.difference(end), normal * factor);
+        case ExpeditionOutcome.nothing:
+          expect(back!.cargo, Resources.zero);
+      }
+    }
+    expect(seen, containsAll(ExpeditionOutcome.values));
+  });
+
+  test('expédition : moins de « rien » quand l’exploration est longue', () {
+    int nothing(double hours) => [
+      for (var seed = 0; seed < 2000; seed++)
+        if (drawExpedition(hours, gameData, math.Random(seed)) == ExpeditionOutcome.nothing) 1,
+    ].length;
+    expect(nothing(8), lessThan(nothing(1)));
+  });
+
+  test('recyclage d’une base : patrouille possible, escorte comptée dans le plafond', () {
+    final base = world(
+      units: {UnitKind.recycler: 5, UnitKind.cruiser: 30},
+      research: {TechKind.computer: 0},
+    );
+    final s = base.copyWith(
+      bases: [
+        for (final b in base.bases)
+          b.index == 0 ? b.copyWith(debris: const Resources(metal: 50000, crystal: 20000)) : b,
+      ],
+    );
+    expect(
+      send(s, MissionKind.recycle, 0, {UnitKind.cruiser: 5}).block,
+      MissionBlock.noRecycler,
+    );
+    expect(
+      send(s, MissionKind.recycle, 0, {UnitKind.recycler: 5, UnitKind.cruiser: 21}).block,
+      MissionBlock.overCap,
+    );
+    var patrols = 0;
+    for (var seed = 0; seed < 200; seed++) {
+      final out = sendMission(s, MissionKind.recycle, 0,
+          {UnitKind.recycler: 5, UnitKind.cruiser: 20}, 100, t0, rules,
+          eventId: 70, seed: seed);
+      expect(out.block, isNull);
+      final r = advance(out.state, missions(out.state).single.dueAt, rules);
+      if (r.reports.isNotEmpty) {
+        patrols++;
+        expect(r.reports.single.patrol, isTrue);
+      } else {
+        expect(missions(r.state).single.cargo.metal, greaterThan(0));
+      }
+    }
+    // patrol_chance = 0,25 sur 200 envois.
+    expect(patrols, inInclusiveRange(30, 75));
   });
 }

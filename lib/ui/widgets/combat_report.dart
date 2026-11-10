@@ -31,7 +31,55 @@ class CombatReport extends StatelessWidget {
         ),
       );
 
-  static String verdict(RaidReport r) => switch ((r.winner, r.baseName)) {
+  static String verdict(RaidReport r) {
+    if (r.expedition case final e?) return expeditionVerdict(e, r);
+    if (r.patrol) {
+      return switch (r.winner) {
+        CombatWinner.attacker => 'Patrouille repoussée : débris de ${r.baseName} collectés',
+        _ => 'Recycleurs surpris par une patrouille près de ${r.baseName}',
+      };
+    }
+    return _combatVerdict(r);
+  }
+
+  /// Issue favorable au joueur (icône et couleur du journal et de la popover).
+  static bool good(RaidReport r) {
+    if (r.expedition case final e?) {
+      return switch (e) {
+        ExpeditionOutcome.resources || ExpeditionOutcome.ships || ExpeditionOutcome.early => true,
+        ExpeditionOutcome.ambush => r.winner == CombatWinner.attacker,
+        _ => false,
+      };
+    }
+    return r.baseName == null
+        ? r.winner != CombatWinner.attacker
+        : r.winner == CombatWinner.attacker;
+  }
+
+  /// Icône du rapport : raid, attaque ou recyclage, expédition.
+  static IconData icon(RaidReport r) => r.expedition != null
+      ? Icons.travel_explore
+      : r.baseName != null
+      ? Icons.rocket_launch_outlined
+      : good(r)
+      ? Icons.gpp_good_outlined
+      : Icons.gpp_bad_outlined;
+
+  /// Titre d'un rapport d'expédition.
+  static String expeditionVerdict(ExpeditionOutcome e, RaidReport r) => switch (e) {
+    ExpeditionOutcome.nothing => 'Expédition : rien trouvé',
+    ExpeditionOutcome.resources => 'Expédition : ressources trouvées',
+    ExpeditionOutcome.ships => 'Expédition : vaisseaux trouvés',
+    ExpeditionOutcome.ambush =>
+      r.winner == CombatWinner.attacker
+          ? 'Expédition : embuscade repoussée'
+          : 'Expédition : embuscade pirate',
+    ExpeditionOutcome.delay => 'Expédition : retour retardé',
+    ExpeditionOutcome.early => 'Expédition : retour anticipé',
+    ExpeditionOutcome.blackHole => 'Expédition perdue dans un trou noir',
+  };
+
+  static String _combatVerdict(RaidReport r) => switch ((r.winner, r.baseName)) {
     (CombatWinner.attacker, null) => 'Raid réussi : planète pillée',
     (CombatWinner.defender, null) => 'Raid repoussé',
     (CombatWinner.draw, null) => 'Match nul : les pirates repartent',
@@ -56,14 +104,14 @@ class CombatReport extends StatelessWidget {
         Text(
           [
             if (!r.simulated) '${two(at.day)}/${two(at.month)} ${two(at.hour)}:${two(at.minute)}',
-            '${r.rounds} round${r.rounds > 1 ? 's' : ''}',
+            if (r.hasCombat || r.expedition == null) '${r.rounds} round${r.rounds > 1 ? 's' : ''}',
           ].join(' · '),
           style: theme.textTheme.bodySmall,
         ),
         if (r.loot != Resources.zero) ...[
           const SizedBox(height: 12),
           Text(
-            r.baseName == null ? 'Butin emporté' : 'Butin rapporté',
+            _ours(r) ? 'Butin rapporté' : 'Butin emporté',
             style: theme.textTheme.titleSmall,
           ),
           const SizedBox(height: 4),
@@ -75,25 +123,35 @@ class CombatReport extends StatelessWidget {
           const SizedBox(height: 4),
           CostLine(cost: r.debris),
         ],
+        if (r.found.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          Text('Vaisseaux trouvés', style: theme.textTheme.titleSmall),
+          for (final e in r.found.entries)
+            Text('${e.value} × ${data.unit(e.key).name}', style: theme.textTheme.bodySmall),
+        ],
+        if (r.expedition != null && !r.hasCombat) ...[
+          const SizedBox(height: 16),
+          _SideTable(title: 'Ta flotte', data: data, start: r.attackerStart, left: r.attackerLeft),
+        ] else ...[
         if ((r.attackerStrength, r.defenderStrength) case (final a?, final d?)) ...[
           const SizedBox(height: 16),
           ForcesTable(
             attacker: a,
             defender: d,
-            attackerName: r.baseName == null ? 'Pirates' : 'Ta flotte',
-            defenderName: r.baseName ?? 'Planète',
+            attackerName: _ours(r) ? 'Ta flotte' : 'Pirates',
+            defenderName: _theirs(r),
           ),
         ],
         const SizedBox(height: 16),
         _SideTable(
-          title: r.baseName == null ? 'Pirates' : 'Ta flotte',
+          title: _ours(r) ? 'Ta flotte' : 'Pirates',
           data: data,
           start: r.attackerStart,
           left: r.attackerLeft,
         ),
         const SizedBox(height: 16),
         _SideTable(
-          title: r.baseName ?? 'Planète',
+          title: _theirs(r),
           data: data,
           start: r.defenderStart,
           left: r.defenderLeft,
@@ -103,10 +161,20 @@ class CombatReport extends StatelessWidget {
           const SizedBox(height: 8),
           RoundsTable(rounds: r.roundDetails),
         ],
+        ],
       ],
     );
   }
 }
+
+/// Ta flotte est le camp attaquant : attaque d'une base, patrouille, expédition.
+bool _ours(RaidReport r) => r.baseName != null || r.expedition != null;
+
+String _theirs(RaidReport r) => r.expedition != null
+    ? 'Pirates'
+    : r.patrol
+    ? 'Patrouille pirate'
+    : r.baseName ?? 'Planète';
 
 class _SideTable extends StatelessWidget {
   const _SideTable({

@@ -17,7 +17,7 @@ const saveFormat = 'starmine-save';
 /// v5 (V2c) : officiers, compteurs, relevé des raids et technos pirates.
 /// v6 : files d'attente. v7 (V2d) : événements ponctuels et effets en cours.
 /// v8 (V3a) : champ de débris, missions de recyclage. v9 (V3b) : bases pirates, flottes.
-const saveVersion = 10;
+const saveVersion = 11;
 
 /// Sauvegarde complète : état de jeu et réglages persistés.
 class SaveGame {
@@ -102,6 +102,8 @@ Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
     'departed_at': event.departedAt.millisecondsSinceEpoch,
     'speed_percent': event.speedPercent,
     'seed': event.seed,
+    if (event.exploreHours > 0) 'explore_hours': event.exploreHours,
+    if (event.exploring) 'exploring': true,
   },
 };
 
@@ -287,6 +289,8 @@ GameEvent decodeEvent({
         departedAt: fromEpochMs(_int(payload, 'departed_at')),
         speedPercent: _int(payload, 'speed_percent'),
         seed: _int(payload, 'seed'),
+        exploreHours: (payload['explore_hours'] as num?)?.toDouble() ?? 0,
+        exploring: payload['exploring'] == true,
       );
     case storyEventType:
       return StoryEvent(
@@ -497,6 +501,9 @@ Map<String, Object?> encodeReport(RaidReport r) => {
   'loot': encodeResources(r.loot),
   if (r.debris != Resources.zero) 'debris': encodeResources(r.debris),
   'base_name': ?r.baseName,
+  if (r.expedition case final e?) 'expedition': e.key,
+  if (r.found.isNotEmpty) 'found': encodeUnits(r.found),
+  if (r.patrol) 'patrol': true,
   if (r.attackerStrength case final a?) 'attacker_strength': _encodeStrength(a),
   if (r.defenderStrength case final d?) 'defender_strength': _encodeStrength(d),
   'round_details': [
@@ -560,6 +567,11 @@ RaidReport decodeReport(Map<String, Object?> m) => RaidReport(
   loot: decodeResources(_map(m, 'loot')),
   debris: m['debris'] == null ? Resources.zero : decodeResources(_map(m, 'debris')),
   baseName: m['base_name'] as String?,
+  expedition: m['expedition'] == null
+      ? null
+      : ExpeditionOutcome.fromKey(_string(m, 'expedition')),
+  found: m['found'] == null ? const {} : decodeUnits(_map(m, 'found')),
+  patrol: m['patrol'] == true,
   // Absents des rapports antérieurs.
   attackerStrength: m['attacker_strength'] == null
       ? null

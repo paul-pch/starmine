@@ -250,6 +250,7 @@ class GameController extends ChangeNotifier {
     Map<UnitKind, int> ships, {
     int speedPercent = 100,
     double shelterHours = 0,
+    double exploreHours = 0,
   }) => _serialized(() async {
     final t = now();
     final adv = advance(state, t, _rules);
@@ -265,6 +266,7 @@ class GameController extends ChangeNotifier {
       eventId: id,
       seed: _random.nextInt(1 << 31),
       shelterHours: shelterHours,
+      exploreHours: exploreHours,
     );
     await _commit(
       out.state,
@@ -525,6 +527,8 @@ class GameController extends ChangeNotifier {
     for (final e in state.pending) {
       // Événements ponctuels : app ouverte seulement, jamais notifiés (spec 14).
       if (e is StoryEvent) continue;
+      // Expédition : seul son retour est notifié, prévu par la simulation ci-dessous.
+      if (e is FleetMission && e.kind == MissionKind.expedition && !e.returning) continue;
       if (notifyAt(e).isAfter(t)) await _notifier.schedule(e, data);
     }
     // Les ordres en attente n'ont pas encore d'échéance : on simule la suite (déterministe,
@@ -532,7 +536,11 @@ class GameController extends ChangeNotifier {
     final queuedIds = {for (final q in state.queue) q.id};
     final sim = advance(state, t.add(_forecast), _rules);
     for (final e in [...sim.applied, ...sim.state.pending]) {
-      if (queuedIds.contains(e.id) && notifyAt(e).isAfter(t)) await _notifier.schedule(e, data);
+      final expeditionBack =
+          e is FleetMission && e.kind == MissionKind.expedition && e.returning;
+      if ((queuedIds.contains(e.id) || expeditionBack) && notifyAt(e).isAfter(t)) {
+        await _notifier.schedule(e, data);
+      }
     }
     for (final c in sim.cancelled) {
       await _notifier.scheduleCancelled(c, data);

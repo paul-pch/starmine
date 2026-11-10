@@ -253,7 +253,7 @@ class RecycleMission extends GameEvent {
 }
 
 /// Type d'une mission de flotte (V3b).
-enum MissionKind { attack, spy, recycle, shelter }
+enum MissionKind { attack, spy, recycle, shelter, expedition }
 
 /// Flotte en vol (spec 15). Aller : à [dueAt], arrivée sur la base [target] (combat,
 /// espionnage, collecte), puis le même id revient (`returning`). Une mise à l'abri n'a que
@@ -271,6 +271,8 @@ class FleetMission extends GameEvent {
     required this.departedAt,
     this.speedPercent = 100,
     required this.seed,
+    this.exploreHours = 0,
+    this.exploring = false,
   });
 
   final MissionKind kind;
@@ -288,11 +290,17 @@ class FleetMission extends GameEvent {
   /// Graine du combat à l'arrivée.
   final int seed;
 
+  /// Expédition (V3c) : durée d'exploration (heures à ×1), et vrai pendant l'exploration
+  /// ([dueAt] = fin de l'exploration).
+  final double exploreHours;
+  final bool exploring;
+
   FleetMission copyWith({
     DateTime? dueAt,
     Map<UnitKind, int>? ships,
     Resources? cargo,
     bool? returning,
+    bool? exploring,
   }) => FleetMission(
     id: id,
     planetId: planetId,
@@ -305,5 +313,7 @@ class FleetMission extends GameEvent {
     departedAt: departedAt,
     speedPercent: speedPercent,
     seed: seed,
+    exploreHours: exploreHours,
+    exploring: exploring ?? this.exploring,
   );
 }
