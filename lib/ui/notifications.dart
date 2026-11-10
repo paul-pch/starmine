@@ -36,10 +36,7 @@ int queueCancelledNotificationId(QueuedOrder first) => first.id + 2000000;
   return (title, '$name : $why. ${n > 1 ? '$n ordres retirés.' : '1 ordre retiré.'}');
 }
 
-/// Id des notifications d'événements ponctuels prévus ([index] : rang dans la prévision).
-int storyNotificationId(int index) => 3000000 + index;
-
-/// Titre et texte d'un événement ponctuel (notification, message dans l'app).
+/// Titre et texte d'un événement ponctuel (popover, journal).
 (String, String) storyText(StoryOutcome o, GameData data) {
   final spec = data.story.catalog[o.key];
   final name = spec?.name ?? o.key;
@@ -47,10 +44,20 @@ int storyNotificationId(int index) => 3000000 + index;
   return switch (o.kind) {
     StoryOutcomeKind.happened => (name, spec?.description ?? ''),
     StoryOutcomeKind.awaiting => ('Décision attendue : $name', spec?.description ?? ''),
-    StoryOutcomeKind.answered => (name, 'Choix : ${label(o.option)}'),
-    StoryOutcomeKind.defaulted => (name, 'Sans réponse : « ${label(o.option)} » appliqué'),
+    StoryOutcomeKind.answered => (name, 'Choix : ${label(o.option)}${gambleText(o.won)}'),
+    StoryOutcomeKind.defaulted => (
+      name,
+      'Sans réponse : « ${label(o.option)} » appliqué${gambleText(o.won)}',
+    ),
   };
 }
+
+/// Issue d'un pari, à la suite d'un texte (« · pari réussi »), vide sans pari.
+String gambleText(bool? won) => switch (won) {
+  null => '',
+  true => ' · pari réussi',
+  false => ' · pari raté',
+};
 
 String _arrivalTitle(MissionKind kind) => switch (kind) {
   MissionKind.attack => 'Flotte arrivée : combat terminé',
@@ -59,14 +66,10 @@ String _arrivalTitle(MissionKind kind) => switch (kind) {
   MissionKind.shelter => 'Flotte de retour',
 };
 
-/// Rappel d'un choix en attente, avant l'application de l'option par défaut.
-const choiceReminder = Duration(hours: 1);
-
 /// Moment de la (première) notification : fin de l'ordre, dernière unité d'un lot,
 /// détection ou arrivée d'un raid.
 DateTime notifyAt(GameEvent event) => switch (event) {
   ShipyardBatch() => event.finishAt,
-  StoryEvent(choiceKey: _?) => event.dueAt.subtract(choiceReminder),
   _ => event.dueAt,
 };
 
@@ -74,9 +77,6 @@ DateTime notifyAt(GameEvent event) => switch (event) {
 /// l'événement (plus [raidArrivalNotificationId] pour l'arrivée d'un raid).
 abstract interface class BuildNotifier {
   Future<void> schedule(GameEvent event, GameData data);
-
-  /// Événement ponctuel prévu (spec 14), [index] : rang dans la prévision.
-  Future<void> scheduleStory(StoryOutcome outcome, int index, GameData data);
 
   /// Annulation prévue d'une file d'attente (spec 13).
   Future<void> scheduleCancelled(QueueCancelled cancelled, GameData data);
@@ -112,16 +112,6 @@ class LocalBuildNotifier implements BuildNotifier {
       channelDescription: 'Détection et résultat des raids pirates',
       importance: Importance.max,
       priority: Priority.max,
-    ),
-  );
-
-  static const _story = NotificationDetails(
-    android: AndroidNotificationDetails(
-      'evenements',
-      'Événements',
-      channelDescription: 'Événements ponctuels et décisions à prendre',
-      importance: Importance.high,
-      priority: Priority.high,
     ),
   );
 
@@ -204,17 +194,7 @@ class LocalBuildNotifier implements BuildNotifier {
         RaidArrival() => [
           (raidArrivalNotificationId(event.id), event.dueAt, 'Raid pirate', raidReport, _raids),
         ],
-        // Choix en attente : rappel avant l'option par défaut. Les tirages sont prévus par
-        // simulation (scheduleStory).
-        StoryEvent(:final choiceKey?) => [
-          (
-            event.id,
-            notifyAt(event),
-            'Décision attendue : ${data.story.catalog[choiceKey]?.name ?? choiceKey}',
-            'Sans réponse, l’option par défaut s’appliquera.',
-            _story,
-          ),
-        ],
+        // Événements ponctuels : app ouverte seulement (spec 14).
         StoryEvent() => [],
         FleetMission(:final returning, :final kind) => [
           (
@@ -251,22 +231,6 @@ class LocalBuildNotifier implements BuildNotifier {
             : AndroidScheduleMode.inexactAllowWhileIdle,
       );
     }
-  }
-
-  @override
-  Future<void> scheduleStory(StoryOutcome outcome, int index, GameData data) async {
-    final (title, body) = storyText(outcome, data);
-    final exact = await canScheduleExact();
-    await _plugin.zonedSchedule(
-      id: storyNotificationId(index),
-      title: title,
-      body: body,
-      scheduledDate: tz.TZDateTime.from(outcome.at, tz.UTC),
-      notificationDetails: _story,
-      androidScheduleMode: exact
-          ? AndroidScheduleMode.exactAllowWhileIdle
-          : AndroidScheduleMode.inexactAllowWhileIdle,
-    );
   }
 
   @override

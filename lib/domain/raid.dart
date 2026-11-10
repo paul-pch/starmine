@@ -379,8 +379,11 @@ RaidDetected _nextRaid(
   RaidBase base,
 ) {
   final cfg = rules.data.pirates;
-  final delay =
-      cfg.intervalHoursMin + random.nextDouble() * (cfg.intervalHoursMax - cfg.intervalHoursMin);
+  // Milieu de partie : raids plus fréquents, d'après le relevé.
+  final late = base.points >= cfg.latePoints;
+  final min = late ? cfg.lateIntervalHoursMin : cfg.intervalHoursMin;
+  final max = late ? cfg.lateIntervalHoursMax : cfg.intervalHoursMax;
+  final delay = min + random.nextDouble() * (max - min);
   final arrival = after.add(_hours(delay, rules));
   return RaidDetected(
     id: id,

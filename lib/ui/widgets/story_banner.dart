@@ -21,7 +21,7 @@ String _resource(ResourceKind? k) =>
     k == null ? 'toutes ressources' : resourceName(k).toLowerCase();
 
 /// Un effet du catalogue, en clair (« +30 % de production de métal pendant 12 h »).
-String storyEffectText(StoryEffectSpec e) => switch (e.type) {
+String storyEffectText(GameData data, StoryEffectSpec e) => switch (e.type) {
   StoryEffectType.production =>
     '${_pct(e.value)} de production (${_resource(e.resource)}) pendant ${fmtHours(e.hours)}',
   StoryEffectType.energy => '${_pct(e.value)} d’énergie produite pendant ${fmtHours(e.hours)}',
@@ -34,11 +34,30 @@ String storyEffectText(StoryEffectSpec e) => switch (e.type) {
   StoryEffectType.stock => '${_pct(e.value)} du stock (${_resource(e.resource)})',
   StoryEffectType.gain => '${fmtHours(e.hours)} de production offertes (${_resource(e.resource)})',
   StoryEffectType.raid => 'le prochain raid arrive ${fmtHours(e.hours)} plus tôt',
+  StoryEffectType.units =>
+    e.value >= 0
+        ? '+${e.value.round()} ${_unitName(data, e)}'
+        : '−${(-e.value).round()} ${_unitName(data, e)} (dans la limite des présents)',
+  StoryEffectType.debris =>
+    '${fmtHours(e.hours)} de production de métal et de cristal en débris (à recycler)',
+  StoryEffectType.delayed =>
+    '${fmtHours(e.hours)} de production (${_resource(e.resource)}) versées dans '
+        '${fmtHours(e.delay)}',
+  StoryEffectType.gamble =>
+    '${(e.chance * 100).round()} % de chances : ${_list(data, e.win)} ; '
+        'sinon : ${_list(data, e.lose)}',
 };
+
+String _list(GameData data, List<StoryEffectSpec> effects) =>
+    effects.isEmpty ? 'rien' : [for (final e in effects) storyEffectText(data, e)].join(', ');
+
+String _unitName(GameData data, StoryEffectSpec e) =>
+    e.unit == null ? 'unités' : data.unit(e.unit!).name.toLowerCase();
 
 /// Un effet en cours, en clair.
 String activeEffectText(ActiveEffect e) => switch (e.type) {
   StoryEffectType.energy => '${_pct(e.value)} d’énergie',
+  StoryEffectType.delayed => '${fmtAmount(e.value)} ${_resource(e.resource)} à recevoir',
   _ => '${_pct(e.value)} ${_resource(e.resource)}',
 };
 
@@ -128,7 +147,10 @@ class StoryBanner extends StatelessWidget {
     return InfoButton.show(
       context,
       title: spec.name,
-      body: [spec.description, for (final e in spec.effects) storyEffectText(e)].join('\n\n'),
+      body: [
+        spec.description,
+        for (final e in spec.effects) storyEffectText(controller.data, e),
+      ].join('\n\n'),
     );
   }
 
@@ -157,46 +179,82 @@ class StoryBanner extends StatelessWidget {
                 ),
                 Text(spec.description, style: theme.textTheme.bodyMedium),
                 const SizedBox(height: 12),
-                for (final (i, o) in spec.options.indexed)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              i == spec.defaultOption ? '${o.label} (par défaut)' : o.label,
-                              style: theme.textTheme.titleMedium,
-                            ),
-                            if (o.effects.isEmpty)
-                              Text('Rien ne se passe', style: theme.textTheme.bodySmall)
-                            else
-                              for (final e in o.effects)
-                                Text(storyEffectText(e), style: theme.textTheme.bodySmall),
-                            const SizedBox(height: 8),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: FilledButton(
-                                style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  controller.answerChoice(i);
-                                },
-                                child: Text(o.label),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                ChoiceOptions(
+                  controller: controller,
+                  spec: spec,
+                  onAnswered: () => Navigator.pop(context),
+                ),
               ],
             ),
           ),
         );
       },
+    );
+  }
+}
+
+/// Une carte par option : libellé (option par défaut signalée), effets, bouton. Partagée par
+/// la feuille de décision et la popover d'événement.
+class ChoiceOptions extends StatelessWidget {
+  const ChoiceOptions({
+    super.key,
+    required this.controller,
+    required this.spec,
+    required this.onAnswered,
+  });
+
+  final GameController controller;
+  final StoryEventSpec spec;
+
+  /// Appelé avant la réponse (fermer la feuille ou la popover).
+  final VoidCallback onAnswered;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (final (i, o) in spec.options.indexed)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      i == spec.defaultOption ? '${o.label} (par défaut)' : o.label,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    if (o.effects.isEmpty)
+                      Text('Rien ne se passe', style: theme.textTheme.bodySmall)
+                    else
+                      for (final e in o.effects)
+                        Text(storyEffectText(controller.data, e), style: theme.textTheme.bodySmall),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
+                        onPressed: () {
+                          onAnswered();
+                          // La décision a pu être prise ailleurs entre-temps (bandeau).
+                          if (controller.pendingChoice?.key == spec.key) {
+                            controller.answerChoice(i);
+                          }
+                        },
+                        child: Text(o.label),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

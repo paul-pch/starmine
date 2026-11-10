@@ -87,6 +87,9 @@ class Visuals {
     final TechKind tech => _resolve('research.${tech.key}'),
   };
 
+  /// Illustration d'un événement ponctuel (en-tête de la popover), `story.<clé>`.
+  String? story(String key) => _resolve('story.$key');
+
   /// Défense (`defense.<clé>`) ou vaisseau (`ship.<clé>`), sans climat.
   String? unit(UnitSpec spec) => _resolve('${spec.defense ? 'defense' : 'ship'}.${spec.kind.key}');
 }

@@ -9,14 +9,16 @@ import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/main.dart';
 import 'package:starmine/ui/format.dart';
 import 'package:starmine/ui/game_controller.dart';
+import 'package:starmine/domain/story.dart';
 import 'package:starmine/ui/visuals.dart';
+import 'package:starmine/ui/widgets/event_popover.dart';
 
 import '../domain/helpers.dart';
 import 'fakes.dart';
 
 void main() {
   /// Téléphone de référence : 390 × 844 dp.
-  Future<(GameController, StarmineDatabase)> open(WidgetTester tester) async {
+  Future<(GameController, StarmineDatabase)> open(WidgetTester tester, {FakeClock? clock}) async {
     tester.view.devicePixelRatio = 3;
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
@@ -25,7 +27,7 @@ void main() {
       repository: GameRepository(db),
       data: gameData,
       notifier: FakeNotifier(),
-      clock: FakeClock(t0).call,
+      clock: (clock ?? FakeClock(t0)).call,
       random: math.Random(1),
     );
     // La base fait de vraies entrées/sorties : hors de la zone de temps simulé.
@@ -195,6 +197,38 @@ void main() {
     );
     expect(button.onPressed, isNull);
     expect(controller.availableOfficers, isEmpty);
+
+    await close(tester, db);
+  });
+
+  testWidgets('événement app ouvert : popover, puis journal unique avec effacement', (
+    tester,
+  ) async {
+    final clock = FakeClock(t0);
+    final (controller, db) = await open(tester, clock: clock);
+
+    // L'événement échoit à l'instant ; il survient au rattrapage suivant.
+    await tester.runAsync(controller.storyNow);
+    clock.advance(const Duration(seconds: 1));
+    await tester.runAsync(controller.refresh);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    final o = controller.lastStory!;
+    final spec = controller.data.story.catalog[o.key]!;
+    expect(find.byType(EventPopover), findsOneWidget);
+    expect(find.text(spec.description), findsOneWidget);
+    await tester.tap(find.text(o.kind == StoryOutcomeKind.awaiting ? 'Plus tard' : 'Fermer'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.byType(EventPopover), findsNothing);
+
+    await tester.tap(find.byIcon(Icons.article_outlined));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text('Effacer le journal'), findsOneWidget);
+    expect(find.text('Raids'), findsNothing);
+    expect(find.textContaining(spec.name), findsOneWidget);
 
     await close(tester, db);
   });

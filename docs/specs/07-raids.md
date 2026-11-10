@@ -12,7 +12,10 @@ pas les craindre ; il peut prendre de l'avance.
 - **Planification** : un raid est toujours en attente (créé à la première ouverture, après un
   reset ou un import). La chaîne garde **le même id** d'un raid à l'autre.
 - **Intervalle** entre deux arrivées : tiré dans `pirates.interval_hours` (à ×1), soit 2 à 3
-  raids par semaine.
+  raids par semaine. **Milieu de partie** : quand les points d'économie et de recherche du
+  relevé atteignent `pirates.late.points`, l'intervalle est tiré dans
+  `pirates.late.interval_hours` (1 à 2 raids par jour). Les raids surviennent app ouverte
+  ou fermée.
 - **Relevé et retard** : à la planification (arrivée du raid précédent, ou création), le
   raid enregistre un **relevé** du joueur : points d'économie et de recherche, niveaux de
   technos. La flotte est calculée sur ce relevé, pas sur le joueur au moment de l'attaque :
@@ -50,9 +53,9 @@ Section `pirates` du YAML.
 
 - **Bandeau d'alerte** (raid détecté) : « Flotte pirate en approche · arrivée dans … ». Au tap :
   composition, soute, technos pirates, forces en présence, « Simuler 100 batailles ».
-- **Rapports** : icône dans la barre du haut, pastille du nombre de non lus ; liste des raids
-  (verdict, date, pillage) ; tap → rapport complet.
-- Raid résolu app ouverte : message avec accès au rapport ; le dernier remplace le précédent.
+- **Rapports** : icône dans la barre du haut, pastille du nombre de non lus ; journal unique
+  avec les événements (spec 10) : verdict, date, pillage ; tap → rapport complet.
+- Raid résolu app ouverte : popover (verdict, pillage, « Rapport »), spec 10.
 - Debug : « Raid pirate maintenant » (détection immédiate, relevé conservé), points et base
   des raids.
 
@@ -65,3 +68,5 @@ ou sans défense, raid suivant, vitesse, rattrapage de 3 semaines, simulation mu
 ## Points ouverts
 
 - Plancher (`min_budget`) et plage de force à revoir après la refonte, en jouant à ×1.
+- Débris rentables (butin des pirates dans le champ) : attendre de jouer avec la fréquence
+  du milieu de partie seule.

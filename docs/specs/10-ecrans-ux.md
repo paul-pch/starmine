@@ -58,7 +58,8 @@ Toujours visible sur la carte (B) :
 - carte verrouillée : grisée, « Requiert … (niveau actuel) » à la place du coût ;
 - réglage de production < 100 % : puce « Production X % » à côté du niveau.
 
-Dans la feuille de détail (tap sur la carte) : description (YAML), « Débloque … »,
+Dans la feuille de détail (tap sur la carte) : vignette 96 dp de l'élément (même image que
+la carte, grisée pour un bâtiment au niveau 0, repli sinon), description (YAML), « Débloque … »,
 « Requiert … » complet, réglage de production 0–100 % (bâtiments concernés), caractéristiques
 d'unité (attaque / bouclier / coque) pour la défense. La feuille de quantité s'ouvre depuis
 le bouton de la carte.
@@ -80,8 +81,10 @@ est dans la feuille de détail (un tap).
   import (presse-papiers), simulateur de combat (flottes types → 100 batailles), raid
   immédiat + points, événement immédiat (spec 14), nouvelle partie, alarmes
   exactes, dernière mise à jour.
-- **Rapports** (depuis le hero) : onglets « Raids » (liste → rapport complet) et
-  « Événements » (journal des événements ponctuels, spec 14).
+- **Rapports** (depuis le hero) : **une seule liste** (journal) mêlant rapports de combat
+  (→ rapport complet) et événements ponctuels (spec 14), les plus récents d'abord, avec un
+  seul bouton « Effacer le journal » (confirmation ; effets en cours et décision en attente
+  conservés).
 - **Bandeau des événements** (sous le bandeau de raid) : décision attendue et effets en
   cours (spec 14).
 - **Officiers** (depuis le hero, spec 12) : carte par officier (nom, niveau / plafond, bonus
@@ -89,7 +92,12 @@ est dans la feuille de détail (un tap).
   « Promouvoir »).
 - **Feuilles** : détail d'élément, détail d'une ressource, rapport de combat, simulation
   (spec 06), détail de la flotte pirate (spec 07), quantité au chantier.
-- **Messages** : refus d'une commande, raid résolu app ouverte (avec accès au rapport).
+- **Messages** (bandeau du bas) : refus d'une commande seulement.
+- **Popover d'événement** (fenêtre centrée, `EventPopover`) : ce qui survient app ouverte —
+  raid ou attaque résolus (verdict, pillage, bouton « Rapport »), événement ponctuel (texte
+  d'histoire, effets ; une décision montre ses options et « Plus tard »), file annulée.
+  Plusieurs à la fois : affichées l'une après l'autre. Image d'en-tête 21:9 facultative
+  (décorative, registre), réservée au narratif.
 
 ## Puces de filtre
 

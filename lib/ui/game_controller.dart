@@ -186,16 +186,12 @@ class GameController extends ChangeNotifier {
   int get storyCount => _storyCount;
   var _storyCount = 0;
 
-  /// Efface les rapports de combat (raids et attaques).
-  Future<void> clearReports() => _serialized(() async {
+  /// Efface le journal : rapports de combat et événements passés. Les effets en cours et
+  /// une décision en attente ne changent pas.
+  Future<void> clearJournal() => _serialized(() async {
     await _repo.clearReports();
-    _reports = [];
-    notifyListeners();
-  });
-
-  /// Efface le journal des événements (les effets en cours ne changent pas).
-  Future<void> clearStoryLog() => _serialized(() async {
     await _repo.clearStoryLog();
+    _reports = [];
     _storyLog = [];
     notifyListeners();
   });
@@ -220,18 +216,18 @@ class GameController extends ChangeNotifier {
     );
   });
 
-  /// Debug : l'événement ponctuel en attente survient tout de suite.
+  /// Debug : un événement s'ajoute au stock et est servi tout de suite.
   Future<void> storyNow() => _serialized(() async {
     final t = now();
     final adv = advance(state, t, _rules);
-    final moved = story.storyNow(adv.state, t);
-    final after = advance(moved, t, _rules);
+    final moved = story.storyNow(adv.state, t, _rules);
+    final served = story.serveStory(moved, t, _rules);
     await _commit(
-      after.state,
-      applied: [...adv.applied, ...after.applied],
-      reports: [...adv.reports, ...after.reports],
-      queueCancelled: [...adv.cancelled, ...after.cancelled],
-      stories: [...adv.stories, ...after.stories],
+      served?.state ?? moved,
+      applied: adv.applied,
+      reports: adv.reports,
+      queueCancelled: adv.cancelled,
+      stories: [...adv.stories, ?served?.outcome],
     );
   });
 
@@ -527,18 +523,14 @@ class GameController extends ChangeNotifier {
     await _notifier.cancelAll();
     final t = now();
     for (final e in state.pending) {
-      // Un tirage d'événement n'est notifié que par la prévision ci-dessous.
-      if (e is StoryEvent && e.choiceKey == null) continue;
+      // Événements ponctuels : app ouverte seulement, jamais notifiés (spec 14).
+      if (e is StoryEvent) continue;
       if (notifyAt(e).isAfter(t)) await _notifier.schedule(e, data);
     }
-    // Les ordres en attente n'ont pas encore d'échéance et les événements ponctuels ne sont
-    // connus qu'au tirage : on simule la suite (déterministe, raids compris) pour prévoir
-    // les fins d'ordres, une éventuelle annulation de file et les événements.
+    // Les ordres en attente n'ont pas encore d'échéance : on simule la suite (déterministe,
+    // raids compris) pour prévoir les fins d'ordres et une éventuelle annulation de file.
     final queuedIds = {for (final q in state.queue) q.id};
     final sim = advance(state, t.add(_forecast), _rules);
-    for (final (i, o) in sim.stories.indexed) {
-      await _notifier.scheduleStory(o, i, data);
-    }
     for (final e in [...sim.applied, ...sim.state.pending]) {
       if (queuedIds.contains(e.id) && notifyAt(e).isAfter(t)) await _notifier.schedule(e, data);
     }
@@ -547,17 +539,23 @@ class GameController extends ChangeNotifier {
     }
   }
 
+  /// Rattrapage ; app visible, un événement du stock est servi (spec 14).
   Future<void> _advanceAndSave() async {
-    final result = advance(state, now(), _rules);
-    if (identical(result.state, state)) return;
+    final t = now();
+    final result = advance(state, t, _rules);
+    final served = _visible ? story.serveStory(result.state, t, _rules) : null;
+    if (served == null && identical(result.state, state)) return;
     await _commit(
-      result.state,
+      served?.state ?? result.state,
       applied: result.applied,
       reports: result.reports,
       queueCancelled: result.cancelled,
-      stories: result.stories,
+      stories: [...result.stories, ?served?.outcome],
     );
   }
+
+  /// Un événement attend d'être servi : l'horloge d'affichage déclenche un rattrapage.
+  bool storyServable(DateTime now) => story.canServe(state, now);
 
   Future<void> _commit(
     GameState next, {

@@ -111,6 +111,7 @@ class GameRepository {
                 key: o.key,
                 kind: o.kind.name,
                 option: Value(o.option),
+                won: Value(o.won),
               ),
             );
       }
@@ -302,6 +303,7 @@ class GameRepository {
           at: fromEpochMs(r.atMs),
           kind: StoryOutcomeKind.values.byName(r.kind),
           option: r.option,
+          won: r.won,
         ),
     ];
   }

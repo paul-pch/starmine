@@ -91,7 +91,7 @@ void main() {
     expect(r.planet.resources.metal, closeTo(during.metal * 12 + after.metal * 8, 1e-6));
   });
 
-  test('le même événement ne se cumule pas : le nouveau remplace l’ancien', () {
+  test('cumul : le même événement deux fois, effets additionnés', () {
     final s = developed();
     final once = applyStoryEffects(s, spec('rich_vein'), spec('rich_vein').effects, t0, rules);
     final later = t0.add(const Duration(hours: 5));
@@ -102,8 +102,8 @@ void main() {
       later,
       rules,
     );
-    expect(twice.effects, hasLength(1));
-    expect(twice.effects.single.endsAt, later.add(const Duration(hours: 12)));
+    expect(twice.effects, hasLength(2));
+    expect(twice.modifiers(gameData).mineByResource.metal, closeTo(0.6, 1e-12));
   });
 
   test('officier lié : bonus prolongé, malus atténué', () {
@@ -149,49 +149,75 @@ void main() {
     expect(wreck.planet.resources.metal, closeTo(5000 + rate.metal * 4, 1));
   });
 
-  test('choix : en attente, puis option par défaut à l’échéance', () {
-    // Seed qui tire un choix sur cette planète.
-    final s = developed();
+  /// Chaîne avec [stock] événements servables à [t0].
+  GameState withStock(GameState s, {int stock = 1, int seed = 7}) => s.copyWith(
+    pending: [
+      ...s.pending,
+      StoryEvent.chain(
+        id: 5,
+        planetId: 1,
+        seed: seed,
+        accrueAt: t0.add(const Duration(hours: 4)),
+        stock: stock,
+      ),
+    ],
+  );
+
+  /// Graine dont le tirage sur [s] est un choix.
+  int choiceSeed(GameState s) {
     var seed = 0;
     while (drawStory(s, gameData, math.Random(seed))?.kind != StoryKind.choice) {
       seed++;
     }
-    final drawn = drawStory(s, gameData, math.Random(seed))!;
-    final e = StoryEvent(id: 5, planetId: 1, dueAt: t0, seed: seed);
-    final step = applyStory(s, e, rules);
-    expect(step.outcome!.kind, StoryOutcomeKind.awaiting);
-    final waiting = step.next as StoryEvent;
-    expect(waiting.id, 5);
-    expect(waiting.choiceKey, drawn.key);
-    expect(waiting.dueAt, t0.add(const Duration(hours: 6)));
+    return seed;
+  }
 
-    final state = s.copyWith(pending: [waiting]);
-    expect(pendingChoice(state, gameData)!.key, drawn.key);
-    final r = advance(state, waiting.dueAt, rules);
-    expect(r.stories.single.kind, StoryOutcomeKind.defaulted);
-    expect(r.stories.single.option, drawn.defaultOption);
+  test('choix servi : en attente, puis option par défaut à l’échéance, même app fermée', () {
+    final base = developed();
+    final seed = choiceSeed(base);
+    final drawn = drawStory(base, gameData, math.Random(seed))!;
+    final served = serveStory(withStock(base, seed: seed), t0, rules)!;
+    expect(served.outcome!.kind, StoryOutcomeKind.awaiting);
+    final waiting = pendingStory(served.state)!;
+    expect(waiting.id, 5);
+    expect(waiting.stock, 0);
+    expect(waiting.choiceKey, drawn.key);
+    expect(waiting.deadline, t0.add(const Duration(hours: 6)));
+    expect(pendingChoice(served.state, gameData)!.key, drawn.key);
+
+    final r = advance(served.state, t0.add(const Duration(hours: 6)), rules);
+    final defaulted = r.stories.where((o) => o.kind == StoryOutcomeKind.defaulted).single;
+    expect(defaulted.option, drawn.defaultOption);
     final next = pendingStory(r.state)!;
     expect(next.choiceKey, isNull);
-    expect(next.dueAt.difference(waiting.dueAt).inHours, inInclusiveRange(60, 108));
+    expect(next.serveAt!.isAfter(t0.add(const Duration(hours: 6))), isTrue);
   });
 
-  test('réponse du joueur : option appliquée, événement suivant planifié', () {
+  test('réponse du joueur : option appliquée, service suivant après le délai', () {
     final s = developed(resources: const Resources(metal: 6000, crystal: 5000)).copyWith(
       pending: [
-        StoryEvent(
+        StoryEvent.chain(
           id: 5,
           planetId: 1,
-          dueAt: t0.add(const Duration(hours: 6)),
           seed: 1,
+          accrueAt: t0.add(const Duration(hours: 3)),
           choiceKey: 'merchant_convoy',
+          deadline: t0.add(const Duration(hours: 6)),
+          stock: 1,
         ),
       ],
     );
+    expect(canServe(s, t0), isFalse);
     final out = answerChoice(s, 0, t0, rules)!;
     expect(out.outcome.kind, StoryOutcomeKind.answered);
     expect(out.state.planet.resources.metal, 5100);
     expect(out.state.planet.resources.crystal, greaterThan(5000));
-    expect(pendingStory(out.state)!.choiceKey, isNull);
+    final next = pendingStory(out.state)!;
+    expect(next.choiceKey, isNull);
+    expect(next.stock, 1);
+    expect(next.serveAt!.difference(t0).inMinutes, inInclusiveRange(20, 40));
+    expect(canServe(out.state, t0), isFalse);
+    expect(canServe(out.state, next.serveAt!), isTrue);
     expect(answerChoice(out.state, 0, t0, rules), isNull);
   });
 
@@ -211,21 +237,117 @@ void main() {
     expect(moved.arrivalAt, t0.add(const Duration(hours: 19)));
   });
 
-  test('chaîne : rattrapage de 3 semaines, plusieurs événements, déterministe', () {
+  test('hors ligne : 3 semaines, stock plafonné, aucun effet subi', () {
     final start = ensureStoryScheduled(developed(), t0, rules, seed: 7, eventId: 1);
     final end = t0.add(const Duration(days: 21));
     final a = advance(start, end, rules);
     final b = advance(start, end, rules);
-    expect(a.stories.length, inInclusiveRange(4, 20));
-    expect(a.stories.map((o) => o.key), b.stories.map((o) => o.key));
-    expect(a.state.planet.resources, b.state.planet.resources);
+    expect(a.stories, isEmpty);
+    expect(a.state.effects, isEmpty);
     expect(pendingStory(a.state)!.id, 1);
+    expect(pendingStory(a.state)!.stock, gameData.story.maxStock);
+    expect(pendingStory(a.state)!.accrueAt, pendingStory(b.state)!.accrueAt);
+    // Sans événement, la production est celle d'une planète sans chaîne.
+    expect(a.state.planet.resources, advance(developed(), end, rules).state.planet.resources);
   });
 
-  test('debug : l’événement survient tout de suite', () {
+  test('service : un à la fois, délai entre deux, déterministe', () {
+    final s = withStock(developed(), stock: 3);
+    final first = serveStory(s, t0, rules)!;
+    expect(first.outcome, isNotNull);
+    final again = serveStory(s, t0, rules)!;
+    expect(again.outcome!.key, first.outcome!.key);
+    final e = pendingStory(first.state)!;
+    expect(e.stock, 2);
+    if (e.choiceKey == null) {
+      expect(serveStory(first.state, t0, rules), isNull);
+      final later = advance(first.state, e.serveAt!, rules).state;
+      expect(serveStory(later, e.serveAt!, rules), isNotNull);
+    } else {
+      // Un choix bloque le service suivant.
+      expect(canServe(first.state, t0.add(const Duration(hours: 1))), isFalse);
+    }
+    expect(serveStory(withStock(developed(), stock: 0), t0, rules), isNull);
+  });
+
+  test('unités, débris, versement différé', () {
+    final s = developed();
+    const deserters = StoryEventSpec(key: 'x', name: 'x', kind: StoryKind.bonus);
+    final more = applyStoryEffects(
+      s,
+      deserters,
+      const [StoryEffectSpec(type: StoryEffectType.units, unit: UnitKind.lightFighter, value: 3)],
+      t0,
+      rules,
+    );
+    expect(more.planet.count(UnitKind.lightFighter), 3);
+    final fewer = applyStoryEffects(
+      more,
+      deserters,
+      const [StoryEffectSpec(type: StoryEffectType.units, unit: UnitKind.lightFighter, value: -5)],
+      t0,
+      rules,
+    );
+    expect(fewer.planet.count(UnitKind.lightFighter), 0);
+
+    final rate = rules.hourlyProduction(s.planet, s.research);
+    final battle = applyStoryEffects(
+      s,
+      spec('orbital_battle'),
+      spec('orbital_battle').effects,
+      t0,
+      rules,
+    );
+    expect(battle.planet.debris.metal, closeTo(rate.metal * 6, 1));
+    expect(battle.planet.debris.crystal, closeTo(rate.crystal * 6, 1));
+
+    final contract = spec('advance_contract');
+    final invested = applyStoryEffects(s, contract, contract.options[0].effects, t0, rules);
+    final owed = invested.effects.where((e) => e.type == StoryEffectType.delayed).toList();
+    expect(owed, hasLength(2));
+    expect(owed.first.endsAt, t0.add(const Duration(hours: 24)));
+    final before = advance(invested, t0.add(const Duration(hours: 23)), rules).state;
+    final after = advance(invested, t0.add(const Duration(hours: 25)), rules).state;
+    final plain = advance(
+      invested.copyWith(effects: const []),
+      t0.add(const Duration(hours: 25)),
+      rules,
+    ).state;
+    expect(before.effects, hasLength(2));
+    expect(after.effects, isEmpty);
+    expect(
+      after.planet.resources.metal,
+      closeTo(plain.planet.resources.metal + owed.first.value, 1),
+    );
+  });
+
+  test('pari : déterministe, les deux issues', () {
+    final s = developed(resources: const Resources(metal: 5000, crystal: 5000));
+    final wreck = spec('unstable_wreck');
+    var wins = 0;
+    var losses = 0;
+    for (var seed = 0; seed < 200; seed++) {
+      final a = resolveGambles(wreck.options[0].effects, math.Random(seed));
+      final b = resolveGambles(wreck.options[0].effects, math.Random(seed));
+      expect(a.won, b.won);
+      final r = applyStoryEffects(s, wreck, a.effects, t0, rules);
+      if (a.won!) {
+        wins++;
+        expect(r.planet.resources.metal, greaterThan(5000));
+      } else {
+        losses++;
+        expect(r.planet.resources.crystal, 4500);
+      }
+    }
+    expect(wins, inInclusiveRange(95, 145));
+    expect(losses, greaterThan(0));
+  });
+
+  test('debug : un événement servi tout de suite', () {
     final s = ensureStoryScheduled(developed(), t0, rules, seed: 7, eventId: 1);
-    final now = storyNow(s, t0);
-    expect(pendingStory(now)!.dueAt, t0);
-    expect(advance(now, t0.add(const Duration(seconds: 1)), rules).stories, isNotEmpty);
+    expect(canServe(s, t0), isFalse);
+    final now = storyNow(s, t0, rules);
+    expect(pendingStory(now)!.stock, 1);
+    expect(serveStory(now, t0, rules)?.outcome, isNotNull);
   });
 }

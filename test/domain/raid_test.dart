@@ -195,6 +195,26 @@ void main() {
       expect(next.arrivalAt.difference(next.dueAt), const Duration(hours: 1));
     });
 
+    test('milieu de partie : raid suivant 12 à 24 h plus tard', () {
+      final s = game(
+        planet(
+          levels: {
+            BuildingKind.metalMine: 25,
+            BuildingKind.crystalMine: 22,
+            BuildingKind.solarPlant: 25,
+          },
+        ),
+      );
+      expect(economyPoints(s, rules), greaterThanOrEqualTo(gameData.pirates.latePoints));
+      for (var seed = 0; seed < 20; seed++) {
+        final e = arrival({UnitKind.lightFighter: 3}, seed: seed);
+        final step = resolveRaid(s, e, rules);
+        final next = step.next as RaidDetected;
+        final gap = next.arrivalAt.difference(e.dueAt);
+        expect(gap.inMinutes, inInclusiveRange(12 * 60, 24 * 60));
+      }
+    });
+
     test('la vitesse raccourcit délais et préavis', () {
       final fast = Rules(gameData, speed: 100);
       final step = resolveRaid(game(planet()), arrival({UnitKind.lightFighter: 3}), fast);

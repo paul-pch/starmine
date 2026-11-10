@@ -97,7 +97,11 @@ class GameState {
         case StoryEffectType.shorten ||
             StoryEffectType.stock ||
             StoryEffectType.gain ||
-            StoryEffectType.raid:
+            StoryEffectType.raid ||
+            StoryEffectType.units ||
+            StoryEffectType.debris ||
+            StoryEffectType.delayed ||
+            StoryEffectType.gamble:
           break;
       }
     }
@@ -238,14 +242,23 @@ GameState _produceUntil(GameState s, DateTime t, Rules rules) {
     for (final e in cur.effects) {
       if (e.endsAt.isBefore(until) && e.endsAt.isAfter(planet.lastUpdate)) until = e.endsAt;
     }
+    // Versements différés échus à [until] : ajoutés au stock, au-delà du stockage.
+    var delivered = Resources.zero;
+    for (final e in cur.effects) {
+      if (e.type == StoryEffectType.delayed && !e.endsAt.isAfter(until)) {
+        delivered = delivered + Resources.of((k) => e.resource == k ? e.value : 0);
+      }
+    }
     cur = cur.copyWith(
       planet: planet.copyWith(
-        resources: rules.produce(
-          planet,
-          cur.research,
-          until.difference(planet.lastUpdate),
-          cur.modifiers(rules.data),
-        ),
+        resources:
+            rules.produce(
+              planet,
+              cur.research,
+              until.difference(planet.lastUpdate),
+              cur.modifiers(rules.data),
+            ) +
+            delivered,
         lastUpdate: until,
       ),
       effects: [

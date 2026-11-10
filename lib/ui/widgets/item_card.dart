@@ -345,8 +345,26 @@ class _ItemDetail extends StatelessWidget {
       children: [
         Row(
           children: [
-            Expanded(child: Text(spec.name, style: theme.textTheme.titleLarge)),
-            Text('Niv. ${facts.level}', style: mono(theme.textTheme.titleSmall)),
+            GameImage(
+              path: VisualsScope.of(
+                context,
+              ).unlockable(item, facts.level, facts.state.planet.tempMax),
+              icon: ItemStyle.icon(item),
+              width: 96,
+              radius: 12,
+              iconSize: 40,
+              grayed: item is BuildingKind && facts.level == 0,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(spec.name, style: theme.textTheme.titleLarge),
+                  Text('Niv. ${facts.level}', style: mono(theme.textTheme.titleSmall)),
+                ],
+              ),
+            ),
           ],
         ),
         if (spec.description.isNotEmpty) ...[gap, Text(spec.description, style: body)],

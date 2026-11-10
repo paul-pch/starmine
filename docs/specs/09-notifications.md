@@ -21,12 +21,12 @@ pas à l'écran.
 | Raid | Arrivée | Raid pirate (voir le rapport) | Raids pirates |
 | Flotte | Arrivée (combat, espionnage, collecte) et retour | Flotte arrivée / de retour | Constructions |
 | Recyclage | Retour des recycleurs | Recyclage terminé | Constructions |
-| Événement ponctuel | Tirage (prévu par simulation) | Nom, texte d'histoire ou « Décision attendue » | Événements |
-| Choix en attente | 1 h avant l'option par défaut | Décision attendue | Événements |
 | File d'attente annulée | Tour de l'ordre impossible | File de … annulée (élément, raison) | Recherches ou Constructions |
 
 - Les ordres en file d'attente n'ont pas encore d'échéance : leurs fins et une éventuelle
   annulation sont prévues en simulant `advance()` sur 7 jours (spec 13).
+
+- Événements ponctuels : aucune notification, ils ne surviennent qu'app ouverte (spec 14).
 
 - Id de notification = id de l'événement ; l'arrivée d'un raid utilise
   `raidArrivalNotificationId(id)`, l'annulation d'une file `queueCancelledNotificationId`.

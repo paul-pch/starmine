@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'game_controller.dart';
 import 'notifications.dart';
+import '../domain/combat.dart';
 import '../domain/engine.dart';
+import '../domain/resources.dart';
+import 'format.dart';
 import 'resource_style.dart';
 import 'theme.dart';
 import 'visuals.dart';
@@ -13,6 +16,7 @@ import 'screens/fleet_screen.dart';
 import 'screens/officers_screen.dart';
 import 'screens/reports_screen.dart';
 import 'widgets/combat_report.dart';
+import 'widgets/event_popover.dart';
 import 'widgets/planet_hero.dart';
 import 'widgets/raid_banner.dart';
 import 'widgets/story_banner.dart';
@@ -82,13 +86,31 @@ class _HomeShellState extends State<HomeShell> {
     // Une échéance passée ou un effet d'événement terminé : rattrapage réel.
     final s = _c.state;
     if (s.pending.any((e) => !e.dueAt.isAfter(_now)) ||
-        s.effects.any((e) => !e.endsAt.isAfter(_now))) {
+        s.effects.any((e) => !e.endsAt.isAfter(_now)) ||
+        _c.storyServable(_now)) {
       _refresh();
     }
   }
 
-  /// Raid résolu pendant que l'app est ouverte : message avec accès au rapport. Le dernier
-  /// remplace le précédent (pas de file de messages).
+  /// Popovers en attente : affichées une à une, dans l'ordre d'arrivée.
+  final _popovers = <EventPopover Function()>[];
+  var _popoverOpen = false;
+
+  void _enqueue(EventPopover Function() build) {
+    _popovers.add(build);
+    unawaited(_showPopovers());
+  }
+
+  Future<void> _showPopovers() async {
+    if (_popoverOpen) return;
+    _popoverOpen = true;
+    while (_popovers.isNotEmpty && mounted) {
+      await EventPopover.show(context, _popovers.removeAt(0)());
+    }
+    _popoverOpen = false;
+  }
+
+  /// Raid résolu pendant que l'app est ouverte : popover avec accès au rapport.
   void _onChange() {
     _onQueueCancelled();
     _onStory();
@@ -96,59 +118,84 @@ class _HomeShellState extends State<HomeShell> {
     if (latest == null || latest.id == _lastReportId) return;
     _lastReportId = latest.id;
     if (!mounted) return;
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(CombatReport.verdict(latest.report)),
-          action: SnackBarAction(
-            label: 'Rapport',
-            onPressed: () {
-              unawaited(_c.markReportSeen(latest.id));
-              unawaited(CombatReport.show(context, _c.data, latest.report));
-            },
-          ),
-        ),
-      );
+    final r = latest.report;
+    final good = r.baseName == null
+        ? r.winner != CombatWinner.attacker
+        : r.winner == CombatWinner.attacker;
+    _enqueue(
+      () => EventPopover(
+        icon: r.baseName != null
+            ? Icons.rocket_launch_outlined
+            : good
+            ? Icons.gpp_good_outlined
+            : Icons.gpp_bad_outlined,
+        iconColor: good ? null : Theme.of(context).colorScheme.error,
+        title: CombatReport.verdict(r),
+        lines: [if (r.loot != Resources.zero) 'Pillage : ${fmtCost(r.loot)}'],
+        actions: [
+          const PopoverAction('Fermer', null),
+          PopoverAction('Rapport', primary: true, () {
+            unawaited(_c.markReportSeen(latest.id));
+            unawaited(CombatReport.show(context, _c.data, r));
+          }),
+        ],
+      ),
+    );
   }
 
-  /// File annulée pendant que l'app est ouverte (spec 13) : message, le dernier remplace le
-  /// précédent.
+  /// File annulée pendant que l'app est ouverte (spec 13) : popover.
   void _onQueueCancelled() {
     final cancelled = _c.lastQueueCancelled;
     if (_c.queueCancelledCount == _queueCancelledSeen || cancelled == null || !mounted) return;
     _queueCancelledSeen = _c.queueCancelledCount;
     final (title, body) = queueCancelledText(cancelled, _c.data);
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('$title · $body')));
+    _enqueue(
+      () => EventPopover(
+        icon: Icons.playlist_remove,
+        iconColor: Theme.of(context).colorScheme.error,
+        title: title,
+        body: body,
+      ),
+    );
   }
 
-  /// Événement ponctuel survenu app ouverte (spec 14) : message ; une décision ouvre sa
-  /// feuille depuis le message.
+  /// Événement ponctuel survenu app ouverte (spec 14) : popover avec le texte d'histoire et
+  /// les effets ; une décision montre ses options directement.
   void _onStory() {
     final o = _c.lastStory;
     if (_c.storyCount == _storySeen || o == null || !mounted) return;
     _storySeen = _c.storyCount;
     if (o.kind == StoryOutcomeKind.answered) return;
-    final (title, _) = storyText(o, _c.data);
     final spec = _c.data.story.catalog[o.key];
-    final effects = o.kind == StoryOutcomeKind.happened && spec != null
-        ? ' · ${spec.effects.map(storyEffectText).join(' · ')}'
-        : '';
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text('$title$effects'),
-          action: o.kind == StoryOutcomeKind.awaiting
-              ? SnackBarAction(
-                  label: 'Choisir',
-                  onPressed: () => unawaited(StoryBanner.showChoice(context, _c)),
-                )
-              : null,
-        ),
+    if (spec == null) return;
+    _enqueue(() {
+      // Décision : options seulement si elle attend toujours (sinon déjà tranchée).
+      final awaiting = o.kind == StoryOutcomeKind.awaiting && _c.pendingChoice?.key == spec.key;
+      final (title, body) = storyText(o, _c.data);
+      return EventPopover(
+        icon: awaiting ? Icons.help_outline : Icons.auto_stories_outlined,
+        title: awaiting ? spec.name : title,
+        body: spec.description,
+        lines: [
+          if (o.kind == StoryOutcomeKind.happened)
+            for (final e in spec.effects) storyEffectText(_c.data, e),
+          if (o.kind == StoryOutcomeKind.happened && o.won != null)
+            o.won! ? 'Pari réussi' : 'Pari raté',
+          if (o.kind == StoryOutcomeKind.defaulted) body,
+        ],
+        image: widget.visuals.withAmbiance(_c.ambiance).story(spec.key),
+        content: awaiting
+            ? Builder(
+                builder: (popover) => ChoiceOptions(
+                  controller: _c,
+                  spec: spec,
+                  onAnswered: () => Navigator.pop(popover),
+                ),
+              )
+            : null,
+        actions: [PopoverAction(awaiting ? 'Plus tard' : 'Fermer', null)],
       );
+    });
   }
 
   Future<void> _openReports() async {

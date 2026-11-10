@@ -6,8 +6,9 @@ import 'game_data.dart';
 import 'resources.dart';
 import 'rules.dart';
 
-/// Effet temporaire d'un événement en cours (production, énergie). [source] est la clé de
-/// l'événement : un même événement ne se cumule pas, le nouveau remplace l'ancien.
+/// Effet en cours d'un événement (production, énergie, versement différé). [source] est la
+/// clé de l'événement ; les effets se cumulent, même ceux d'un même événement. Pour un
+/// versement différé (`delayed`), [value] est le montant versé à [endsAt].
 class ActiveEffect {
   const ActiveEffect({
     required this.source,
@@ -40,7 +41,13 @@ enum StoryOutcomeKind {
 }
 
 class StoryOutcome {
-  const StoryOutcome({required this.key, required this.at, required this.kind, this.option});
+  const StoryOutcome({
+    required this.key,
+    required this.at,
+    required this.kind,
+    this.option,
+    this.won,
+  });
 
   final String key;
   final DateTime at;
@@ -48,6 +55,28 @@ class StoryOutcome {
 
   /// Option appliquée (choix).
   final int? option;
+
+  /// Issue du pari des effets appliqués, `null` sans pari.
+  final bool? won;
+}
+
+/// Effets d'un pari remplacés par leur issue (`win` ou `lose`), tirée avec [random].
+({List<StoryEffectSpec> effects, bool? won}) resolveGambles(
+  List<StoryEffectSpec> effects,
+  math.Random random,
+) {
+  bool? won;
+  final out = <StoryEffectSpec>[];
+  for (final e in effects) {
+    if (e.type != StoryEffectType.gamble) {
+      out.add(e);
+      continue;
+    }
+    final ok = random.nextDouble() < e.chance;
+    won = (won ?? true) && ok;
+    out.addAll(ok ? e.win : e.lose);
+  }
+  return (effects: out, won: won);
 }
 
 /// Résultat de l'application d'un [StoryEvent] dans `advance()`.
@@ -161,7 +190,14 @@ OrderDone _withDue(OrderDone o, DateTime due) => switch (o) {
   ),
 };
 
-/// Applique [effects] de [spec] à [at] (état déjà avancé à [at]).
+/// Production horaire à ×1 (bonus compris), base des gains en heures de production.
+Resources _rate(GameState s, Rules rules) {
+  final r = rules.hourlyProduction(s.planet, s.research, s.modifiers(rules.data));
+  return r.map((_, v) => math.max(0.0, v / rules.speed));
+}
+
+/// Applique [effects] de [spec] à [at] (état déjà avancé à [at]). Un pari doit avoir été
+/// résolu avant ([resolveGambles]) ; sinon il est ignoré.
 GameState applyStoryEffects(
   GameState s,
   StoryEventSpec spec,
@@ -176,8 +212,7 @@ GameState applyStoryEffects(
       case StoryEffectType.production || StoryEffectType.energy:
         state = state.copyWith(
           effects: [
-            for (final a in state.effects)
-              if (a.source != spec.key || a.type != e.type || a.resource != e.resource) a,
+            ...state.effects,
             ActiveEffect(
               source: spec.key,
               type: e.type,
@@ -223,6 +258,44 @@ GameState applyStoryEffects(
             }),
           ),
         );
+      case StoryEffectType.units:
+        final unit = e.unit;
+        if (unit == null) continue;
+        final count = math.max(0, state.planet.count(unit) + e.value.round());
+        state = state.copyWith(
+          planet: state.planet.copyWith(units: {...state.planet.units, unit: count}),
+        );
+      case StoryEffectType.debris:
+        final rate = _rate(state, rules);
+        state = state.copyWith(
+          planet: state.planet.copyWith(
+            debris:
+                state.planet.debris +
+                Resources(
+                  metal: (rate.metal * e.hours).floorToDouble(),
+                  crystal: (rate.crystal * e.hours).floorToDouble(),
+                ),
+          ),
+        );
+      case StoryEffectType.delayed:
+        final rate = _rate(state, rules);
+        state = state.copyWith(
+          effects: [
+            ...state.effects,
+            for (final k in ResourceKind.values)
+              if ((e.resource == null || e.resource == k) && rate[k] * e.hours >= 1)
+                ActiveEffect(
+                  source: spec.key,
+                  type: StoryEffectType.delayed,
+                  resource: k,
+                  value: (rate[k] * e.hours).floorToDouble(),
+                  endsAt: at.add(_hours(e.delay, rules)),
+                ),
+          ],
+        );
+      case StoryEffectType.gamble:
+        // Résolu avant l'application (resolveGambles).
+        continue;
       case StoryEffectType.raid:
         final raid = state.pending.whereType<RaidDetected>().firstOrNull;
         if (raid == null) continue;
@@ -249,81 +322,120 @@ GameState applyStoryEffects(
   return state;
 }
 
-/// Prochain événement de la chaîne, `story_events.interval_hours` après [after].
-StoryEvent nextStory(
-  int id,
-  int planetId,
-  DateTime after,
-  math.Random random,
-  Rules rules, {
-  String? lastKey,
-}) {
+/// Délai tiré dans [min, max] heures, à ×1.
+Duration _between(double min, double max, math.Random random, Rules rules) =>
+    _hours(min + random.nextDouble() * (max - min), rules);
+
+Duration _accrual(math.Random random, Rules rules) {
   final cfg = rules.data.story;
-  final delay =
-      cfg.intervalHoursMin + random.nextDouble() * (cfg.intervalHoursMax - cfg.intervalHoursMin);
-  return StoryEvent(
-    id: id,
-    planetId: planetId,
-    dueAt: after.add(_hours(delay, rules)),
-    seed: random.nextInt(1 << 31),
-    lastKey: lastKey,
-  );
+  return _between(cfg.intervalHoursMin, cfg.intervalHoursMax, random, rules);
 }
 
-/// Échéance d'un [StoryEvent] : tirage, ou option par défaut d'un choix resté sans réponse.
+Duration _serveGap(math.Random random, Rules rules) {
+  final cfg = rules.data.story;
+  return _between(cfg.serveGapMinutesMin / 60, cfg.serveGapMinutesMax / 60, random, rules);
+}
+
+/// Échéance d'un [StoryEvent] dans `advance()` : option par défaut d'un choix échu, ajout au
+/// stock. Aucun tirage : les événements ne surviennent qu'app ouverte ([serveStory]).
 StoryStep applyStory(GameState s, StoryEvent e, Rules rules) {
   final data = rules.data;
   final random = math.Random(e.seed);
-  final key = e.choiceKey;
-  if (key != null) {
-    final spec = data.story.catalog[key];
-    final state = spec == null
-        ? s
-        : applyStoryEffects(s, spec, spec.options[spec.defaultOption].effects, e.dueAt, rules);
-    return (
-      state: state,
-      next: nextStory(e.id, e.planetId, e.dueAt, random, rules, lastKey: key),
-      outcome: spec == null
-          ? null
-          : StoryOutcome(
-              key: key,
-              at: e.dueAt,
-              kind: StoryOutcomeKind.defaulted,
-              option: spec.defaultOption,
-            ),
-    );
+  final at = e.dueAt;
+  var state = s;
+  StoryOutcome? outcome;
+  var choiceKey = e.choiceKey;
+  var deadline = e.deadline;
+  var serveAt = e.serveAt;
+  if (choiceKey != null && deadline != null && !deadline.isAfter(at)) {
+    final spec = data.story.catalog[choiceKey];
+    if (spec != null) {
+      final r = resolveGambles(spec.options[spec.defaultOption].effects, random);
+      state = applyStoryEffects(state, spec, r.effects, at, rules);
+      outcome = StoryOutcome(
+        key: choiceKey,
+        at: at,
+        kind: StoryOutcomeKind.defaulted,
+        option: spec.defaultOption,
+        won: r.won,
+      );
+    }
+    choiceKey = null;
+    deadline = null;
+    serveAt = at.add(_serveGap(random, rules));
   }
-  final spec = drawStory(s, data, random, exclude: e.lastKey);
-  if (spec == null) {
-    return (
-      state: s,
-      next: nextStory(e.id, e.planetId, e.dueAt, random, rules, lastKey: e.lastKey),
-      outcome: null,
-    );
-  }
-  if (spec.kind == StoryKind.choice) {
-    return (
-      state: s,
-      next: StoryEvent(
-        id: e.id,
-        planetId: e.planetId,
-        dueAt: e.dueAt.add(_hours(data.story.answerHours, rules)),
-        seed: random.nextInt(1 << 31),
-        choiceKey: spec.key,
-        lastKey: spec.key,
-      ),
-      outcome: StoryOutcome(key: spec.key, at: e.dueAt, kind: StoryOutcomeKind.awaiting),
-    );
+  var stock = e.stock;
+  var accrueAt = e.accrueAt;
+  if (!accrueAt.isAfter(at)) {
+    stock = math.min(data.story.maxStock, stock + 1);
+    accrueAt = at.add(_accrual(random, rules));
   }
   return (
-    state: applyStoryEffects(s, spec, spec.effects, e.dueAt, rules),
-    next: nextStory(e.id, e.planetId, e.dueAt, random, rules, lastKey: spec.key),
-    outcome: StoryOutcome(key: spec.key, at: e.dueAt, kind: StoryOutcomeKind.happened),
+    state: state,
+    next: StoryEvent.chain(
+      id: e.id,
+      planetId: e.planetId,
+      seed: random.nextInt(1 << 31),
+      accrueAt: accrueAt,
+      choiceKey: choiceKey,
+      deadline: deadline,
+      lastKey: e.lastKey,
+      stock: stock,
+      serveAt: serveAt,
+    ),
+    outcome: outcome,
   );
 }
 
-/// Réponse du joueur au choix en attente, à [now] : option appliquée, événement suivant
-/// planifié. `null` s'il n'y a pas de choix en attente.
+/// Un événement peut être servi à [now] : stock non vide, aucun choix en attente, délai de
+/// service passé.
+bool canServe(GameState s, DateTime now) {
+  final e = pendingStory(s);
+  if (e == null || e.choiceKey != null || e.stock <= 0) return false;
+  final at = e.serveAt;
+  return at == null || !at.isAfter(now);
+}
+
+/// Sert un événement du stock à [now], app ouverte (état déjà avancé à [now]) : tirage,
+/// effets ou choix proposé. `null` si rien n'est à servir.
+({GameState state, StoryOutcome? outcome})? serveStory(GameState s, DateTime now, Rules rules) {
+  if (!canServe(s, now)) return null;
+  final e = pendingStory(s)!;
+  final data = rules.data;
+  final random = math.Random(e.seed);
+  final spec = drawStory(s, data, random, exclude: e.lastKey);
+  var state = s;
+  StoryOutcome? outcome;
+  String? choiceKey;
+  DateTime? deadline;
+  if (spec != null && spec.kind == StoryKind.choice) {
+    choiceKey = spec.key;
+    deadline = now.add(_hours(data.story.answerHours, rules));
+    outcome = StoryOutcome(key: spec.key, at: now, kind: StoryOutcomeKind.awaiting);
+  } else if (spec != null) {
+    final r = resolveGambles(spec.effects, random);
+    state = applyStoryEffects(state, spec, r.effects, now, rules);
+    outcome = StoryOutcome(key: spec.key, at: now, kind: StoryOutcomeKind.happened, won: r.won);
+  }
+  final next = StoryEvent.chain(
+    id: e.id,
+    planetId: e.planetId,
+    seed: random.nextInt(1 << 31),
+    accrueAt: e.accrueAt,
+    choiceKey: choiceKey,
+    deadline: deadline,
+    lastKey: spec?.key ?? e.lastKey,
+    stock: e.stock - 1,
+    serveAt: choiceKey == null ? now.add(_serveGap(random, rules)) : null,
+  );
+  return (
+    state: state.copyWith(pending: [for (final p in state.pending) p.id == e.id ? next : p]),
+    outcome: outcome,
+  );
+}
+
+/// Réponse du joueur au choix en attente, à [now] : option appliquée, service suivant après
+/// le délai. `null` s'il n'y a pas de choix en attente.
 ({GameState state, StoryOutcome outcome})? answerChoice(
   GameState state,
   int option,
@@ -337,24 +449,33 @@ StoryStep applyStory(GameState s, StoryEvent e, Rules rules) {
   if (pending == null || spec == null || option < 0 || option >= spec.options.length) {
     return null;
   }
-  final applied = applyStoryEffects(advanced, spec, spec.options[option].effects, now, rules);
-  final next = nextStory(
-    pending.id,
-    pending.planetId,
-    now,
-    math.Random(pending.seed),
-    rules,
+  final random = math.Random(pending.seed ^ (option + 1));
+  final r = resolveGambles(spec.options[option].effects, random);
+  final applied = applyStoryEffects(advanced, spec, r.effects, now, rules);
+  final next = StoryEvent.chain(
+    id: pending.id,
+    planetId: pending.planetId,
+    seed: random.nextInt(1 << 31),
+    accrueAt: pending.accrueAt,
     lastKey: spec.key,
+    stock: pending.stock,
+    serveAt: now.add(_serveGap(random, rules)),
   );
   return (
     state: applied.copyWith(
       pending: [for (final p in applied.pending) p.id == pending.id ? next : p],
     ),
-    outcome: StoryOutcome(key: spec.key, at: now, kind: StoryOutcomeKind.answered, option: option),
+    outcome: StoryOutcome(
+      key: spec.key,
+      at: now,
+      kind: StoryOutcomeKind.answered,
+      option: option,
+      won: r.won,
+    ),
   );
 }
 
-/// Planifie le premier événement si la chaîne n'existe pas.
+/// Planifie la chaîne si elle n'existe pas : stock vide, premier ajout après un intervalle.
 GameState ensureStoryScheduled(
   GameState s,
   DateTime now,
@@ -363,20 +484,27 @@ GameState ensureStoryScheduled(
   required int eventId,
 }) {
   if (pendingStory(s) != null) return s;
-  final next = nextStory(eventId, s.planet.id, now, math.Random(seed), rules);
+  final random = math.Random(seed);
+  final next = StoryEvent.chain(
+    id: eventId,
+    planetId: s.planet.id,
+    seed: random.nextInt(1 << 31),
+    accrueAt: now.add(_accrual(random, rules)),
+  );
   return s.copyWith(pending: [...s.pending, next]);
 }
 
-/// Debug : l'événement en attente survient à [now] (sauf choix déjà proposé).
-GameState storyNow(GameState s, DateTime now) {
+/// Debug : un événement s'ajoute au stock, servable tout de suite (sauf choix en attente).
+GameState storyNow(GameState s, DateTime now, Rules rules) {
   final e = pendingStory(s);
   if (e == null || e.choiceKey != null) return s;
-  final moved = StoryEvent(
+  final moved = StoryEvent.chain(
     id: e.id,
     planetId: e.planetId,
-    dueAt: now,
     seed: e.seed,
+    accrueAt: e.accrueAt,
     lastKey: e.lastKey,
+    stock: math.min(rules.data.story.maxStock, e.stock + 1),
   );
   return s.copyWith(pending: [for (final p in s.pending) p.id == e.id ? moved : p]);
 }
