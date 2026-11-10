@@ -135,6 +135,9 @@ class StoryLog extends Table {
   /// `StoryOutcomeKind.name`.
   TextColumn get kind => text()();
   IntColumn get option => integer().nullable()();
+
+  /// Issue du pari (v10), `null` sans pari.
+  BoolColumn get won => boolean().nullable()();
 }
 
 /// File unique de tous les événements, futurs et passés.
@@ -192,8 +195,9 @@ class StarmineDatabase extends _$StarmineDatabase {
   /// v6 : files d'attente (table queued_orders).
   /// v7 : événements ponctuels (tables active_effects, story_log).
   /// v8 : champ de débris (colonnes de planets). v9 : bases pirates (table pirate_bases).
+  /// v10 : issue du pari d'un événement (colonne story_log.won).
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -231,6 +235,9 @@ class StarmineDatabase extends _$StarmineDatabase {
       }
       if (from < 9) {
         await m.createTable(pirateBases);
+      }
+      if (from < 10 && from >= 7) {
+        await m.addColumn(storyLog, storyLog.won);
       }
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),

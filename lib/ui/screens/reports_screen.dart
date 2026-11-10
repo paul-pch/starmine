@@ -130,14 +130,20 @@ class _StoryTile extends StatelessWidget {
     return ListTile(
       leading: const Icon(Icons.auto_stories_outlined),
       title: Text(title),
-      subtitle: Text('${_date(o.at)}${o.kind == StoryOutcomeKind.happened ? '' : ' · $body'}'),
+      subtitle: Text(
+        '${_date(o.at)}'
+        '${o.kind == StoryOutcomeKind.happened ? gambleText(o.won) : ' · $body'}',
+      ),
       onTap: () {
         final spec = controller.data.story.catalog[o.key];
         if (spec == null) return;
         InfoButton.show(
           context,
           title: spec.name,
-          body: [spec.description, for (final e in spec.effects) storyEffectText(e)].join('\n\n'),
+          body: [
+            spec.description,
+            for (final e in spec.effects) storyEffectText(controller.data, e),
+          ].join('\n\n'),
         );
       },
     );

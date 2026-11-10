@@ -211,6 +211,19 @@ enum StoryEffectType {
 
   /// Le prochain raid arrive `hours` heures plus tôt.
   raid,
+
+  /// `value` unités `unit` ajoutées à la planète (négatif : perdues, plancher 0).
+  units,
+
+  /// `hours` heures de production de métal et de cristal ajoutées au champ de débris.
+  debris,
+
+  /// `hours` heures de production d'une ressource (toutes si absente), versées `delay`
+  /// heures plus tard, au-delà du stockage.
+  delayed,
+
+  /// Pari : effets `win` avec la probabilité `chance`, sinon `lose`.
+  gamble,
 }
 
 /// File visée par un effet `shorten`.
@@ -223,6 +236,11 @@ class StoryEffectSpec {
     this.target,
     this.value = 0,
     this.hours = 0,
+    this.unit,
+    this.delay = 0,
+    this.chance = 0,
+    this.win = const [],
+    this.lose = const [],
   });
 
   final StoryEffectType type;
@@ -230,6 +248,17 @@ class StoryEffectSpec {
   final OrderTarget? target;
   final double value;
   final double hours;
+
+  /// Unité gagnée ou perdue (`units`).
+  final UnitKind? unit;
+
+  /// Délai du versement (`delayed`), en heures à ×1.
+  final double delay;
+
+  /// Pari (`gamble`) : probabilité de réussite, effets en cas de réussite ou d'échec.
+  final double chance;
+  final List<StoryEffectSpec> win;
+  final List<StoryEffectSpec> lose;
 }
 
 class StoryOptionSpec {
@@ -283,12 +312,22 @@ class StoryConfig {
     this.intervalHoursMin = 60,
     this.intervalHoursMax = 108,
     this.answerHours = 6,
+    this.maxStock = 3,
+    this.serveGapMinutesMin = 20,
+    this.serveGapMinutesMax = 40,
     this.catalog = const {},
   });
 
-  /// Délai entre deux événements, en heures à ×1.
+  /// Délai entre deux ajouts au stock, en heures à ×1.
   final double intervalHoursMin;
   final double intervalHoursMax;
+
+  /// Plafond du stock d'événements à servir app ouverte.
+  final int maxStock;
+
+  /// Délai minimal entre deux événements servis, en minutes à ×1.
+  final double serveGapMinutesMin;
+  final double serveGapMinutesMax;
 
   /// Délai pour répondre à un choix, en heures à ×1.
   final double answerHours;
@@ -811,6 +850,9 @@ class GameData {
       intervalHoursMin: _num(interval, 'min'),
       intervalHoursMax: _num(interval, 'max'),
       answerHours: _num(m, 'answer_hours'),
+      maxStock: _num(m, 'max_stock').toInt(),
+      serveGapMinutesMin: _num(_map(m, 'serve_gap_minutes'), 'min'),
+      serveGapMinutesMax: _num(_map(m, 'serve_gap_minutes'), 'max'),
       catalog: {for (final e in catalog.entries) e.key: _storyEvent(e.key, _asMap(e.value, e.key))},
     );
   }
@@ -850,7 +892,18 @@ class GameData {
     for (final r in raw) _effect(_asMap(r, '$key.effects[]'), key),
   ];
 
-  static StoryEffectSpec _effect(Map<String, Object?> m, String key) => StoryEffectSpec(
+  static StoryEffectSpec _effect(Map<String, Object?> m, String key) {
+    final e = _rawEffect(m, key);
+    if (e.type == StoryEffectType.units && e.unit == null) {
+      throw FormatException('« $key » : effet units sans unit');
+    }
+    if (e.type == StoryEffectType.gamble && (e.chance <= 0 || e.chance > 1)) {
+      throw FormatException('« $key » : pari sans chance entre 0 et 1');
+    }
+    return e;
+  }
+
+  static StoryEffectSpec _rawEffect(Map<String, Object?> m, String key) => StoryEffectSpec(
     type: StoryEffectType.values.firstWhere(
       (t) => t.name == _string(m, 'type'),
       orElse: () => throw FormatException('« $key » : effet inconnu ${m['type']}'),
@@ -864,6 +917,11 @@ class GameData {
           ),
     value: _numOr(m, 'value'),
     hours: _numOr(m, 'hours'),
+    unit: m['unit'] == null ? null : UnitKind.fromKey(_string(m, 'unit')),
+    delay: _numOr(m, 'delay'),
+    chance: _numOr(m, 'chance'),
+    win: m['win'] == null ? const [] : _effects(_listOf(m, 'win'), key),
+    lose: m['lose'] == null ? const [] : _effects(_listOf(m, 'lose'), key),
   );
 
   static PirateBasesConfig _bases(Map<String, Object?> m) => PirateBasesConfig(

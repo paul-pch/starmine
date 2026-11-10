@@ -1,7 +1,6 @@
 import 'package:starmine/domain/engine.dart';
 import 'package:starmine/domain/events.dart';
 import 'package:starmine/domain/game_data.dart';
-import 'package:starmine/domain/story.dart';
 import 'package:starmine/ui/notifications.dart';
 
 /// Notifications en mémoire : id d'événement → échéance.
@@ -12,10 +11,6 @@ class FakeNotifier implements BuildNotifier {
   @override
   Future<void> schedule(GameEvent event, GameData data) async =>
       scheduled[event.id] = notifyAt(event);
-
-  @override
-  Future<void> scheduleStory(StoryOutcome outcome, int index, GameData data) async =>
-      scheduled[storyNotificationId(index)] = outcome.at;
 
   @override
   Future<void> scheduleCancelled(QueueCancelled cancelled, GameData data) async =>

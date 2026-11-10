@@ -572,7 +572,12 @@ officers:
 # stock, gain (heures de production à ×1), raid (heures d'avance du prochain raid).
 # Officier lié : prolonge un bonus ou atténue un malus de per_level × niveau.
 story_events:
-  interval_hours: { min: 60, max: 108 }
+  # Événements app ouverte seulement (spec 14). Le temps (ouvert ou fermé) remplit un stock :
+  # un événement toutes les `interval_hours`, au plus `max_stock` en réserve.
+  interval_hours: { min: 3, max: 5 }
+  max_stock: 3
+  # App ouverte : un événement du stock est servi, puis le suivant pas avant ce délai.
+  serve_gap_minutes: { min: 20, max: 40 }
   # Délai pour répondre à un choix ; sans réponse, l'option par défaut s'applique.
   answer_hours: 6
   catalog:
@@ -645,6 +650,14 @@ story_events:
         Une brèche dans un hangar laisse s'échapper une partie du métal entreposé avant que
         les équipes ne la colmatent.
       effects: [{ type: stock, resource: metal, value: -0.1 }]
+    orbital_battle:
+      name: Bataille en orbite proche
+      kind: bonus
+      description: >-
+        Deux bandes pirates se sont affrontées au-dessus de la planète. Les carcasses
+        dérivent en orbite basse : il n'y a plus qu'à envoyer les recycleurs.
+      requires: { shipyard: 2 }
+      effects: [{ type: debris, hours: 6 }]
     merchant_convoy:
       name: Convoi marchand
       kind: choice
@@ -670,6 +683,87 @@ story_events:
             - { type: gain, resource: crystal, hours: 10 }
             - { type: raid, hours: 12 }
         - label: Refuser
+      default: 1
+    unstable_wreck:
+      name: Épave instable
+      kind: choice
+      description: >-
+        Un croiseur éventré tourne lentement autour de la lune. Ses soutes sont pleines, mais
+        son réacteur fuit : la fouiller est un pari.
+      requires: { shipyard: 2, metal_mine: 12 }
+      options:
+        - label: Fouiller
+          effects:
+            - type: gamble
+              chance: 0.6
+              win:
+                - { type: gain, resource: metal, hours: 8 }
+                - { type: gain, resource: crystal, hours: 8 }
+              lose: [{ type: stock, resource: crystal, value: -0.1 }]
+        - label: Laisser dériver
+      default: 1
+    pirate_deserters:
+      name: Déserteurs pirates
+      kind: choice
+      description: >-
+        Trois pilotes du Croc demandent l'asile avec leurs chasseurs. Leurs anciens
+        camarades ne leur pardonneront pas, et sauront où les trouver.
+      requires: { shipyard: 2 }
+      options:
+        - label: Accueillir
+          effects:
+            - { type: units, unit: light_fighter, value: 3 }
+            - { type: raid, hours: 6 }
+        - label: Refuser
+      default: 1
+    advance_contract:
+      name: Contrat d'avance
+      kind: choice
+      description: >-
+        Une guilde de fondeurs propose d'avancer une part de ton métal pour un lot de
+        production livré demain, métal et cristal, avec intérêts.
+      requires: { metal_mine: 12, crystal_mine: 10 }
+      options:
+        - label: Investir
+          effects:
+            - { type: stock, resource: metal, value: -0.1 }
+            - { type: delayed, resource: metal, hours: 12, delay: 24 }
+            - { type: delayed, resource: crystal, hours: 12, delay: 24 }
+        - label: Décliner
+      default: 1
+    prospectors:
+      name: Prospecteurs
+      kind: choice
+      description: >-
+        Une équipe de prospecteurs cherche un financement en deutérium pour sonder un
+        astéroïde voisin. S'ils trouvent un gisement, tu partages le butin.
+      requires: { deuterium_synthesizer: 8 }
+      options:
+        - label: Financer
+          effects:
+            - type: gamble
+              chance: 0.5
+              win: [{ type: gain, hours: 10 }]
+              lose: [{ type: stock, resource: deuterium, value: -0.15 }]
+        - label: Refuser
+      default: 1
+    distress_signal:
+      name: Signal de détresse
+      kind: choice
+      description: >-
+        Un signal de détresse émane d'un convoi immobilisé. Le secourir peut rapporter des
+        transporteurs reconnaissants, ou révéler ta position à ceux qui l'ont attaqué.
+      requires: { shipyard: 4 }
+      options:
+        - label: Secourir
+          effects:
+            - type: gamble
+              chance: 0.7
+              win:
+                - { type: units, unit: small_cargo, value: 2 }
+                - { type: gain, resource: crystal, hours: 4 }
+              lose: [{ type: raid, hours: 8 }]
+        - label: Ignorer
       default: 1
 
 # Flotte (V3b). Durée d'un trajet (s, ×1) = (10 + 35 000 / %vitesse × √(distance × 10 /

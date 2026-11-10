@@ -132,10 +132,13 @@ class Run {
         if (r.winner != CombatWinner.attacker) repelled++;
         looted += total(r.loot);
       }
-      for (final o in adv.stories) {
+      // Joueur présent à chaque pas : un événement du stock est servi quand il le peut.
+      final served = serveStory(s, t, rules);
+      if (served != null) s = served.state;
+      for (final o in [...adv.stories, ?served?.outcome]) {
         stories[o.key] = (stories[o.key] ?? 0) + 1;
       }
-      // Choix : option par défaut (comme un joueur absent).
+      // Choix : option par défaut (comme un joueur qui ne répond pas).
       for (final k in availableOfficers(s, data)) {
         s = promoteOfficer(s, k, t, rules).state;
         mark('officier ${data.officers[k]!.name} niv. ${s.officers[k]}', t);

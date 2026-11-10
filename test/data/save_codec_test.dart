@@ -215,6 +215,34 @@ void main() {
     expect((arrival as RaidArrival).tech, isEmpty);
   });
 
+  test('événement ponctuel d’avant la V2e : stock vide, échéances = dueAt', () {
+    final e =
+        decodeEvent(
+              id: 4,
+              planetId: 1,
+              type: storyEventType,
+              dueAtMs: t0.millisecondsSinceEpoch,
+              payload: {'seed': 3, 'choice_key': 'merchant_convoy'},
+            )
+            as StoryEvent;
+    expect(e.stock, 0);
+    expect(e.accrueAt, t0);
+    expect(e.deadline, t0);
+    expect(e.serveAt, isNull);
+    final round =
+        decodeEvent(
+              id: 4,
+              planetId: 1,
+              type: storyEventType,
+              dueAtMs: e.dueAt.millisecondsSinceEpoch,
+              payload: eventPayload(e),
+            )
+            as StoryEvent;
+    expect(round.accrueAt, e.accrueAt);
+    expect(round.deadline, e.deadline);
+    expect(round.choiceKey, 'merchant_convoy');
+  });
+
   test('refuse un fichier qui n’est pas une sauvegarde', () {
     expect(() => decodeSave({'format': 'autre'}), throwsFormatException);
   });

@@ -30,7 +30,7 @@ const _v1 = [
 ];
 
 void main() {
-  test('base v1 → v9 : partie conservée, technos et officiers à 0, réglages à 100 %', () async {
+  test('base v1 → v10 : partie conservée, technos et officiers à 0, réglages à 100 %', () async {
     final db = StarmineDatabase(
       NativeDatabase.memory(
         setup: (raw) {
@@ -73,5 +73,30 @@ void main() {
     expect(reloaded.state.counters[Counter.raidsRepelled], 4);
     expect(reloaded.state.planet.lastUpdate, t0);
     expect(await GameRepository(db).loadReports(), isEmpty);
+    expect(await GameRepository(db).loadStoryLog(), isEmpty);
+  });
+
+  test('base v9 → v10 : journal des événements conservé, sans issue de pari', () async {
+    final db = StarmineDatabase(
+      NativeDatabase.memory(
+        setup: (raw) {
+          raw
+            ..execute(
+              'CREATE TABLE story_log (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
+              'at_ms INTEGER NOT NULL, key TEXT NOT NULL, kind TEXT NOT NULL, option INTEGER NULL)',
+            )
+            ..execute(
+              "INSERT INTO story_log (at_ms, key, kind) VALUES (1767254400000, 'rich_vein', "
+              "'happened')",
+            )
+            ..execute('PRAGMA user_version = 9');
+        },
+      ),
+    );
+    addTearDown(db.close);
+
+    final log = await GameRepository(db).loadStoryLog();
+    expect(log.single.key, 'rich_vein');
+    expect(log.single.won, isNull);
   });
 }

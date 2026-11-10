@@ -168,6 +168,8 @@ class RaidArrival extends GameEvent {
 /// tirage dans le catalogue avec [seed] ; un choix attend la réponse du joueur jusqu'à une
 /// nouvelle échéance ([choiceKey] renseigné), où l'option par défaut s'applique.
 class StoryEvent extends GameEvent {
+  /// [dueAt] est la prochaine échéance : ajout au stock ([accrueAt], par défaut [dueAt]) ou
+  /// option par défaut d'un choix ([deadline], par défaut [dueAt]). Voir [StoryEvent.chain].
   const StoryEvent({
     required super.id,
     required super.planetId,
@@ -175,7 +177,41 @@ class StoryEvent extends GameEvent {
     required this.seed,
     this.choiceKey,
     this.lastKey,
-  });
+    this.stock = 0,
+    DateTime? accrueAt,
+    DateTime? deadline,
+    this.serveAt,
+  }) : _accrueAt = accrueAt,
+       _deadline = deadline;
+
+  /// Échéance calculée : la plus proche de [accrueAt] et de [deadline] (choix en attente).
+  factory StoryEvent.chain({
+    required int id,
+    required int planetId,
+    required int seed,
+    required DateTime accrueAt,
+    String? choiceKey,
+    DateTime? deadline,
+    String? lastKey,
+    int stock = 0,
+    DateTime? serveAt,
+  }) {
+    final due = choiceKey != null && deadline != null && deadline.isBefore(accrueAt)
+        ? deadline
+        : accrueAt;
+    return StoryEvent(
+      id: id,
+      planetId: planetId,
+      dueAt: due,
+      seed: seed,
+      choiceKey: choiceKey,
+      lastKey: lastKey,
+      stock: stock,
+      accrueAt: accrueAt,
+      deadline: choiceKey == null ? null : deadline,
+      serveAt: serveAt,
+    );
+  }
 
   final int seed;
 
@@ -184,6 +220,21 @@ class StoryEvent extends GameEvent {
 
   /// Événement précédent : il n'est pas retiré deux fois d'affilée.
   final String? lastKey;
+
+  /// Événements accumulés, à servir app ouverte (spec 14).
+  final int stock;
+
+  final DateTime? _accrueAt;
+  final DateTime? _deadline;
+
+  /// Prochain ajout au stock.
+  DateTime get accrueAt => _accrueAt ?? dueAt;
+
+  /// Échéance du choix en attente (option par défaut).
+  DateTime? get deadline => choiceKey == null ? null : (_deadline ?? dueAt);
+
+  /// Pas de service avant cet instant (`null` : pas d'attente).
+  final DateTime? serveAt;
 }
 
 /// Recycleurs partis collecter le champ de débris (spec 15) : à [dueAt], ils rentrent avec

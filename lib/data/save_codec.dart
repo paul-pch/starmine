@@ -17,7 +17,7 @@ const saveFormat = 'starmine-save';
 /// v5 (V2c) : officiers, compteurs, relevé des raids et technos pirates.
 /// v6 : files d'attente. v7 (V2d) : événements ponctuels et effets en cours.
 /// v8 (V3a) : champ de débris, missions de recyclage. v9 (V3b) : bases pirates, flottes.
-const saveVersion = 9;
+const saveVersion = 10;
 
 /// Sauvegarde complète : état de jeu et réglages persistés.
 class SaveGame {
@@ -80,7 +80,15 @@ Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
     'fleet': encodeUnits(event.fleet),
     'tech': encodeTech(event.tech),
   },
-  StoryEvent() => {'seed': event.seed, 'choice_key': ?event.choiceKey, 'last_key': ?event.lastKey},
+  StoryEvent() => {
+    'seed': event.seed,
+    'choice_key': ?event.choiceKey,
+    'last_key': ?event.lastKey,
+    'stock': event.stock,
+    'accrue_at': event.accrueAt.millisecondsSinceEpoch,
+    'deadline': ?event.deadline?.millisecondsSinceEpoch,
+    'serve_at': ?event.serveAt?.millisecondsSinceEpoch,
+  },
   RecycleMission() => {
     'started_at': event.startedAt.millisecondsSinceEpoch,
     'recyclers': event.recyclers,
@@ -288,6 +296,11 @@ GameEvent decodeEvent({
         seed: _int(payload, 'seed'),
         choiceKey: payload['choice_key'] as String?,
         lastKey: payload['last_key'] as String?,
+        // Absents avant la V2e : stock vide, échéances = dueAt.
+        stock: (payload['stock'] as num?)?.toInt() ?? 0,
+        accrueAt: payload['accrue_at'] == null ? null : fromEpochMs(_int(payload, 'accrue_at')),
+        deadline: payload['deadline'] == null ? null : fromEpochMs(_int(payload, 'deadline')),
+        serveAt: payload['serve_at'] == null ? null : fromEpochMs(_int(payload, 'serve_at')),
       );
     default:
       throw FormatException('Type d’événement inconnu : $type');

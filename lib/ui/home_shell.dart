@@ -86,7 +86,8 @@ class _HomeShellState extends State<HomeShell> {
     // Une échéance passée ou un effet d'événement terminé : rattrapage réel.
     final s = _c.state;
     if (s.pending.any((e) => !e.dueAt.isAfter(_now)) ||
-        s.effects.any((e) => !e.endsAt.isAfter(_now))) {
+        s.effects.any((e) => !e.endsAt.isAfter(_now)) ||
+        _c.storyServable(_now)) {
       _refresh();
     }
   }
@@ -176,9 +177,13 @@ class _HomeShellState extends State<HomeShell> {
         title: awaiting ? spec.name : title,
         body: spec.description,
         lines: [
-          if (o.kind == StoryOutcomeKind.happened) ...spec.effects.map(storyEffectText),
+          if (o.kind == StoryOutcomeKind.happened)
+            for (final e in spec.effects) storyEffectText(_c.data, e),
+          if (o.kind == StoryOutcomeKind.happened && o.won != null)
+            o.won! ? 'Pari réussi' : 'Pari raté',
           if (o.kind == StoryOutcomeKind.defaulted) body,
         ],
+        image: widget.visuals.withAmbiance(_c.ambiance).story(spec.key),
         content: awaiting
             ? Builder(
                 builder: (popover) => ChoiceOptions(
