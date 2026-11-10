@@ -29,16 +29,36 @@ dans le code, alignement vérifié par un test.
 
 ## Catalogue
 
-| Catégorie | Id | Format | Quantité (V2) |
-| --- | --- | --- | --- |
-| `building` | `building.<clé YAML>.t<1-3>.<cold\|temperate\|hot>` | 1:1, 512 px (B, A) | 12 × 3 paliers × 3 climats |
-| `building_wide` | `building_wide.<clé>.t<1-3>.<cold\|temperate\|hot>` | 4:3, 640 × 480 (C) — facultatif, sinon recadrage du 1:1 | — |
-| `research` | `research.<clé YAML>` | 1:1, 512 px, sans climat | 12 |
-| `defense` | `defense.<clé YAML>` | 1:1, 512 px, sans climat | 8 |
-| `ship` | `ship.<clé YAML>` | 1:1, 512 px, sans climat | 8 |
-| `pirate` | `pirate.<clé YAML>` | 1:1, 512 px (bandeau de raid, rapports) | 6 |
-| `planet_hero` | `planet_hero.<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 3 |
-| `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 |
+| Catégorie | Id | Format | Quantité | Où | État |
+| --- | --- | --- | --- | --- | --- |
+| `building` | `building.<clé YAML>.t<1-3>.<cold\|temperate\|hot>` | 1:1, 512 px (B, A) | 12 × 3 paliers × 3 climats | Cartes et feuille de détail | t1 packagés (36) ; **t2, t3 à produire (72)** |
+| `building_wide` | `building_wide.<clé>.t<1-3>.<cold\|temperate\|hot>` | 4:3, 640 × 480 (C) — facultatif, sinon recadrage du 1:1 | — | Cartes de l'ambiance Immersive | Facultatif, non branché |
+| `research` | `research.<clé YAML>` | 1:1, 512 px, sans climat | 12 | Cartes et feuille de détail | Packagées |
+| `defense` | `defense.<clé YAML>` | 1:1, 512 px, sans climat | 8 | Cartes du chantier et feuille de détail | Packagées |
+| `ship` | `ship.<clé YAML>` | 1:1, 512 px, sans climat | 8 | Cartes du chantier et feuille de détail | Packagées |
+| `planet_hero` | `planet_hero.<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 3 | Hero de l'écran principal | **À produire** ; branché (repli affiché) |
+| `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 | Fond plein écran de l'ambiance Immersive | **À produire**, non branché |
+| `pirate` | `pirate.<clé YAML>` : les 6 vaisseaux des flottes pirates (`light_fighter`, `heavy_fighter`, `cruiser`, `battleship`, `small_cargo`, `large_cargo`), version pirate (coque disparate, marquages) | 1:1, 512 px | 6 | Détail du raid, rapport de combat (camp pirate) | **À produire**, non branché |
+| `pirate_base` | `pirate_base.<0-3>` (ordre de `pirate_bases.list` : avant-poste, repaire, forteresse, citadelle) | 4:3, 640 × 480 | 4 | Cartes des bases (onglet Flotte) | **À produire**, non branché |
+| `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur de recherche, chef de chantier) | 1:1, 512 px, portrait buste | 7 | Cartes de l'écran Officiers (spec 12) | **À produire**, non branché |
+| `story` | `story.<clé YAML de l'événement>` | 21:9, 1260 × 540 | 16 (catalogue actuel) | En-tête de la popover d'événement (spec 10, 14) | **À produire** ; la popover accepte l'image |
+| `scene` | `scene.<raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 21:9, 1260 × 540 | 5 | En-tête de la popover de fin de combat ; carte du champ de débris | **À produire**, non branché |
+
+### Visuels manquants (2026-11-10)
+
+Par priorité (impact sur l'écran le plus vu d'abord) :
+
+1. `planet_hero` × 3 — déjà branché : visible dès l'export.
+2. `story` × 16 et `scene` × 5 — en-tête des popovers, porte le narratif.
+3. `pirate` × 6 — bandeau de raid et rapports, identité de la menace.
+4. `building` t2 et t3 × 72 — déjà branchés par les paliers ; à produire avec le t1 du même
+   climat en `parent`.
+5. `character` × 7 — écran Officiers.
+6. `pirate_base` × 4 — onglet Flotte.
+7. `background` × 3 — seulement pour l'ambiance Immersive.
+
+Chaque catégorie non branchée demande, en plus de l'image, une méthode de `Visuals` (id →
+chemin) et l'appel `GameImage` à l'endroit indiqué, avec repli icône.
 
 Défenses et vaisseaux : images produites (série 58, charte `art/style/unit_prompt.md`), affichées en vignette
 sur les cartes d'unités du chantier ; `Visuals.unit` choisit `defense.` ou `ship.` selon le champ `defense`
@@ -111,5 +131,5 @@ projet d'usage commercial rouvre la question.
 ## Points ouverts
 
 - Images 4:3 dédiées à C ou recadrage du 1:1 : à trancher sur les premiers rendus.
-- Portraits des officiers (spec 12) : nouvelle catégorie `character` au registre, à prévoir
-  avec la V2c.
+- Charte de prompt des catégories `pirate`, `story`, `scene`, `character`, `pirate_base` à
+  écrire (`art/style/`), comme `unit_prompt.md` pour les unités.
