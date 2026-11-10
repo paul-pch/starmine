@@ -25,6 +25,9 @@ description: Conventions d'interface de Starmine (mobile Android, Flutter) et di
 - **Toute mécanique non évidente a une infobulle au tap** : `InfoButton` (icône i → feuille
   du bas) ou `InfoButton.show(...)`. Jamais un `Tooltip` à l'appui long seul. Le texte vient
   du YAML (`description`) quand il décrit un élément de jeu.
+- **Aucun vocabulaire de projet dans les textes affichés** (YAML `description` compris) :
+  pas de version (V3b…), de numéro de spec, de « OGame », de clé YAML. Un texte qui décrit
+  une règle est mis à jour avec la règle.
 - **Textes en français**, phrases courtes, chiffres via `fmtAmount` / `fmtDuration` /
   `CostLine` (espace fine insécable pour les milliers), en JetBrains Mono.
 - **Sombre uniquement**, jetons de la spec 10 ; pas de dégradé décoratif, pas d'emoji, pas

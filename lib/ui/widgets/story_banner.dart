@@ -9,8 +9,10 @@ import '../theme.dart';
 import 'info_button.dart';
 
 const storyHelp =
-    'Des événements surviennent sur la planète environ deux fois par semaine : bonus, malus '
-    'ou décisions à prendre. Leurs effets sont temporaires.\n\n'
+    'Des événements surviennent quand tu joues : bonus, malus ou décisions à prendre. Hors '
+    'de l’app, rien ne t’arrive : le temps met quelques événements de côté, qui te sont '
+    'proposés à ton retour, espacés de quelques dizaines de minutes. Leurs effets sont '
+    'temporaires et se cumulent.\n\n'
     'Une décision attend ta réponse quelques heures ; sans réponse, l’option par défaut '
     '(la plus prudente) s’applique. Certains officiers prolongent les bonus ou atténuent '
     'les malus.';

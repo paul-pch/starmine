@@ -134,7 +134,7 @@ buildings:
     category: infrastructure
     name: Chantier spatial
     description: >-
-      Construit les défenses (et les vaisseaux en V3). Ses niveaux accélèrent la production.
+      Construit les défenses et les vaisseaux. Ses niveaux accélèrent la production.
       Ne peut pas être agrandi pendant qu'il produit.
     cost: { metal: 400, crystal: 200, deuterium: 100 }
     factor: 2
@@ -184,8 +184,8 @@ research:
     category: advanced
     name: Technologie Informatique
     description: >-
-      Prérequis de l'usine de nanites. Chaque niveau ajoute une place de flotte (missions
-      simultanées).
+      Prérequis de l'usine de nanites. Chaque niveau augmente le nombre de vaisseaux envoyés
+      par attaque, expédition ou escorte de recyclage, jusqu'au niveau 10.
     cost: { crystal: 400, deuterium: 600 }
     factor: 2
     requires: { research_lab: 1 }
@@ -329,7 +329,7 @@ units:
   small_cargo:
     category: civil
     description: >-
-      Transporteur rapide et peu armé. Sa soute sert au pillage et aux livraisons (V3b).
+      Transporteur rapide et peu armé. Sa soute rapporte le butin des attaques et des expéditions.
     requires: { shipyard: 2, combustion_drive: 2 }
     speed: 5000
     fuel: 10
@@ -410,8 +410,9 @@ units:
     category: civil
     name: Recycleur
     description: >-
-      Collecte le champ de débris de la planète (métal et cristal des vaisseaux détruits).
-      Peu armé : il vaut mieux le garder loin des combats.
+      Collecte les champs de débris (métal et cristal des vaisseaux détruits), autour de la
+      planète ou d'une base pirate. Peu armé : près d'une base, une patrouille pirate peut le
+      surprendre, mieux vaut l'escorter.
     requires: { shipyard: 4, combustion_drive: 6, shielding_technology: 2 }
     cost: { metal: 10000, crystal: 6000, deuterium: 2000 }
     attack: 1

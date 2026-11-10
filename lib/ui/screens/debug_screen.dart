@@ -176,7 +176,7 @@ class _DebugScreenState extends State<DebugScreen> {
           trailing: const InfoButton(
             title: 'Simulateur de combat',
             body:
-                'Joue une bataille selon les règles OGame : 6 rounds au plus, tir rapide, '
+                'Joue une bataille : 6 rounds au plus, tir rapide, '
                 'boucliers régénérés à chaque round, 70 % des défenses détruites reconstruites. '
                 'Le résultat varie d’une simulation à l’autre : relance pour te faire une idée.',
           ),

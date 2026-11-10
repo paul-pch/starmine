@@ -11,8 +11,8 @@ import 'combat_stats.dart';
 import 'info_button.dart';
 
 const raidHelp =
-    'Des pirates attaquent régulièrement la planète. Leur flotte est repérée un moment avant '
-    'son arrivée. Sa force dépend de tes points d’économie et de recherche (ressources '
+    'Des pirates attaquent régulièrement la planète, plus souvent quand elle se développe. '
+    'Leur flotte est repérée un moment avant son arrivée. Sa force dépend de tes points d’économie et de recherche (ressources '
     'dépensées ÷ 1000, unités non comprises) relevés au raid précédent : les pirates ont du '
     'retard, et tes défenses ne les renforcent pas. Leurs technos Armes, Bouclier et '
     'Protection suivent les tiennes, un cran en dessous.\n\n'
