@@ -9,7 +9,9 @@ import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/main.dart';
 import 'package:starmine/ui/format.dart';
 import 'package:starmine/ui/game_controller.dart';
+import 'package:starmine/domain/story.dart';
 import 'package:starmine/ui/visuals.dart';
+import 'package:starmine/ui/widgets/event_popover.dart';
 
 import '../domain/helpers.dart';
 import 'fakes.dart';
@@ -195,6 +197,32 @@ void main() {
     );
     expect(button.onPressed, isNull);
     expect(controller.availableOfficers, isEmpty);
+
+    await close(tester, db);
+  });
+
+  testWidgets('événement app ouvert : popover, puis journal unique avec effacement', (
+    tester,
+  ) async {
+    final (controller, db) = await open(tester);
+
+    await tester.runAsync(controller.storyNow);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    final o = controller.lastStory!;
+    final spec = controller.data.story.catalog[o.key]!;
+    expect(find.byType(EventPopover), findsOneWidget);
+    expect(find.text(spec.description), findsOneWidget);
+    await tester.tap(find.text(o.kind == StoryOutcomeKind.awaiting ? 'Plus tard' : 'Fermer'));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.byType(EventPopover), findsNothing);
+
+    await tester.tap(find.byIcon(Icons.article_outlined));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text('Effacer le journal'), findsOneWidget);
+    expect(find.text('Raids'), findsNothing);
+    expect(find.textContaining(spec.name), findsOneWidget);
 
     await close(tester, db);
   });

@@ -24,7 +24,7 @@ de chaque construction (confort d'idle mobile).
   réservé à l'ajout.
 - **Ordre impossible à son tour** (ressources, prérequis, labo ou chantier en
   agrandissement, limite par planète) : **toute la file est annulée** et une notification
-  le signale (message dans l'app si elle est ouverte).
+  le signale (popover dans l'app si elle est ouverte, spec 10).
 - **Annulation** : un ordre en attente se retire sans frais ; annuler l'ordre en cours le
   rembourse et démarre le suivant tout de suite (avec la même règle d'annulation).
 - **Chantier** : la file enchaîne des lots (unité, quantité).

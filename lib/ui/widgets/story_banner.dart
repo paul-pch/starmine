@@ -157,46 +157,82 @@ class StoryBanner extends StatelessWidget {
                 ),
                 Text(spec.description, style: theme.textTheme.bodyMedium),
                 const SizedBox(height: 12),
-                for (final (i, o) in spec.options.indexed)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              i == spec.defaultOption ? '${o.label} (par défaut)' : o.label,
-                              style: theme.textTheme.titleMedium,
-                            ),
-                            if (o.effects.isEmpty)
-                              Text('Rien ne se passe', style: theme.textTheme.bodySmall)
-                            else
-                              for (final e in o.effects)
-                                Text(storyEffectText(e), style: theme.textTheme.bodySmall),
-                            const SizedBox(height: 8),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: FilledButton(
-                                style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  controller.answerChoice(i);
-                                },
-                                child: Text(o.label),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                ChoiceOptions(
+                  controller: controller,
+                  spec: spec,
+                  onAnswered: () => Navigator.pop(context),
+                ),
               ],
             ),
           ),
         );
       },
+    );
+  }
+}
+
+/// Une carte par option : libellé (option par défaut signalée), effets, bouton. Partagée par
+/// la feuille de décision et la popover d'événement.
+class ChoiceOptions extends StatelessWidget {
+  const ChoiceOptions({
+    super.key,
+    required this.controller,
+    required this.spec,
+    required this.onAnswered,
+  });
+
+  final GameController controller;
+  final StoryEventSpec spec;
+
+  /// Appelé avant la réponse (fermer la feuille ou la popover).
+  final VoidCallback onAnswered;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (final (i, o) in spec.options.indexed)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      i == spec.defaultOption ? '${o.label} (par défaut)' : o.label,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    if (o.effects.isEmpty)
+                      Text('Rien ne se passe', style: theme.textTheme.bodySmall)
+                    else
+                      for (final e in o.effects)
+                        Text(storyEffectText(e), style: theme.textTheme.bodySmall),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
+                        onPressed: () {
+                          onAnswered();
+                          // La décision a pu être prise ailleurs entre-temps (bandeau).
+                          if (controller.pendingChoice?.key == spec.key) {
+                            controller.answerChoice(i);
+                          }
+                        },
+                        child: Text(o.label),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

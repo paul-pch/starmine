@@ -64,10 +64,11 @@ Section `story_events` : `interval_hours`, `answer_hours`, `catalog` (par évén
   rouge) ; tap → texte d'histoire et effet chiffré.
 - **Feuille de décision** : texte d'histoire, une carte par option (effets en clair, option
   par défaut signalée), bouton par option.
-- **Message** quand un événement survient app ouverte (« Décision attendue » avec accès à
-  la feuille).
-- **Journal** : écran Rapports, onglet « Événements » (date, nom, choix ou défaut) ; tap →
-  texte et effets ; « Effacer le journal » (confirmation ; les effets en cours restent).
+- **Popover** quand un événement survient app ouverte (spec 10) : texte d'histoire et
+  effets ; une décision y montre directement ses options (« Plus tard » la laisse en attente).
+- **Journal** : écran Rapports, liste unique avec les rapports de combat (date, nom, choix ou
+  défaut) ; tap → texte et effets ; « Effacer le journal » efface rapports et événements
+  (confirmation ; les effets en cours restent).
 - **Debug** : « Événement maintenant ».
 
 ## Notifications

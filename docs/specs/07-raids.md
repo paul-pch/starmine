@@ -50,9 +50,9 @@ Section `pirates` du YAML.
 
 - **Bandeau d'alerte** (raid détecté) : « Flotte pirate en approche · arrivée dans … ». Au tap :
   composition, soute, technos pirates, forces en présence, « Simuler 100 batailles ».
-- **Rapports** : icône dans la barre du haut, pastille du nombre de non lus ; liste des raids
-  (verdict, date, pillage) ; tap → rapport complet.
-- Raid résolu app ouverte : message avec accès au rapport ; le dernier remplace le précédent.
+- **Rapports** : icône dans la barre du haut, pastille du nombre de non lus ; journal unique
+  avec les événements (spec 10) : verdict, date, pillage ; tap → rapport complet.
+- Raid résolu app ouverte : popover (verdict, pillage, « Rapport »), spec 10.
 - Debug : « Raid pirate maintenant » (détection immédiate, relevé conservé), points et base
   des raids.
 
