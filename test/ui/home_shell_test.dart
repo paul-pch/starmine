@@ -18,7 +18,10 @@ import 'fakes.dart';
 
 void main() {
   /// Téléphone de référence : 390 × 844 dp.
-  Future<(GameController, StarmineDatabase)> open(WidgetTester tester) async {
+  Future<(GameController, StarmineDatabase)> open(
+    WidgetTester tester, {
+    FakeClock? clock,
+  }) async {
     tester.view.devicePixelRatio = 3;
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
@@ -27,7 +30,7 @@ void main() {
       repository: GameRepository(db),
       data: gameData,
       notifier: FakeNotifier(),
-      clock: FakeClock(t0).call,
+      clock: (clock ?? FakeClock(t0)).call,
       random: math.Random(1),
     );
     // La base fait de vraies entrées/sorties : hors de la zone de temps simulé.
@@ -144,7 +147,7 @@ void main() {
       repository: GameRepository(db),
       data: gameData,
       notifier: FakeNotifier(),
-      clock: FakeClock(t0).call,
+      clock: (clock ?? FakeClock(t0)).call,
       random: math.Random(1),
     );
     await tester.runAsync(reloaded.init);
@@ -173,7 +176,7 @@ void main() {
       repository: GameRepository(db),
       data: gameData,
       notifier: FakeNotifier(),
-      clock: FakeClock(t0).call,
+      clock: (clock ?? FakeClock(t0)).call,
       random: math.Random(1),
     );
     await tester.runAsync(reloaded.init);
@@ -204,9 +207,13 @@ void main() {
   testWidgets('événement app ouvert : popover, puis journal unique avec effacement', (
     tester,
   ) async {
-    final (controller, db) = await open(tester);
+    final clock = FakeClock(t0);
+    final (controller, db) = await open(tester, clock: clock);
 
+    // L'événement échoit à l'instant ; il survient au rattrapage suivant.
     await tester.runAsync(controller.storyNow);
+    clock.advance(const Duration(seconds: 1));
+    await tester.runAsync(controller.refresh);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
     final o = controller.lastStory!;

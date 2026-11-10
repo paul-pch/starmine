@@ -169,8 +169,7 @@ class _HomeShellState extends State<HomeShell> {
     if (spec == null) return;
     _enqueue(() {
       // Décision : options seulement si elle attend toujours (sinon déjà tranchée).
-      final awaiting =
-          o.kind == StoryOutcomeKind.awaiting && _c.pendingChoice?.key == spec.key;
+      final awaiting = o.kind == StoryOutcomeKind.awaiting && _c.pendingChoice?.key == spec.key;
       final (title, body) = storyText(o, _c.data);
       return EventPopover(
         icon: awaiting ? Icons.help_outline : Icons.auto_stories_outlined,

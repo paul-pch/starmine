@@ -99,9 +99,7 @@ class EventPopover extends StatelessWidget {
                     for (final l in lines)
                       Text(
                         l,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: Palette.textSecondary,
-                        ),
+                        style: theme.textTheme.bodyMedium?.copyWith(color: Palette.textSecondary),
                       ),
                     if (content != null) ...[const SizedBox(height: 12), content!],
                   ],
