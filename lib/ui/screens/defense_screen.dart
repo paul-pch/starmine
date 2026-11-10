@@ -226,7 +226,30 @@ class _UnitCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(spec.name, style: theme.textTheme.titleLarge),
+                Row(
+                  children: [
+                    GameImage(
+                      path: VisualsScope.of(context).unit(spec),
+                      icon: ItemStyle.unitIcon,
+                      width: 96,
+                      radius: 12,
+                      iconSize: 40,
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(spec.name, style: theme.textTheme.titleLarge),
+                          Text(
+                            '× ${fmtAmount(state.planet.count(unit).toDouble())}',
+                            style: mono(theme.textTheme.titleSmall),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 gap,
                 UnitStatsLine(stats: UnitStats.of(spec, state.research)),
                 gap,
