@@ -444,6 +444,9 @@ pirates:
   # Délai entre deux arrivées, tiré uniformément : 2 à 3 raids par semaine à ×1. C'est aussi
   # le retard des pirates : leur force vient du relevé fait au raid précédent.
   interval_hours: { min: 48, max: 96 }
+  # Milieu de partie : à partir de `points` points d'économie et de recherche (relevé), 1 à 2
+  # raids par jour.
+  late: { points: 200, interval_hours: { min: 12, max: 24 } }
   # La flotte est détectée (et sa composition fixée) ce délai avant son arrivée.
   warning_minutes: 60
   # Budget de la flotte (en ressources) = max(min_budget, points × 1000 × force),

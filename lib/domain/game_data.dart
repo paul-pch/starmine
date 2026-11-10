@@ -581,11 +581,20 @@ class PirateConfig {
     required this.warships,
     required this.cargoShips,
     this.techOffset = 0,
+    this.latePoints = double.infinity,
+    this.lateIntervalHoursMin = 0,
+    this.lateIntervalHoursMax = 0,
   });
 
   /// Délai entre deux arrivées, en heures de jeu à ×1.
   final double intervalHoursMin;
   final double intervalHoursMax;
+
+  /// Milieu de partie (`late`) : à partir de [latePoints] points d'économie et de recherche
+  /// du relevé, délai tiré entre [lateIntervalHoursMin] et [lateIntervalHoursMax].
+  final double latePoints;
+  final double lateIntervalHoursMin;
+  final double lateIntervalHoursMax;
 
   /// Préavis entre la détection et l'arrivée, en minutes à ×1.
   final double warningMinutes;
@@ -705,6 +714,8 @@ class GameData {
     final bases = _optMap(map, 'pirate_bases');
     final interval = _map(pirates, 'interval_hours');
     final strength = _map(pirates, 'strength');
+    final late = _optMap(pirates, 'late');
+    final lateInterval = late == null ? null : _map(late, 'interval_hours');
     Map<UnitKind, double> ships(String key) => {
       for (final e in _map(pirates, key).entries)
         UnitKind.fromKey(e.key): _num(_map(pirates, key), e.key),
@@ -752,6 +763,9 @@ class GameData {
         warships: ships('warships'),
         cargoShips: ships('cargo_ships'),
         techOffset: _num(pirates, 'tech_offset').toInt(),
+        latePoints: late == null ? double.infinity : _num(late, 'points'),
+        lateIntervalHoursMin: lateInterval == null ? 0 : _num(lateInterval, 'min'),
+        lateIntervalHoursMax: lateInterval == null ? 0 : _num(lateInterval, 'max'),
       ),
       categories: {
         for (final screen in categories.keys)
