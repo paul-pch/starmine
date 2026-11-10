@@ -258,7 +258,11 @@ class ItemCard extends StatelessWidget {
                 Positioned(
                   top: 0,
                   right: 56,
-                  child: InfoButton(title: spec.name, body: spec.description),
+                  child: InfoButton(
+                    title: spec.name,
+                    body: spec.description,
+                    onPressed: () => ItemDetailSheet.show(context, controller, item),
+                  ),
                 ),
             ],
           ),

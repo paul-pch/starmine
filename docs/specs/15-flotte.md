@@ -187,6 +187,9 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
   Retour, Absence pour une mise à l'abri ; étape en cours en couleur d'action, passées
   cochées), barre d'avancée de l'étape en cours (début de phase `phase_at` de la mission),
   « <étape> · reste … » et heure de fin.
+- **Bases pirates** compactes : une ligne par base (nom ; systèmes, état, débris, dernier
+  espionnage) ; tap → feuille avec le rapport d'espionnage complet, le champ de débris et
+  les actions Espionner / Recycler / Attaquer.
 - Onglet Flotte : ligne de limites « Attaques 0 / 1 · Expéditions 0 / N · N vaisseaux par
   mission » (infobulle : Informatique et Amiral) ; carte **Expédition** (bouton
   « Explorer »).

@@ -3,11 +3,21 @@ import 'package:flutter/material.dart';
 /// Infobulle mobile : une icône (i) qui ouvre l'explication au tap, dans une feuille du
 /// bas. Le Tooltip standard ne s'ouvre qu'à l'appui long, peu découvrable sur téléphone.
 class InfoButton extends StatelessWidget {
-  const InfoButton({super.key, required this.title, required this.body, this.size = 18});
+  const InfoButton({
+    super.key,
+    required this.title,
+    required this.body,
+    this.size = 18,
+    this.onPressed,
+  });
 
   final String title;
   final String body;
   final double size;
+
+  /// Remplace la feuille de texte : sur une carte d'élément, le (i) ouvre la feuille de
+  /// détail (vignette, description, prérequis).
+  final VoidCallback? onPressed;
 
   static Future<void> show(BuildContext context, {required String title, required String body}) {
     return showModalBottomSheet<void>(
@@ -33,7 +43,7 @@ class InfoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => show(context, title: title, body: body),
+      onPressed: onPressed ?? () => show(context, title: title, body: body),
       icon: Icon(Icons.info_outline, size: size),
       tooltip: 'Explication',
       padding: EdgeInsets.zero,

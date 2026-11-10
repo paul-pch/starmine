@@ -199,7 +199,11 @@ class _UnitCard extends StatelessWidget {
               Positioned(
                 top: 0,
                 right: 56,
-                child: InfoButton(title: spec.name, body: _helpText),
+                child: InfoButton(
+                  title: spec.name,
+                  body: _helpText,
+                  onPressed: () => _details(context),
+                ),
               ),
             ],
           ),

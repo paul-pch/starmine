@@ -44,7 +44,7 @@ sont posés sur des panneaux opaques à 78–90 %.
 | Pastilles d'onglet | Verte = file libre ; rouge = file bloquée par l'agrandissement du labo ou du chantier ; rien = occupée ou bâtiment absent | Point sur l'icône de navigation (inchangé) |
 | Puces de filtre | « Tout » (avec titres de section) + une puce par catégorie du YAML | Rangée défilante horizontale sous la carte « En cours » |
 | Carte d'élément | Voir ci-dessous | B : ligne avec vignette 64 px ; C : grille 2 colonnes, image 4:3 en tête ; A : vignette remplacée par l'icône vectorielle |
-| Infobulle | Icône (i) → feuille du bas ; jamais d'appui long seul | Inchangé |
+| Infobulle | Icône (i) → feuille du bas ; jamais d'appui long seul. Sur une carte d'élément (bâtiment, techno, défense, vaisseau), le (i) ouvre la feuille de détail (vignette comprise), comme le tap sur la carte | Inchangé |
 
 ### Carte d'élément
 
@@ -92,6 +92,7 @@ est dans la feuille de détail (un tap).
 - **Officiers** (depuis le hero, spec 12) : carte par officier (nom, niveau / plafond, bonus
   actuel et du niveau suivant, prérequis en rouge s'ils manquent, « Débloquer » ou
   « Promouvoir »).
+- **Popovers** : largeur fixe (480 dp, ou l'écran moins 16 dp de chaque côté).
 - **Feuilles** : détail d'élément, détail d'une ressource, rapport de combat, simulation
   (spec 06), détail de la flotte pirate (spec 07), quantité au chantier.
 - **Messages** (bandeau du bas) : refus d'une commande seulement.

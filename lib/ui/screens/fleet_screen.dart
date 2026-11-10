@@ -232,12 +232,89 @@ class _MissionCard extends StatelessWidget {
   }
 }
 
+/// Base pirate, en une ligne : nom, distance, état, débris, dernier espionnage. Le tap ouvre
+/// le détail (rapport d'espionnage complet) et les actions.
 class _BaseCard extends StatelessWidget {
   const _BaseCard({required this.controller, required this.base, required this.now});
 
   final GameController controller;
   final PirateBase base;
   final DateTime now;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spec = controller.data.pirateBases.list[base.index];
+    final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
+    final debris = base.debris.metal + base.debris.crystal;
+    final spy = base.spy;
+    final summary = [
+      '${spec.systems} systèmes',
+      if (!baseAvailable(base, now))
+        'détruite, retour dans ${fmtDuration(base.destroyedUntil!.difference(now))}',
+      if (debris >= 1) 'débris ${fmtAmount(debris)}',
+      spy == null ? 'jamais espionnée' : 'espionnée il y a ${fmtDuration(now.difference(spy.at))}',
+    ].join(' · ');
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          showDragHandle: true,
+          builder: (_) => ListenableBuilder(
+            listenable: controller,
+            builder: (sheet, _) => SafeArea(
+              child: SingleChildScrollView(
+                child: _BaseDetail(
+                  controller: controller,
+                  base: controller.state.bases[base.index],
+                  now: controller.now(),
+                ),
+              ),
+            ),
+          ),
+        ),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 56),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(spec.name, style: theme.textTheme.titleSmall),
+                      Text(summary, style: secondary),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BaseDetail extends StatelessWidget {
+  const _BaseDetail({required this.controller, required this.base, required this.now});
+
+  final GameController controller;
+  final PirateBase base;
+  final DateTime now;
+
+  /// Ferme la feuille de la base, puis ouvre la feuille d'envoi.
+  void _send(BuildContext context, MissionKind kind) {
+    final navigator = Navigator.of(context);
+    final outer = navigator.context;
+    navigator.pop();
+    SendSheet.show(outer, controller, kind, base.index);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -251,13 +328,12 @@ class _BaseCard extends StatelessWidget {
     final probes = state.planet.count(UnitKind.espionageProbe);
     final recyclers = state.planet.count(UnitKind.recycler);
     final hasDebris = base.debris.metal + base.debris.crystal >= 1;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 8, 8),
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(spec.name, style: theme.textTheme.titleSmall),
+            Text(spec.name, style: theme.textTheme.titleLarge),
             Text('À ${spec.systems} systèmes', style: secondary),
             if (!available)
               Text(
@@ -290,29 +366,25 @@ class _BaseCard extends StatelessWidget {
                 if (probes > 0 && available)
                   TextButton(
                     style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
-                    onPressed: () =>
-                        SendSheet.show(context, controller, MissionKind.spy, base.index),
+                    onPressed: () => _send(context, MissionKind.spy),
                     child: const Text('Espionner'),
                   ),
                 if (hasDebris && recyclers > 0)
                   TextButton(
                     style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
-                    onPressed: () =>
-                        SendSheet.show(context, controller, MissionKind.recycle, base.index),
+                    onPressed: () => _send(context, MissionKind.recycle),
                     child: const Text('Recycler'),
                   ),
                 if (available)
                   FilledButton(
                     style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
-                    onPressed: () =>
-                        SendSheet.show(context, controller, MissionKind.attack, base.index),
+                    onPressed: () => _send(context, MissionKind.attack),
                     child: const Text('Attaquer'),
                   ),
               ],
             ),
           ],
         ),
-      ),
     );
   }
 }

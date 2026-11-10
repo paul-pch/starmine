@@ -63,8 +63,10 @@ class EventPopover extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         side: const BorderSide(color: Palette.line),
       ),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 480),
+      // Largeur fixe (480, ou l'écran moins les marges) : toutes les popovers ont la même
+      // largeur, quel que soit leur texte.
+      child: SizedBox(
+        width: 480,
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
