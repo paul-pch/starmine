@@ -35,7 +35,7 @@ de construction et de recherche).
 | Chef de chantier | Chantier, puis robots et nanites | +1 lot dans la file du chantier |
 
 - Pas de notification quand un officier devient disponible : la pastille du hero suffit.
-- Amiral (flotte) : V3.
+- Amiral (flotte) : places d'expédition, spécifié en V3c (spec 15).
 - Les officiers influenceront certains événements (spec 14, V2d).
 
 ## Données

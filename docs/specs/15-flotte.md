@@ -1,6 +1,6 @@
 # 15 · Flotte (V3)
 
-> **V3a et V3b livrées**, V3c à implémenter. Les vaisseaux existent déjà dans les données
+> **V3a et V3b livrées**, V3c spécifiée (décidé le 2026-11-10), à implémenter. Les vaisseaux existent déjà dans les données
 > (flottes pirates, spec 07).
 
 ## Objet
@@ -14,7 +14,7 @@ attaquer les bases pirates (le pillage devient un revenu), recycler les débris,
 | --- | --- |
 | V3a | Vaisseaux constructibles au chantier (6 existants), flotte stationnée qui défend la planète avec les défenses, champ de débris après un combat, recycleur |
 | V3b | Bases pirates : cibles générées, technos de propulsion (durée des trajets) et d'espionnage, missions d'attaque avec aller-retour, consommation de deutérium, pillage rapporté |
-| V3c | Missions d'exploration (résultat aléatoire à graine), officier **Amiral**, places de flotte |
+| V3c | Expéditions (résultat aléatoire à graine), officier **Amiral**, plafond de vaisseaux par mission, risque du recyclage |
 
 Chaque lot est jouable seul ; V3a ne demande aucun trajet.
 
@@ -110,3 +110,88 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
   sauvegarde v9. **Notifications** : arrivée et retour.
 - **Tests** : `missions_test.dart` ; équilibre mesuré et figé dans `test/balance/`
   (flotte nécessaire plus chère que la base, gain net positif avec la bonne flotte).
+
+## V3c (décidée, à implémenter)
+
+### Limites de missions (remplace « places de flotte = 1 + Informatique »)
+
+| Mission | En vol en même temps | Plafond de vaisseaux |
+| --- | --- | --- |
+| Attaque | `fleet.attack_slots` (1) | Oui |
+| Expédition | 1 + niveau d'Amiral (5 au plus) | Oui |
+| Recyclage d'une base | Illimité | Escorte seulement (recycleurs exclus) |
+| Espionnage | Illimité | Non |
+| Mise à l'abri | Illimitée | Non |
+
+- **Plafond de vaisseaux par mission** = `fleet.ships_base` + `fleet.ships_per_level` ×
+  min(Informatique, `fleet.ships_max_level`). Les sondes et les recycleurs n'y comptent pas.
+  Un vaisseau compte pour un, quel que soit son type.
+- L'Informatique ne donne plus de places de flotte ; `fleet.base_slots` disparaît.
+- Mission refusée en clair : « Attaque déjà en vol », « Toutes les places d'expédition sont
+  occupées », « Plafond : N vaisseaux par mission (Informatique) ».
+
+### Expéditions
+
+- **Destination unique** « Espace profond », à `expedition.systems` systèmes : trajet et
+  carburant aller-retour comme une mission (formule V3b).
+- **Durée d'exploration** au choix parmi `expedition.hours` (1, 2, 4, 8 h à ×1), entre
+  l'arrivée et le départ du retour. Plus longue : butin proportionnel à la durée, et moins
+  de chances de ne rien trouver.
+- **Résultat** tiré à la fin de l'exploration avec la graine de la mission, selon les poids
+  `expedition.outcomes` :
+  - **rien** (poids divisé par la durée en heures) ;
+  - **ressources** : `resource_hours` × durée heures de ta production (métal, cristal,
+    deutérium), dans la limite de la soute envoyée ;
+  - **vaisseaux trouvés** : une valeur de `ship_hours` × durée heures de ta production, en
+    vaisseaux de types débloqués au chantier (tirés au hasard), qui rentrent avec la flotte
+    et ne comptent pas dans le plafond ;
+  - **embuscade pirate** : combat contre une flotte pirate d'une valeur tirée dans
+    `ambush_strength` × la valeur de la flotte envoyée, technos des raids ; les survivants
+    poursuivent (sans butin) ;
+  - **retour retardé** ou **anticipé** : durée du retour × `delay_factor` ou
+    `early_factor` ;
+  - **trou noir** (rare) : toute la flotte est perdue.
+- Au retour : popover et rapport d'expédition dans le journal (résultat, texte d'histoire,
+  butin ou pertes ; rapport de combat en cas d'embuscade). Notification du retour (spec 09).
+- Compteur `expeditions` : expéditions revenues (prérequis de l'Amiral).
+
+### Amiral (spec 12)
+
+- Bonus `expedition_slots`, +1 place d'expédition par niveau, **4 niveaux** (5 places).
+- Prérequis par niveau : compteur `expeditions`, Informatique et chantier croissants
+  (seuils dans le YAML).
+
+### Risque du recyclage d'une base
+
+- À l'arrivée sur le champ d'une base (détruite ou non), une **patrouille pirate** surgit
+  avec la probabilité `pirate_bases.patrol_chance` (graine de la mission). Invisible à
+  l'espionnage.
+- Patrouille : vaisseaux seulement, d'une valeur de `patrol_strength` × celle de la base
+  (budget de génération), technos des raids.
+- **Escorte** : la mission de recyclage accepte des vaisseaux de combat avec les
+  recycleurs ; l'escorte compte dans le plafond.
+- Combat recycleurs + escorte contre la patrouille, rapport dans le journal. Gagné : collecte
+  normale, débris de la patrouille ajoutés au champ. Perdu : survivants rentrent à vide.
+- Recyclage du champ de la planète : inchangé, sans risque.
+
+### UI
+
+- Onglet Flotte : ligne de limites « Attaques 0 / 1 · Expéditions 0 / N · N vaisseaux par
+  mission » (infobulle : Informatique et Amiral) ; carte **Expédition** (bouton
+  « Explorer ») ; missions en vol avec phase (aller, exploration, retour).
+- Feuille d'envoi : puces de durée d'exploration ; compteur « n / plafond » ; recyclage :
+  recycleurs et vaisseaux de combat.
+
+### Données, persistance, tests
+
+- YAML : `fleet` (`attack_slots`, `ships_base`, `ships_per_level`, `ships_max_level`),
+  section `expedition`, `pirate_bases` (`patrol_chance`, `patrol_strength`), officier
+  `admiral`, compteur `expeditions`.
+- `FleetMission` : type `expedition` et durée d'exploration dans la charge utile ; rapport
+  d'expédition stocké avec les rapports (JSON, type distinct) ; sauvegarde v11. Une
+  sauvegarde antérieure reste importable.
+- Tests : plafond et limites (refus, mise à l'abri et sondes exclues), chaque résultat
+  d'expédition (déterministe à graine), trou noir, embuscade, poids selon la durée, Amiral,
+  patrouille avec et sans escorte, rattrapage d'une expédition app fermée. Équilibrage :
+  chaque base reste prenable avec le plafond atteignable à ce stade (`test/balance`), une
+  expédition est rentable en moyenne, escorter le recyclage aussi.
