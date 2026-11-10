@@ -329,62 +329,62 @@ class _BaseDetail extends StatelessWidget {
     final recyclers = state.planet.count(UnitKind.recycler);
     final hasDebris = base.debris.metal + base.debris.crystal >= 1;
     return Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(spec.name, style: theme.textTheme.titleLarge),
-            Text('À ${spec.systems} systèmes', style: secondary),
-            if (!available)
-              Text(
-                'Détruite · nouvelle base dans '
-                '${fmtDuration(base.destroyedUntil!.difference(now))}',
-                style: secondary,
-              ),
-            if (hasDebris) ...[
-              const SizedBox(height: 4),
-              Text('Champ de débris', style: theme.textTheme.labelMedium),
-              CostLine(cost: base.debris),
-            ],
-            if (spy != null) ...[
-              const SizedBox(height: 4),
-              Text(
-                'Espionnée il y a ${fmtDuration(now.difference(spy.at))}',
-                style: theme.textTheme.labelMedium,
-              ),
-              if (spy.resources case final r?) CostLine(cost: r),
-              if (spy.ships case final u?)
-                Text(u.isEmpty ? 'Aucun vaisseau' : _units(u, data), style: secondary),
-              if (spy.defenses case final u?)
-                Text(u.isEmpty ? 'Aucune défense' : _units(u, data), style: secondary),
-              if (spy.ships == null) Text('Flotte inconnue (Espionnage 2)', style: secondary),
-            ],
-            Wrap(
-              alignment: WrapAlignment.end,
-              spacing: 4,
-              children: [
-                if (probes > 0 && available)
-                  TextButton(
-                    style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
-                    onPressed: () => _send(context, MissionKind.spy),
-                    child: const Text('Espionner'),
-                  ),
-                if (hasDebris && recyclers > 0)
-                  TextButton(
-                    style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
-                    onPressed: () => _send(context, MissionKind.recycle),
-                    child: const Text('Recycler'),
-                  ),
-                if (available)
-                  FilledButton(
-                    style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
-                    onPressed: () => _send(context, MissionKind.attack),
-                    child: const Text('Attaquer'),
-                  ),
-              ],
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(spec.name, style: theme.textTheme.titleLarge),
+          Text('À ${spec.systems} systèmes', style: secondary),
+          if (!available)
+            Text(
+              'Détruite · nouvelle base dans '
+              '${fmtDuration(base.destroyedUntil!.difference(now))}',
+              style: secondary,
             ),
+          if (hasDebris) ...[
+            const SizedBox(height: 4),
+            Text('Champ de débris', style: theme.textTheme.labelMedium),
+            CostLine(cost: base.debris),
           ],
-        ),
+          if (spy != null) ...[
+            const SizedBox(height: 4),
+            Text(
+              'Espionnée il y a ${fmtDuration(now.difference(spy.at))}',
+              style: theme.textTheme.labelMedium,
+            ),
+            if (spy.resources case final r?) CostLine(cost: r),
+            if (spy.ships case final u?)
+              Text(u.isEmpty ? 'Aucun vaisseau' : _units(u, data), style: secondary),
+            if (spy.defenses case final u?)
+              Text(u.isEmpty ? 'Aucune défense' : _units(u, data), style: secondary),
+            if (spy.ships == null) Text('Flotte inconnue (Espionnage 2)', style: secondary),
+          ],
+          Wrap(
+            alignment: WrapAlignment.end,
+            spacing: 4,
+            children: [
+              if (probes > 0 && available)
+                TextButton(
+                  style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+                  onPressed: () => _send(context, MissionKind.spy),
+                  child: const Text('Espionner'),
+                ),
+              if (hasDebris && recyclers > 0)
+                TextButton(
+                  style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+                  onPressed: () => _send(context, MissionKind.recycle),
+                  child: const Text('Recycler'),
+                ),
+              if (available)
+                FilledButton(
+                  style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
+                  onPressed: () => _send(context, MissionKind.attack),
+                  child: const Text('Attaquer'),
+                ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
