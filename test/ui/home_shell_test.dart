@@ -250,7 +250,10 @@ void main() {
     await tester.runAsync(controller.init);
     const path = 'assets/visuels/research.energy_technology.webp';
     await tester.pumpWidget(
-      StarmineApp(controller: controller, visuals: const Visuals(assets: {path})),
+      StarmineApp(
+        controller: controller,
+        visuals: const Visuals(assets: {path}),
+      ),
     );
 
     await tester.tap(find.text('Recherche'));
