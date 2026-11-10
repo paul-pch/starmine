@@ -548,7 +548,10 @@ Map<UnitKind, int> _pirateShips(double budget, GameState s, Rules rules, math.Ra
 ) {
   final data = rules.data;
   final cfg = data.pirateBases;
-  final budget = math.max(cfg.minBudget, cfg.list[base.index].defenseHours * productionPerHour(s, rules));
+  final budget = math.max(
+    cfg.minBudget,
+    cfg.list[base.index].defenseHours * productionPerHour(s, rules),
+  );
   final attacker = CombatSide(units: m.ships, tech: s.research);
   final defender = CombatSide(
     units: _pirateShips(budget * cfg.patrolStrength, s, rules, random),
@@ -664,6 +667,11 @@ ExpeditionOutcome drawExpedition(double hours, GameData data, math.Random random
       }
       final weights = [for (final _ in kinds) 0.5 + random.nextDouble()];
       final found = allocateBudget(budget, kinds, weights, data);
+      // Au moins un vaisseau : le moins cher des types possibles.
+      if (found.isEmpty && kinds.isNotEmpty) {
+        double value(UnitKind k) => fleetValue({k: 1}, data);
+        found[kinds.reduce((a, b) => value(a) <= value(b) ? a : b)] = 1;
+      }
       final ships = {
         for (final k in {...m.ships.keys, ...found.keys}) k: (m.ships[k] ?? 0) + (found[k] ?? 0),
       };
@@ -674,7 +682,11 @@ ExpeditionOutcome drawExpedition(double hours, GameData data, math.Random random
       );
     case ExpeditionOutcome.ambush:
       final share = cfg.ambushMin + random.nextDouble() * (cfg.ambushMax - cfg.ambushMin);
-      final budget = math.max(1000.0, fleetValue(m.ships, data) * share);
+      // Risque à la mesure du gain espéré : part du butin d'une exploration de cette durée.
+      final budget = math.max(
+        1000.0,
+        productionPerHour(s, rules) * cfg.resourceHours * m.exploreHours * share,
+      );
       final attacker = CombatSide(units: m.ships, tech: s.research);
       final defender = CombatSide(
         units: _pirateShips(budget, s, rules, random),

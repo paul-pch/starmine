@@ -203,8 +203,10 @@ void main() {
     expect(shipCap(s, gameData), 20);
     expect(send(s, MissionKind.attack, 0, {UnitKind.lightFighter: 21}).block, MissionBlock.overCap);
     expect(
-      send(s, MissionKind.attack, 0, {UnitKind.lightFighter: 20, UnitKind.espionageProbe: 30})
-          .block,
+      send(s, MissionKind.attack, 0, {
+        UnitKind.lightFighter: 20,
+        UnitKind.espionageProbe: 30,
+      }).block,
       isNull,
     );
     expect(
@@ -222,8 +224,10 @@ void main() {
     expect(out.block, isNull);
     final m = missions(out.state).single;
     expect(m.exploreHours, 4);
-    expect(send(out.state, MissionKind.expedition, null, ships, explore: 1).block,
-        MissionBlock.expeditionsFull);
+    expect(
+      send(out.state, MissionKind.expedition, null, ships, explore: 1).block,
+      MissionBlock.expeditionsFull,
+    );
     final admiral = out.state.copyWith(officers: {OfficerKind.admiral: 1});
     expect(expeditionSlots(admiral, gameData), 2);
     expect(send(admiral, MissionKind.expedition, null, ships, explore: 1).block, isNull);
@@ -260,8 +264,18 @@ void main() {
     );
     final seen = <ExpeditionOutcome>{};
     for (var seed = 0; seed < 400 && seen.length < ExpeditionOutcome.values.length; seed++) {
-      final out = sendMission(s, MissionKind.expedition, null, ships, 100, t0, rules,
-          eventId: 60, seed: seed, exploreHours: 8);
+      final out = sendMission(
+        s,
+        MissionKind.expedition,
+        null,
+        ships,
+        100,
+        t0,
+        rules,
+        eventId: 60,
+        seed: seed,
+        exploreHours: 8,
+      );
       final m = missions(out.state).single;
       final arrived = advance(out.state, m.dueAt, rules).state;
       final end = missions(arrived).single.dueAt;
@@ -275,15 +289,23 @@ void main() {
           expect(back, isNull);
         case ExpeditionOutcome.resources:
           expect(back!.cargo.metal, greaterThan(0));
-          expect(back.cargo.metal + back.cargo.crystal + back.cargo.deuterium,
-              lessThanOrEqualTo(shipsCargo(ships, gameData)));
+          expect(
+            back.cargo.metal + back.cargo.crystal + back.cargo.deuterium,
+            lessThanOrEqualTo(shipsCargo(ships, gameData)),
+          );
         case ExpeditionOutcome.ships:
           expect(report.found, isNotEmpty);
           expect(cappedShips(back!.ships), greaterThan(cappedShips(ships)));
         case ExpeditionOutcome.ambush:
           expect(report.hasCombat, isTrue);
         case ExpeditionOutcome.delay || ExpeditionOutcome.early:
-          final normal = flightDuration(ships, gameData.expedition.distance, 100, s.research, rules);
+          final normal = flightDuration(
+            ships,
+            gameData.expedition.distance,
+            100,
+            s.research,
+            rules,
+          );
           final factor = outcome == ExpeditionOutcome.delay
               ? gameData.expedition.delayFactor
               : gameData.expedition.earlyFactor;
@@ -314,19 +336,24 @@ void main() {
           b.index == 0 ? b.copyWith(debris: const Resources(metal: 50000, crystal: 20000)) : b,
       ],
     );
-    expect(
-      send(s, MissionKind.recycle, 0, {UnitKind.cruiser: 5}).block,
-      MissionBlock.noRecycler,
-    );
+    expect(send(s, MissionKind.recycle, 0, {UnitKind.cruiser: 5}).block, MissionBlock.noRecycler);
     expect(
       send(s, MissionKind.recycle, 0, {UnitKind.recycler: 5, UnitKind.cruiser: 21}).block,
       MissionBlock.overCap,
     );
     var patrols = 0;
     for (var seed = 0; seed < 200; seed++) {
-      final out = sendMission(s, MissionKind.recycle, 0,
-          {UnitKind.recycler: 5, UnitKind.cruiser: 20}, 100, t0, rules,
-          eventId: 70, seed: seed);
+      final out = sendMission(
+        s,
+        MissionKind.recycle,
+        0,
+        {UnitKind.recycler: 5, UnitKind.cruiser: 20},
+        100,
+        t0,
+        rules,
+        eventId: 70,
+        seed: seed,
+      );
       expect(out.block, isNull);
       final r = advance(out.state, missions(out.state).single.dueAt, rules);
       if (r.reports.isNotEmpty) {

@@ -101,7 +101,8 @@ class _ReportTile extends StatelessWidget {
       subtitle: Text(
         [
           _date(r.at),
-          if (r.loot != Resources.zero) '${r.expedition == null ? 'pillé' : 'rapporté'} ${fmtCost(r.loot)}',
+          if (r.loot != Resources.zero)
+            '${r.expedition == null ? 'pillé' : 'rapporté'} ${fmtCost(r.loot)}',
         ].join(' · '),
       ),
       onTap: () => CombatReport.show(context, controller.data, r),

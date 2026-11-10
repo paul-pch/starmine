@@ -536,8 +536,7 @@ class GameController extends ChangeNotifier {
     final queuedIds = {for (final q in state.queue) q.id};
     final sim = advance(state, t.add(_forecast), _rules);
     for (final e in [...sim.applied, ...sim.state.pending]) {
-      final expeditionBack =
-          e is FleetMission && e.kind == MissionKind.expedition && e.returning;
+      final expeditionBack = e is FleetMission && e.kind == MissionKind.expedition && e.returning;
       if ((queuedIds.contains(e.id) || expeditionBack) && notifyAt(e).isAfter(t)) {
         await _notifier.schedule(e, data);
       }

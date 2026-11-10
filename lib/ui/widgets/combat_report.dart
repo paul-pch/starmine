@@ -110,10 +110,7 @@ class CombatReport extends StatelessWidget {
         ),
         if (r.loot != Resources.zero) ...[
           const SizedBox(height: 12),
-          Text(
-            _ours(r) ? 'Butin rapporté' : 'Butin emporté',
-            style: theme.textTheme.titleSmall,
-          ),
+          Text(_ours(r) ? 'Butin rapporté' : 'Butin emporté', style: theme.textTheme.titleSmall),
           const SizedBox(height: 4),
           CostLine(cost: r.loot),
         ],
@@ -133,34 +130,34 @@ class CombatReport extends StatelessWidget {
           const SizedBox(height: 16),
           _SideTable(title: 'Ta flotte', data: data, start: r.attackerStart, left: r.attackerLeft),
         ] else ...[
-        if ((r.attackerStrength, r.defenderStrength) case (final a?, final d?)) ...[
+          if ((r.attackerStrength, r.defenderStrength) case (final a?, final d?)) ...[
+            const SizedBox(height: 16),
+            ForcesTable(
+              attacker: a,
+              defender: d,
+              attackerName: _ours(r) ? 'Ta flotte' : 'Pirates',
+              defenderName: _theirs(r),
+            ),
+          ],
           const SizedBox(height: 16),
-          ForcesTable(
-            attacker: a,
-            defender: d,
-            attackerName: _ours(r) ? 'Ta flotte' : 'Pirates',
-            defenderName: _theirs(r),
+          _SideTable(
+            title: _ours(r) ? 'Ta flotte' : 'Pirates',
+            data: data,
+            start: r.attackerStart,
+            left: r.attackerLeft,
           ),
-        ],
-        const SizedBox(height: 16),
-        _SideTable(
-          title: _ours(r) ? 'Ta flotte' : 'Pirates',
-          data: data,
-          start: r.attackerStart,
-          left: r.attackerLeft,
-        ),
-        const SizedBox(height: 16),
-        _SideTable(
-          title: _theirs(r),
-          data: data,
-          start: r.defenderStart,
-          left: r.defenderLeft,
-          rebuilt: r.rebuilt,
-        ),
-        if (r.roundDetails.isNotEmpty) ...[
-          const SizedBox(height: 8),
-          RoundsTable(rounds: r.roundDetails),
-        ],
+          const SizedBox(height: 16),
+          _SideTable(
+            title: _theirs(r),
+            data: data,
+            start: r.defenderStart,
+            left: r.defenderLeft,
+            rebuilt: r.rebuilt,
+          ),
+          if (r.roundDetails.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            RoundsTable(rounds: r.roundDetails),
+          ],
         ],
       ],
     );

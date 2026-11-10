@@ -146,7 +146,8 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
     vaisseaux de types débloqués au chantier (tirés au hasard), qui rentrent avec la flotte
     et ne comptent pas dans le plafond ;
   - **embuscade pirate** : combat contre une flotte pirate d'une valeur tirée dans
-    `ambush_strength` × la valeur de la flotte envoyée, technos des raids ; les survivants
+    `ambush_strength` × le butin espéré (`resource_hours` × durée heures de production),
+    technos des raids : le risque suit le gain, une escorte armée le couvre ; les survivants
     poursuivent (sans butin) ;
   - **retour retardé** ou **anticipé** : durée du retour × `delay_factor` ou
     `early_factor` ;

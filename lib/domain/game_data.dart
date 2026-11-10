@@ -497,7 +497,8 @@ class ExpeditionConfig {
   /// Vaisseaux trouvés : valeur en heures de production par heure d'exploration.
   final double shipHours;
 
-  /// Embuscade : valeur de la flotte pirate en part de la flotte envoyée.
+  /// Embuscade : valeur de la flotte pirate en part du butin espéré (production ×
+  /// `resource_hours` × durée).
   final double ambushMin;
   final double ambushMax;
 

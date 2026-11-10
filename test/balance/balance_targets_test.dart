@@ -57,7 +57,7 @@ void main() {
     final run = Run('cible', variant((_) {}))..play(days: 7, verbose: false);
     final rules = run.rules;
     final data = run.data;
-    const ships = {UnitKind.largeCargo: 10, UnitKind.cruiser: 10};
+    const ships = {UnitKind.largeCargo: 5, UnitKind.cruiser: 5};
     final p = run.s.planet;
     final start = run.s.copyWith(
       pending: const [],
@@ -71,18 +71,35 @@ void main() {
     var net = 0.0;
     const n = 300;
     for (var seed = 0; seed < n; seed++) {
-      final out = sendMission(start, MissionKind.expedition, null, ships, 100, at, rules,
-          eventId: 900, seed: seed, exploreHours: 4);
+      final out = sendMission(
+        start,
+        MissionKind.expedition,
+        null,
+        ships,
+        100,
+        at,
+        rules,
+        eventId: 900,
+        seed: seed,
+        exploreHours: 4,
+      );
       final fuel = start.planet.resources.deuterium - out.state.planet.resources.deuterium;
       final arrived = advance(out.state, missions(out.state).single.dueAt, rules).state;
       final r = advance(arrived, missions(arrived).single.dueAt, rules);
       final rep = r.reports.single;
       final back = missions(r.state).firstOrNull;
       final cargo = back?.cargo ?? Resources.zero;
-      final lost = fleetValue(ships, data) - fleetValue(rep.attackerLeft, data) +
+      final lost =
+          fleetValue(ships, data) -
+          fleetValue(rep.attackerLeft, data) +
           fleetValue(rep.found, data);
-      net += cargo.metal + cargo.crystal + cargo.deuterium + fleetValue(rep.found, data) -
-          math.max(0.0, lost) - fuel;
+      net +=
+          cargo.metal +
+          cargo.crystal +
+          cargo.deuterium +
+          fleetValue(rep.found, data) -
+          math.max(0.0, lost) -
+          fuel;
     }
     // ignore: avoid_print
     print('BALANCE|expedition|net_moyen=${(net / n).round()}');

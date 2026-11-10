@@ -567,9 +567,7 @@ RaidReport decodeReport(Map<String, Object?> m) => RaidReport(
   loot: decodeResources(_map(m, 'loot')),
   debris: m['debris'] == null ? Resources.zero : decodeResources(_map(m, 'debris')),
   baseName: m['base_name'] as String?,
-  expedition: m['expedition'] == null
-      ? null
-      : ExpeditionOutcome.fromKey(_string(m, 'expedition')),
+  expedition: m['expedition'] == null ? null : ExpeditionOutcome.fromKey(_string(m, 'expedition')),
   found: m['found'] == null ? const {} : decodeUnits(_map(m, 'found')),
   patrol: m['patrol'] == true,
   // Absents des rapports antérieurs.

@@ -839,8 +839,9 @@ expedition:
   resource_hours: 1.5
   # Vaisseaux trouvés : valeur en heures de production par heure d'exploration.
   ship_hours: 1
-  # Embuscade : valeur de la flotte pirate, en part de la flotte envoyée.
-  ambush_strength: { min: 0.3, max: 0.8 }
+  # Embuscade : valeur de la flotte pirate, en part du butin espéré (production × resource_hours
+  # × durée) ; une escorte armée la repousse.
+  ambush_strength: { min: 0.5, max: 1.5 }
   # Retour retardé ou anticipé : durée du retour multipliée.
   delay_factor: 2
   early_factor: 0.5
