@@ -9,6 +9,8 @@ et un `detail`, insérés dans le prompt de `art/style/base_prompt.md`. Les vale
 `view`, `site` et `state` viennent de cette base ; une variante ou une image peut les remplacer.
 Une série peut désigner une autre charte avec `base`, chemin relatif à la racine du dépôt. Une variante
 ou une image peut limiter ses seeds avec `seeds`, quand sa `source` vient d'une seule seed.
+Une série peut donner `size`, `[largeur, hauteur]` en pixels (multiples de 16), pour un format non carré ;
+par défaut 1024 × 1024.
 
 Une série peut s'itérer : ajouter une entrée à `images`, avec son propre `variant`, puis relancer. Un code
 déjà présent dans `run.json` n'est pas régénéré ; galerie et planche montrent tous les essais.
@@ -50,7 +52,7 @@ def load_base(path=BASE_PROMPT):
     return template, blocks
 
 
-def workflow(prompt, seed, prefix, source=None, denoise=1):
+def workflow(prompt, seed, prefix, source=None, denoise=1, size=(SIZE, SIZE)):
     """Réglages du template ComfyUI image_qwen_image_2_1_t2i, réécriture de prompt désactivée.
 
     Avec `source`, nom d'une image du dossier d'entrée de ComfyUI, on part de cette image.
@@ -66,7 +68,7 @@ def workflow(prompt, seed, prefix, source=None, denoise=1):
         "encode": {"class_type": "TextEncodeQwenImage21", "inputs": {
             "clip": ["clip", 0], "prompt": prompt, "negative_prompt": "", "resolution": SIZE}},
         "latent": {"class_type": "EmptyLatentImage", "inputs": {
-            "width": SIZE, "height": SIZE, "batch_size": 1}},
+            "width": size[0], "height": size[1], "batch_size": 1}},
         "sample": {"class_type": "KSampler", "inputs": {
             "model": ["cache", 0], "positive": ["encode", 0], "negative": ["encode", 1],
             "latent_image": ["latent", 0], "seed": seed, "steps": 25, "cfg": 1,
@@ -126,14 +128,17 @@ def fetch(image):
 
 
 def contact_sheet(rows, columns, target):
-    sheet = Image.new("RGB", (columns * SHEET_CELL, len(rows) * SHEET_CELL), "black")
+    """Cellules de 512 px de large, hauteur selon le format des images."""
+    first = rows[0][0][1]
+    cell_h = round(SHEET_CELL * first.height / first.width)
+    sheet = Image.new("RGB", (columns * SHEET_CELL, len(rows) * cell_h), "black")
     for row, cells in enumerate(rows):
         for column, (label, image) in enumerate(cells):
-            thumb = image.resize((SHEET_CELL, SHEET_CELL), Image.LANCZOS)
+            thumb = image.resize((SHEET_CELL, cell_h), Image.LANCZOS)
             draw = ImageDraw.Draw(thumb)
             draw.rectangle((0, 0, 8 + 7 * len(label), 16), fill="black")
             draw.text((4, 2), label, fill="white")
-            sheet.paste(thumb, (column * SHEET_CELL, row * SHEET_CELL))
+            sheet.paste(thumb, (column * SHEET_CELL, row * cell_h))
     sheet.save(target)
 
 
@@ -189,7 +194,7 @@ def main():
                 prefix = f"starmine_test/{name}/{code}"
                 source = {**variant, **item}.get("source")
                 denoise = {**variant, **item}.get("denoise", 1)
-                graph = workflow(prompt, seed, prefix, load_source(source), denoise)
+                graph = workflow(prompt, seed, prefix, load_source(source), denoise, series.get("size", (SIZE, SIZE)))
                 prompt_id = call("/prompt", {"prompt": graph})["prompt_id"]
                 entry = wait_for(prompt_id)
                 saved = entry["outputs"]["save"]["images"][0]

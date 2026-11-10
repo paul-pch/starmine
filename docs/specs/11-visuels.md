@@ -9,7 +9,9 @@ puis packagées dans l'APK.
 État : registre `art/registry.yaml` et code d'affichage (`lib/ui/visuals.dart`, repli) en place. Les 36
 images t1 des bâtiments (12 × 3 climats, liste : `art/prompts/selection-t1-rocheux.md`) sont packagées
 en WebP, ainsi que les 12 images des recherches (liste : `art/prompts/selection-recherches.md`, charte
-`art/style/research_prompt.md`) ; les autres catégories restent en repli. Les seuils `tiers` et `temperature_bands` sont repris
+`art/style/research_prompt.md`), les 16 unités du chantier et les 3 hero planète (biome rocheux, série 59,
+charte `art/style/hero_prompt.md`) et 8 illustrations d'événements sur 16 (série 60, charte
+`art/style/story_prompt.md`) ; les autres catégories restent en repli. Les seuils `tiers` et `temperature_bands` sont repris
 dans le code, alignement vérifié par un test.
 
 ## Règles
@@ -36,26 +38,26 @@ dans le code, alignement vérifié par un test.
 | `research` | `research.<clé YAML>` | 1:1, 512 px, sans climat | 12 | Cartes et feuille de détail | Packagées |
 | `defense` | `defense.<clé YAML>` | 1:1, 512 px, sans climat | 8 | Cartes du chantier et feuille de détail | Packagées |
 | `ship` | `ship.<clé YAML>` | 1:1, 512 px, sans climat | 8 | Cartes du chantier et feuille de détail | Packagées |
-| `planet_hero` | `planet_hero.<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 3 | Hero de l'écran principal | **À produire** ; branché (repli affiché) |
+| `planet_hero` | `planet_hero.<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 3 | Hero de l'écran principal | Packagées (biome rocheux) |
 | `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 | Fond plein écran de l'ambiance Immersive | **À produire**, non branché |
 | `pirate` | `pirate.<clé YAML>` : les 6 vaisseaux des flottes pirates (`light_fighter`, `heavy_fighter`, `cruiser`, `battleship`, `small_cargo`, `large_cargo`), version pirate (coque disparate, marquages) | 1:1, 512 px | 6 | Détail du raid, rapport de combat (camp pirate) | **À produire**, non branché |
 | `pirate_base` | `pirate_base.<0-3>` (ordre de `pirate_bases.list` : avant-poste, repaire, forteresse, citadelle) | 4:3, 640 × 480 | 4 | Cartes des bases (onglet Flotte) | **À produire**, non branché |
 | `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur de recherche, chef de chantier) | 1:1, 512 px, portrait buste | 7 | Cartes de l'écran Officiers (spec 12) | **À produire**, non branché |
-| `story` | `story.<clé YAML de l'événement>` | 21:9, 1260 × 540 | 16 (catalogue actuel) | En-tête de la popover d'événement (spec 10, 14) | **À produire** ; la popover accepte l'image |
-| `scene` | `scene.<raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 21:9, 1260 × 540 | 5 | En-tête de la popover de fin de combat ; carte du champ de débris | **À produire**, non branché |
+| `story` | `story.<clé YAML de l'événement>` | 16:9, 1280 × 720, sujet centré | 16 (catalogue actuel) | En-tête de la popover d'événement (spec 10, 14) | **8 packagées**, 8 à produire (liste : `art/prompts/selection-story.md`) ; branché |
+| `scene` | `scene.<raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 16:9, 1280 × 720, sujet centré | 5 | En-tête de la popover de fin de combat ; carte du champ de débris | **À produire**, non branché |
 
-### Visuels manquants (2026-11-10)
+### Visuels manquants (2026-11-10, après la série 59)
 
 Par priorité (impact sur l'écran le plus vu d'abord) :
 
-1. `planet_hero` × 3 — déjà branché : visible dès l'export.
-2. `story` × 16 et `scene` × 5 — en-tête des popovers, porte le narratif.
-3. `pirate` × 6 — bandeau de raid et rapports, identité de la menace.
-4. `building` t2 et t3 × 72 — déjà branchés par les paliers ; à produire avec le t1 du même
+1. `story` × 8 restantes (`art/prompts/selection-story.md`) et `scene` × 5 — en-tête des popovers, porte
+   le narratif.
+2. `pirate` × 6 — bandeau de raid et rapports, identité de la menace.
+3. `building` t2 et t3 × 72 — déjà branchés par les paliers ; à produire avec le t1 du même
    climat en `parent`.
-5. `character` × 7 — écran Officiers.
-6. `pirate_base` × 4 — onglet Flotte.
-7. `background` × 3 — seulement pour l'ambiance Immersive.
+4. `character` × 7 — écran Officiers.
+5. `pirate_base` × 4 — onglet Flotte.
+6. `background` × 3 — seulement pour l'ambiance Immersive.
 
 Chaque catégorie non branchée demande, en plus de l'image, une méthode de `Visuals` (id →
 chemin) et l'appel `GameImage` à l'endroit indiqué, avec repli icône.
@@ -128,8 +130,30 @@ Images générées avec Qwen-Image-2.1, modèle limité à la recherche et à l'
 l'utilisateur (2026-11-09) : packagées dans l'APK, pour un usage non commercial uniquement. Tout
 projet d'usage commercial rouvre la question.
 
+### Illustrations de popover
+
+`story` et `scene` sont en 16:9, pas en 21:9 : la popover fait environ 350 dp de large sur un
+téléphone vertical, et une image de 21:9 n'y ferait que 150 dp de haut. En 16:9, elle fait environ
+197 dp, et la popover défile. Le sujet est centré, sans rien d'important près des bords. Décision de
+l'utilisateur (2026-11-10), charte `art/style/story_prompt.md`.
+
+### Hero planète
+
+Panorama au sol vu d'une crête : la colonie au tiers de la largeur, posée sur une falaise, une
+géante gazeuse et une lune dans un ciel bleu, avec une ambiance optimiste. Le tiers bas reste un sol
+rocheux, parce que le bandeau du nom le couvre. L'image n'est jamais recadrée : elle s'affiche en
+entier sur la largeur de l'écran. Le froid et le chaud sont déclinés depuis le tempéré
+(`denoise` 0,90).
+
+**Évolution ultérieure (hors V0) : biomes de planète.** D'autres jeux de 3 climats, avec d'autres
+paysages (cratère, côte, canyon, mesas…). Le jeu affiché se déduit de Tmax, qui est déjà tirée avec une
+graine stockée : jeu = Tmax modulo le nombre de biomes. Pas de migration ni de changement de
+sauvegarde. Id envisagé : `planet_hero.<biome>.<climat>`, le biome rocheux restant
+`planet_hero.<climat>`. Décision de l'utilisateur (2026-11-10) : reporté, le biome rocheux suffit
+pour l'instant.
+
 ## Points ouverts
 
 - Images 4:3 dédiées à C ou recadrage du 1:1 : à trancher sur les premiers rendus.
-- Charte de prompt des catégories `pirate`, `story`, `scene`, `character`, `pirate_base` à
+- Charte de prompt des catégories `pirate`, `scene`, `character`, `pirate_base` à
   écrire (`art/style/`), comme `unit_prompt.md` pour les unités.

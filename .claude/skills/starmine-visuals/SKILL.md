@@ -22,6 +22,15 @@ Recherches : 12 images validées, une par technologie, sans climat, listées dan
 `art/masters/research.<clé>/v1.png`. Règle de l'utilisateur : l'élément montré doit rester lisible en
 miniature (vérifier à 128 px) ; une seule série par technologie, les essais s'y ajoutent.
 
+Hero planète : 3 images validées (`planet_hero.<climat>`, biome rocheux, 21:9), série 59, charte
+`art/style/hero_prompt.md` ; le froid et le chaud sont déclinés depuis le tempéré. D'autres biomes sont
+reportés (spec 11).
+
+Événements : 8 images `story.<clé>` sur 16 validées (16:9, sujet centré), série 60, charte
+`art/style/story_prompt.md`. Suivi et reprise : `art/prompts/selection-story.md`. Règles de
+l'utilisateur : colon de dos au centre dans les scènes au sol ; ni personne ni vaisseau du joueur dans
+les scènes dans l'espace ; pas de ruines ni de civilisation disparue.
+
 Unités du chantier spatial : 16 images validées, 8 défenses (`defense.<clé>`) et 8 vaisseaux
 (`ship.<clé>`), sans climat, dans la série 58 (`art/prompts/serie-58-unites.md`, charte
 `art/style/unit_prompt.md`). Règle de l'utilisateur : jamais d'assemblage d'images (retouche de zone,

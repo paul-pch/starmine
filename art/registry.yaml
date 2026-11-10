@@ -1408,3 +1408,184 @@ images:
     code: e4-espionage_probe-7777
   master: art/masters/ship.espionage_probe/v1.png
   build: assets/visuels/ship.espionage_probe.webp
+- id: planet_hero.temperate
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame. In the middle distance, at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. The valley is made of bare dark neutral grey rock, with towering grey cliffs and distant mountains, on a lifeless alien planet of bare rock. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 9418d9c5-7a53-464b-b685-e503b13820dd
+    series: serie-59-planet-hero
+    code: e6-temperate-7777
+  master: art/masters/planet_hero.temperate/v1.png
+  build: assets/visuels/planet_hero.temperate.webp
+  notes: "Généré en 1792 × 768. Bord droit de la géante un peu fondu dans le ciel, accepté par l'utilisateur."
+- id: planet_hero.cold
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: planet_hero.temperate
+  prompt: "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame. In the middle distance, at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. The valley is blanketed in deep white snow and snowdrifts, with towering dark neutral grey rock cliffs heavily covered with thick white snow and ice and distant snow-covered mountains, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: c68ff652-b8b1-41aa-9388-0ee7d1ba0718
+    series: serie-59-planet-hero
+    code: d1-cold-7777
+    source: planet_hero.temperate v1
+    denoise: 0.9
+  master: art/masters/planet_hero.cold/v1.png
+  build: assets/visuels/planet_hero.cold.webp
+- id: planet_hero.hot
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: planet_hero.temperate
+  prompt: "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame. In the middle distance, at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. The valley is made of baked deep muted oxblood-red earth, with towering scorched dark basalt cliffs with a few thin glowing orange lava cracks and distant mountains, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 8b079280-fc12-4b43-806f-918b3c5e57e1
+    series: serie-59-planet-hero
+    code: d1-hot-7777
+    source: planet_hero.temperate v1
+    denoise: 0.9
+  master: art/masters/planet_hero.hot/v1.png
+  build: assets/visuels/planet_hero.hot.webp
+- id: story.rich_vein
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. Inside a huge open mining gallery carved into grey rock, a thick vein of gleaming silvery raw metal ore runs diagonally across the rock wall, freshly exposed by large far-future drilling machines. The silvery metal vein glints brightly under floodlights, and tiny miners in suits stand at its foot for scale. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 1c0d49cd-55b1-4b04-bb00-d1df98de18fa
+    series: serie-60-story
+    code: e2-rich_vein-4242
+  master: art/masters/story.rich_vein/v1.png
+  build: assets/visuels/story.rich_vein.webp
+- id: story.solar_storm
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. A small far-future colony of domes and towers on a grey rocky plain, seen from a distance under a violent solar storm: huge shimmering curtains of green and violet aurora and bright solar flares fill the sky. Arcs of blue electricity crackle along the colony's power lines and pylons. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: dfbcb4da-b0f0-47fe-a758-72c81a0c58bd
+    series: serie-60-story
+    code: e2-solar_storm-7777
+  master: art/masters/story.solar_storm/v1.png
+  build: assets/visuels/story.solar_storm.webp
+- id: story.unstable_wreck
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. A huge gutted far-future cruiser warship wreck slowly tumbling in orbit, its hull torn open, with cargo containers visible inside its open holds. Its damaged reactor leaks a glowing blue-green plume into space. In space, in orbit around a grey cratered moon that fills the lower part of the frame, with the black sky full of stars above. Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 37a91d52-9f79-48b0-b915-0aa829b76678
+    series: serie-60-story
+    code: e2-unstable_wreck-4242
+  master: art/masters/story.unstable_wreck/v1.png
+  build: assets/visuels/story.unstable_wreck.webp
+- id: story.deuterium_geyser
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. A huge geyser of heavy water erupts from the rocky ground next to a far-future deuterium synthesizer plant with a large pressure sphere: a tall column of white steam and glittering spray rises into the sky. Tiny vehicles hurry around its base, laying pipes to capture the jet. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 3951bdbc-0edf-42bf-9a76-38456b01a434
+    series: serie-60-story
+    code: e5-deuterium_geyser-4242
+  master: art/masters/story.deuterium_geyser/v1.png
+  build: assets/visuels/story.deuterium_geyser.webp
+- id: story.gravity_anomaly
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. A wide crater in the grey rock where dozens of huge boulders and rock slabs float motionless in mid-air above the crater floor, defying gravity, some of them several storeys high. Small far-future sensor masts and instruments stand around the crater rim, pointed at the floating rocks, and the light casts the shadows of the hovering boulders onto the ground below. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: f5e04e5c-bcd4-44c1-9de5-e3ce1e61bf80
+    series: serie-60-story
+    code: e7-gravity_anomaly-7777
+  master: art/masters/story.gravity_anomaly/v1.png
+  build: assets/visuels/story.gravity_anomaly.webp
+- id: story.drifting_wreck
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground. A long derelict far-future space cargo hauler, built for space and not shaped like a boat: an open lattice spine frame carrying rows of large cargo containers clamped all along it, a small dark cockpit module at the front and a cluster of dead engine nozzles at the rear. It drifts alone and slowly tumbles in low orbit, clearly abandoned for a long time: dented and scorched hull plates, missing panels, dark unlit windows and loose cables trailing behind it. Its rows of cargo containers are still full and intact, a few of them knocked loose and floating beside the frame. In space, in low orbit just above a lifeless grey rocky planet whose curved horizon, with a thin bright rim of atmosphere, crosses the lower part of the frame, with the black sky full of stars above. Art direction: realistic sci-fi concept art, hopeful mood, warm golden sunlight striking the hull with rich warm tones, crisp contrast. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 0d3fac3c-71ab-4ec5-a079-78ac23a7e7f0
+    series: serie-60-story
+    code: e10-drifting_wreck-7777
+  master: art/masters/story.drifting_wreck/v1.png
+  build: assets/visuels/story.drifting_wreck.webp
+- id: story.gallery_collapse
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. The entrance of a far-future crystal mine gallery dug into a towering grey cliff has just collapsed: a huge pile of fallen rock and broken metal support beams blocks the tunnel mouth, with thick dust still billowing out of it. Shards of glowing pale blue crystal glint among the rubble, and tiny rescue vehicles with flashing orange lights stand at the foot of the rock pile. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 282d6bf4-db38-4f18-86b9-a06bbf1225e4
+    series: serie-60-story
+    code: e11-gallery_collapse-4242
+  master: art/masters/story.gallery_collapse/v1.png
+  build: assets/visuels/story.gallery_collapse.webp
+- id: story.sabotage
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. A far-future construction site where a large high-tech building stands half-built: its tall metal scaffolding has been blown apart and partly collapsed, with twisted beams hanging down and a toppled construction crane lying across the site. Black scorch marks of explosive charges cover the broken scaffolding, with showers of sparks and small fires still burning among the wreckage. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: d7602bf7-7ed0-415b-be25-f4fd6500813f
+    series: serie-60-story
+    code: e12-sabotage-4242
+  master: art/masters/story.sabotage/v1.png
+  build: assets/visuels/story.sabotage.webp

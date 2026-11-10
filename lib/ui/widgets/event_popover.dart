@@ -76,7 +76,7 @@ class EventPopover extends StatelessWidget {
                     path: image,
                     icon: icon,
                     width: c.maxWidth,
-                    height: c.maxWidth * 9 / 21,
+                    height: c.maxWidth * 9 / 16,
                   ),
                 ),
               Padding(
