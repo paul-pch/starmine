@@ -415,12 +415,7 @@ bool canServe(GameState s, DateTime now) {
   } else if (spec != null) {
     final r = resolveGambles(spec.effects, random);
     state = applyStoryEffects(state, spec, r.effects, now, rules);
-    outcome = StoryOutcome(
-      key: spec.key,
-      at: now,
-      kind: StoryOutcomeKind.happened,
-      won: r.won,
-    );
+    outcome = StoryOutcome(key: spec.key, at: now, kind: StoryOutcomeKind.happened, won: r.won);
   }
   final next = StoryEvent.chain(
     id: e.id,

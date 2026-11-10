@@ -48,9 +48,8 @@ String storyEffectText(GameData data, StoryEffectSpec e) => switch (e.type) {
         'sinon : ${_list(data, e.lose)}',
 };
 
-String _list(GameData data, List<StoryEffectSpec> effects) => effects.isEmpty
-    ? 'rien'
-    : [for (final e in effects) storyEffectText(data, e)].join(', ');
+String _list(GameData data, List<StoryEffectSpec> effects) =>
+    effects.isEmpty ? 'rien' : [for (final e in effects) storyEffectText(data, e)].join(', ');
 
 String _unitName(GameData data, StoryEffectSpec e) =>
     e.unit == null ? 'unités' : data.unit(e.unit!).name.toLowerCase();

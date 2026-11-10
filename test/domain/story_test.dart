@@ -291,7 +291,13 @@ void main() {
     expect(fewer.planet.count(UnitKind.lightFighter), 0);
 
     final rate = rules.hourlyProduction(s.planet, s.research);
-    final battle = applyStoryEffects(s, spec('orbital_battle'), spec('orbital_battle').effects, t0, rules);
+    final battle = applyStoryEffects(
+      s,
+      spec('orbital_battle'),
+      spec('orbital_battle').effects,
+      t0,
+      rules,
+    );
     expect(battle.planet.debris.metal, closeTo(rate.metal * 6, 1));
     expect(battle.planet.debris.crystal, closeTo(rate.crystal * 6, 1));
 
@@ -302,10 +308,17 @@ void main() {
     expect(owed.first.endsAt, t0.add(const Duration(hours: 24)));
     final before = advance(invested, t0.add(const Duration(hours: 23)), rules).state;
     final after = advance(invested, t0.add(const Duration(hours: 25)), rules).state;
-    final plain = advance(invested.copyWith(effects: const []), t0.add(const Duration(hours: 25)), rules).state;
+    final plain = advance(
+      invested.copyWith(effects: const []),
+      t0.add(const Duration(hours: 25)),
+      rules,
+    ).state;
     expect(before.effects, hasLength(2));
     expect(after.effects, isEmpty);
-    expect(after.planet.resources.metal, closeTo(plain.planet.resources.metal + owed.first.value, 1));
+    expect(
+      after.planet.resources.metal,
+      closeTo(plain.planet.resources.metal + owed.first.value, 1),
+    );
   });
 
   test('pari : déterministe, les deux issues', () {
