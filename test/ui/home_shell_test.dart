@@ -18,10 +18,7 @@ import 'fakes.dart';
 
 void main() {
   /// Téléphone de référence : 390 × 844 dp.
-  Future<(GameController, StarmineDatabase)> open(
-    WidgetTester tester, {
-    FakeClock? clock,
-  }) async {
+  Future<(GameController, StarmineDatabase)> open(WidgetTester tester, {FakeClock? clock}) async {
     tester.view.devicePixelRatio = 3;
     tester.view.physicalSize = const Size(1170, 2532);
     addTearDown(tester.view.reset);
@@ -147,7 +144,7 @@ void main() {
       repository: GameRepository(db),
       data: gameData,
       notifier: FakeNotifier(),
-      clock: (clock ?? FakeClock(t0)).call,
+      clock: FakeClock(t0).call,
       random: math.Random(1),
     );
     await tester.runAsync(reloaded.init);
@@ -176,7 +173,7 @@ void main() {
       repository: GameRepository(db),
       data: gameData,
       notifier: FakeNotifier(),
-      clock: (clock ?? FakeClock(t0)).call,
+      clock: FakeClock(t0).call,
       random: math.Random(1),
     );
     await tester.runAsync(reloaded.init);
