@@ -8,7 +8,6 @@ import '../format.dart';
 import '../game_controller.dart';
 import '../resource_style.dart';
 import '../theme.dart';
-import '../visuals.dart';
 import '../widgets/info_button.dart';
 
 const fleetHelp =
@@ -126,13 +125,37 @@ class _MissionCard extends StatelessWidget {
   final FleetMission mission;
   final DateTime now;
 
+  /// Étapes de la mission et rang de l'étape en cours.
+  (List<String>, int) get _steps {
+    final m = mission;
+    return switch (m.kind) {
+      MissionKind.shelter => (const ['Absence'], 0),
+      MissionKind.expedition => (
+        const ['Aller', 'Exploration', 'Retour'],
+        m.returning
+            ? 2
+            : m.exploring
+            ? 1
+            : 0,
+      ),
+      _ => (const ['Aller', 'Retour'], m.returning ? 1 : 0),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final data = controller.data;
     final m = mission;
-    final target = m.target == null ? null : data.pirateBases.list[m.target!].name;
-    final left = fmtDuration(m.dueAt.difference(now));
+    final target = m.kind == MissionKind.expedition
+        ? 'Espace profond'
+        : m.target == null
+        ? null
+        : data.pirateBases.list[m.target!].name;
+    final (steps, current) = _steps;
+    final end = m.dueAt.toLocal();
+    String two(int n) => n.toString().padLeft(2, '0');
+    final small = theme.textTheme.bodySmall;
     return Card(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 12, 8, 8),
@@ -140,15 +163,59 @@ class _MissionCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text([missionName(m.kind), ?target].join(' · '), style: theme.textTheme.titleSmall),
-            Text(
-              m.returning
-                  ? 'Retour dans $left'
-                  : m.exploring
-                  ? 'Exploration · fin dans $left'
-                  : 'Arrivée dans $left',
-              style: mono(theme.textTheme.bodySmall),
+            const SizedBox(height: 4),
+            // Étapes : passées en secondaire, en cours en couleur d'action, à venir en tertiaire.
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                for (final (i, step) in steps.indexed) ...[
+                  if (i > 0)
+                    const Icon(Icons.chevron_right, size: 16, color: Palette.textTertiary),
+                  if (i < current)
+                    const Icon(Icons.check, size: 14, color: Palette.textSecondary),
+                  Text(
+                    step,
+                    style: small?.copyWith(
+                      color: i == current
+                          ? Palette.action
+                          : i < current
+                          ? Palette.textSecondary
+                          : Palette.textTertiary,
+                      fontWeight: i == current ? FontWeight.w600 : null,
+                    ),
+                  ),
+                ],
+              ],
             ),
-            Text(_units(m.ships, data), style: theme.textTheme.bodySmall),
+            Padding(
+              padding: const EdgeInsets.only(top: 6, bottom: 4, right: 8),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(3),
+                child: LinearProgressIndicator(
+                  value: m.progress(now),
+                  minHeight: 6,
+                  color: Palette.action,
+                  backgroundColor: Palette.inProgressTrack,
+                  semanticsLabel: '${steps[current]} de la mission',
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '${steps[current]} · reste ${fmtDuration(m.dueAt.difference(now))}',
+                      style: mono(small),
+                    ),
+                  ),
+                  Text('Fin ${two(end.hour)}:${two(end.minute)}', style: mono(small)),
+                ],
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(_units(m.ships, data), style: small),
             if (m.cargo != Resources.zero) CostLine(cost: m.cargo),
             if (!m.returning)
               Align(
@@ -544,14 +611,6 @@ class FleetStatusCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: Row(
                     children: [
-                      GameImage(
-                        path: VisualsScope.of(context).unit(data.unit(k)),
-                        icon: ItemStyle.unitIcon,
-                        width: 32,
-                        radius: 6,
-                        iconSize: 18,
-                      ),
-                      const SizedBox(width: 12),
                       Expanded(child: Text(data.unit(k).name)),
                       Text(
                         fmtAmount(state.planet.count(k).toDouble()),

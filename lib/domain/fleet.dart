@@ -404,7 +404,12 @@ GameState recallMission(GameState state, int id, DateTime now, Rules rules) {
           rules,
         )
       : now.difference(m.departedAt);
-  final back = m.copyWith(dueAt: now.add(elapsed), returning: true, exploring: false);
+  final back = m.copyWith(
+    dueAt: now.add(elapsed),
+    returning: true,
+    exploring: false,
+    phaseAt: now,
+  );
   return s.copyWith(pending: [for (final e in s.pending) e.id == id ? back : e]);
 }
 
@@ -426,7 +431,13 @@ GameState _withBase(GameState s, PirateBase b) =>
   final base = _respawned(s.bases[target]);
   final duration = flightDuration(m.ships, spec.distance, m.speedPercent, s.research, rules);
   FleetMission back(Map<UnitKind, int> ships, Resources cargo) =>
-      m.copyWith(dueAt: at.add(duration), ships: ships, cargo: cargo, returning: true);
+      m.copyWith(
+        dueAt: at.add(duration),
+        ships: ships,
+        cargo: cargo,
+        returning: true,
+        phaseAt: at,
+      );
 
   if (!baseAvailable(base, at)) {
     return (state: _withBase(s, base), next: back(m.ships, Resources.zero), report: null);
@@ -607,7 +618,11 @@ ExpeditionOutcome drawExpedition(double hours, GameData data, math.Random random
     final explore = Duration(
       milliseconds: (m.exploreHours * Duration.millisecondsPerHour / rules.speed).round(),
     );
-    return (state: s, next: m.copyWith(dueAt: at.add(explore), exploring: true), report: null);
+    return (
+      state: s,
+      next: m.copyWith(dueAt: at.add(explore), exploring: true, phaseAt: at),
+      report: null,
+    );
   }
   final random = math.Random(m.seed);
   final outcome = drawExpedition(m.exploreHours, data, random);
@@ -622,6 +637,7 @@ ExpeditionOutcome drawExpedition(double hours, GameData data, math.Random random
     cargo: cargo,
     returning: true,
     exploring: false,
+    phaseAt: at,
   );
   RaidReport report({
     Map<UnitKind, int>? left,

@@ -232,14 +232,23 @@ void main() {
     expect(expeditionSlots(admiral, gameData), 2);
     expect(send(admiral, MissionKind.expedition, null, ships, explore: 1).block, isNull);
 
+    expect(m.progress(t0), 0);
+    expect(m.progress(m.dueAt), 1);
     final arrived = advance(out.state, m.dueAt, rules).state;
     final exploring = missions(arrived).single;
     expect(exploring.exploring, isTrue);
+    expect(exploring.phaseAt, m.dueAt);
     expect(exploring.dueAt, m.dueAt.add(const Duration(hours: 4)));
+    expect(exploring.progress(m.dueAt.add(const Duration(hours: 1))), closeTo(0.25, 1e-9));
     final done = advance(arrived, exploring.dueAt, rules);
     final again = advance(arrived, exploring.dueAt, rules);
     expect(done.reports.single.expedition, again.reports.single.expedition);
     expect(done.state.counters[Counter.expeditions], 1);
+    final back = missions(done.state).firstOrNull;
+    if (back != null) {
+      expect(back.returning, isTrue);
+      expect(back.phaseAt, exploring.dueAt);
+    }
   });
 
   test('expédition : chaque résultat', () {

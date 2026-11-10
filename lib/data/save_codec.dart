@@ -104,6 +104,7 @@ Map<String, Object?> eventPayload(GameEvent event) => switch (event) {
     'seed': event.seed,
     if (event.exploreHours > 0) 'explore_hours': event.exploreHours,
     if (event.exploring) 'exploring': true,
+    'phase_at': event.phaseAt.millisecondsSinceEpoch,
   },
 };
 
@@ -291,6 +292,8 @@ GameEvent decodeEvent({
         seed: _int(payload, 'seed'),
         exploreHours: (payload['explore_hours'] as num?)?.toDouble() ?? 0,
         exploring: payload['exploring'] == true,
+        // Absent avant la v11 : début de phase = départ.
+        phaseAt: payload['phase_at'] == null ? null : fromEpochMs(_int(payload, 'phase_at')),
       );
     case storyEventType:
       return StoryEvent(

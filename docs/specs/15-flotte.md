@@ -181,11 +181,15 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
 
 ### UI
 
-- Onglet Flotte, en tête : carte **Ta flotte** (vignette, nom, nombre à quai, nombre en vol,
-  pour chaque type de vaisseau possédé ; « Aucun vaisseau » sinon).
+- Onglet Flotte, en tête : carte **Ta flotte** (nom, nombre à quai, nombre en vol, pour
+  chaque type de vaisseau possédé, sans image ; « Aucun vaisseau » sinon).
+- **Mission en vol** : étapes (Aller › Exploration › Retour pour une expédition, Aller ›
+  Retour, Absence pour une mise à l'abri ; étape en cours en couleur d'action, passées
+  cochées), barre d'avancée de l'étape en cours (début de phase `phase_at` de la mission),
+  « <étape> · reste … » et heure de fin.
 - Onglet Flotte : ligne de limites « Attaques 0 / 1 · Expéditions 0 / N · N vaisseaux par
   mission » (infobulle : Informatique et Amiral) ; carte **Expédition** (bouton
-  « Explorer ») ; missions en vol avec phase (aller, exploration, retour).
+  « Explorer »).
 - Feuille d'envoi : puces de durée d'exploration ; compteur « n / plafond » ; recyclage :
   recycleurs et vaisseaux de combat (escorte à 0 par défaut). Sélection par défaut : tous
   les vaisseaux adaptés, dans la limite du plafond.

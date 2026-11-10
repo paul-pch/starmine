@@ -273,7 +273,8 @@ class FleetMission extends GameEvent {
     required this.seed,
     this.exploreHours = 0,
     this.exploring = false,
-  });
+    DateTime? phaseAt,
+  }) : _phaseAt = phaseAt;
 
   final MissionKind kind;
 
@@ -295,12 +296,25 @@ class FleetMission extends GameEvent {
   final double exploreHours;
   final bool exploring;
 
+  final DateTime? _phaseAt;
+
+  /// Début de la phase en cours (aller, exploration, retour) ; [departedAt] par défaut.
+  DateTime get phaseAt => _phaseAt ?? departedAt;
+
+  /// Avancée de la phase en cours à [now], de 0 à 1.
+  double progress(DateTime now) {
+    final total = dueAt.difference(phaseAt).inMilliseconds;
+    if (total <= 0) return 1;
+    return (now.difference(phaseAt).inMilliseconds / total).clamp(0.0, 1.0);
+  }
+
   FleetMission copyWith({
     DateTime? dueAt,
     Map<UnitKind, int>? ships,
     Resources? cargo,
     bool? returning,
     bool? exploring,
+    DateTime? phaseAt,
   }) => FleetMission(
     id: id,
     planetId: planetId,
@@ -315,5 +329,6 @@ class FleetMission extends GameEvent {
     seed: seed,
     exploreHours: exploreHours,
     exploring: exploring ?? this.exploring,
+    phaseAt: phaseAt ?? _phaseAt,
   );
 }
