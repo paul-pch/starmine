@@ -293,27 +293,60 @@ class _SendSheetState extends State<SendSheet> {
           children: [
             Text(title, style: theme.textTheme.titleLarge),
             const SizedBox(height: 8),
-            for (final k in _available)
+            // Tout ou rien en un tap ; par type : curseur 0 → max, − / + pour l'unité.
+            Wrap(
+              spacing: 8,
+              children: [
+                ActionChip(
+                  label: const Text('Tout'),
+                  onPressed: () => setState(() {
+                    for (final k in _available) {
+                      _ships[k] = state.planet.count(k);
+                    }
+                  }),
+                ),
+                ActionChip(
+                  label: const Text('Aucun'),
+                  onPressed: () => setState(() {
+                    for (final k in _available) {
+                      _ships[k] = 0;
+                    }
+                  }),
+                ),
+              ],
+            ),
+            for (final k in _available) ...[
+              const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(child: Text(data.unit(k).name)),
+                  Text(
+                    '${_ships[k] ?? 0} / ${state.planet.count(k)}',
+                    style: mono(theme.textTheme.bodyMedium),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
                   IconButton(
-                    tooltip: 'Moins',
+                    tooltip: 'Moins de ${data.unit(k).name}',
                     onPressed: (_ships[k] ?? 0) > 0
                         ? () => setState(() => _ships[k] = (_ships[k] ?? 0) - 1)
                         : null,
                     icon: const Icon(Icons.remove),
                   ),
-                  SizedBox(
-                    width: 72,
-                    child: Text(
-                      '${_ships[k] ?? 0} / ${state.planet.count(k)}',
-                      textAlign: TextAlign.center,
-                      style: mono(theme.textTheme.bodyMedium),
+                  Expanded(
+                    child: Slider(
+                      value: (_ships[k] ?? 0).toDouble(),
+                      max: state.planet.count(k).toDouble(),
+                      divisions: state.planet.count(k),
+                      label: '${_ships[k] ?? 0}',
+                      semanticFormatterCallback: (v) => '${v.round()} ${data.unit(k).name}',
+                      onChanged: (v) => setState(() => _ships[k] = v.round()),
                     ),
                   ),
                   IconButton(
-                    tooltip: 'Plus',
+                    tooltip: 'Plus de ${data.unit(k).name}',
                     onPressed: (_ships[k] ?? 0) < state.planet.count(k)
                         ? () => setState(() => _ships[k] = (_ships[k] ?? 0) + 1)
                         : null,
@@ -321,6 +354,7 @@ class _SendSheetState extends State<SendSheet> {
                   ),
                 ],
               ),
+            ],
             const SizedBox(height: 8),
             if (shelter) ...[
               Text('Durée d’absence', style: theme.textTheme.titleSmall),

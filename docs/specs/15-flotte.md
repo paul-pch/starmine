@@ -104,6 +104,8 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
 - **Onglet Flotte** (5ᵉ) : places, missions en vol (rappel), mise à l'abri, bases (distance,
   état, débris, dernier rapport d'espionnage, Espionner / Recycler / Attaquer) ; feuille
   d'envoi (vaisseaux, vitesse ou durée d'abri, durée, carburant, soute, refus en clair).
+  Sélection des vaisseaux : puces « Tout » / « Aucun », puis par type « n / possédés », un
+  curseur de 0 au maximum et − / + pour l'unité ; tous les vaisseaux adaptés par défaut.
 - **Persistance** : table `pirate_bases` (schéma v9), événement `fleet_mission`,
   sauvegarde v9. **Notifications** : arrivée et retour.
 - **Tests** : `missions_test.dart` ; équilibre mesuré et figé dans `test/balance/`
