@@ -1,0 +1,82 @@
+{
+  "series": "serie-59-planet-hero",
+  "base": "art/style/hero_prompt.md",
+  "size": [
+    1792,
+    768
+  ],
+  "seeds": [
+    4242,
+    7777
+  ],
+  "images": [
+    {
+      "id": "planet_hero.temperate",
+      "variant": "e1"
+    },
+    {
+      "id": "planet_hero.temperate",
+      "variant": "e2",
+      "light": "Art direction: realistic sci-fi concept art, dark low-key image with subdued exposure, dim late-afternoon light, deep long shadows, dark muted neutral grey palette, light atmospheric haze."
+    },
+    {
+      "id": "planet_hero.temperate",
+      "variant": "e3",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible."
+    },
+    {
+      "id": "planet_hero.temperate",
+      "variant": "e4",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible.",
+      "light": "Art direction: realistic sci-fi concept art, dark low-key image with subdued exposure, dim late-afternoon light, deep long shadows, dark muted neutral grey palette, light atmospheric haze."
+    },
+    {
+      "id": "planet_hero.temperate",
+      "variant": "e5",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit."
+    },
+    {
+      "id": "planet_hero.temperate",
+      "variant": "e6",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit."
+    },
+    {
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "d1",
+      "source": "serie-59-planet-hero/e6-temperate-7777_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        7777
+      ],
+      "id": "planet_hero.cold",
+      "site": "The valley is blanketed in deep white snow and snowdrifts, with towering dark neutral grey rock cliffs heavily covered with thick white snow and ice and distant snow-covered mountains, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow."
+    },
+    {
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "d1",
+      "source": "serie-59-planet-hero/e6-temperate-7777_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        7777
+      ],
+      "id": "planet_hero.hot",
+      "site": "The valley is made of baked deep muted oxblood-red earth, with towering scorched dark basalt cliffs with a few thin glowing orange lava cracks and distant mountains, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance."
+    }
+  ]
+}
