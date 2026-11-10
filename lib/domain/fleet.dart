@@ -404,12 +404,7 @@ GameState recallMission(GameState state, int id, DateTime now, Rules rules) {
           rules,
         )
       : now.difference(m.departedAt);
-  final back = m.copyWith(
-    dueAt: now.add(elapsed),
-    returning: true,
-    exploring: false,
-    phaseAt: now,
-  );
+  final back = m.copyWith(dueAt: now.add(elapsed), returning: true, exploring: false, phaseAt: now);
   return s.copyWith(pending: [for (final e in s.pending) e.id == id ? back : e]);
 }
 
@@ -431,13 +426,7 @@ GameState _withBase(GameState s, PirateBase b) =>
   final base = _respawned(s.bases[target]);
   final duration = flightDuration(m.ships, spec.distance, m.speedPercent, s.research, rules);
   FleetMission back(Map<UnitKind, int> ships, Resources cargo) =>
-      m.copyWith(
-        dueAt: at.add(duration),
-        ships: ships,
-        cargo: cargo,
-        returning: true,
-        phaseAt: at,
-      );
+      m.copyWith(dueAt: at.add(duration), ships: ships, cargo: cargo, returning: true, phaseAt: at);
 
   if (!baseAvailable(base, at)) {
     return (state: _withBase(s, base), next: back(m.ships, Resources.zero), report: null);

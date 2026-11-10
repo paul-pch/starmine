@@ -169,10 +169,8 @@ class _MissionCard extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 for (final (i, step) in steps.indexed) ...[
-                  if (i > 0)
-                    const Icon(Icons.chevron_right, size: 16, color: Palette.textTertiary),
-                  if (i < current)
-                    const Icon(Icons.check, size: 14, color: Palette.textSecondary),
+                  if (i > 0) const Icon(Icons.chevron_right, size: 16, color: Palette.textTertiary),
+                  if (i < current) const Icon(Icons.check, size: 14, color: Palette.textSecondary),
                   Text(
                     step,
                     style: small?.copyWith(
