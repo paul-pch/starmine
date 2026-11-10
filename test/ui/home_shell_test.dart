@@ -218,6 +218,8 @@ void main() {
     expect(find.byType(EventPopover), findsOneWidget);
     expect(find.text(spec.description), findsOneWidget);
     await tester.tap(find.text(o.kind == StoryOutcomeKind.awaiting ? 'Plus tard' : 'Fermer'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
     await tester.pump(const Duration(milliseconds: 500));
     expect(find.byType(EventPopover), findsNothing);
 
