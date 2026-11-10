@@ -61,7 +61,7 @@ Le catalogue est appelé à s'enrichir.
 | --- | --- | --- | --- |
 | Filon riche | + | +30 % de production de métal, 12 h | Géologue : plus long |
 | Geyser de deutérium | + | +40 % de deutérium, 8 h | Géologue |
-| Découverte archéologique | + | −20 % du temps restant de la recherche | Technocrate : plus fort |
+| Anomalie gravitationnelle | + | −20 % du temps restant de la recherche | Technocrate : plus fort |
 | Épave à la dérive | + | 4 h de production de métal et de cristal | — |
 | Bataille en orbite proche | + | Débris : 6 h de métal et de cristal | — |
 | Convoi marchand | choix | Échanger 15 % du métal contre 8 h de cristal, ou refuser (défaut) | — |
@@ -118,6 +118,11 @@ ces champs reprend avec un stock vide) ; effets en cours (`active_effects`, JSON
 `delayed` y garde son montant) et journal (`story_log`, colonne `won` du pari en schéma
 v10) ; sauvegarde JSON v10 (`effects`), le journal n'en fait pas partie (spec 08).
 
+Clé retirée du catalogue (2026-11-10 : `archaeology` remplacée par `gravity_anomaly`, pour ne pas
+anticiper le lore des futurs scénarios). Une sauvegarde qui la cite reste lisible : l'effet en cours
+garde ses valeurs, le tirage l'ignore, et l'entrée du journal affiche la clé brute à la place du nom,
+sans détail au tap.
+
 ## Code
 
 `lib/domain/story.dart` (tirage, effets, choix), `StoryEvent` (`events.dart`),
@@ -136,5 +141,5 @@ ligne, service (délai, un à la fois, pas pendant un choix), debug.
 
 - Enrichir le catalogue (nouveaux événements, événements liés à la progression).
 - Équilibrage des nouveaux choix (gains fixes en unités : à indexer sur la progression ?).
-- Narratif : la popover accepte une illustration 21:9 (`story.<clé>`, spec 11).
+- Narratif : la popover accepte une illustration 16:9 (`story.<clé>`, spec 11).
 - Illustrations : registre d'images (spec 11), jamais porteuses d'information.

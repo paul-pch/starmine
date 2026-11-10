@@ -599,12 +599,12 @@ story_events:
       requires: { deuterium_synthesizer: 1 }
       effects: [{ type: production, resource: deuterium, value: 0.4, hours: 8 }]
       officer: { kind: geologist, per_level: 0.1 }
-    archaeology:
-      name: Découverte archéologique
+    gravity_anomaly:
+      name: Anomalie gravitationnelle
       kind: bonus
       description: >-
-        Des ruines d'une civilisation disparue livrent des notes de recherche étonnamment
-        avancées. Les chercheurs gagnent un temps précieux.
+        Au fond d'un cratère, des blocs de roche flottent immobiles, défiant la gravité. Les
+        chercheurs y installent leurs capteurs : leurs mesures font avancer les travaux en cours.
       requires: { research_lab: 1 }
       effects: [{ type: shorten, target: research, value: 0.2 }]
       officer: { kind: technocrat, per_level: 0.1 }
