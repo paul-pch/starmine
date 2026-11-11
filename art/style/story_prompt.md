@@ -14,6 +14,9 @@ Choix de l'utilisateur en Q/R (série 60) :
   centre, regarde l'événement. Les scènes dans l'espace n'en ont pas. Décision de l'utilisateur après
   la série 60 : la vue ci-dessous le produit sur les 2 seeds (essai e2), alors qu'il était
   involontaire. Ne pas la reformuler sans retester ;
+- **tête nue sur la planète du joueur** (décision de l'utilisateur, `prospectors` e26) : dans les scènes au sol,
+  personnages sans casque ; les tenues restent (colon en combinaison de travail blanche et grise, tenues propres à
+  chaque groupe). Les images validées avant cette règle gardent leurs casques ;
 - mise au point sur 3 scènes types (`rich_vein`, `solar_storm`, `unstable_wreck`), puis les 13 autres
   une par une.
 

@@ -13,23 +13,19 @@ Suivi des images `story.<clé>` choisies par l'utilisateur, une à la fois, dans
 | `solar_storm` | néfaste | validée | `e2-solar_storm-7777` | |
 | `gallery_collapse` | néfaste | validée | `e11-gallery_collapse-4242` | |
 | `sabotage` | néfaste | validée | `e12-sabotage-4242` | |
-| `storage_leak` | néfaste | **à faire** | | prochaine |
-| `orbital_battle` | favorable, espace | à faire | | |
-| `merchant_convoy` | choix, espace | à faire | | |
-| `escort_request` | choix, espace | à faire | | |
+| `storage_leak` | néfaste | validée | `e13-storage_leak-7777` | colon assis, accepté |
+| `merchant_convoy` | choix, espace | validée | `e15-merchant_convoy-4242` | coque d'allure marine acceptée |
+| `escort_request` | choix, espace | validée | `e17-escort_request-4242` | vue de profil, sens du vol imposé |
 | `unstable_wreck` | choix, espace | validée | `e2-unstable_wreck-4242` | |
-| `pirate_deserters` | choix | à faire | | |
-| `advance_contract` | choix | à faire | | |
-| `prospectors` | choix | à faire | | |
-| `distress_signal` | choix | à faire | | |
+| `pirate_deserters` | choix | validée | `e19-pirate_deserters-7777` | pilotes de face, visières opaques, pas de témoin |
+| `advance_contract` | choix | validée | `e22-advance_contract-7777` | colon et émissaire de la guilde, lingot de fer |
+| `prospectors` | choix | validée | `e26d-prospectors-7777` | groupe de dos vers l'astéroïde, tête nue (depuis e25-7777, denoise 0,92) |
+| `distress_signal` | choix, espace | validée | `e28-distress_signal-7777` | un seul transporteur fonctionnel, avarie et balise |
 
-## Pour reprendre
+## État
 
-- Ajouter l'entrée suivante (variante `e13`) à `art/prompts/serie-60-story.json`, puis
-  `~/ComfyUI/.venv/bin/python tool/comfy_series.py art/prompts/serie-60-story.json` (les codes déjà générés
-  sont sautés).
-- Scène au sol : vue par défaut de la charte, avec le colon de dos au centre. Scène dans l'espace : vue et
-  règles de la section « Scènes dans l'espace » de la charte. Ton : bloc `mood` selon le tableau de la
-  charte (néfaste, pari).
-- Après validation : master `art/masters/story.<clé>/v1.png`, entrée `validated` au registre (format
-  `16:9 1280x720`), puis `python3 tool/export_visuals.py`.
+Série terminée : 15 événements sur 15 (`orbital_battle` retiré du jeu). Un nouvel événement du catalogue s'ajoute à
+`art/prompts/serie-60-story.json` avec la variante suivante (`e29`), puis
+`~/ComfyUI/.venv/bin/python tool/comfy_series.py art/prompts/serie-60-story.json` ; après validation, master
+`art/masters/story.<clé>/v1.png`, entrée `validated` au registre (format `16:9 1280x720`) et
+`python3 tool/export_visuals.py`.

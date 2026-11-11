@@ -10,7 +10,7 @@ puis packagées dans l'APK.
 images t1 des bâtiments (12 × 3 climats, liste : `art/prompts/selection-t1-rocheux.md`) sont packagées
 en WebP, ainsi que les 12 images des recherches (liste : `art/prompts/selection-recherches.md`, charte
 `art/style/research_prompt.md`), les 16 unités du chantier et les 3 hero planète (biome rocheux, série 59,
-charte `art/style/hero_prompt.md`) et 8 illustrations d'événements sur 16 (série 60, charte
+charte `art/style/hero_prompt.md`) et 15 illustrations d'événements sur 15 (série 60, charte
 `art/style/story_prompt.md`) ; les autres catégories restent en repli. Les seuils `tiers` et `temperature_bands` sont repris
 dans le code, alignement vérifié par un test.
 
@@ -43,7 +43,7 @@ dans le code, alignement vérifié par un test.
 | `pirate` | `pirate.<clé YAML>` : les 6 vaisseaux des flottes pirates (`light_fighter`, `heavy_fighter`, `cruiser`, `battleship`, `small_cargo`, `large_cargo`), version pirate (coque disparate, marquages) | 1:1, 512 px | 6 | Détail du raid, rapport de combat (camp pirate) | **À produire**, non branché |
 | `pirate_base` | `pirate_base.<0-3>` (ordre de `pirate_bases.list` : avant-poste, repaire, forteresse, citadelle) | 4:3, 640 × 480 | 4 | Cartes des bases (onglet Flotte) | **À produire**, non branché |
 | `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur de recherche, chef de chantier) | 1:1, 512 px, portrait buste | 7 | Cartes de l'écran Officiers (spec 12) | **À produire**, non branché |
-| `story` | `story.<clé YAML de l'événement>` | 16:9, 1280 × 720, sujet centré | 16 (catalogue actuel) | En-tête de la popover d'événement (spec 10, 14) | **8 packagées**, 8 à produire (liste : `art/prompts/selection-story.md`) ; branché |
+| `story` | `story.<clé YAML de l'événement>` | 16:9, 1280 × 720, sujet centré | 15 (catalogue actuel) | En-tête de la popover d'événement (spec 10, 14) | **15 packagées** (liste : `art/prompts/selection-story.md`) ; branché |
 | `scene` | `scene.<raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 16:9, 1280 × 720, sujet centré | 5 | En-tête de la popover de fin de combat ; carte du champ de débris | **À produire**, non branché |
 
 ### Visuels manquants (2026-11-10, après la série 59)

@@ -63,7 +63,6 @@ Le catalogue est appelé à s'enrichir.
 | Geyser de deutérium | + | +40 % de deutérium, 8 h | Géologue |
 | Anomalie gravitationnelle | + | −20 % du temps restant de la recherche | Technocrate : plus fort |
 | Épave à la dérive | + | 4 h de production de métal et de cristal | — |
-| Bataille en orbite proche | + | Débris : 6 h de métal et de cristal | — |
 | Convoi marchand | choix | Échanger 15 % du métal contre 8 h de cristal, ou refuser (défaut) | — |
 | Escorte demandée | choix | 10 h de cristal mais raid 12 h plus tôt, ou refuser (défaut) | — |
 | Épave instable | choix | Fouiller : 60 % 8 h de métal et de cristal, sinon −10 % du cristal ; ou laisser (défaut) | — |

@@ -664,14 +664,6 @@ story_events:
         Une brèche dans un hangar laisse s'échapper une partie du métal entreposé avant que
         les équipes ne la colmatent.
       effects: [{ type: stock, resource: metal, value: -0.1 }]
-    orbital_battle:
-      name: Bataille en orbite proche
-      kind: bonus
-      description: >-
-        Deux bandes pirates se sont affrontées au-dessus de la planète. Les carcasses
-        dérivent en orbite basse : il n'y a plus qu'à envoyer les recycleurs.
-      requires: { shipyard: 2 }
-      effects: [{ type: debris, hours: 6 }]
     merchant_convoy:
       name: Convoi marchand
       kind: choice

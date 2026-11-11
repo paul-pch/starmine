@@ -1589,3 +1589,117 @@ images:
     code: e12-sabotage-4242
   master: art/masters/story.sabotage/v1.png
   build: assets/visuels/story.sabotage.webp
+- id: story.storage_leak
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. A towering far-future metal storage silo, a tall cylindrical high-tech tank built against a grey cliff, has a long jagged breach torn open in its side wall. A thick stream of grey metal ingots and metal pellets pours out of the breach and spills into a large heap at its foot, while tiny repair drones with orange warning lights hover around the gash. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 1f98d4de-8443-49d5-91b5-8a5dbc7d72b0
+    series: serie-60-story
+    code: e13-storage_leak-7777
+  master: art/masters/story.storage_leak/v1.png
+  build: assets/visuels/story.storage_leak.webp
+- id: story.merchant_convoy
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground. A convoy of independent merchant spaceships, built for space and not shaped like boats, arrives in orbit: a large clean cargo ship leads, flanked by a few smaller ones in tight formation, all with mismatched hull paint and bright navigation lights. The lead ship carries transparent cargo pods packed with glowing pale blue crystal, clearly visible along its hull. In space, in orbit above a lifeless grey rocky planet whose curved horizon, with a thin bright rim of atmosphere, crosses the lower part of the frame, with the black sky full of stars above. Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 3d063c39-b6cd-4d31-86b2-1da3a150846a
+    series: serie-60-story
+    code: e15-merchant_convoy-4242
+  master: art/masters/story.merchant_convoy/v1.png
+  build: assets/visuels/story.merchant_convoy.webp
+- id: story.escort_request
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground. A lone far-future transport spaceship, built for space and not shaped like a boat, seen from the side in profile, flees at full speed from left to right: its nose points to the right, and its engine nozzles at the rear, on the left side of the ship, blaze with bright exhaust trailing behind it to the left. Its hull is lightly scorched by weapon fire. A short distance behind it, on its left, three small dark angular pirate fighters chase it in the same direction, firing thin red laser bolts that streak toward the transport. In space, in orbit above a lifeless grey rocky planet whose curved horizon, with a thin bright rim of atmosphere, crosses the lower part of the frame, with the black sky full of stars above. Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 825c0711-313a-4b89-92fb-91f476247d78
+    series: serie-60-story
+    code: e17-escort_request-4242
+  master: art/masters/story.escort_request/v1.png
+  build: assets/visuels/story.escort_request.webp
+- id: story.pirate_deserters
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. Three compact far-future pirate spacecraft, clearly science fiction and not shaped like aircraft, with no wings and no tail fins: armoured angular hulls of dark gunmetal with crude red markings, glowing thruster pods and heavy landing struts, have just landed side by side on the bare rocky ground, their canopies open and empty. In front of them stand only three pilots, facing the viewer with their empty hands raised, in worn dark flight suits and closed helmets with opaque mirrored visors that hide their faces, waiting to be let in. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 2a049708-5bca-4814-86e7-f70bd1dbb3a3
+    series: serie-60-story
+    code: e19-pirate_deserters-7777
+  master: art/masters/story.pirate_deserters/v1.png
+  build: assets/visuels/story.pirate_deserters.webp
+- id: story.advance_contract
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. A large heavy cargo lander of a guild of metal founders, clearly science fiction and not shaped like an aircraft, with no wings and no tail fins, has just landed on the bare rocky ground: a massive armoured hull of polished bronze-coloured metal, with its wide loading ramp lowered and its dim hold still empty. At the foot of the ramp, two people in closed helmets with opaque mirrored visors face each other: on the left a colonist in a plain white and grey work spacesuit, holding out a dull grey raw iron ingot; on the right a guild envoy in an ornate bronze-trimmed suit, reaching for it with one hand and holding a glowing contract tablet in the other. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: dc957642-8469-46b7-b684-dafc89df7518
+    series: serie-60-story
+    code: e22-advance_contract-7777
+  master: art/masters/story.advance_contract/v1.png
+  build: assets/visuels/story.advance_contract.webp
+- id: story.prospectors
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. An irregular potato-shaped grey asteroid, rough and cratered, clearly not round and not a moon, floats far away in the upper centre of the sky, of medium size, with a small battered prospector survey craft parked on the bare rocky ground nearby. In the foreground, seen from behind, a small group of only four people stands side by side with their backs to the viewer, all bareheaded with no helmets, all looking up toward the asteroid: only three prospectors in rugged scuffed orange work suits carrying drilling gear, and only one colonist in a plain white and grey work suit, bareheaded with short dark hair, in the middle, pointing up at the asteroid. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 41ad8261-ec11-4ba4-a18a-fb52bef3cf5b
+    series: serie-60-story
+    code: e26d-prospectors-7777
+    source: serie-60-story/e25-prospectors-7777_00001_.png
+    denoise: 0.92
+  master: art/masters/story.prospectors/v1.png
+  build: assets/visuels/story.prospectors.webp
+- id: story.distress_signal
+  category: story
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground. A single far-future cargo transport spaceship, built for space and not shaped like a boat, still working but partially damaged and stopped in orbit: its hull is mostly intact, with all its windows and running lights brightly lit, but one side has a torn, blackened gash from a recent attack, venting a thin plume of white gas, and one of its engines is dark while the others glow faintly. A bright red emergency distress beacon on top of the ship flashes, sending out a strong pulse of red light that stands out clearly. In space, in orbit above a lifeless grey rocky planet whose curved horizon, with a thin bright rim of atmosphere, crosses the lower part of the frame, with the black sky full of stars above. Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, a low raking sunlight lighting the hull clearly, deep shadows. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: b2d7ad5a-fa7f-47f8-9be5-f329c36107e2
+    series: serie-60-story
+    code: e28-distress_signal-7777
+  master: art/masters/story.distress_signal/v1.png
+  build: assets/visuels/story.distress_signal.webp

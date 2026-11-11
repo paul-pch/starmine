@@ -293,8 +293,8 @@ void main() {
     final rate = rules.hourlyProduction(s.planet, s.research);
     final battle = applyStoryEffects(
       s,
-      spec('orbital_battle'),
-      spec('orbital_battle').effects,
+      deserters,
+      const [StoryEffectSpec(type: StoryEffectType.debris, hours: 6)],
       t0,
       rules,
     );

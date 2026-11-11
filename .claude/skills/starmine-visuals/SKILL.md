@@ -26,10 +26,11 @@ Hero planète : 3 images validées (`planet_hero.<climat>`, biome rocheux, 21:9)
 `art/style/hero_prompt.md` ; le froid et le chaud sont déclinés depuis le tempéré. D'autres biomes sont
 reportés (spec 11).
 
-Événements : 8 images `story.<clé>` sur 16 validées (16:9, sujet centré), série 60, charte
-`art/style/story_prompt.md`. Suivi et reprise : `art/prompts/selection-story.md`. Règles de
-l'utilisateur : colon de dos au centre dans les scènes au sol ; ni personne ni vaisseau du joueur dans
-les scènes dans l'espace ; pas de ruines ni de civilisation disparue.
+Événements : 15 images `story.<clé>` validées, une par événement du catalogue (16:9, sujet centré), série 60
+(e1 à e28), charte `art/style/story_prompt.md`. Suivi : `art/prompts/selection-story.md`. Règles de
+l'utilisateur : colon de dos au centre dans les scènes au sol, tête nue sur la planète du joueur ; ni personne ni
+vaisseau du joueur dans les scènes dans l'espace ; un événement à choix montre l'offre en attente, pas son résultat ;
+pas de ruines ni de civilisation disparue.
 
 Unités du chantier spatial : 16 images validées, 8 défenses (`defense.<clé>`) et 8 vaisseaux
 (`ship.<clé>`), sans climat, dans la série 58 (`art/prompts/serie-58-unites.md`, charte

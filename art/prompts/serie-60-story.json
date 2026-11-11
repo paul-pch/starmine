@@ -139,6 +139,162 @@
       "subject": "A far-future construction site where a large high-tech building stands half-built: its tall metal scaffolding has been blown apart and partly collapsed, with twisted beams hanging down and a toppled construction crane lying across the site.",
       "detail": "Black scorch marks of explosive charges cover the broken scaffolding, with showers of sparks and small fires still burning among the wreckage.",
       "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette."
+    },
+    {
+      "id": "story.storage_leak",
+      "variant": "e13",
+      "subject": "A towering far-future metal storage silo, a tall cylindrical high-tech tank built against a grey cliff, has a long jagged breach torn open in its side wall.",
+      "detail": "A thick stream of grey metal ingots and metal pellets pours out of the breach and spills into a large heap at its foot, while tiny repair drones with orange warning lights hover around the gash.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette."
+    },
+    {
+      "id": "story.merchant_convoy",
+      "variant": "e15",
+      "subject": "A convoy of independent merchant spaceships, built for space and not shaped like boats, arrives in orbit: a large clean cargo ship leads, flanked by a few smaller ones in tight formation, all with mismatched hull paint and bright navigation lights.",
+      "detail": "The lead ship carries transparent cargo pods packed with glowing pale blue crystal, clearly visible along its hull.",
+      "site": "In space, in orbit above a lifeless grey rocky planet whose curved horizon, with a thin bright rim of atmosphere, crosses the lower part of the frame, with the black sky full of stars above.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground."
+    },
+    {
+      "id": "story.escort_request",
+      "variant": "e16",
+      "subject": "A lone far-future transport spaceship, built for space and not shaped like a boat, flees at full speed toward the viewer, its engines blazing bright, its hull lightly scorched by weapon fire.",
+      "detail": "Far behind it, three small dark angular pirate fighters chase it, firing thin red laser bolts that streak past the transport.",
+      "site": "In space, in orbit above a lifeless grey rocky planet whose curved horizon, with a thin bright rim of atmosphere, crosses the lower part of the frame, with the black sky full of stars above.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground."
+    },
+    {
+      "id": "story.escort_request",
+      "variant": "e17",
+      "subject": "A lone far-future transport spaceship, built for space and not shaped like a boat, seen from the side in profile, flees at full speed from left to right: its nose points to the right, and its engine nozzles at the rear, on the left side of the ship, blaze with bright exhaust trailing behind it to the left. Its hull is lightly scorched by weapon fire.",
+      "detail": "A short distance behind it, on its left, three small dark angular pirate fighters chase it in the same direction, firing thin red laser bolts that streak toward the transport.",
+      "site": "In space, in orbit above a lifeless grey rocky planet whose curved horizon, with a thin bright rim of atmosphere, crosses the lower part of the frame, with the black sky full of stars above.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground."
+    },
+    {
+      "id": "story.pirate_deserters",
+      "variant": "e18",
+      "subject": "Three small dark angular pirate fighter spacecraft with crude red markings have just landed side by side on the bare rocky ground, their canopies open and their engines still glowing faintly.",
+      "detail": "Their three pilots, small figures in worn dark flight suits and helmets, stand in a row in front of the fighters with their empty hands raised, waiting to be let in.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows."
+    },
+    {
+      "id": "story.pirate_deserters",
+      "variant": "e19",
+      "subject": "Three compact far-future pirate spacecraft, clearly science fiction and not shaped like aircraft, with no wings and no tail fins: armoured angular hulls of dark gunmetal with crude red markings, glowing thruster pods and heavy landing struts, have just landed side by side on the bare rocky ground, their canopies open and empty.",
+      "detail": "In front of them stand only three pilots, facing the viewer with their empty hands raised, in worn dark flight suits and closed helmets with opaque mirrored visors that hide their faces, waiting to be let in.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows."
+    },
+    {
+      "id": "story.advance_contract",
+      "variant": "e20",
+      "subject": "A large heavy cargo lander of a guild of metal founders, clearly science fiction and not shaped like an aircraft, with no wings and no tail fins, has landed on the bare rocky ground: a massive armoured hull of polished bronze-coloured metal, with its wide loading ramp lowered toward the viewer.",
+      "detail": "Small loader robots carry neat stacks of shiny grey metal ingots up the ramp into its brightly lit hold.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows."
+    },
+    {
+      "id": "story.advance_contract",
+      "variant": "e21",
+      "subject": "A large heavy cargo lander of a guild of metal founders, clearly science fiction and not shaped like an aircraft, with no wings and no tail fins, has just landed on the bare rocky ground: a massive armoured hull of polished bronze-coloured metal, with its wide loading ramp lowered and its dim hold still empty.",
+      "detail": "At the foot of the ramp, two guild envoys in ornate bronze-trimmed suits and closed helmets with opaque mirrored visors stand waiting, one of them holding out a single gleaming metal ingot as an offer.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows."
+    },
+    {
+      "id": "story.advance_contract",
+      "variant": "e22",
+      "subject": "A large heavy cargo lander of a guild of metal founders, clearly science fiction and not shaped like an aircraft, with no wings and no tail fins, has just landed on the bare rocky ground: a massive armoured hull of polished bronze-coloured metal, with its wide loading ramp lowered and its dim hold still empty.",
+      "detail": "At the foot of the ramp, two people in closed helmets with opaque mirrored visors face each other: on the left a colonist in a plain white and grey work spacesuit, holding out a dull grey raw iron ingot; on the right a guild envoy in an ornate bronze-trimmed suit, reaching for it with one hand and holding a glowing contract tablet in the other.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows."
+    },
+    {
+      "id": "story.prospectors",
+      "variant": "e23",
+      "subject": "A huge rocky asteroid hangs low in the sky above the horizon, close and clearly visible, with a small battered prospector survey craft parked on the bare rocky ground below it.",
+      "detail": "In front of the craft, a team of three prospectors in rugged scuffed orange work suits and closed helmets with opaque mirrored visors, carrying drilling gear and scanners, face a colonist in a plain white and grey work spacesuit; one prospector points up at the asteroid.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows."
+    },
+    {
+      "id": "story.prospectors",
+      "variant": "e24",
+      "subject": "A distant rocky asteroid, small like a moon, hangs high in the sky far away above the horizon, clearly visible against the sky, with a small battered prospector survey craft parked on the bare rocky ground.",
+      "detail": "In front of the craft, a team of three prospectors in rugged scuffed orange work suits and closed helmets with opaque mirrored visors, carrying drilling gear and scanners, face a colonist in a plain white and grey work spacesuit; one prospector points up at the asteroid.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows."
+    },
+    {
+      "id": "story.prospectors",
+      "variant": "e25",
+      "subject": "An irregular potato-shaped grey asteroid, rough and cratered, clearly not round and not a moon, floats far away in the upper centre of the sky, of medium size, with a small battered prospector survey craft parked on the bare rocky ground nearby.",
+      "detail": "In the foreground, seen from behind, a small group of only four people stands side by side with their backs to the viewer, all looking up toward the asteroid: only three prospectors in rugged scuffed orange work suits carrying drilling gear, and only one colonist in a plain white and grey work spacesuit; the prospector next to the colonist points up at the asteroid.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows."
+    },
+    {
+      "id": "story.prospectors",
+      "variant": "e26a",
+      "subject": "An irregular potato-shaped grey asteroid, rough and cratered, clearly not round and not a moon, floats far away in the upper centre of the sky, of medium size, with a small battered prospector survey craft parked on the bare rocky ground nearby.",
+      "detail": "In the foreground, seen from behind, a small group of only four people stands side by side with their backs to the viewer, all bareheaded with no helmets, all looking up toward the asteroid: only three prospectors in rugged scuffed orange work suits carrying drilling gear, and only one colonist in a plain white and grey work suit, bareheaded with short dark hair, in the middle, pointing up at the asteroid.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/e25-prospectors-7777_00001_.png",
+      "denoise": 0.6,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.prospectors",
+      "variant": "e26b",
+      "subject": "An irregular potato-shaped grey asteroid, rough and cratered, clearly not round and not a moon, floats far away in the upper centre of the sky, of medium size, with a small battered prospector survey craft parked on the bare rocky ground nearby.",
+      "detail": "In the foreground, seen from behind, a small group of only four people stands side by side with their backs to the viewer, all bareheaded with no helmets, all looking up toward the asteroid: only three prospectors in rugged scuffed orange work suits carrying drilling gear, and only one colonist in a plain white and grey work suit, bareheaded with short dark hair, in the middle, pointing up at the asteroid.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/e25-prospectors-7777_00001_.png",
+      "denoise": 0.75,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.prospectors",
+      "variant": "e26c",
+      "subject": "An irregular potato-shaped grey asteroid, rough and cratered, clearly not round and not a moon, floats far away in the upper centre of the sky, of medium size, with a small battered prospector survey craft parked on the bare rocky ground nearby.",
+      "detail": "In the foreground, seen from behind, a small group of only four people stands side by side with their backs to the viewer, all bareheaded with no helmets, all looking up toward the asteroid: only three prospectors in rugged scuffed orange work suits carrying drilling gear, and only one colonist in a plain white and grey work suit, bareheaded with short dark hair, in the middle, pointing up at the asteroid.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/e25-prospectors-7777_00001_.png",
+      "denoise": 0.85,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.prospectors",
+      "variant": "e26d",
+      "subject": "An irregular potato-shaped grey asteroid, rough and cratered, clearly not round and not a moon, floats far away in the upper centre of the sky, of medium size, with a small battered prospector survey craft parked on the bare rocky ground nearby.",
+      "detail": "In the foreground, seen from behind, a small group of only four people stands side by side with their backs to the viewer, all bareheaded with no helmets, all looking up toward the asteroid: only three prospectors in rugged scuffed orange work suits carrying drilling gear, and only one colonist in a plain white and grey work suit, bareheaded with short dark hair, in the middle, pointing up at the asteroid.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/e25-prospectors-7777_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.distress_signal",
+      "variant": "e27",
+      "subject": "A small convoy of three stranded far-future cargo transport spaceships, built for space and not shaped like boats, sits motionless in a tight cluster: their hulls are intact but their engines are dark and cold, only a few scorch marks of a recent attack on their armour, and their windows still dimly lit from inside.",
+      "detail": "On the lead ship, a bright red emergency distress beacon flashes, sending out a strong pulse of red light that stands out clearly against the dark.",
+      "site": "In space, in orbit above a lifeless grey rocky planet whose curved horizon, with a thin bright rim of atmosphere, crosses the lower part of the frame, with the black sky full of stars above.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground."
+    },
+    {
+      "id": "story.distress_signal",
+      "variant": "e28",
+      "subject": "A single far-future cargo transport spaceship, built for space and not shaped like a boat, still working but partially damaged and stopped in orbit: its hull is mostly intact, with all its windows and running lights brightly lit, but one side has a torn, blackened gash from a recent attack, venting a thin plume of white gas, and one of its engines is dark while the others glow faintly.",
+      "detail": "A bright red emergency distress beacon on top of the ship flashes, sending out a strong pulse of red light that stands out clearly.",
+      "site": "In space, in orbit above a lifeless grey rocky planet whose curved horizon, with a thin bright rim of atmosphere, crosses the lower part of the frame, with the black sky full of stars above.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, a low raking sunlight lighting the hull clearly, deep shadows.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground."
     }
   ]
 }
