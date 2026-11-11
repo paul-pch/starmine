@@ -1,0 +1,32 @@
+{
+  "series": "serie-61-logo",
+  "base": "art/style/logo_prompt.md",
+  "size": [
+    1024,
+    1024
+  ],
+  "seeds": [
+    4242,
+    7777
+  ],
+  "images": [
+    {
+      "id": "logo.app_icon",
+      "variant": "l1-star_crystal",
+      "subject": "A large faceted crystal cut in the shape of a five-pointed star, glowing pale blue from within,",
+      "detail": "set in a small rugged metal mining mount with a few bolts and a band of brushed steel around its base."
+    },
+    {
+      "id": "logo.app_icon",
+      "variant": "l1-mined_planet",
+      "subject": "A small round rocky grey planet seen whole, with a futuristic mining drill rig planted on top of it and a deep glowing pale blue crystal vein cracking across its surface,",
+      "detail": "with a bright four-pointed star shining just behind the planet's edge."
+    },
+    {
+      "id": "logo.app_icon",
+      "variant": "l1-pick_star",
+      "subject": "A futuristic miner's pickaxe of polished gunmetal with a glowing pale blue crystal head, crossed diagonally in front of a bright five-pointed golden star,",
+      "detail": "forming a compact symmetrical emblem."
+    }
+  ]
+}

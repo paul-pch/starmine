@@ -46,12 +46,25 @@ dans le code, alignement vérifié par un test.
 | `story` | `story.<clé YAML de l'événement>` | 16:9, 1280 × 720, sujet centré | 15 (catalogue actuel) | En-tête de la popover d'événement (spec 10, 14) | **15 packagées** (liste : `art/prompts/selection-story.md`) ; branché |
 | `scene` | `scene.<raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 16:9, 1280 × 720, sujet centré | 5 | En-tête de la popover de fin de combat ; carte du champ de débris | **À produire**, non branché |
 
+### Icône d'application
+
+Planète rocheuse minée, foreuse au sommet et filon de cristal bleu lumineux, sur fond spatial bleu nuit ; sans
+texte (série 61, charte `art/style/logo_prompt.md`, code `l1-mined_planet-app_icon-4242`). Hors registre : le
+registre ne décrit que les images du jeu (`assets/visuels/`).
+
+- Master : `art/masters/logo.app_icon/v1.png` (1024 × 1024, local).
+- Icône adaptative Android : couche avant `drawable-<densité>/ic_launcher_foreground.png` (108 dp, de 108 à
+  432 px), image réduite à 86 % pour que la planète tienne dans la zone sûre de 66 dp ; fond uni
+  `ic_launcher_background` = `#00061C`, couleur des bords de l'image. Pas de couche monochrome (image opaque) :
+  l'icône à thème d'Android affiche l'icône normale.
+- README : `docs/images/icon.png`, 256 px.
+- Notifications : l'icône de statut `ic_stat_star` (vectorielle, monochrome) ne change pas.
+
 ### Visuels manquants (2026-11-10, après la série 59)
 
 Par priorité (impact sur l'écran le plus vu d'abord) :
 
-1. `story` × 8 restantes (`art/prompts/selection-story.md`) et `scene` × 5 — en-tête des popovers, porte
-   le narratif.
+1. `scene` × 5 — en-tête des popovers de combat, porte le narratif (les 15 `story` sont faites).
 2. `pirate` × 6 — bandeau de raid et rapports, identité de la menace.
 3. `building` t2 et t3 × 72 — déjà branchés par les paliers ; à produire avec le t1 du même
    climat en `parent`.
