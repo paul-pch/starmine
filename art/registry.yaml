@@ -1703,3 +1703,85 @@ images:
     code: e28-distress_signal-7777
   master: art/masters/story.distress_signal/v1.png
   build: assets/visuels/story.distress_signal.webp
+- id: scene.raid_lost
+  category: scene
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. The burning, wrecked defense turrets of a far-future colony on a grey rocky plain, barrels bent and armour blasted open, with thick black smoke rising over damaged domes behind them. High in the dark sky, the silhouettes of battered pirate spaceships with patched, mismatched dark hulls of scavenged plates, built for space and not shaped like boats fly away. In the foreground, seen from behind, a single colonist in a plain white and grey work suit sits on the rock with a bare head, no helmet at all, his short dark hair visible, looking at the destruction. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: bbb6dbc3-6cd8-4878-a767-9981a96ad391
+    series: serie-62-scene
+    code: s8c-raid_lost-4242
+    source: serie-62-scene/s2b-raid_lost-4242_00001_.png
+    denoise: 1.0
+  master: art/masters/scene.raid_lost/v1.png
+  build: assets/visuels/scene.raid_lost.webp
+- id: scene.raid_won
+  category: scene
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the subject sits in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges. A scattered group of small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, flee in disorder high across the sky, chased by bright beams fired from the defense turrets of an intact far-future colony of white domes on the grey rocky plain below; two of the fighters trail fire and smoke. In the foreground, seen from behind, a single colonist in a plain white and grey work suit stands with a bare head, no helmet at all, short dark hair visible, watching them flee. On a lifeless alien planet of bare dark neutral grey rock, with towering grey cliffs and distant mountains. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 36da0d3d-1fd6-467e-8729-edcbc3b0723c
+    series: serie-62-scene
+    code: s9b-raid_won-4242
+  master: art/masters/scene.raid_won/v1.png
+  build: assets/visuels/scene.raid_won.webp
+- id: scene.debris
+  category: scene
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground. The wrecks of a dozen small and medium spacecraft from a battle drift in orbit around the middle of the frame: fighters with broken wings, a gunship cut in half, torn engine pods and scorched hull plates, all dead and dark. Each wreck is clearly a spacecraft, not a sea ship and not a passenger liner: no masts, no decks, no rows of windows, with engine nozzles, wings or fins and a cockpit canopy. Twisted metal plates and glinting crystal shards float among them. In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky. Art direction: realistic sci-fi concept art, calm and quiet mood, soft warm sunlight from the right glinting on metal, deep black space. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 6ae5299d-a8b7-4140-bb6e-f1863f412db1
+    series: serie-62-scene
+    code: s10b-debris-4242
+  master: art/masters/scene.debris/v1.png
+  build: assets/visuels/scene.debris.webp
+- id: scene.attack_won
+  category: scene
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground. In the middle of the frame, a pirate space station with a clear silhouette: a large spoked ring around a central hub, built from mismatched scavenged modules and rusty plates, defeated: its ring is broken in two places, fires and smoke burst from its modules. Small small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, flee away from it in every direction, while sleek clean far-future warships with seamless pale grey composite hulls and glowing blue light strips, built for space and not shaped like boats hold position in front of it, intact. In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky. Art direction: realistic sci-fi concept art, triumphant mood, bright warm golden sunlight from the right with rich contrast, deep black space. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 9c730efb-dff2-4f85-ab1d-53150a5327eb
+    series: serie-62-scene
+    code: s11c-attack_won-4242
+  master: art/masters/scene.attack_won/v1.png
+  build: assets/visuels/scene.attack_won.webp
+- id: scene.attack_lost
+  category: scene
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground. In the middle of the frame, a pirate space station with a clear silhouette: a large spoked ring around a central hub, built from mismatched scavenged modules and rusty plates stands intact and lit, its gun turrets glowing after firing. In front of it, the broken, burning wrecks of three sleek pale grey warships with dead blue light strips drift apart in pieces, while a swarm of small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, flies victoriously over them. In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky. Art direction: realistic sci-fi concept art, dramatic and ominous mood, harsh contrasting light with deep shadows, muted cold palette, deep black space. No text."
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 2ac489de-0ae5-42c1-b9b4-dce57d492e4c
+    series: serie-62-scene
+    code: s12b-attack_lost-4242
+  master: art/masters/scene.attack_lost/v1.png
+  build: assets/visuels/scene.attack_lost.webp

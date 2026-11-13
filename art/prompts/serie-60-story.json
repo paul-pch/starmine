@@ -295,6 +295,150 @@
       "site": "In space, in orbit above a lifeless grey rocky planet whose curved horizon, with a thin bright rim of atmosphere, crosses the lower part of the frame, with the black sky full of stars above.",
       "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, a low raking sunlight lighting the hull clearly, deep shadows.",
       "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground."
+    },
+    {
+      "id": "story.storage_leak",
+      "variant": "r1a",
+      "subject": "A towering far-future metal storage silo, a tall cylindrical high-tech tank built against a grey cliff, has a long jagged breach torn open in its side wall.",
+      "detail": "A thick stream of grey metal ingots and metal pellets pours out of the breach and spills into a large heap at its foot, while tiny repair drones with orange warning lights hover around the gash. In the foreground, a colonist in a plain white and grey work suit sits on the ground seen from behind, bareheaded with no helmet, short dark hair.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette.",
+      "source": "serie-60-story/e13-storage_leak-7777_00001_.png",
+      "denoise": 0.85,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.storage_leak",
+      "variant": "r1b",
+      "subject": "A towering far-future metal storage silo, a tall cylindrical high-tech tank built against a grey cliff, has a long jagged breach torn open in its side wall.",
+      "detail": "A thick stream of grey metal ingots and metal pellets pours out of the breach and spills into a large heap at its foot, while tiny repair drones with orange warning lights hover around the gash. In the foreground, a colonist in a plain white and grey work suit sits on the ground seen from behind, bareheaded with no helmet, short dark hair.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette.",
+      "source": "serie-60-story/e13-storage_leak-7777_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.pirate_deserters",
+      "variant": "r1a",
+      "subject": "Three compact far-future pirate spacecraft, clearly science fiction and not shaped like aircraft, with no wings and no tail fins: armoured angular hulls of dark gunmetal with crude red markings, glowing thruster pods and heavy landing struts, have just landed side by side on the bare rocky ground, their canopies open and empty.",
+      "detail": "In front of them stand only three pilots, facing the viewer with their empty hands raised, in worn dark flight suits, bareheaded with no helmets, waiting to be let in.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/e19-pirate_deserters-7777_00001_.png",
+      "denoise": 0.85,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.pirate_deserters",
+      "variant": "r1b",
+      "subject": "Three compact far-future pirate spacecraft, clearly science fiction and not shaped like aircraft, with no wings and no tail fins: armoured angular hulls of dark gunmetal with crude red markings, glowing thruster pods and heavy landing struts, have just landed side by side on the bare rocky ground, their canopies open and empty.",
+      "detail": "In front of them stand only three pilots, facing the viewer with their empty hands raised, in worn dark flight suits, bareheaded with no helmets, waiting to be let in.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/e19-pirate_deserters-7777_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.advance_contract",
+      "variant": "r1a",
+      "subject": "A large heavy cargo lander of a guild of metal founders, clearly science fiction and not shaped like an aircraft, with no wings and no tail fins, has just landed on the bare rocky ground: a massive armoured hull of polished bronze-coloured metal, with its wide loading ramp lowered and its dim hold still empty.",
+      "detail": "At the foot of the ramp, two bareheaded people with no helmets face each other: on the left a colonist in a plain white and grey work spacesuit, holding out a dull grey raw iron ingot; on the right a guild envoy in an ornate bronze-trimmed suit, reaching for it with one hand and holding a glowing contract tablet in the other.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/e22-advance_contract-7777_00001_.png",
+      "denoise": 0.85,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.advance_contract",
+      "variant": "r1b",
+      "subject": "A large heavy cargo lander of a guild of metal founders, clearly science fiction and not shaped like an aircraft, with no wings and no tail fins, has just landed on the bare rocky ground: a massive armoured hull of polished bronze-coloured metal, with its wide loading ramp lowered and its dim hold still empty.",
+      "detail": "At the foot of the ramp, two bareheaded people with no helmets face each other: on the left a colonist in a plain white and grey work spacesuit, holding out a dull grey raw iron ingot; on the right a guild envoy in an ornate bronze-trimmed suit, reaching for it with one hand and holding a glowing contract tablet in the other.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/e22-advance_contract-7777_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.advance_contract",
+      "variant": "r2a",
+      "subject": "A large heavy cargo lander of a guild of metal founders, clearly science fiction and not shaped like an aircraft, with no wings and no tail fins, has just landed on the bare rocky ground: a massive armoured hull of polished bronze-coloured metal, with its wide loading ramp lowered and its dim hold still empty.",
+      "detail": "At the foot of the ramp, two people with bare heads, no helmets at all, their short hair visible, face each other in profile: on the left a colonist in a plain white and grey work suit, holding out a dull grey raw iron ingot; on the right a guild envoy in an ornate bronze-trimmed suit, reaching for it with one hand and holding a glowing contract tablet in the other.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/e22-advance_contract-7777_00001_.png",
+      "denoise": 0.96,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.advance_contract",
+      "variant": "r2b",
+      "subject": "A large heavy cargo lander of a guild of metal founders, clearly science fiction and not shaped like an aircraft, with no wings and no tail fins, has just landed on the bare rocky ground: a massive armoured hull of polished bronze-coloured metal, with its wide loading ramp lowered and its dim hold still empty.",
+      "detail": "At the foot of the ramp, two people with bare heads, no helmets at all, their short hair visible, face each other in profile: on the left a colonist in a plain white and grey work suit, holding out a dull grey raw iron ingot; on the right a guild envoy in an ornate bronze-trimmed suit, reaching for it with one hand and holding a glowing contract tablet in the other.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/e22-advance_contract-7777_00001_.png",
+      "denoise": 1.0,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.pirate_deserters",
+      "variant": "r3a",
+      "subject": "Three compact far-future pirate spacecraft, clearly science fiction and not shaped like aircraft, with no wings and no tail fins: armoured angular hulls of dark gunmetal with crude red markings, glowing thruster pods and heavy landing struts, have just landed side by side on the bare rocky ground, their canopies open and empty.",
+      "detail": "In front of them stand only three pilots in worn dark flight suits, bareheaded with no helmets, seen in a three-quarter rear view with their backs half turned to the viewer and their faces turned away toward the left, their empty hands raised, waiting to be let in.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/r1a-pirate_deserters-7777_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.pirate_deserters",
+      "variant": "r3b",
+      "subject": "Three compact far-future pirate spacecraft, clearly science fiction and not shaped like aircraft, with no wings and no tail fins: armoured angular hulls of dark gunmetal with crude red markings, glowing thruster pods and heavy landing struts, have just landed side by side on the bare rocky ground, their canopies open and empty.",
+      "detail": "In front of them stand only three pilots in worn dark flight suits, bareheaded with no helmets, seen in a three-quarter rear view with their backs half turned to the viewer and their faces turned away toward the left, their empty hands raised, waiting to be let in.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/r1a-pirate_deserters-7777_00001_.png",
+      "denoise": 0.96,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.advance_contract",
+      "variant": "r3a",
+      "subject": "A large heavy cargo lander of a guild of metal founders, clearly science fiction and not shaped like an aircraft, with no wings and no tail fins, has just landed on the bare rocky ground: a massive armoured hull of polished bronze-coloured metal, with its wide loading ramp lowered and its dim hold still empty.",
+      "detail": "At the foot of the ramp, two people with bare heads and no helmets, seen in a three-quarter rear view from slightly behind them so that their faces are turned away from the viewer: on the left a colonist in a plain white and grey work suit, holding out a dull grey raw iron ingot; on the right a guild envoy in an ornate bronze-trimmed suit, reaching for it with one hand and holding a glowing contract tablet in the other.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/r2a-advance_contract-7777_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "story.advance_contract",
+      "variant": "r3b",
+      "subject": "A large heavy cargo lander of a guild of metal founders, clearly science fiction and not shaped like an aircraft, with no wings and no tail fins, has just landed on the bare rocky ground: a massive armoured hull of polished bronze-coloured metal, with its wide loading ramp lowered and its dim hold still empty.",
+      "detail": "At the foot of the ramp, two people with bare heads and no helmets, seen in a three-quarter rear view from slightly behind them so that their faces are turned away from the viewer: on the left a colonist in a plain white and grey work suit, holding out a dull grey raw iron ingot; on the right a guild envoy in an ornate bronze-trimmed suit, reaching for it with one hand and holding a glowing contract tablet in the other.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "source": "serie-60-story/r2a-advance_contract-7777_00001_.png",
+      "denoise": 0.96,
+      "seeds": [
+        7777
+      ]
     }
   ]
 }

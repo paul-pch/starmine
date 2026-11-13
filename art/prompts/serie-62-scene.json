@@ -1,0 +1,319 @@
+{
+  "series": "serie-62-scene",
+  "base": "art/style/story_prompt.md",
+  "size": [
+    1664,
+    928
+  ],
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "scene.raid_won",
+      "variant": "s1a",
+      "subject": "A far-future colony of white domes and towers on a grey rocky plain stands intact behind its defense laser turrets, still glowing hot after firing; in front of it, the smoking wrecks of two battered pirate fighters with patched, mismatched dark hulls of scavenged plates, built for space and not shaped like boats lie crashed and broken on the rock.",
+      "detail": "In the foreground, seen from behind, a single colonist in a plain white and grey work suit, bareheaded with short dark hair, stands looking at the wrecks.",
+      "mood": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky."
+    },
+    {
+      "id": "scene.raid_won",
+      "variant": "s1b",
+      "subject": "Above a far-future colony of white domes and towers on a grey rocky plain, a large translucent blue energy shield dome covers the whole colony, and battered pirate spaceships with patched, mismatched dark hulls of scavenged plates, built for space and not shaped like boats break apart in fire and smoke against it.",
+      "detail": "Bright beams from the colony's defense turrets streak up into the sky; the colony below is untouched.",
+      "mood": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky."
+    },
+    {
+      "id": "scene.raid_won",
+      "variant": "s1c",
+      "subject": "A far-future colony of white domes and towers on a grey rocky plain, intact, while a few battered pirate spaceships with patched, mismatched dark hulls of scavenged plates, built for space and not shaped like boats flee away into the sky, trailing black smoke, one of them falling in flames.",
+      "detail": "In the foreground, seen from behind, a single colonist in a plain white and grey work suit, bareheaded with short dark hair, stands watching them flee.",
+      "mood": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky."
+    },
+    {
+      "id": "scene.raid_lost",
+      "variant": "s2a",
+      "subject": "A far-future colony of domes and storage silos on a grey rocky plain after a pirate raid: storage silos torn open and empty, scattered containers and smoke; above, heavy battered pirate cargo ships with patched, mismatched dark hulls of scavenged plates, built for space and not shaped like boats lift off, carrying stolen cargo containers.",
+      "detail": "In the foreground, seen from behind, a single colonist in a plain white and grey work suit, bareheaded with short dark hair, stands watching them leave.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette."
+    },
+    {
+      "id": "scene.raid_lost",
+      "variant": "s2b",
+      "subject": "The burning, wrecked defense turrets of a far-future colony on a grey rocky plain, barrels bent and armour blasted open, with thick black smoke rising over damaged domes behind them.",
+      "detail": "High in the dark sky, the silhouettes of battered pirate spaceships with patched, mismatched dark hulls of scavenged plates, built for space and not shaped like boats fly away.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette."
+    },
+    {
+      "id": "scene.raid_lost",
+      "variant": "s2c",
+      "subject": "A huge far-future storage depot of a colony on a grey rocky plain, its armoured gates blown open and its inside empty, with crates and containers broken and scattered across the rock, small fires and drifting smoke.",
+      "detail": "In the foreground, seen from behind, a single colonist in a plain white and grey work suit, bareheaded with short dark hair, stands looking at the empty depot.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette."
+    },
+    {
+      "id": "scene.attack_won",
+      "variant": "s3a",
+      "subject": "In the middle of the frame, a pirate base: a rough fortified station built into a dark grey asteroid, bristling with patched armour plates, gun turrets and docking arms, its armour breached, with fires and explosions bursting from its hull and its turrets silenced.",
+      "detail": "In front of it, a formation of sleek clean far-future warships with seamless pale grey composite hulls and blue light strips, built for space and not shaped like boats holds position, intact.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, triumphant mood, bright warm golden sunlight from the right with rich contrast, deep black space."
+    },
+    {
+      "id": "scene.attack_won",
+      "variant": "s3b",
+      "subject": "In the middle of the frame, a pirate base: a rough fortified station built into a dark grey asteroid, bristling with patched armour plates, gun turrets and docking arms, crippled and dark, its turrets destroyed.",
+      "detail": "Beside it, sleek clean far-future warships with seamless pale grey composite hulls and blue light strips, built for space and not shaped like boats carry away glowing cargo containers taken from the base.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, triumphant mood, bright warm golden sunlight from the right with rich contrast, deep black space."
+    },
+    {
+      "id": "scene.attack_won",
+      "variant": "s3c",
+      "subject": "In the middle of the frame, a pirate base: a rough fortified station built into a dark grey asteroid, bristling with patched armour plates, gun turrets and docking arms explodes in a huge bright fireball that blows its armour plates apart.",
+      "detail": "In the foreground, the dark silhouettes of sleek clean far-future warships with seamless pale grey composite hulls and blue light strips, built for space and not shaped like boats watch from a distance.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, triumphant mood, bright warm golden sunlight from the right with rich contrast, deep black space."
+    },
+    {
+      "id": "scene.attack_lost",
+      "variant": "s4a",
+      "subject": "In the middle of the frame, a pirate base: a rough fortified station built into a dark grey asteroid, bristling with patched armour plates, gun turrets and docking arms, intact, its gun turrets glowing after firing.",
+      "detail": "In front of it, the broken, burning wrecks of sleek pale grey warships with dead blue light strips drift apart in pieces.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, harsh contrasting light with deep shadows, muted cold palette, deep black space."
+    },
+    {
+      "id": "scene.attack_lost",
+      "variant": "s4b",
+      "subject": "In the middle of the frame, a single badly damaged sleek pale grey far-future warship, built for space and not shaped like a boat, flees toward the viewer, its hull torn open and trailing fire and debris.",
+      "detail": "Behind it, a pirate base: a rough fortified station built into a dark grey asteroid, bristling with patched armour plates, gun turrets and docking arms fires bright bolts after it.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, harsh contrasting light with deep shadows, muted cold palette, deep black space."
+    },
+    {
+      "id": "scene.attack_lost",
+      "variant": "s4c",
+      "subject": "In the middle of the frame, a large broken warship hull, sleek pale grey with dead blue light strips, split in two and burning, surrounded by drifting fragments of other destroyed warships.",
+      "detail": "Far behind, a pirate base: a rough fortified station built into a dark grey asteroid, bristling with patched armour plates, gun turrets and docking arms stands untouched, a faint red glow on its turrets.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, harsh contrasting light with deep shadows, muted cold palette, deep black space."
+    },
+    {
+      "id": "scene.debris",
+      "variant": "s5a",
+      "subject": "A large field of drifting space debris in orbit: twisted metal hull plates, broken girders, shattered armour fragments and loose cables, spread around the middle of the frame.",
+      "detail": "The metal fragments glint in the sunlight, densest in the centre and thinning toward the edges.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, calm and quiet mood, soft warm sunlight from the right glinting on metal, deep black space."
+    },
+    {
+      "id": "scene.debris",
+      "variant": "s5b",
+      "subject": "A large field of drifting space debris in orbit, twisted metal hull plates and broken girders, around a far-future recycler ship, built for space and not shaped like a boat, in the middle of the frame.",
+      "detail": "The recycler gathers the metal fragments with long mechanical collector arms and a wide open intake.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, calm and quiet mood, soft warm sunlight from the right glinting on metal, deep black space."
+    },
+    {
+      "id": "scene.debris",
+      "variant": "s5c",
+      "subject": "A long glittering stream of space debris trailing along the orbit: twisted metal hull plates, broken girders and the torn half of a destroyed warship hull in the middle of the frame.",
+      "detail": "Small fragments catch the sunlight like sparks around the larger pieces.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, calm and quiet mood, soft warm sunlight from the right glinting on metal, deep black space."
+    },
+    {
+      "id": "scene.attack_won",
+      "variant": "s6a",
+      "subject": "In the foreground, a tight formation of three sleek clean far-future warships with seamless pale grey composite hulls and glowing blue light strips, built for space and not shaped like boats, intact and gleaming, hold position side by side.",
+      "detail": "Behind them, in the middle of the frame, a ramshackle pirate space station cobbled together from mismatched modules, rusty rings, scavenged hull plates and docking arms hangs defeated: its lights out, its gun turrets blasted, small fires and thin smoke escaping from its torn modules.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, triumphant mood, bright warm golden sunlight from the right with rich contrast, deep black space."
+    },
+    {
+      "id": "scene.attack_won",
+      "variant": "s6b",
+      "subject": "In the middle of the frame, a ramshackle pirate space station cobbled together from mismatched modules, rusty rings, scavenged hull plates and docking arms hangs dark and defeated, its gun turrets destroyed, its rings broken, with small fires flickering in its torn modules.",
+      "detail": "In front of it, a formation of sleek clean far-future warships with seamless pale grey composite hulls and glowing blue light strips, built for space and not shaped like boats stands guard, intact, their blue lights shining.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, triumphant mood, bright warm golden sunlight from the right with rich contrast, deep black space."
+    },
+    {
+      "id": "scene.attack_won",
+      "variant": "s6c",
+      "subject": "Seen from just behind a large intact flagship among sleek clean far-future warships with seamless pale grey composite hulls and glowing blue light strips, built for space and not shaped like boats, its pale grey hull framing the lower part of the image, the fleet faces a ramshackle pirate space station cobbled together from mismatched modules, rusty rings, scavenged hull plates and docking arms in the middle of the frame.",
+      "detail": "The station is defeated: lights out, turrets wrecked, broken rings, drifting debris and small fires.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, triumphant mood, bright warm golden sunlight from the right with rich contrast, deep black space."
+    },
+    {
+      "id": "scene.debris",
+      "variant": "s7a",
+      "subject": "Two derelict broken spaceship wrecks, built for space and not shaped like boats, drift in orbit in the middle of the frame: one a battered pirate ship with patched dark hull plates, the other a sleek pale grey warship split open, both with torn hulls and exposed girders, lights dead.",
+      "detail": "Around them float twisted metal plates and glinting crystal shards.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, calm and quiet mood, soft warm sunlight from the right glinting on metal, deep black space."
+    },
+    {
+      "id": "scene.debris",
+      "variant": "s7b",
+      "subject": "Three dead, gutted spaceship wrecks, built for space and not shaped like boats, drift slowly together in orbit in the middle of the frame, their hulls torn open, scorched and full of holes, lights out, long after a battle.",
+      "detail": "Loose hull plates, broken girders and glinting crystal shards float among them.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, calm and quiet mood, soft warm sunlight from the right glinting on metal, deep black space."
+    },
+    {
+      "id": "scene.debris",
+      "variant": "s7c",
+      "subject": "The large broken-backed wreck of a dead warship, built for space and not shaped like a boat, drifts in orbit in the middle of the frame, its scorched hull torn open along its length, with smaller wrecked ships behind it.",
+      "detail": "A cloud of twisted metal plates and glinting crystal shards surrounds the wrecks; no lights, no engines, nothing alive.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, calm and quiet mood, soft warm sunlight from the right glinting on metal, deep black space."
+    },
+    {
+      "id": "scene.raid_lost",
+      "variant": "s8a",
+      "subject": "The burning, wrecked defense turrets of a far-future colony on a grey rocky plain, barrels bent and armour blasted open, with thick black smoke rising over damaged domes behind them.",
+      "detail": "High in the dark sky, the silhouettes of battered pirate spaceships with patched, mismatched dark hulls of scavenged plates, built for space and not shaped like boats fly away. In the foreground, seen from behind, a single colonist in a plain white and grey work suit sits on the rock with a bare head, no helmet at all, his short dark hair visible, looking at the destruction.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette.",
+      "source": "serie-62-scene/s2b-raid_lost-4242_00001_.png",
+      "denoise": 0.92
+    },
+    {
+      "id": "scene.raid_lost",
+      "variant": "s8b",
+      "subject": "The burning, wrecked defense turrets of a far-future colony on a grey rocky plain, barrels bent and armour blasted open, with thick black smoke rising over damaged domes behind them.",
+      "detail": "High in the dark sky, the silhouettes of battered pirate spaceships with patched, mismatched dark hulls of scavenged plates, built for space and not shaped like boats fly away. In the foreground, seen from behind, a single colonist in a plain white and grey work suit sits on the rock with a bare head, no helmet at all, his short dark hair visible, looking at the destruction.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette.",
+      "source": "serie-62-scene/s2b-raid_lost-4242_00001_.png",
+      "denoise": 0.96
+    },
+    {
+      "id": "scene.raid_lost",
+      "variant": "s8c",
+      "subject": "The burning, wrecked defense turrets of a far-future colony on a grey rocky plain, barrels bent and armour blasted open, with thick black smoke rising over damaged domes behind them.",
+      "detail": "High in the dark sky, the silhouettes of battered pirate spaceships with patched, mismatched dark hulls of scavenged plates, built for space and not shaped like boats fly away. In the foreground, seen from behind, a single colonist in a plain white and grey work suit sits on the rock with a bare head, no helmet at all, his short dark hair visible, looking at the destruction.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, dark stormy sky, harsh contrasting light with deep shadows, muted cold palette.",
+      "source": "serie-62-scene/s2b-raid_lost-4242_00001_.png",
+      "denoise": 1.0
+    },
+    {
+      "id": "scene.raid_won",
+      "variant": "s9a",
+      "subject": "Above an intact far-future colony of white domes and towers on a grey rocky plain, a scattered group of small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, flee in disorder toward the distant mountains, several trailing black smoke and one bursting into flames.",
+      "detail": "In the foreground, seen from behind, a single colonist in a plain white and grey work suit stands with a bare head, no helmet at all, short dark hair visible, watching them flee.",
+      "mood": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky."
+    },
+    {
+      "id": "scene.raid_won",
+      "variant": "s9b",
+      "subject": "A scattered group of small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, flee in disorder high across the sky, chased by bright beams fired from the defense turrets of an intact far-future colony of white domes on the grey rocky plain below; two of the fighters trail fire and smoke.",
+      "detail": "In the foreground, seen from behind, a single colonist in a plain white and grey work suit stands with a bare head, no helmet at all, short dark hair visible, watching them flee.",
+      "mood": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky."
+    },
+    {
+      "id": "scene.raid_won",
+      "variant": "s9c",
+      "subject": "In the sky above an intact far-future colony of white domes, small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, break off their attack and turn away in a panicked rout, one spinning down in flames toward the rock, the others fleeing with smoke streaming behind them.",
+      "detail": "In the foreground, seen from behind, a single colonist in a plain white and grey work suit stands with a bare head, no helmet at all, short dark hair visible, watching them flee.",
+      "mood": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky."
+    },
+    {
+      "id": "scene.debris",
+      "variant": "s10a",
+      "subject": "Three small wrecked fighter spacecraft drift in orbit in the middle of the frame, their swept wings snapped off, cockpit canopies shattered, engine nozzles cold and dark, their hulls scorched and torn.",
+      "detail": "Each wreck is clearly a spacecraft, not a sea ship and not a passenger liner: no masts, no decks, no rows of windows, with engine nozzles, wings or fins and a cockpit canopy. Twisted metal plates and glinting crystal shards float among them.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, calm and quiet mood, soft warm sunlight from the right glinting on metal, deep black space."
+    },
+    {
+      "id": "scene.debris",
+      "variant": "s10b",
+      "subject": "The wrecks of a dozen small and medium spacecraft from a battle drift in orbit around the middle of the frame: fighters with broken wings, a gunship cut in half, torn engine pods and scorched hull plates, all dead and dark.",
+      "detail": "Each wreck is clearly a spacecraft, not a sea ship and not a passenger liner: no masts, no decks, no rows of windows, with engine nozzles, wings or fins and a cockpit canopy. Twisted metal plates and glinting crystal shards float among them.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, calm and quiet mood, soft warm sunlight from the right glinting on metal, deep black space."
+    },
+    {
+      "id": "scene.debris",
+      "variant": "s10c",
+      "subject": "In the middle of the frame, the broken wreck of a medium-sized armed spacecraft with angular armour plates, its engine block torn off and its hull ripped open, surrounded by two wrecked small fighter spacecraft with snapped wings.",
+      "detail": "Each wreck is clearly a spacecraft, not a sea ship and not a passenger liner: no masts, no decks, no rows of windows, with engine nozzles, wings or fins and a cockpit canopy. Twisted metal plates and glinting crystal shards float among them.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, calm and quiet mood, soft warm sunlight from the right glinting on metal, deep black space."
+    },
+    {
+      "id": "scene.attack_won",
+      "variant": "s11a",
+      "subject": "In the middle of the frame, a scattered group of small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, flee in disorder away from the viewer, several trailing fire and smoke, one exploding.",
+      "detail": "Behind them, small in the distance, a pirate space station with a clear silhouette: a large spoked ring around a central hub, built from mismatched scavenged modules and rusty plates burns, its ring broken; at the edges of the frame, two sleek clean far-future warships with seamless pale grey composite hulls and glowing blue light strips, built for space and not shaped like boats chase them.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, triumphant mood, bright warm golden sunlight from the right with rich contrast, deep black space."
+    },
+    {
+      "id": "scene.attack_won",
+      "variant": "s11b",
+      "subject": "In the foreground, a formation of three sleek clean far-future warships with seamless pale grey composite hulls and glowing blue light strips, built for space and not shaped like boats, intact and gleaming, advance toward the middle of the frame.",
+      "detail": "Ahead of them, a few small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, flee in panic, trailing smoke; far behind, a pirate space station with a clear silhouette: a large spoked ring around a central hub, built from mismatched scavenged modules and rusty plates burns, its ring broken and dark.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, triumphant mood, bright warm golden sunlight from the right with rich contrast, deep black space."
+    },
+    {
+      "id": "scene.attack_won",
+      "variant": "s11c",
+      "subject": "In the middle of the frame, a pirate space station with a clear silhouette: a large spoked ring around a central hub, built from mismatched scavenged modules and rusty plates, defeated: its ring is broken in two places, fires and smoke burst from its modules.",
+      "detail": "Small small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, flee away from it in every direction, while sleek clean far-future warships with seamless pale grey composite hulls and glowing blue light strips, built for space and not shaped like boats hold position in front of it, intact.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, triumphant mood, bright warm golden sunlight from the right with rich contrast, deep black space."
+    },
+    {
+      "id": "scene.attack_lost",
+      "variant": "s12a",
+      "subject": "In the middle of the frame, a single badly damaged sleek pale grey far-future warship with dead blue light strips, built for space and not shaped like a boat, tumbles out of control, its hull torn open and burning.",
+      "detail": "A swarm of small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, circles it, firing; behind, a pirate space station with a clear silhouette: a large spoked ring around a central hub, built from mismatched scavenged modules and rusty plates stands intact, its lights on.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, harsh contrasting light with deep shadows, muted cold palette, deep black space."
+    },
+    {
+      "id": "scene.attack_lost",
+      "variant": "s12b",
+      "subject": "In the middle of the frame, a pirate space station with a clear silhouette: a large spoked ring around a central hub, built from mismatched scavenged modules and rusty plates stands intact and lit, its gun turrets glowing after firing.",
+      "detail": "In front of it, the broken, burning wrecks of three sleek pale grey warships with dead blue light strips drift apart in pieces, while a swarm of small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, flies victoriously over them.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, harsh contrasting light with deep shadows, muted cold palette, deep black space."
+    },
+    {
+      "id": "scene.attack_lost",
+      "variant": "s12c",
+      "subject": "In the middle of the frame, two damaged sleek pale grey far-future warships with flickering blue light strips, built for space and not shaped like boats, flee toward the viewer, trailing smoke and fire, one with a wing torn off.",
+      "detail": "Behind them, small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing engine nozzles, its dark hull patched with mismatched scavenged plates, chase them, and further back a pirate space station with a clear silhouette: a large spoked ring around a central hub, built from mismatched scavenged modules and rusty plates stands intact.",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, dramatic and ominous mood, harsh contrasting light with deep shadows, muted cold palette, deep black space."
+    }
+  ]
+}

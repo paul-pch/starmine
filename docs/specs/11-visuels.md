@@ -44,7 +44,7 @@ dans le code, alignement vérifié par un test.
 | `pirate_base` | `pirate_base.<0-3>` (ordre de `pirate_bases.list` : avant-poste, repaire, forteresse, citadelle) | 4:3, 640 × 480 | 4 | Cartes des bases (onglet Flotte) | **À produire**, non branché |
 | `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur de recherche, chef de chantier) | 1:1, 512 px, portrait buste | 7 | Cartes de l'écran Officiers (spec 12) | **À produire**, non branché |
 | `story` | `story.<clé YAML de l'événement>` | 16:9, 1280 × 720, sujet centré | 15 (catalogue actuel) | En-tête de la popover d'événement (spec 10, 14) | **15 packagées** (liste : `art/prompts/selection-story.md`) ; branché |
-| `scene` | `scene.<raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 16:9, 1280 × 720, sujet centré | 5 | En-tête de la popover de fin de combat ; carte du champ de débris | **À produire**, non branché |
+| `scene` | `scene.<raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 16:9, 1280 × 720, sujet centré | 5 | En-tête de la popover de fin de combat ; carte du champ de débris | **5 validées** (série 62, `art/prompts/serie-62-scene.md`) ; non branché |
 
 ### Icône d'application
 
@@ -64,7 +64,8 @@ registre ne décrit que les images du jeu (`assets/visuels/`).
 
 Par priorité (impact sur l'écran le plus vu d'abord) :
 
-1. `scene` × 5 — en-tête des popovers de combat, porte le narratif (les 15 `story` sont faites).
+1. `scene` × 5 — **images faites** (série 62) ; reste à les brancher (popover de fin de combat, carte du
+   champ de débris).
 2. `pirate` × 6 — bandeau de raid et rapports, identité de la menace.
 3. `building` t2 et t3 × 72 — déjà branchés par les paliers ; à produire avec le t1 du même
    climat en `parent`.

@@ -325,3 +325,16 @@ au `mood`.
 
 Règle : « windows and running lights brightly lit » distingue un vaisseau en avarie d'une épave ; « low raking sunlight »
 éclaire la coque sans casser le ton. Retenue : e28-distress_signal-7777. Série 60 terminée : 15 illustrations sur 15.
+
+## r1 et r2 — reprise sans casque (règle « tête nue »)
+
+Départ de l'image retenue de chaque événement, seed 7777, détail réécrit « bareheaded, no helmets ».
+
+| Image | 0,85 (r1a) | 0,92 (r1b) | 0,96 (r2a) | 1,0 (r2b) |
+| --- | --- | --- | --- | --- |
+| storage_leak | casque retiré, colon assis en combinaison blanche, composition gardée | idem, combinaison plus claire | — | — |
+| pirate_deserters | casques retirés, composition gardée, visages visibles (petits) | idem | — | — |
+| advance_contract | casques conservés | casques conservés | casques retirés, composition proche, visages de profil bien visibles | nouvelle composition, personnages petits |
+
+Règle : un casque grand dans l'image résiste jusqu'à 0,92 ; il faut 0,96 et « bare heads, no helmets at all, short hair
+visible ». Retirer le casque montre les visages, ce que l'utilisateur voulait éviter sur pirate_deserters.
