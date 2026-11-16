@@ -1,0 +1,267 @@
+{
+  "series": "serie-63-pirates",
+  "base": "art/style/unit_prompt.md",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "pirate.light_fighter",
+      "subject": "A far-future high-tech light fighter spacecraft: a small, sleek and agile single-seat fighter with a pointed nose, a bubble cockpit canopy, sharply swept-back wings carrying two slim laser cannons at their tips, and one engine at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzle at its rear end glows dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1a",
+      "source": "serie-58-unites/e1-light_fighter-1234_00001_.png",
+      "denoise": 0.85,
+      "seeds": [
+        1234
+      ]
+    },
+    {
+      "id": "pirate.light_fighter",
+      "subject": "A far-future high-tech light fighter spacecraft: a small, sleek and agile single-seat fighter with a pointed nose, a bubble cockpit canopy, sharply swept-back wings carrying two slim laser cannons at their tips, and one engine at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzle at its rear end glows dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1b",
+      "source": "serie-58-unites/e1-light_fighter-1234_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        1234
+      ]
+    },
+    {
+      "id": "pirate.light_fighter",
+      "subject": "A far-future high-tech light fighter spacecraft: a small, sleek and agile single-seat fighter with a pointed nose, a bubble cockpit canopy, sharply swept-back wings carrying two slim laser cannons at their tips, and one engine at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzle at its rear end glows dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1c",
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "pirate.heavy_fighter",
+      "subject": "A far-future high-tech heavy fighter spacecraft: a larger, bulky and heavily armoured fighter with a thick armoured hull, a pointed nose with a small armoured cockpit, short broad swept-back wings each carrying two heavy cannons, and two big engines side by side at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the two engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1a",
+      "source": "serie-58-unites/e1-heavy_fighter-1234_00001_.png",
+      "denoise": 0.85,
+      "seeds": [
+        1234
+      ]
+    },
+    {
+      "id": "pirate.heavy_fighter",
+      "subject": "A far-future high-tech heavy fighter spacecraft: a larger, bulky and heavily armoured fighter with a thick armoured hull, a pointed nose with a small armoured cockpit, short broad swept-back wings each carrying two heavy cannons, and two big engines side by side at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the two engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1b",
+      "source": "serie-58-unites/e1-heavy_fighter-1234_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        1234
+      ]
+    },
+    {
+      "id": "pirate.heavy_fighter",
+      "subject": "A far-future high-tech heavy fighter spacecraft: a larger, bulky and heavily armoured fighter with a thick armoured hull, a pointed nose with a small armoured cockpit, short broad swept-back wings each carrying two heavy cannons, and two big engines side by side at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the two engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1c",
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "pirate.cruiser",
+      "subject": "A far-future high-tech cruiser warship: a long, sleek, armoured capital ship with a sharp wedge-shaped prow, a raised command bridge tower in the middle of its upper hull, and several rotating twin-barrelled gun turrets along its top and flanks, with a row of big engines at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, prow first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1a",
+      "source": "serie-58-unites/e1-cruiser-1234_00001_.png",
+      "denoise": 0.85,
+      "seeds": [
+        1234
+      ]
+    },
+    {
+      "id": "pirate.cruiser",
+      "subject": "A far-future high-tech cruiser warship: a long, sleek, armoured capital ship with a sharp wedge-shaped prow, a raised command bridge tower in the middle of its upper hull, and several rotating twin-barrelled gun turrets along its top and flanks, with a row of big engines at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, prow first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1b",
+      "source": "serie-58-unites/e1-cruiser-1234_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        1234
+      ]
+    },
+    {
+      "id": "pirate.cruiser",
+      "subject": "A far-future high-tech cruiser warship: a long, sleek, armoured capital ship with a sharp wedge-shaped prow, a raised command bridge tower in the middle of its upper hull, and several rotating twin-barrelled gun turrets along its top and flanks, with a row of big engines at the rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, prow first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1c",
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "pirate.battleship",
+      "subject": "A far-future high-tech battleship: a colossal, very broad and heavily armoured capital warship with a massive blunt armoured prow, thick layered armour plates, a tall fortified command tower, and several huge triple-barrelled main gun turrets along its long upper deck, with a wide bank of many big engines at the rear, filling the frame from side to side.",
+      "detail": "It flies forward toward the right of the frame, prow first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1a",
+      "source": "serie-58-unites/e1-battleship-7777_00001_.png",
+      "denoise": 0.85,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "pirate.battleship",
+      "subject": "A far-future high-tech battleship: a colossal, very broad and heavily armoured capital warship with a massive blunt armoured prow, thick layered armour plates, a tall fortified command tower, and several huge triple-barrelled main gun turrets along its long upper deck, with a wide bank of many big engines at the rear, filling the frame from side to side.",
+      "detail": "It flies forward toward the right of the frame, prow first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1b",
+      "source": "serie-58-unites/e1-battleship-7777_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "pirate.battleship",
+      "subject": "A far-future high-tech battleship: a colossal, very broad and heavily armoured capital warship with a massive blunt armoured prow, thick layered armour plates, a tall fortified command tower, and several huge triple-barrelled main gun turrets along its long upper deck, with a wide bank of many big engines at the rear, filling the frame from side to side.",
+      "detail": "It flies forward toward the right of the frame, prow first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1c",
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "pirate.small_cargo",
+      "subject": "A far-future high-tech small cargo spaceship: a long hull with a streamlined pointed nose and cockpit at the front, its middle section carrying a row of large modular cargo containers clamped along both sides of the hull, and one large engine block at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1a",
+      "source": "serie-58-unites/e2-d95-small_cargo-7777_00001_.png",
+      "denoise": 0.85,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "pirate.small_cargo",
+      "subject": "A far-future high-tech small cargo spaceship: a long hull with a streamlined pointed nose and cockpit at the front, its middle section carrying a row of large modular cargo containers clamped along both sides of the hull, and one large engine block at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1b",
+      "source": "serie-58-unites/e2-d95-small_cargo-7777_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "pirate.small_cargo",
+      "subject": "A far-future high-tech small cargo spaceship: a long hull with a streamlined pointed nose and cockpit at the front, its middle section carrying a row of large modular cargo containers clamped along both sides of the hull, and one large engine block at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1c",
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "pirate.large_cargo",
+      "subject": "A far-future high-tech large cargo spaceship, much bigger and heavier than a small freighter: a very long and massive hull with a streamlined pointed nose and cockpit at the front, its long middle section carrying many rows of large modular cargo containers stacked two high along both sides of the hull, and a wide block of three big engines at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1a",
+      "source": "serie-58-unites/e2-large_cargo-4242_00001_.png",
+      "denoise": 0.85,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "pirate.large_cargo",
+      "subject": "A far-future high-tech large cargo spaceship, much bigger and heavier than a small freighter: a very long and massive hull with a streamlined pointed nose and cockpit at the front, its long middle section carrying many rows of large modular cargo containers stacked two high along both sides of the hull, and a wide block of three big engines at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1b",
+      "source": "serie-58-unites/e2-large_cargo-4242_00001_.png",
+      "denoise": 0.92,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "pirate.large_cargo",
+      "subject": "A far-future high-tech large cargo spaceship, much bigger and heavier than a small freighter: a very long and massive hull with a streamlined pointed nose and cockpit at the front, its long middle section carrying many rows of large modular cargo containers stacked two high along both sides of the hull, and a wide block of three big engines at the very rear, centred in the frame.",
+      "detail": "It flies forward toward the right of the frame, nose first, and the engine nozzles at its rear end glow dim smoky orange-red behind it, on the left.",
+      "view": "Close three-quarter view from slightly above, with the whole ship visible inside the frame and filling most of it.",
+      "site": "It flies alone in the black of space in high orbit, above a lifeless grey rocky planet: the planet's curved horizon, with a thin bright rim of atmosphere, crosses the lower third of the frame from left to right, and its grey cratered surface, with one large round crater below the ship, fills the bottom of the frame, slightly out of focus. The sky above is pure black, with a soft warm golden haze of sunlight glowing along the right edge of the frame.",
+      "state": "Battered pirate version of this ship: a patchwork hull of mismatched scavenged armour plates in different dull colours, rust streaks, crude welded seams and bolted-on extra plating and guns, dented and scorched, with a few crude dark red painted stripes; no text, no letters, no symbols.",
+      "scale": "",
+      "variant": "p1c",
+      "seeds": [
+        4242
+      ]
+    }
+  ]
+}

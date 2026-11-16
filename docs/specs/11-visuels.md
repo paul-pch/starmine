@@ -40,11 +40,11 @@ dans le code, alignement vérifié par un test.
 | `ship` | `ship.<clé YAML>` | 1:1, 512 px, sans climat | 8 | Cartes du chantier et feuille de détail | Packagées |
 | `planet_hero` | `planet_hero.<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 3 | Hero de l'écran principal | Packagées (biome rocheux) |
 | `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 | Fond plein écran de l'ambiance Immersive | **À produire**, non branché |
-| `pirate` | `pirate.<clé YAML>` : les 6 vaisseaux des flottes pirates (`light_fighter`, `heavy_fighter`, `cruiser`, `battleship`, `small_cargo`, `large_cargo`), version pirate (coque disparate, marquages) | 1:1, 512 px | 6 | Détail du raid, rapport de combat (camp pirate) | **À produire**, non branché |
+| `pirate` | — | — | 0 | — | **Abandonné** (décision de l'utilisateur, 2026-11-13) : pas de vignette par vaisseau pirate ; la menace s'annonce par `scene.raid_incoming` |
 | `pirate_base` | `pirate_base.<0-3>` (ordre de `pirate_bases.list` : avant-poste, repaire, forteresse, citadelle) | 4:3, 640 × 480 | 4 | Cartes des bases (onglet Flotte) | **À produire**, non branché |
 | `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur de recherche, chef de chantier) | 1:1, 512 px, portrait buste | 7 | Cartes de l'écran Officiers (spec 12) | **À produire**, non branché |
 | `story` | `story.<clé YAML de l'événement>` | 16:9, 1280 × 720, sujet centré | 15 (catalogue actuel) | En-tête de la popover d'événement (spec 10, 14) | **15 packagées** (liste : `art/prompts/selection-story.md`) ; branché |
-| `scene` | `scene.<raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 16:9, 1280 × 720, sujet centré | 5 | En-tête de la popover de fin de combat ; carte du champ de débris | **5 validées** (série 62, `art/prompts/serie-62-scene.md`) ; non branché |
+| `scene` | `scene.<raid_incoming\|raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 16:9, 1280 × 720, sujet centré | 6 | Feuille du raid détecté (`raid_incoming`, au tap du bandeau d'alerte, spec 07) ; en-tête de la popover de fin de combat ; carte du champ de débris | **5 validées** (série 62, `art/prompts/serie-62-scene.md`), `raid_incoming` à produire ; non branché |
 
 ### Icône d'application
 
@@ -66,12 +66,12 @@ Par priorité (impact sur l'écran le plus vu d'abord) :
 
 1. `scene` × 5 — **images faites** (série 62) ; reste à les brancher (popover de fin de combat, carte du
    champ de débris).
-2. `pirate` × 6 — bandeau de raid et rapports, identité de la menace.
+2. `scene.raid_incoming` — annonce du raid pirate à venir (feuille du bandeau d'alerte) ; et `pirate_base` × 4,
+   une image par base (onglet Flotte), d'après la station en anneau de `scene.attack_won`.
 3. `building` t2 et t3 × 72 — déjà branchés par les paliers ; à produire avec le t1 du même
    climat en `parent`.
 4. `character` × 7 — écran Officiers.
-5. `pirate_base` × 4 — onglet Flotte.
-6. `background` × 3 — seulement pour l'ambiance Immersive.
+5. `background` × 3 — seulement pour l'ambiance Immersive.
 
 Chaque catégorie non branchée demande, en plus de l'image, une méthode de `Visuals` (id →
 chemin) et l'appel `GameImage` à l'endroit indiqué, avec repli icône.
@@ -171,5 +171,5 @@ pour l'instant.
 ## Points ouverts
 
 - Images 4:3 dédiées à C ou recadrage du 1:1 : à trancher sur les premiers rendus.
-- Charte de prompt des catégories `pirate`, `scene`, `character`, `pirate_base` à
+- Charte de prompt des catégories `scene`, `character`, `pirate_base` à
   écrire (`art/style/`), comme `unit_prompt.md` pour les unités.

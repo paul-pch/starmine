@@ -1,0 +1,96 @@
+{
+  "series": "serie-64-menace",
+  "base": "art/style/story_prompt.md",
+  "size": [
+    1664,
+    928
+  ],
+  "seeds": [
+    4242,
+    7777,
+    1234
+  ],
+  "images": [
+    {
+      "id": "scene.raid_incoming",
+      "variant": "i1a",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "subject": "In the middle of the frame, a pirate fleet of battered dark spacecraft with patchwork hulls of dark gunmetal and rust-brown scavenged plates and glowing orange-red engines, built for space and not shaped like boats: two heavy gunships in the lead and a swarm of small dart-shaped fighters around them, flies in attack formation straight toward the viewer and the planet below.",
+      "detail": "Their orange-red engine glows streak behind them; no explosions yet, nothing has been fired."
+    },
+    {
+      "id": "scene.raid_incoming",
+      "variant": "i1b",
+      "view": "Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "subject": "Seen from behind and above, a pirate fleet of battered dark spacecraft with patchwork hulls of dark gunmetal and rust-brown scavenged plates and glowing orange-red engines, built for space and not shaped like boats: two heavy gunships in the lead and a swarm of small dart-shaped fighters around them, descends in formation toward the curved grey planet in the lower part of the frame.",
+      "detail": "On the planet's surface, the tiny lights of a colony glow on the night side; no explosions yet."
+    },
+    {
+      "id": "scene.raid_incoming",
+      "variant": "i1c",
+      "mood": "Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows.",
+      "subject": "High in the darkening sky above a far-future colony of white domes and towers on a grey rocky plain, small pirate fighter spacecraft, each a single-seat fighter with an angular dart-shaped body, short swept wings and glowing orange-red engine nozzles, its dark hull patched with mismatched scavenged plates, appear as a menacing formation of dark silhouettes diving toward the colony, their engines glowing orange-red.",
+      "detail": "In the foreground, seen from behind, a single colonist in a plain white and grey work suit stands with a bare head, no helmet at all, short dark hair visible, looking up at them; the colony's defense turrets turn toward the sky; nothing has been fired yet."
+    },
+    {
+      "id": "pirate_base.0",
+      "variant": "b1",
+      "view": "Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space.",
+      "subject": "A small pirate outpost: a small, modest pirate space station with a clear silhouette: a spoked ring around a central hub, built from mismatched scavenged modules, dark gunmetal and rust-brown patchwork plates, with dim orange-red lights; a single small ring, a few docked small fighters and one docking arm.",
+      "detail": "It looks makeshift and lightly armed, with only two small gun turrets.",
+      "seeds": [
+        4242,
+        7777,
+        1234
+      ]
+    },
+    {
+      "id": "pirate_base.1",
+      "variant": "b1",
+      "view": "Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space.",
+      "subject": "A pirate lair: a medium pirate space station with a clear silhouette: a spoked ring around a central hub, built from mismatched scavenged modules, dark gunmetal and rust-brown patchwork plates, with dim orange-red lights, hidden among a few drifting small rocks, with several docking arms and a dozen docked fighters.",
+      "detail": "It is armed with several gun turrets and has crude extra modules bolted onto its ring.",
+      "seeds": [
+        4242,
+        7777,
+        1234
+      ]
+    },
+    {
+      "id": "pirate_base.2",
+      "variant": "b1",
+      "view": "Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space.",
+      "subject": "A pirate fortress: a large heavily armoured pirate space station with a clear silhouette: two stacked spoked rings around a central hub, built from mismatched scavenged modules, dark gunmetal and rust-brown patchwork plates, with dim orange-red lights, bristling with heavy gun turrets and armour plates.",
+      "detail": "Armed gunships are docked along its rings, and searchlights sweep from its hub.",
+      "seeds": [
+        4242,
+        7777,
+        1234
+      ]
+    },
+    {
+      "id": "pirate_base.3",
+      "variant": "b1",
+      "view": "Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space.",
+      "subject": "The black citadel, the pirates' greatest stronghold: a colossal pirate space station with a clear silhouette: three huge spoked rings around a central hub, built from mismatched scavenged modules, almost black armour plates, with dim orange-red lights, bristling with huge gun batteries and armour, with a tall central spire.",
+      "detail": "Many warships are docked around it; its many small red lights glow menacingly in the dark.",
+      "seeds": [
+        4242,
+        7777,
+        1234
+      ]
+    }
+  ]
+}
