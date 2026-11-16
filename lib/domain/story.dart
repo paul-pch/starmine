@@ -79,6 +79,24 @@ class StoryOutcome {
   return (effects: out, won: won);
 }
 
+/// Effets réellement appliqués par [o] : ceux de l'événement ou de l'option choisie, chaque
+/// pari remplacé par la branche tirée (`win` si [StoryOutcome.won], sinon `lose`). Vide pour
+/// un choix encore en attente. Exact tant qu'une option porte au plus un pari.
+List<StoryEffectSpec> outcomeEffects(StoryEventSpec spec, StoryOutcome o) {
+  final effects = switch (o.kind) {
+    StoryOutcomeKind.awaiting => const <StoryEffectSpec>[],
+    StoryOutcomeKind.happened => spec.effects,
+    StoryOutcomeKind.answered || StoryOutcomeKind.defaulted =>
+      o.option == null || o.option! >= spec.options.length
+          ? const <StoryEffectSpec>[]
+          : spec.options[o.option!].effects,
+  };
+  return [
+    for (final e in effects)
+      if (e.type == StoryEffectType.gamble) ...(o.won ?? false) ? e.win : e.lose else e,
+  ];
+}
+
 /// Résultat de l'application d'un [StoryEvent] dans `advance()`.
 typedef StoryStep = ({GameState state, GameEvent next, StoryOutcome? outcome});
 

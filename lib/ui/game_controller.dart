@@ -525,11 +525,11 @@ class GameController extends ChangeNotifier {
     await _notifier.cancelAll();
     final t = now();
     for (final e in state.pending) {
-      // Événements ponctuels : app ouverte seulement, jamais notifiés (spec 14).
-      if (e is StoryEvent) continue;
+      // Événements ponctuels : servis app ouverte ; seul un choix en attente est notifié.
+      if (e is StoryEvent && e.choiceKey == null) continue;
       // Expédition : seul son retour est notifié, prévu par la simulation ci-dessous.
       if (e is FleetMission && e.kind == MissionKind.expedition && !e.returning) continue;
-      if (notifyAt(e).isAfter(t)) await _notifier.schedule(e, data);
+      if (notifyAt(e, data).isAfter(t)) await _notifier.schedule(e, data);
     }
     // Les ordres en attente n'ont pas encore d'échéance : on simule la suite (déterministe,
     // raids compris) pour prévoir les fins d'ordres et une éventuelle annulation de file.
@@ -537,7 +537,7 @@ class GameController extends ChangeNotifier {
     final sim = advance(state, t.add(_forecast), _rules);
     for (final e in [...sim.applied, ...sim.state.pending]) {
       final expeditionBack = e is FleetMission && e.kind == MissionKind.expedition && e.returning;
-      if ((queuedIds.contains(e.id) || expeditionBack) && notifyAt(e).isAfter(t)) {
+      if ((queuedIds.contains(e.id) || expeditionBack) && notifyAt(e, data).isAfter(t)) {
         await _notifier.schedule(e, data);
       }
     }

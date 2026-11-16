@@ -319,6 +319,7 @@ class StoryConfig {
     this.intervalHoursMin = 60,
     this.intervalHoursMax = 108,
     this.answerHours = 6,
+    this.expiryNoticeMinutes = 60,
     this.maxStock = 3,
     this.serveGapMinutesMin = 20,
     this.serveGapMinutesMax = 40,
@@ -338,6 +339,9 @@ class StoryConfig {
 
   /// Délai pour répondre à un choix, en heures à ×1.
   final double answerHours;
+
+  /// App fermée : notification d'un choix en attente, ce délai avant son échéance (minutes).
+  final double expiryNoticeMinutes;
   final Map<String, StoryEventSpec> catalog;
 }
 
@@ -941,6 +945,7 @@ class GameData {
       intervalHoursMin: _num(interval, 'min'),
       intervalHoursMax: _num(interval, 'max'),
       answerHours: _num(m, 'answer_hours'),
+      expiryNoticeMinutes: _num(m, 'expiry_notice_minutes'),
       maxStock: _num(m, 'max_stock').toInt(),
       serveGapMinutesMin: _num(_map(m, 'serve_gap_minutes'), 'min'),
       serveGapMinutesMax: _num(_map(m, 'serve_gap_minutes'), 'max'),

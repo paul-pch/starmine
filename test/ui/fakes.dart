@@ -10,7 +10,7 @@ class FakeNotifier implements BuildNotifier {
 
   @override
   Future<void> schedule(GameEvent event, GameData data) async =>
-      scheduled[event.id] = notifyAt(event);
+      scheduled[event.id] = notifyAt(event, data);
 
   @override
   Future<void> scheduleCancelled(QueueCancelled cancelled, GameData data) async =>

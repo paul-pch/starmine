@@ -331,6 +331,18 @@ void main() {
       final b = resolveGambles(wreck.options[0].effects, math.Random(seed));
       expect(a.won, b.won);
       final r = applyStoryEffects(s, wreck, a.effects, t0, rules);
+      // Effets montrés au joueur : exactement la branche tirée.
+      final shown = outcomeEffects(
+        wreck,
+        StoryOutcome(
+          key: wreck.key,
+          at: t0,
+          kind: StoryOutcomeKind.answered,
+          option: 0,
+          won: a.won,
+        ),
+      );
+      expect(shown, a.effects);
       if (a.won!) {
         wins++;
         expect(r.planet.resources.metal, greaterThan(5000));

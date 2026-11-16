@@ -594,6 +594,8 @@ story_events:
   serve_gap_minutes: { min: 20, max: 40 }
   # Délai pour répondre à un choix ; sans réponse, l'option par défaut s'applique.
   answer_hours: 6
+  # App fermée : un choix en attente est notifié ce délai avant son échéance.
+  expiry_notice_minutes: 60
   catalog:
     rich_vein:
       name: Filon riche

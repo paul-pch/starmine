@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:drift/native.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:starmine/data/database.dart';
 import 'package:starmine/data/game_repository.dart';
+import 'package:starmine/data/save_codec.dart';
+import 'package:starmine/domain/events.dart';
 import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/main.dart';
 import 'package:starmine/ui/format.dart';
@@ -229,6 +232,39 @@ void main() {
     expect(find.text('Effacer le journal'), findsOneWidget);
     expect(find.text('Raids'), findsNothing);
     expect(find.textContaining(spec.name), findsOneWidget);
+
+    await close(tester, db);
+  });
+
+  testWidgets('réponse à un pari : popover avec l’issue et les effets obtenus', (tester) async {
+    final (controller, db) = await open(tester);
+    final chain = controller.state.pending.whereType<StoryEvent>().single;
+    final waiting = StoryEvent.chain(
+      id: chain.id,
+      planetId: chain.planetId,
+      seed: 1,
+      accrueAt: t0.add(const Duration(hours: 9)),
+      choiceKey: 'unstable_wreck',
+      deadline: t0.add(const Duration(hours: 6)),
+    );
+    final save = SaveGame(
+      state: controller.state.copyWith(
+        pending: [for (final e in controller.state.pending) e.id == chain.id ? waiting : e],
+      ),
+      speed: controller.speed,
+      seed: 1,
+    );
+    await tester.runAsync(
+      () => controller.importJson(jsonEncode(encodeSave(save, exportedAt: t0))),
+    );
+    await tester.runAsync(() => controller.answerChoice(0));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    final o = controller.lastStory!;
+    expect(o.kind, StoryOutcomeKind.answered);
+    expect(find.byType(EventPopover), findsOneWidget);
+    expect(find.text('Épave instable : pari ${o.won! ? 'réussi' : 'raté'}'), findsOneWidget);
+    expect(find.text('Choix : Fouiller'), findsOneWidget);
 
     await close(tester, db);
   });

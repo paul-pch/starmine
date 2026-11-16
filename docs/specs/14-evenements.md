@@ -45,7 +45,8 @@ Le catalogue est appelé à s'enrichir.
     l'application, **versées `delay` heures plus tard**, même au-delà du stockage ; affiché
     comme un effet en cours (« à recevoir ») ;
   - `gamble` : pari, réussi avec la probabilité `chance` (graine de l'événement) ; applique
-    les effets `win` ou `lose`. Le résultat est montré dans la popover et le journal.
+    les effets `win` ou `lose`. Le résultat est montré dans la popover et le journal, avec
+    les effets de la branche tirée (une option porte au plus un pari).
 - **Cumul** : tous les effets s'additionnent, y compris ceux du même événement tiré deux
   fois (production : bonus ajoutés ; énergie : facteurs multipliés).
 - **Officier lié** (`officer`) : un bonus est prolongé (durée × (1 + n × niveau), raccourci
@@ -81,7 +82,7 @@ YAML). Valeurs dans le YAML ; à équilibrer en jouant.
 ## Données
 
 Section `story_events` : `interval_hours` (accumulation du stock), `max_stock`,
-`serve_gap_minutes`, `answer_hours`, `catalog` (par événement `name`,
+`serve_gap_minutes`, `answer_hours`, `expiry_notice_minutes`, `catalog` (par événement `name`,
 `description` = texte d'histoire, `kind` : `bonus` / `malus` / `choice`, `requires`,
 `effects`, ou `options` [`label`, `effects`] et `default`, `officer` [`kind`, `per_level`]).
 Un effet : `type`, `resource`, `target`, `value`, `hours`, `unit` (`units`), `delay`
@@ -96,8 +97,13 @@ Un effet : `type`, `resource`, `target`, `value`, `hours`, `unit` (`units`), `de
   par défaut signalée), bouton par option.
 - **Popover** quand un événement survient app ouverte (spec 10) : texte d'histoire et
   effets ; une décision y montre directement ses options (« Plus tard » la laisse en attente).
+- **Popover de résultat** après une réponse (popover ou feuille de décision) : titre
+  « <nom> : pari réussi » (icône verte) ou « <nom> : pari raté » (icône rouge), sinon le nom
+  seul ; lignes « Choix : <option> » puis les effets réellement appliqués (« Rien obtenu » si
+  la branche est vide).
 - **Journal** : écran Rapports, liste unique avec les rapports de combat (date, nom, choix ou
-  défaut) ; tap → texte et effets ; « Effacer le journal » efface rapports et événements
+  défaut ; icône verte ou rouge pour un pari) ; tap → texte, option retenue, issue du pari et
+  effets réellement appliqués ; « Effacer le journal » efface rapports et événements
   (confirmation ; les effets en cours restent).
 - **Bandeau** : un effet `delayed` s'affiche « <montant> à recevoir » avec son reste.
 - **Popover** et **journal** : un pari affiche « Réussi » ou « Raté » et les effets obtenus.
@@ -106,8 +112,10 @@ Un effet : `type`, `resource`, `target`, `value`, `hours`, `unit` (`units`), `de
 
 ## Notifications
 
-Aucune (V2e) : rien ne survient app fermée. L'option par défaut d'un choix échu s'applique
-sans notification.
+Rien ne survient app fermée (V2e). Seule exception : un choix laissé en attente (« Plus
+tard ») est notifié `expiry_notice_minutes` avant son échéance (« Décision en attente : <nom> »,
+option par défaut rappelée) ; si ce moment est déjà passé quand l'app passe en arrière-plan,
+pas de notification. L'option par défaut s'applique ensuite comme avant.
 
 ## Persistance
 
@@ -132,9 +140,12 @@ sans détail au tap.
 
 `story_test.dart` : config, parts égales et déterminisme, jamais deux malus, éligibilité,
 effet temporaire exact puis retiré, cumul du même événement, officiers, raccourci et retard,
-stock et gain, unités, débris, versement différé, pari (déterministe, les deux issues),
+stock et gain, unités, débris, versement différé, pari (déterministe, les deux issues,
+effets montrés = branche tirée),
 choix par défaut, réponse, raid avancé, stock plafonné sur 3 semaines sans aucun effet hors
 ligne, service (délai, un à la fois, pas pendant un choix), debug.
+`game_controller_test.dart` : notification d'un choix en attente (et aucune sans choix).
+`home_shell_test.dart` : popover de résultat d'un pari.
 
 ## Points ouverts
 

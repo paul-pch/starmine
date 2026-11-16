@@ -22,11 +22,13 @@ pas à l'écran.
 | Flotte | Arrivée (combat, espionnage, collecte) et retour | Flotte arrivée / de retour | Constructions |
 | Recyclage | Retour des recycleurs | Recyclage terminé | Constructions |
 | File d'attente annulée | Tour de l'ordre impossible | File de … annulée (élément, raison) | Recherches ou Constructions |
+| Choix en attente | `expiry_notice_minutes` avant l'échéance | Décision en attente : <nom> | Événements |
 
 - Les ordres en file d'attente n'ont pas encore d'échéance : leurs fins et une éventuelle
   annulation sont prévues en simulant `advance()` sur 7 jours (spec 13).
 
-- Événements ponctuels : aucune notification, ils ne surviennent qu'app ouverte (spec 14).
+- Événements ponctuels : ils ne surviennent qu'app ouverte ; seul un choix laissé en attente
+  est notifié avant que l'option par défaut s'applique (spec 14).
 
 - Id de notification = id de l'événement ; l'arrivée d'un raid utilise
   `raidArrivalNotificationId(id)`, l'annulation d'une file `queueCancelledNotificationId`.

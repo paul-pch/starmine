@@ -163,24 +163,34 @@ class _HomeShellState extends State<HomeShell> {
     final o = _c.lastStory;
     if (_c.storyCount == _storySeen || o == null || !mounted) return;
     _storySeen = _c.storyCount;
-    if (o.kind == StoryOutcomeKind.answered) return;
     final spec = _c.data.story.catalog[o.key];
     if (spec == null) return;
     _enqueue(() {
       // Décision : options seulement si elle attend toujours (sinon déjà tranchée).
       final awaiting = o.kind == StoryOutcomeKind.awaiting && _c.pendingChoice?.key == spec.key;
-      final (title, body) = storyText(o, _c.data);
+      final (title, _) = storyText(o, _c.data);
+      final scheme = Theme.of(context).colorScheme;
       return EventPopover(
-        icon: awaiting ? Icons.help_outline : Icons.auto_stories_outlined,
-        title: awaiting ? spec.name : title,
-        body: spec.description,
-        lines: [
-          if (o.kind == StoryOutcomeKind.happened)
-            for (final e in spec.effects) storyEffectText(_c.data, e),
-          if (o.kind == StoryOutcomeKind.happened && o.won != null)
-            o.won! ? 'Pari réussi' : 'Pari raté',
-          if (o.kind == StoryOutcomeKind.defaulted) body,
-        ],
+        icon: switch (o.won) {
+          _ when awaiting => Icons.help_outline,
+          true => Icons.check_circle_outline,
+          false => Icons.cancel_outlined,
+          null => Icons.auto_stories_outlined,
+        },
+        iconColor: switch (o.won) {
+          true => Palette.free,
+          false => scheme.error,
+          null => null,
+        },
+        title: switch (o.won) {
+          _ when awaiting => spec.name,
+          true => '${spec.name} : pari réussi',
+          false => '${spec.name} : pari raté',
+          null => title,
+        },
+        // Réponse : le texte d'histoire vient d'être lu, on montre l'issue seulement.
+        body: o.kind == StoryOutcomeKind.answered ? '' : spec.description,
+        lines: storyOutcomeLines(_c.data, spec, o, verdict: false),
         image: widget.visuals.withAmbiance(_c.ambiance).story(spec.key),
         content: awaiting
             ? Builder(

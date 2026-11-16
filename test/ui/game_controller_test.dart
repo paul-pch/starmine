@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:drift/native.dart';
@@ -217,5 +218,39 @@ void main() {
     expect(c.state.queue, isEmpty);
     expect(c.state.planet.level(BuildingKind.metalMine), 2);
     expect(c.queueCancelledCount, 1);
+  });
+
+  test('choix en attente app fermée : notifié avant son échéance, sinon rien', () async {
+    final c = controller();
+    await c.init();
+    // Sans choix en attente : la chaîne d'événements n'est jamais notifiée.
+    final chain = c.state.pending.whereType<StoryEvent>().single;
+    await c.onHidden();
+    expect(notifier.scheduled.containsKey(chain.id), isFalse);
+    await c.onVisible();
+
+    final deadline = t0.add(const Duration(hours: 6));
+    final waiting = StoryEvent.chain(
+      id: chain.id,
+      planetId: chain.planetId,
+      seed: 1,
+      accrueAt: t0.add(const Duration(hours: 9)),
+      choiceKey: 'merchant_convoy',
+      deadline: deadline,
+    );
+    final save = SaveGame(
+      state: c.state.copyWith(
+        pending: [for (final e in c.state.pending) e.id == chain.id ? waiting : e],
+      ),
+      speed: c.speed,
+      seed: 1,
+    );
+    await c.importJson(jsonEncode(encodeSave(save, exportedAt: t0)));
+    await c.onHidden();
+    final lead = Duration(minutes: gameData.story.expiryNoticeMinutes.round());
+    expect(notifier.scheduled[chain.id], deadline.subtract(lead));
+    final (title, body) = choiceExpiringText(waiting, gameData);
+    expect(title, 'Décision en attente : Convoi marchand');
+    expect(body, contains('« Refuser »'));
   });
 }

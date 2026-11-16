@@ -6,6 +6,7 @@ import '../domain/engine.dart';
 import '../domain/events.dart';
 import '../domain/game_data.dart';
 import '../domain/story.dart';
+import 'widgets/story_banner.dart';
 
 /// Id de la notification d'arrivée d'un raid (celle de détection porte l'id de l'événement).
 int raidArrivalNotificationId(int eventId) => eventId + 1000000;
@@ -52,6 +53,31 @@ int queueCancelledNotificationId(QueuedOrder first) => first.id + 2000000;
   };
 }
 
+/// Lignes d'issue d'un événement (popover, journal) : option retenue, issue du pari, effets
+/// réellement appliqués (« Rien obtenu » si la branche tirée est vide). [verdict] faux : l'issue
+/// du pari est déjà dans le titre.
+List<String> storyOutcomeLines(
+  GameData data,
+  StoryEventSpec spec,
+  StoryOutcome o, {
+  bool verdict = true,
+}) {
+  if (o.kind == StoryOutcomeKind.awaiting) return const [];
+  final option = o.option == null || o.option! >= spec.options.length
+      ? null
+      : spec.options[o.option!].label;
+  final effects = outcomeEffects(spec, o);
+  return [
+    if (option != null)
+      o.kind == StoryOutcomeKind.defaulted
+          ? 'Sans réponse : « $option » appliqué'
+          : 'Choix : $option',
+    if (verdict && o.won != null) o.won! ? 'Pari réussi' : 'Pari raté',
+    if (effects.isEmpty) 'Rien obtenu',
+    for (final e in effects) storyEffectText(data, e),
+  ];
+}
+
 /// Issue d'un pari, à la suite d'un texte (« · pari réussi »), vide sans pari.
 String gambleText(bool? won) => switch (won) {
   null => '',
@@ -68,11 +94,26 @@ String _arrivalTitle(MissionKind kind) => switch (kind) {
 };
 
 /// Moment de la (première) notification : fin de l'ordre, dernière unité d'un lot,
-/// détection ou arrivée d'un raid.
-DateTime notifyAt(GameEvent event) => switch (event) {
+/// détection ou arrivée d'un raid, choix en attente peu avant son échéance (spec 14).
+DateTime notifyAt(GameEvent event, GameData data) => switch (event) {
   ShipyardBatch() => event.finishAt,
+  StoryEvent(:final deadline?) => deadline.subtract(
+    Duration(milliseconds: (data.story.expiryNoticeMinutes * 60000).round()),
+  ),
   _ => event.dueAt,
 };
+
+/// Titre et texte de la notification d'un choix en attente (spec 14).
+(String, String) choiceExpiringText(StoryEvent event, GameData data) {
+  final spec = data.story.catalog[event.choiceKey];
+  final name = spec?.name ?? event.choiceKey ?? '';
+  final fallback = spec == null ? '' : ' : « ${spec.options[spec.defaultOption].label} »';
+  return (
+    'Décision en attente : $name',
+    'Sans réponse sous ${data.story.expiryNoticeMinutes.round()} min, '
+        'l’option par défaut s’applique$fallback.',
+  );
+}
 
 /// Notifications locales des événements de jeu. L'id de notification est l'id de
 /// l'événement (plus [raidArrivalNotificationId] pour l'arrivée d'un raid).
@@ -121,6 +162,16 @@ class LocalBuildNotifier implements BuildNotifier {
       'recherches',
       'Recherches',
       channelDescription: 'Fin des recherches',
+      importance: Importance.high,
+      priority: Priority.high,
+    ),
+  );
+
+  static const _story = NotificationDetails(
+    android: AndroidNotificationDetails(
+      'evenements',
+      'Événements',
+      channelDescription: 'Décision en attente sur le point d’expirer',
       importance: Importance.high,
       priority: Priority.high,
     ),
@@ -195,8 +246,20 @@ class LocalBuildNotifier implements BuildNotifier {
         RaidArrival() => [
           (raidArrivalNotificationId(event.id), event.dueAt, 'Raid pirate', raidReport, _raids),
         ],
-        // Événements ponctuels : app ouverte seulement (spec 14).
-        StoryEvent() => [],
+        // Événements ponctuels : servis app ouverte ; seul un choix en attente est notifié,
+        // peu avant que l'option par défaut s'applique (spec 14).
+        StoryEvent(:final deadline) =>
+          deadline == null
+              ? []
+              : [
+                  (
+                    event.id,
+                    notifyAt(event, data),
+                    choiceExpiringText(event, data).$1,
+                    choiceExpiringText(event, data).$2,
+                    _story,
+                  ),
+                ],
         FleetMission(:final returning, :final kind) => [
           (
             event.id,

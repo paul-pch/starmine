@@ -6,6 +6,7 @@ import '../../domain/story.dart';
 import '../format.dart';
 import '../game_controller.dart';
 import '../notifications.dart';
+import '../theme.dart';
 import '../widgets/combat_report.dart';
 import '../widgets/info_button.dart';
 import '../widgets/raid_banner.dart';
@@ -121,7 +122,11 @@ class _StoryTile extends StatelessWidget {
     final o = entry.outcome;
     final (title, body) = storyText(o, controller.data);
     return ListTile(
-      leading: const Icon(Icons.auto_stories_outlined),
+      leading: switch (o.won) {
+        true => const Icon(Icons.check_circle_outline, color: Palette.free),
+        false => Icon(Icons.cancel_outlined, color: Theme.of(context).colorScheme.error),
+        null => const Icon(Icons.auto_stories_outlined),
+      },
       title: Text(title),
       subtitle: Text(
         '${_date(o.at)}'
@@ -133,10 +138,7 @@ class _StoryTile extends StatelessWidget {
         InfoButton.show(
           context,
           title: spec.name,
-          body: [
-            spec.description,
-            for (final e in spec.effects) storyEffectText(controller.data, e),
-          ].join('\n\n'),
+          body: [spec.description, ...storyOutcomeLines(controller.data, spec, o)].join('\n\n'),
         );
       },
     );
