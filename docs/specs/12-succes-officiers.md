@@ -48,11 +48,11 @@ Section `counters` : libellé de chaque compteur. Seuils à équilibrer en jouan
 ## UI
 
 - Icône **Officiers** dans le bandeau du hero, pastille = nombre d'officiers disponibles.
-- Écran **Officiers** : carte par officier (portrait en repli icône, nom, « Niveau n / max »,
+- Écran **Officiers** : carte par officier (portrait 64 dp, grisé tant que l'officier n'est pas recruté, repli icône, nom, « Niveau n / max »,
   bonus actuel, bonus du niveau suivant, prérequis « Élément requis (actuel) » en rouge s'ils
   manquent), bouton « Débloquer » / « Promouvoir » actif seulement si disponible, sans
   message (la carte se met à jour) ; marge du bas pour la barre de navigation Android ; `InfoButton` par officier (description) et sur l'écran (règles).
-- Portraits : catégorie `character` du registre d'images (spec 11), à produire.
+- Portraits : catégorie `character` du registre d'images (spec 11), 8 images (série 66).
 
 ## Persistance
 

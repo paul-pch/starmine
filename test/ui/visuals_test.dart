@@ -113,6 +113,13 @@ void main() {
     expect(const Visuals(assets: {raid, base}, ambiance: Ambiance.plain).pirateBase(2), isNull);
   });
 
+  test('officier : portrait par sa clé YAML', () {
+    const portrait = 'assets/visuels/character.research_director.webp';
+    const visuals = Visuals(assets: {portrait});
+    expect(visuals.officer(OfficerKind.researchDirector), portrait);
+    expect(visuals.officer(OfficerKind.admiral), isNull);
+  });
+
   test('ambiance Sobre : aucune image', () {
     const visuals = Visuals(assets: {t1}, ambiance: Ambiance.plain);
     expect(visuals.building(mine, 1, temperate), isNull);

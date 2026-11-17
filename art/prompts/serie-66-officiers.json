@@ -1,0 +1,106 @@
+{
+  "series": "serie-66-officiers",
+  "base": "art/style/character_prompt.md",
+  "seeds": [
+    4242,
+    7777
+  ],
+  "images": [
+    {
+      "id": "character.geologist",
+      "variant": "c1",
+      "subject": "A woman in her fifties, East Asian, with short greying hair and weathered skin.",
+      "outfit": "Wearing a dusty white and grey mining work suit with orange accents and a reinforced collar.",
+      "detail": "She holds up in one hand a raw rock sample streaked with silver metal veins.",
+      "site": "Behind her, softly blurred with a shallow depth of field, the dark mouth of a mine tunnel cut into a grey rock cliff, with a massive ore conveyor and veins of raw metal in the rock."
+    },
+    {
+      "id": "character.technocrat",
+      "variant": "c1",
+      "subject": "A man in his sixties, South Asian, with white hair and thin rimless glasses.",
+      "outfit": "Wearing a long white and grey laboratory coat with blue accents.",
+      "detail": "He holds a small glass vial containing a glowing blue crystal shard.",
+      "site": "Behind him, softly blurred with a shallow depth of field, a bright research laboratory under a glass dome, with instruments and glass equipment."
+    },
+    {
+      "id": "character.architect",
+      "variant": "c1",
+      "subject": "A woman in her thirties, Black, with short natural hair.",
+      "outfit": "Wearing a white and grey work jacket with yellow accents and a utility harness.",
+      "detail": "She holds a slim surveying instrument against her shoulder.",
+      "site": "Behind her, softly blurred with a shallow depth of field, a monumental robotic factory hall with giant robotic arms assembling structural modules."
+    },
+    {
+      "id": "character.engineer",
+      "variant": "c1",
+      "subject": "A man in his forties, Latino, with a short dark beard and a strong build.",
+      "outfit": "Wearing a heavy white and grey work suit with red accents and thick work gloves.",
+      "detail": "A heavy wrench rests on his shoulder.",
+      "site": "Behind him, softly blurred with a shallow depth of field, a large defensive gun turret on grey rocky ground, under repair."
+    },
+    {
+      "id": "character.commander",
+      "variant": "c1",
+      "subject": "A woman in her fifties, North African, with short silver hair and a steady gaze.",
+      "outfit": "Wearing a structured white and grey officer's work jacket with gold accents.",
+      "detail": "She stands with her arms crossed.",
+      "site": "Behind her, softly blurred with a shallow depth of field, a far-future colony of white domes and towers on a grey rocky plain, with construction cranes at work."
+    },
+    {
+      "id": "character.research_director",
+      "variant": "c1",
+      "subject": "A man in his forties, Northern European, with a short red beard and round glasses.",
+      "outfit": "Wearing a white and grey laboratory coat with teal accents over a work suit.",
+      "detail": "He holds a stack of thin sample plates.",
+      "site": "Behind him, softly blurred with a shallow depth of field, a busy research laboratory with several researchers in white coats at their benches."
+    },
+    {
+      "id": "character.shipyard_master",
+      "variant": "c1",
+      "subject": "A woman in her forties, Southeast Asian, with her black hair tied back.",
+      "outfit": "Wearing a white and grey work suit with amber high-visibility stripes.",
+      "detail": "Safety glasses hang from her collar.",
+      "site": "Behind her, softly blurred with a shallow depth of field, an open-air shipyard cut into grey rock, with the large hull of a sleek far-future spacecraft under construction, built for space and not shaped like a boat."
+    },
+    {
+      "id": "character.admiral",
+      "variant": "c1",
+      "subject": "A man in his sixties, East African, with a short white beard and deep-set eyes.",
+      "outfit": "Wearing a dark grey and white flight jacket with silver accents.",
+      "detail": "He stands upright with his hands behind his back.",
+      "site": "Behind him, softly blurred with a shallow depth of field, the wide window of a starship bridge showing deep space with stars and a distant nebula."
+    },
+    {
+      "id": "character.engineer",
+      "variant": "c2a",
+      "subject": "A man in his forties, Latino, with a short dark beard and a strong build.",
+      "outfit": "Wearing a heavy white and grey work suit with red accents and thick work gloves.",
+      "detail": "He stands with his arms relaxed at his sides, his hands out of the frame.",
+      "site": "Behind him, softly blurred with a shallow depth of field, a large defensive gun turret on grey rocky ground, under repair."
+    },
+    {
+      "id": "character.engineer",
+      "variant": "c2b",
+      "subject": "A man in his forties, Latino, with a short dark beard and a strong build.",
+      "outfit": "Wearing a heavy white and grey work suit with red accents and thick work gloves.",
+      "detail": "He stands with his arms relaxed at his sides, his hands out of the frame.",
+      "site": "Behind him, softly blurred with a shallow depth of field, a fixed defensive gun turret mounted on a round concrete pedestal anchored in grey rocky ground, with no tracks and no wheels, under repair."
+    },
+    {
+      "id": "character.engineer",
+      "variant": "c3a",
+      "subject": "A man in his forties, Latino, with a short dark beard and a strong build.",
+      "outfit": "Wearing a heavy white and grey work suit with red accents, with bare hands and no gloves.",
+      "detail": "He holds a large adjustable wrench upright in his right hand in front of his chest, its head next to his shoulder.",
+      "site": "Behind him, softly blurred with a shallow depth of field, a fixed defensive gun turret mounted on a round concrete pedestal anchored in grey rocky ground, with no tracks and no wheels, under repair."
+    },
+    {
+      "id": "character.engineer",
+      "variant": "c3b",
+      "subject": "A man in his forties, Latino, with a short dark beard and a strong build.",
+      "outfit": "Wearing a heavy white and grey work suit with red accents, with bare hands and no gloves.",
+      "detail": "He holds a large adjustable wrench in his right hand, resting its handle on his shoulder, his elbow bent naturally.",
+      "site": "Behind him, softly blurred with a shallow depth of field, a fixed defensive gun turret mounted on a round concrete pedestal anchored in grey rocky ground, with no tracks and no wheels, under repair."
+    }
+  ]
+}

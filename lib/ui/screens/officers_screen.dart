@@ -5,6 +5,7 @@ import '../../domain/game_data.dart';
 import '../../domain/officers.dart';
 import '../game_controller.dart';
 import '../theme.dart';
+import '../visuals.dart';
 import '../widgets/info_button.dart';
 
 const officersHelp =
@@ -88,13 +89,14 @@ class _OfficerCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                // Portrait : registre d'images (catégorie character) à venir ; repli icône.
-                CircleAvatar(
-                  backgroundColor: Palette.bar,
-                  child: Icon(
-                    Icons.military_tech_outlined,
-                    color: level > 0 ? theme.colorScheme.primary : Palette.textSecondary,
-                  ),
+                // Portrait (registre, catégorie character), grisé tant que l'officier n'est pas
+                // recruté ; repli icône.
+                GameImage(
+                  path: VisualsScope.of(context).officer(kind),
+                  icon: Icons.military_tech_outlined,
+                  width: 64,
+                  radius: 10,
+                  grayed: level == 0,
                 ),
                 const SizedBox(width: 12),
                 Expanded(

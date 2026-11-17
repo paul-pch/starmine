@@ -42,7 +42,7 @@ dans le code, alignement vérifié par un test.
 | `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 | Fond plein écran de l'ambiance Immersive | **À produire**, non branché |
 | `pirate` | — | — | 0 | — | **Abandonné** (décision de l'utilisateur, 2026-11-13) : pas de vignette par vaisseau pirate ; la menace s'annonce par `scene.raid_incoming` |
 | `pirate_base` | `pirate_base.<0-3>` (ordre de `pirate_bases.list` : avant-poste, repaire, forteresse, citadelle) | 4:3, 640 × 480 | 4 | Cartes des bases (onglet Flotte) | **4 validées** (série 65, `art/prompts/serie-65-bases-pirates.md`) ; branchées : vignette de la carte (64 × 48) et de la feuille de la base (128 × 96), grisées tant que la base est détruite |
-| `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur de recherche, chef de chantier) | 1:1, 512 px, portrait buste | 7 | Cartes de l'écran Officiers (spec 12) | **À produire**, non branché |
+| `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur scientifique, chef de chantier, amiral) | 1:1, 512 px, portrait buste | 8 | Cartes de l'écran Officiers (spec 12) | **8 validées** (série 66, charte `art/style/character_prompt.md`) ; branchées : vignette 64 dp de la carte, grisée tant que l'officier n'est pas recruté |
 | `story` | `story.<clé YAML de l'événement>` | 16:9, 1280 × 720, sujet centré | 15 (catalogue actuel) | En-tête de la popover d'événement (spec 10, 14) | **15 packagées** (liste : `art/prompts/selection-story.md`) ; branché |
 | `scene` | `scene.<raid_incoming\|raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 16:9, 1280 × 720, sujet centré | 6 | Feuille du raid détecté (`raid_incoming`, au tap du bandeau d'alerte, spec 07) ; en-tête de la popover de fin de combat ; carte du champ de débris | **6 validées** : 5 de la série 62 (`art/prompts/serie-62-scene.md`), branchées ; `raid_incoming` de la série 64 (`art/prompts/serie-64-menace.md`), en tête de la feuille du raid détecté |
 
@@ -73,7 +73,7 @@ Par priorité (impact sur l'écran le plus vu d'abord) :
    et la feuille de chaque base.
 3. `building` t2 et t3 × 72 — déjà branchés par les paliers ; à produire avec le t1 du même
    climat en `parent`.
-4. `character` × 7 — écran Officiers.
+4. `character` × 8 (Amiral compris, décision de l'utilisateur 2026-11-17) — écran Officiers ; **faites et branchées** (série 66, `Visuals.officer`).
 5. `background` × 3 — seulement pour l'ambiance Immersive.
 
 Chaque catégorie non branchée demande, en plus de l'image, une méthode de `Visuals` (id →
@@ -138,7 +138,7 @@ démarrage. Le domaine n'en sait rien.
 ## Tests
 
 `test/ui/visuals_test.dart` — palier selon le niveau et les seuils, tranche selon Tmax, image du
-climat, scène de fin de combat selon le camp et le vainqueur, raid à venir, base pirate par son rang, repli quand l'asset manque, vignette grisée, ambiance « Sobre » sans image.
+climat, scène de fin de combat selon le camp et le vainqueur, raid à venir, base pirate par son rang, portrait d'officier, repli quand l'asset manque, vignette grisée, ambiance « Sobre » sans image.
 `test/ui/visuals_registry_test.dart` — chaque entrée `validated` a son fichier `build` et
 inversement, t1 de chaque bâtiment dans chaque climat, seuils alignés sur le code, poids total
 sous 15 Mo.
@@ -174,5 +174,5 @@ pour l'instant.
 ## Points ouverts
 
 - Images 4:3 dédiées à C ou recadrage du 1:1 : à trancher sur les premiers rendus.
-- Charte de prompt des catégories `scene`, `character`, `pirate_base` à
-  écrire (`art/style/`), comme `unit_prompt.md` pour les unités.
+- Charte de prompt des catégories `scene` et `pirate_base` à écrire (`art/style/`), comme `unit_prompt.md` pour
+  les unités ; elles utilisent pour l'instant `story_prompt.md`. `character` : `character_prompt.md`.

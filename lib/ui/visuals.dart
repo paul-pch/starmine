@@ -115,6 +115,9 @@ class Visuals {
   /// Feuille du raid détecté, au tap du bandeau d'alerte (`scene.raid_incoming`).
   String? get raidIncoming => _resolve('scene.raid_incoming');
 
+  /// Portrait d'un officier (`character.<clé>`), carte de l'écran Officiers.
+  String? officer(OfficerKind kind) => _resolve('character.${kind.key}');
+
   /// Base pirate, par son rang dans `pirate_bases.list` (`pirate_base.<rang>`, 4:3).
   String? pirateBase(int index) => _resolve('pirate_base.$index');
 }
