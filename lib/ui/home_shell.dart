@@ -130,6 +130,7 @@ class _HomeShellState extends State<HomeShell> {
                 '${fmtCost(r.loot)}',
           for (final e in r.found.entries) '+${e.value} ${_c.data.unit(e.key).name}',
         ],
+        image: widget.visuals.withAmbiance(_c.ambiance).combat(r),
         actions: [
           const PopoverAction('Fermer', null),
           PopoverAction('Rapport', primary: true, () {

@@ -1,0 +1,51 @@
+{
+  "series": "serie-65-bases-pirates",
+  "base": "art/style/story_prompt.md",
+  "size": [
+    1152,
+    864
+  ],
+  "seeds": [
+    4242,
+    7777,
+    1234
+  ],
+  "images": [
+    {
+      "id": "pirate_base.0",
+      "variant": "b1",
+      "view": "Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space.",
+      "subject": "A small pirate outpost: a small, modest pirate space station with a clear silhouette: a spoked ring around a central hub, built from mismatched scavenged modules, dark gunmetal and rust-brown patchwork plates, with dim orange-red lights; a single small ring, a few docked small fighters and one docking arm.",
+      "detail": "It looks makeshift and lightly armed, with only two small gun turrets."
+    },
+    {
+      "id": "pirate_base.1",
+      "variant": "b1",
+      "view": "Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space.",
+      "subject": "A pirate lair: a medium pirate space station with a clear silhouette: a spoked ring around a central hub, built from mismatched scavenged modules, dark gunmetal and rust-brown patchwork plates, with dim orange-red lights, hidden among a few drifting small rocks, with several docking arms and a dozen docked fighters.",
+      "detail": "It is armed with several gun turrets and has crude extra modules bolted onto its ring."
+    },
+    {
+      "id": "pirate_base.2",
+      "variant": "b1",
+      "view": "Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space.",
+      "subject": "A pirate fortress: a large heavily armoured pirate space station with a clear silhouette: two stacked spoked rings around a central hub, built from mismatched scavenged modules, dark gunmetal and rust-brown patchwork plates, with dim orange-red lights, bristling with heavy gun turrets and armour plates.",
+      "detail": "Armed gunships are docked along its rings, and searchlights sweep from its hub."
+    },
+    {
+      "id": "pirate_base.3",
+      "variant": "b1",
+      "view": "Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it.",
+      "site": "In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky.",
+      "mood": "Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space.",
+      "subject": "The black citadel, the pirates' greatest stronghold: a colossal pirate space station with a clear silhouette: three huge spoked rings around a central hub, built from mismatched scavenged modules, almost black armour plates, with dim orange-red lights, bristling with huge gun batteries and armour, with a tall central spire.",
+      "detail": "Many warships are docked around it; its many small red lights glow menacingly in the dark."
+    }
+  ]
+}

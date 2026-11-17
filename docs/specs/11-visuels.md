@@ -10,8 +10,8 @@ puis packagées dans l'APK.
 images t1 des bâtiments (12 × 3 climats, liste : `art/prompts/selection-t1-rocheux.md`) sont packagées
 en WebP, ainsi que les 12 images des recherches (liste : `art/prompts/selection-recherches.md`, charte
 `art/style/research_prompt.md`), les 16 unités du chantier et les 3 hero planète (biome rocheux, série 59,
-charte `art/style/hero_prompt.md`) et 15 illustrations d'événements sur 15 (série 60, charte
-`art/style/story_prompt.md`) ; les autres catégories restent en repli. Les seuils `tiers` et `temperature_bands` sont repris
+charte `art/style/hero_prompt.md`) 15 illustrations d'événements sur 15 (série 60, charte
+`art/style/story_prompt.md`) et 5 scènes de combat (série 62) ; les autres catégories restent en repli. Les seuils `tiers` et `temperature_bands` sont repris
 dans le code, alignement vérifié par un test.
 
 ## Règles
@@ -41,10 +41,10 @@ dans le code, alignement vérifié par un test.
 | `planet_hero` | `planet_hero.<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 3 | Hero de l'écran principal | Packagées (biome rocheux) |
 | `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 | Fond plein écran de l'ambiance Immersive | **À produire**, non branché |
 | `pirate` | — | — | 0 | — | **Abandonné** (décision de l'utilisateur, 2026-11-13) : pas de vignette par vaisseau pirate ; la menace s'annonce par `scene.raid_incoming` |
-| `pirate_base` | `pirate_base.<0-3>` (ordre de `pirate_bases.list` : avant-poste, repaire, forteresse, citadelle) | 4:3, 640 × 480 | 4 | Cartes des bases (onglet Flotte) | **À produire**, non branché |
+| `pirate_base` | `pirate_base.<0-3>` (ordre de `pirate_bases.list` : avant-poste, repaire, forteresse, citadelle) | 4:3, 640 × 480 | 4 | Cartes des bases (onglet Flotte) | **4 validées** (série 65, `art/prompts/serie-65-bases-pirates.md`) ; branchées : vignette de la carte (64 × 48) et de la feuille de la base (128 × 96), grisées tant que la base est détruite |
 | `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur de recherche, chef de chantier) | 1:1, 512 px, portrait buste | 7 | Cartes de l'écran Officiers (spec 12) | **À produire**, non branché |
 | `story` | `story.<clé YAML de l'événement>` | 16:9, 1280 × 720, sujet centré | 15 (catalogue actuel) | En-tête de la popover d'événement (spec 10, 14) | **15 packagées** (liste : `art/prompts/selection-story.md`) ; branché |
-| `scene` | `scene.<raid_incoming\|raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 16:9, 1280 × 720, sujet centré | 6 | Feuille du raid détecté (`raid_incoming`, au tap du bandeau d'alerte, spec 07) ; en-tête de la popover de fin de combat ; carte du champ de débris | **5 validées** (série 62, `art/prompts/serie-62-scene.md`), `raid_incoming` à produire ; non branché |
+| `scene` | `scene.<raid_incoming\|raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 16:9, 1280 × 720, sujet centré | 6 | Feuille du raid détecté (`raid_incoming`, au tap du bandeau d'alerte, spec 07) ; en-tête de la popover de fin de combat ; carte du champ de débris | **6 validées** : 5 de la série 62 (`art/prompts/serie-62-scene.md`), branchées ; `raid_incoming` de la série 64 (`art/prompts/serie-64-menace.md`), en tête de la feuille du raid détecté |
 
 ### Icône d'application
 
@@ -64,10 +64,13 @@ registre ne décrit que les images du jeu (`assets/visuels/`).
 
 Par priorité (impact sur l'écran le plus vu d'abord) :
 
-1. `scene` × 5 — **images faites** (série 62) ; reste à les brancher (popover de fin de combat, carte du
-   champ de débris).
-2. `scene.raid_incoming` — annonce du raid pirate à venir (feuille du bandeau d'alerte) ; et `pirate_base` × 4,
-   une image par base (onglet Flotte), d'après la station en anneau de `scene.attack_won`.
+1. `scene` × 5 — **faites et branchées** (série 62) : `Visuals.combat` choisit l'en-tête de la popover de fin de
+   combat (raid subi : `raid_won` / `raid_lost` ; attaque d'une base : `attack_won` / `attack_lost` ; rien pour
+   un match nul, une patrouille, une expédition ou une simulation) ; `Visuals.debris` en tête de la carte du
+   champ de débris du chantier.
+2. `scene.raid_incoming` (série 64) et `pirate_base` × 4 (série 65) — **faites et branchées** :
+   `Visuals.raidIncoming` en tête de la feuille du bandeau d'alerte, `Visuals.pirateBase(rang)` sur la carte
+   et la feuille de chaque base.
 3. `building` t2 et t3 × 72 — déjà branchés par les paliers ; à produire avec le t1 du même
    climat en `parent`.
 4. `character` × 7 — écran Officiers.
@@ -135,7 +138,7 @@ démarrage. Le domaine n'en sait rien.
 ## Tests
 
 `test/ui/visuals_test.dart` — palier selon le niveau et les seuils, tranche selon Tmax, image du
-climat, repli quand l'asset manque, vignette grisée, ambiance « Sobre » sans image.
+climat, scène de fin de combat selon le camp et le vainqueur, raid à venir, base pirate par son rang, repli quand l'asset manque, vignette grisée, ambiance « Sobre » sans image.
 `test/ui/visuals_registry_test.dart` — chaque entrée `validated` a son fichier `build` et
 inversement, t1 de chaque bâtiment dans chaque climat, seuils alignés sur le code, poids total
 sous 15 Mo.

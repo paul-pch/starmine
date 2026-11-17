@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:starmine/data/game_data_loader.dart';
+import 'package:starmine/domain/combat.dart';
 import 'package:starmine/domain/game_data.dart';
+import 'package:starmine/domain/raid.dart';
 import 'package:starmine/ui/visuals.dart';
 
 void main() {
@@ -59,6 +61,56 @@ void main() {
     expect(visuals.unit(data.unit(UnitKind.rocketLauncher)), defense);
     expect(visuals.unit(data.unit(UnitKind.smallCargo)), ship);
     expect(visuals.unit(data.unit(UnitKind.cruiser)), isNull);
+  });
+
+  test('fin de combat : scène selon le camp du joueur et le vainqueur', () {
+    String scene(String key) => 'assets/visuels/scene.$key.webp';
+    final visuals = Visuals(
+      assets: {for (final k in ['raid_won', 'raid_lost', 'attack_won', 'attack_lost', 'debris']) scene(k)},
+    );
+    RaidReport report(
+      CombatWinner winner, {
+      String? baseName,
+      bool patrol = false,
+      bool simulated = false,
+      ExpeditionOutcome? expedition,
+    }) => RaidReport(
+      at: DateTime.utc(2026),
+      winner: winner,
+      rounds: 1,
+      attackerStart: const {},
+      attackerLeft: const {},
+      defenderStart: const {},
+      defenderLeft: const {},
+      rebuilt: const {},
+      baseName: baseName,
+      patrol: patrol,
+      simulated: simulated,
+      expedition: expedition,
+    );
+    expect(visuals.combat(report(CombatWinner.defender)), scene('raid_won'));
+    expect(visuals.combat(report(CombatWinner.attacker)), scene('raid_lost'));
+    expect(visuals.combat(report(CombatWinner.attacker, baseName: 'Repaire')), scene('attack_won'));
+    expect(visuals.combat(report(CombatWinner.defender, baseName: 'Repaire')), scene('attack_lost'));
+    expect(visuals.combat(report(CombatWinner.draw)), isNull);
+    expect(visuals.combat(report(CombatWinner.attacker, baseName: 'Repaire', patrol: true)), isNull);
+    expect(visuals.combat(report(CombatWinner.defender, simulated: true)), isNull);
+    expect(
+      visuals.combat(report(CombatWinner.attacker, expedition: ExpeditionOutcome.ambush)),
+      isNull,
+    );
+    expect(visuals.debris, scene('debris'));
+    expect(const Visuals().debris, isNull);
+  });
+
+  test('menace pirate : raid à venir et base par son rang', () {
+    const raid = 'assets/visuels/scene.raid_incoming.webp';
+    const base = 'assets/visuels/pirate_base.2.webp';
+    const visuals = Visuals(assets: {raid, base});
+    expect(visuals.raidIncoming, raid);
+    expect(visuals.pirateBase(2), base);
+    expect(visuals.pirateBase(3), isNull);
+    expect(const Visuals(assets: {raid, base}, ambiance: Ambiance.plain).pirateBase(2), isNull);
   });
 
   test('ambiance Sobre : aucune image', () {

@@ -7,6 +7,7 @@ import '../../domain/raid.dart';
 import '../../domain/rules.dart';
 import '../format.dart';
 import '../game_controller.dart';
+import '../visuals.dart';
 import 'combat_stats.dart';
 import 'info_button.dart';
 
@@ -83,10 +84,24 @@ class _RaidDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final data = controller.data;
+    final image = VisualsScope.of(context).raidIncoming;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Image décorative en tête (spec 11) ; sans image, aucune place réservée.
+        if (image != null) ...[
+          LayoutBuilder(
+            builder: (context, c) => GameImage(
+              path: image,
+              icon: Icons.warning_amber_rounded,
+              width: c.maxWidth,
+              height: c.maxWidth * 9 / 16,
+              radius: 12,
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
         Row(
           children: [
             Expanded(child: Text('Flotte pirate', style: theme.textTheme.titleLarge)),

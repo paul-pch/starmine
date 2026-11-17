@@ -8,6 +8,7 @@ import '../format.dart';
 import '../game_controller.dart';
 import '../resource_style.dart';
 import '../theme.dart';
+import '../visuals.dart';
 import '../widgets/info_button.dart';
 
 const fleetHelp =
@@ -232,6 +233,9 @@ class _MissionCard extends StatelessWidget {
   }
 }
 
+/// Repli d'une base pirate sans image (ambiance Sobre, image absente).
+const _baseIcon = Icons.radar;
+
 /// Base pirate, en une ligne : nom, distance, état, débris, dernier espionnage. Le tap ouvre
 /// le détail (rapport d'espionnage complet) et les actions.
 class _BaseCard extends StatelessWidget {
@@ -279,9 +283,20 @@ class _BaseCard extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 56),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
             child: Row(
               children: [
+                // Vignette 4:3, grisée tant que la base est détruite.
+                GameImage(
+                  path: VisualsScope.of(context).pirateBase(base.index),
+                  icon: _baseIcon,
+                  width: 64,
+                  height: 48,
+                  radius: 8,
+                  iconSize: 24,
+                  grayed: !baseAvailable(base, now),
+                ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -333,14 +348,35 @@ class _BaseDetail extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(spec.name, style: theme.textTheme.titleLarge),
-          Text('À ${spec.systems} systèmes', style: secondary),
-          if (!available)
-            Text(
-              'Détruite · nouvelle base dans '
-              '${fmtDuration(base.destroyedUntil!.difference(now))}',
-              style: secondary,
-            ),
+          Row(
+            children: [
+              GameImage(
+                path: VisualsScope.of(context).pirateBase(base.index),
+                icon: _baseIcon,
+                width: 128,
+                height: 96,
+                radius: 12,
+                iconSize: 40,
+                grayed: !available,
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(spec.name, style: theme.textTheme.titleLarge),
+                    Text('À ${spec.systems} systèmes', style: secondary),
+                    if (!available)
+                      Text(
+                        'Détruite · nouvelle base dans '
+                        '${fmtDuration(base.destroyedUntil!.difference(now))}',
+                        style: secondary,
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
           if (hasDebris) ...[
             const SizedBox(height: 4),
             Text('Champ de débris', style: theme.textTheme.labelMedium),

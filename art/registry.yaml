@@ -1785,3 +1785,83 @@ images:
     code: s12b-attack_lost-4242
   master: art/masters/scene.attack_lost/v1.png
   build: assets/visuels/scene.attack_lost.webp
+- id: pirate_base.0
+  category: pirate_base
+  format: 4:3 640x480
+  status: validated
+  version: 1
+  parent: null
+  prompt: 'Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it. A small pirate outpost: a small, modest pirate space station with a clear silhouette: a spoked ring around a central hub, built from mismatched scavenged modules, dark gunmetal and rust-brown patchwork plates, with dim orange-red lights; a single small ring, a few docked small fighters and one docking arm. It looks makeshift and lightly armed, with only two small gun turrets. In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky. Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 1234
+    job_id: 30916801-39eb-4cce-9441-7c2dfa561526
+    series: serie-65-bases-pirates
+    code: b1-0-1234
+  master: art/masters/pirate_base.0/v1.png
+  build: assets/visuels/pirate_base.0.webp
+- id: pirate_base.1
+  category: pirate_base
+  format: 4:3 640x480
+  status: validated
+  version: 1
+  parent: null
+  prompt: 'Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it. A pirate lair: a medium pirate space station with a clear silhouette: a spoked ring around a central hub, built from mismatched scavenged modules, dark gunmetal and rust-brown patchwork plates, with dim orange-red lights, hidden among a few drifting small rocks, with several docking arms and a dozen docked fighters. It is armed with several gun turrets and has crude extra modules bolted onto its ring. In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky. Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 1234
+    job_id: 22f41b85-d730-4e89-8150-01757bd0c222
+    series: serie-65-bases-pirates
+    code: b1-1-1234
+  master: art/masters/pirate_base.1/v1.png
+  build: assets/visuels/pirate_base.1.webp
+- id: pirate_base.2
+  category: pirate_base
+  format: 4:3 640x480
+  status: validated
+  version: 1
+  parent: null
+  prompt: 'Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it. A pirate fortress: a large heavily armoured pirate space station with a clear silhouette: two stacked spoked rings around a central hub, built from mismatched scavenged modules, dark gunmetal and rust-brown patchwork plates, with dim orange-red lights, bristling with heavy gun turrets and armour plates. Armed gunships are docked along its rings, and searchlights sweep from its hub. In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky. Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 2b1616c6-22d9-4da3-b9d9-c2f7c5e37ade
+    series: serie-65-bases-pirates
+    code: b1-2-4242
+  master: art/masters/pirate_base.2/v1.png
+  build: assets/visuels/pirate_base.2.webp
+- id: pirate_base.3
+  category: pirate_base
+  format: 4:3 640x480
+  status: validated
+  version: 1
+  parent: null
+  prompt: 'Cinematic three-quarter view from slightly above, with the whole station visible inside the frame, centred and filling most of it. The black citadel, the pirates'' greatest stronghold: a colossal pirate space station with a clear silhouette: three huge spoked rings around a central hub, built from mismatched scavenged modules, almost black armour plates, with dim orange-red lights, bristling with huge gun batteries and armour, with a tall central spire. Many warships are docked around it; its many small red lights glow menacingly in the dark. In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky. Art direction: realistic sci-fi concept art, ominous mood, soft warm sunlight from the right with strong contrast, deep black space. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: bdd581ad-5982-4aee-8830-981ad66c46bc
+    series: serie-65-bases-pirates
+    code: b1-3-4242
+  master: art/masters/pirate_base.3/v1.png
+  build: assets/visuels/pirate_base.3.webp
+- id: scene.raid_incoming
+  category: scene
+  format: 16:9 1280x720
+  status: validated
+  version: 1
+  parent: null
+  prompt: 'Cinematic view with a centred composition: the main element of the scene is placed in the middle of the frame, large and filling most of the frame height, with nothing important near the left or right edges, and no person in the foreground. In the middle of the frame, seen head-on, a pirate fleet of battered dark spacecraft with patchwork hulls of dark gunmetal and rust-brown scavenged plates, built for space and not shaped like boats: two heavy gunships in the lead and a swarm of small dart-shaped fighters around them, flies straight toward the viewer: we see the pointed noses, armoured prows and gun barrels of the ships aimed at us, their engines hidden behind their hulls. Only small red running lights glow on their prows; no explosions yet, nothing has been fired. In space, in high orbit above a lifeless grey rocky planet whose curved horizon crosses the bottom of the frame, with stars in the black sky. Art direction: realistic sci-fi concept art, tense and suspenseful mood, cold bluish light with strong contrast, deep shadows. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 04aa1758-27fe-4731-a5bd-7d2b5678c607
+    series: serie-64-menace
+    code: i2a-raid_incoming-4242
+  master: art/masters/scene.raid_incoming/v1.png
+  build: assets/visuels/scene.raid_incoming.webp

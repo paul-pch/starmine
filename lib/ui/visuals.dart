@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../domain/combat.dart';
 import '../domain/game_data.dart';
+import '../domain/raid.dart';
 import 'theme.dart';
 
 /// Préférence d'affichage (spec 10) : ne change aucune information affichée.
@@ -92,6 +94,29 @@ class Visuals {
 
   /// Défense (`defense.<clé>`) ou vaisseau (`ship.<clé>`), sans climat.
   String? unit(UnitSpec spec) => _resolve('${spec.defense ? 'defense' : 'ship'}.${spec.kind.key}');
+
+  /// En-tête de la popover de fin de combat (`scene.<clé>`, spec 11) : raid pirate subi, ou
+  /// attaque d'une base. Pas d'image pour un match nul, une patrouille, une expédition ni
+  /// une simulation.
+  String? combat(RaidReport r) {
+    if (r.simulated || r.patrol || r.expedition != null) return null;
+    final raid = r.baseName == null;
+    final key = switch (r.winner) {
+      CombatWinner.draw => null,
+      CombatWinner.attacker => raid ? 'raid_lost' : 'attack_won',
+      CombatWinner.defender => raid ? 'raid_won' : 'attack_lost',
+    };
+    return key == null ? null : _resolve('scene.$key');
+  }
+
+  /// Carte du champ de débris de la planète (`scene.debris`).
+  String? get debris => _resolve('scene.debris');
+
+  /// Feuille du raid détecté, au tap du bandeau d'alerte (`scene.raid_incoming`).
+  String? get raidIncoming => _resolve('scene.raid_incoming');
+
+  /// Base pirate, par son rang dans `pirate_bases.list` (`pirate_base.<rang>`, 4:3).
+  String? pirateBase(int index) => _resolve('pirate_base.$index');
 }
 
 /// Donne les [Visuals] de l'ambiance courante aux écrans.

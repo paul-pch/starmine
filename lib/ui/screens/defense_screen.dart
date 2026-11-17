@@ -400,11 +400,26 @@ class DebrisCard extends StatelessWidget {
     final needed = (total / cargo).ceil().clamp(1, 1 << 20);
     final send = recyclers < needed ? recyclers : needed;
     final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
+    final image = VisualsScope.of(context).debris;
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
       child: Card(
         margin: EdgeInsets.zero,
-        child: Padding(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Image décorative en tête (spec 11) ; sans image, aucune place réservée.
+            if (image != null)
+              LayoutBuilder(
+                builder: (context, c) => GameImage(
+                  path: image,
+                  icon: Icons.blur_on,
+                  width: c.maxWidth,
+                  height: c.maxWidth * 9 / 16,
+                ),
+              ),
+            Padding(
           padding: const EdgeInsets.fromLTRB(12, 4, 4, 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -442,6 +457,8 @@ class DebrisCard extends StatelessWidget {
                 ),
             ],
           ),
+            ),
+          ],
         ),
       ),
     );

@@ -99,8 +99,11 @@ est dans la feuille de détail (un tap).
 - **Popover d'événement** (fenêtre centrée, `EventPopover`) : ce qui survient app ouverte —
   raid ou attaque résolus (verdict, pillage, bouton « Rapport »), événement ponctuel (texte
   d'histoire, effets ; une décision montre ses options et « Plus tard »), file annulée.
-  Plusieurs à la fois : affichées l'une après l'autre. Image d'en-tête 21:9 facultative
-  (décorative, registre), réservée au narratif.
+  Plusieurs à la fois : affichées l'une après l'autre. Image d'en-tête 16:9 facultative
+  (décorative, registre) : `story.<clé>` pour un événement, `scene.<clé>` pour un raid subi ou
+  l'attaque d'une base ; sans image, aucune place réservée. La carte du champ de débris du
+  chantier porte aussi `scene.debris` en tête, la feuille du raid détecté `scene.raid_incoming`, et
+  chaque base pirate (carte et feuille, onglet Flotte) sa vignette 4:3 `pirate_base.<rang>`.
 
 ## Puces de filtre
 
