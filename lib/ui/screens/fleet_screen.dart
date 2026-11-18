@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../domain/events.dart';
@@ -19,9 +21,20 @@ const fleetHelp =
     'planète : la mise à l’abri l’éloigne pendant un raid.\n\n'
     'Attaques : une à la fois. Expéditions : une à la fois, plus une par niveau d’Amiral. '
     'Recyclage, espionnage et mise à l’abri : sans limite.\n\n'
-    'Plafond de vaisseaux par attaque, expédition ou escorte de recyclage : il augmente avec '
-    'la technologie Informatique (jusqu’au niveau 10). Les sondes et les recycleurs ne '
-    'comptent pas.';
+    'Plafond de vaisseaux par attaque, expédition ou recyclage (transporteurs et escorte) : il '
+    'augmente avec la technologie Informatique (jusqu’au niveau 10). Les sondes et les '
+    'recycleurs ne comptent pas.';
+
+const recycleHelp =
+    'Seuls les recycleurs ramassent les débris : chacun remplit sa soute en une heure. Les '
+    'transporteurs et les autres vaisseaux n’ajoutent que de la soute.\n\n'
+    'La collecte dure jusqu’à remplir les soutes ou vider le champ, une heure au moins : '
+    'plus de soute, collecte plus longue ; plus de recycleurs, collecte plus rapide.\n\n'
+    'Les débris sont réservés au début de la collecte. Rappelée pendant la collecte, la '
+    'flotte rapporte ce qu’elle a déjà ramassé, le reste retourne au champ.';
+
+/// Nom du champ visé par un recyclage sans base : celui de la planète.
+const planetField = 'Champ de la planète';
 
 const expeditionHelp =
     'Une expédition explore l’espace profond pendant la durée choisie. Au retour : '
@@ -131,6 +144,15 @@ class _MissionCard extends StatelessWidget {
     final m = mission;
     return switch (m.kind) {
       MissionKind.shelter => (const ['Absence'], 0),
+      MissionKind.recycle when m.target == null => (const ['Collecte'], 0),
+      MissionKind.recycle => (
+        const ['Aller', 'Collecte', 'Retour'],
+        m.returning
+            ? 2
+            : m.exploring
+            ? 1
+            : 0,
+      ),
       MissionKind.expedition => (
         const ['Aller', 'Exploration', 'Retour'],
         m.returning
@@ -151,8 +173,9 @@ class _MissionCard extends StatelessWidget {
     final target = m.kind == MissionKind.expedition
         ? 'Espace profond'
         : m.target == null
-        ? null
+        ? (m.kind == MissionKind.recycle ? planetField : null)
         : data.pirateBases.list[m.target!].name;
+    final collecting = m.kind == MissionKind.recycle && m.exploring;
     final (steps, current) = _steps;
     final end = m.dueAt.toLocal();
     String two(int n) => n.toString().padLeft(2, '0');
@@ -215,7 +238,10 @@ class _MissionCard extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(_units(m.ships, data), style: small),
-            if (m.cargo != Resources.zero) CostLine(cost: m.cargo),
+            if (collecting)
+              Text('Collecté ${collectedAmounts(m, now)}', style: mono(small))
+            else if (m.cargo != Resources.zero)
+              CostLine(cost: m.cargo),
             if (!m.returning)
               Align(
                 alignment: Alignment.centerRight,
@@ -235,6 +261,12 @@ class _MissionCard extends StatelessWidget {
 
 /// Repli d'une base pirate sans image (ambiance Sobre, image absente).
 const _baseIcon = Icons.radar;
+
+/// « X / Q » d'une collecte en cours : la réservation au prorata de l'avancée.
+String collectedAmounts(FleetMission m, DateTime now) {
+  final total = m.cargo.metal + m.cargo.crystal;
+  return '${fmtAmount((total * m.progress(now)).floorToDouble())} / ${fmtAmount(total)}';
+}
 
 /// Base pirate, en une ligne : nom, distance, état, débris, dernier espionnage. Le tap ouvre
 /// le détail (rapport d'espionnage complet) et les actions.
@@ -472,19 +504,44 @@ class _SendSheetState extends State<SendSheet> {
     ];
   }
 
+  /// Recyclage : tous les recycleurs, puis grands et petits transporteurs jusqu'à couvrir
+  /// le champ, dans la limite du plafond ; pas d'escorte.
+  void _justEnough() {
+    final c = widget.controller;
+    final data = c.data;
+    final d = debrisField(c.state, widget.target);
+    var missing = d.metal + d.crystal;
+    var room = shipCap(c.state, data);
+    for (final k in _available) {
+      _ships[k] = 0;
+    }
+    _ships[UnitKind.recycler] = c.state.planet.count(UnitKind.recycler);
+    missing -= _ships[UnitKind.recycler]! * data.unit(UnitKind.recycler).cargo;
+    for (final k in const [UnitKind.largeCargo, UnitKind.smallCargo]) {
+      final cargo = data.unit(k).cargo;
+      if (missing <= 0 || room <= 0 || cargo <= 0 || !_available.contains(k)) continue;
+      final n = math.min(math.min((missing / cargo).ceil(), c.state.planet.count(k)), room);
+      _ships[k] = n;
+      missing -= n * cargo;
+      room -= n;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     // Par défaut : tout ce qui convient à la mission, dans la limite du plafond ; un
-    // recyclage part sans escorte.
+    // recyclage prend juste assez de soute, sans escorte.
+    if (widget.kind == MissionKind.recycle) {
+      _justEnough();
+      return;
+    }
     final c = widget.controller;
     var room = shipCap(c.state, c.data);
     for (final k in _available) {
       final have = c.state.planet.count(k);
       final free = k == UnitKind.espionageProbe || k == UnitKind.recycler;
-      if (widget.kind == MissionKind.recycle && !free) {
-        _ships[k] = 0;
-      } else if (!isCapped(widget.kind) || free) {
+      if (!isCapped(widget.kind) || free) {
         _ships[k] = have;
       } else {
         _ships[k] = have < room ? have : room;
@@ -500,12 +557,18 @@ class _SendSheetState extends State<SendSheet> {
     final data = c.data;
     final state = c.state;
     final shelter = widget.kind == MissionKind.shelter;
+    final recycle = widget.kind == MissionKind.recycle;
+    final local = onPlanet(widget.kind, widget.target);
     final preview = missionPreview(state, widget.kind, widget.target, _ships, _speed, c.rules);
     final block = checkMission(state, widget.kind, widget.target, _ships, _speed, c.now(), c.rules);
     final title = [
       missionName(widget.kind),
-      if (widget.target case final t?) data.pirateBases.list[t].name,
+      if (widget.target case final t?) data.pirateBases.list[t].name else if (local) planetField,
     ].join(' · ');
+    Duration hours(double h) =>
+        Duration(milliseconds: (h * Duration.millisecondsPerHour / c.rules.speed).round());
+    final small = theme.textTheme.bodySmall;
+    final secondary = small?.copyWith(color: Palette.textSecondary);
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
@@ -518,12 +581,13 @@ class _SendSheetState extends State<SendSheet> {
                 Expanded(child: Text(title, style: theme.textTheme.titleLarge)),
                 if (widget.kind == MissionKind.expedition)
                   const InfoButton(title: 'Expédition', body: expeditionHelp),
+                if (recycle) const InfoButton(title: 'Recyclage', body: recycleHelp),
               ],
             ),
             if (isCapped(widget.kind))
               Text(
                 'Vaisseaux : ${cappedShips(_ships)} / ${shipCap(state, data)}'
-                '${widget.kind == MissionKind.recycle ? ' (escorte ; recycleurs sans limite)' : ''}',
+                '${recycle ? ' (recycleurs sans limite)' : ''}',
                 style: mono(theme.textTheme.bodySmall),
               ),
             const SizedBox(height: 8),
@@ -547,6 +611,8 @@ class _SendSheetState extends State<SendSheet> {
                     }
                   }),
                 ),
+                if (recycle)
+                  ActionChip(label: const Text('Juste assez'), onPressed: () => setState(_justEnough)),
               ],
             ),
             for (final k in _available) ...[
@@ -618,32 +684,40 @@ class _SendSheetState extends State<SendSheet> {
                   ],
                 ),
               ],
-              Text('Vitesse : $_speed %', style: theme.textTheme.titleSmall),
-              Slider(
-                value: _speed.toDouble(),
-                min: 10,
-                max: 100,
-                divisions: 9,
-                label: '$_speed %',
-                onChanged: (v) => setState(() => _speed = v.round()),
-              ),
+              if (!local) ...[
+                Text('Vitesse : $_speed %', style: theme.textTheme.titleSmall),
+                Slider(
+                  value: _speed.toDouble(),
+                  min: 10,
+                  max: 100,
+                  divisions: 9,
+                  label: '$_speed %',
+                  onChanged: (v) => setState(() => _speed = v.round()),
+                ),
+              ],
             ],
+            if (recycle) ..._recyclePreview(preview, small, secondary),
             Text(
               shelter
-                  ? 'Absence ${fmtDuration(Duration(milliseconds: (_hours * Duration.millisecondsPerHour / c.rules.speed).round()))}'
+                  ? 'Absence ${fmtDuration(hours(_hours))}'
+                  : local
+                  ? 'Collecte ${fmtDuration(preview.collect)}'
+                  : recycle
+                  ? 'Aller ${fmtDuration(preview.oneWay)} · collecte '
+                        '${fmtDuration(preview.collect)} · retour ${fmtDuration(preview.oneWay)}'
                   : widget.kind == MissionKind.expedition
                   ? 'Aller ${fmtDuration(preview.oneWay)} · exploration '
-                        '${fmtDuration(Duration(milliseconds: (_explore * Duration.millisecondsPerHour / c.rules.speed).round()))}'
-                        ' · retour ${fmtDuration(preview.oneWay)}'
+                        '${fmtDuration(hours(_explore))} · retour ${fmtDuration(preview.oneWay)}'
                   : 'Aller ${fmtDuration(preview.oneWay)} · retour ${fmtDuration(preview.oneWay)}',
-              style: mono(theme.textTheme.bodySmall),
+              style: mono(small),
             ),
-            CostLine(
-              cost: Resources(deuterium: preview.fuel),
-              available: state.planet.resources,
-            ),
-            if (widget.kind != MissionKind.spy)
-              Text('Soute ${fmtAmount(preview.cargo)}', style: theme.textTheme.bodySmall),
+            if (!local)
+              CostLine(
+                cost: Resources(deuterium: preview.fuel),
+                available: state.planet.resources,
+              ),
+            if (widget.kind != MissionKind.spy && !recycle)
+              Text('Soute ${fmtAmount(preview.cargo)}', style: small),
             if (block != null)
               Text(
                 missionBlockText(block),
@@ -674,6 +748,48 @@ class _SendSheetState extends State<SendSheet> {
         ),
       ),
     );
+  }
+}
+
+extension on _SendSheetState {
+  /// Prévision d'un recyclage : champ, collecte et soute, reste ou soute inutilisée, débit.
+  List<Widget> _recyclePreview(
+    ({Duration oneWay, double fuel, double cargo, Resources load, Duration collect}) preview,
+    TextStyle? small,
+    TextStyle? secondary,
+  ) {
+    final c = widget.controller;
+    final field = debrisField(c.state, widget.target);
+    final fieldTotal = field.metal + field.crystal;
+    final loadTotal = preview.load.metal + preview.load.crystal;
+    final recyclers = _ships[UnitKind.recycler] ?? 0;
+    final rate = recyclers * c.data.unit(UnitKind.recycler).cargo / c.data.debris.collectHours;
+    return [
+      Row(
+        children: [
+          SizedBox(width: 72, child: Text('Champ', style: small)),
+          Expanded(child: CostLine(cost: field)),
+        ],
+      ),
+      Row(
+        children: [
+          SizedBox(width: 72, child: Text('Collecté', style: small)),
+          Expanded(child: CostLine(cost: preview.load)),
+        ],
+      ),
+      Text('Soute ${fmtAmount(preview.cargo)}', style: mono(small)),
+      if (fieldTotal - loadTotal >= 1)
+        Text('Reste dans le champ ${fmtAmount(fieldTotal - loadTotal)}', style: secondary)
+      else if (preview.cargo - loadTotal >= 1)
+        Text('Soute inutilisée ${fmtAmount(preview.cargo - loadTotal)}', style: secondary),
+      if (recyclers > 0)
+        Text(
+          'Débit ${fmtAmount(rate)} / h (${fmtAmount(recyclers.toDouble())} '
+          'recycleur${recyclers > 1 ? 's' : ''})',
+          style: mono(small),
+        ),
+      const SizedBox(height: 4),
+    ];
   }
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:starmine/domain/combat.dart';
 import 'package:starmine/domain/engine.dart';
 import 'package:starmine/domain/events.dart';
+import 'package:starmine/domain/fleet.dart';
 import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/domain/raid.dart';
 import 'package:starmine/domain/resources.dart';
@@ -54,38 +55,98 @@ void main() {
     expect(big.report!.debris.metal, closeTo(pirateLost * 45000 * 0.3, 1e-6));
   });
 
-  group('recyclage', () {
-    GameState withDebris(int recyclers, Resources debris) =>
-        game(planet(units: {UnitKind.recycler: recyclers}).copyWith(debris: debris));
+  group('recyclage du champ de la planète', () {
+    GameState withDebris(Map<UnitKind, int> units, Resources debris) =>
+        game(planet(units: units).copyWith(debris: debris));
 
-    test('refus : sans débris, sans recycleur, mission déjà en cours', () {
-      expect(checkRecycle(withDebris(2, Resources.zero), 1), RecycleBlock.noDebris);
-      expect(checkRecycle(withDebris(0, const Resources(metal: 100)), 1), RecycleBlock.noRecycler);
-      final s = withDebris(2, const Resources(metal: 100));
-      final out = startRecycling(s, 1, t0, rules, eventId: 1);
-      expect(checkRecycle(out.state, 1), RecycleBlock.busy);
+    ({GameState state, MissionBlock? block}) recycle(
+      GameState s,
+      Map<UnitKind, int> ships, {
+      DateTime? at,
+      int id = 1,
+    }) => sendMission(s, MissionKind.recycle, null, ships, 100, at ?? t0, rules, eventId: id, seed: 1);
+
+    test('refus : sans débris, sans recycleur ; transporteurs dans le plafond', () {
+      final empty = withDebris({UnitKind.recycler: 2}, Resources.zero);
+      expect(recycle(empty, {UnitKind.recycler: 1}).block, MissionBlock.noDebris);
+      final s = withDebris({UnitKind.recycler: 1, UnitKind.smallCargo: 500}, const Resources(metal: 100));
+      expect(recycle(s, {UnitKind.smallCargo: 1}).block, MissionBlock.noRecycler);
+      final cap = shipCap(s, gameData);
+      expect(
+        recycle(s, {UnitKind.recycler: 1, UnitKind.smallCargo: cap + 1}).block,
+        MissionBlock.overCap,
+      );
     });
 
-    test('mission : recycleurs absents, retour avec tout le champ si la soute suffit', () {
-      final s = withDebris(2, const Resources(metal: 9000, crystal: 3000));
-      final out = startRecycling(s, 1, t0, rules, eventId: 1);
+    test('collecte : débris réservés au départ, durée selon le débit des recycleurs', () {
+      final s = withDebris(
+        {UnitKind.recycler: 1, UnitKind.largeCargo: 2},
+        const Resources(metal: 100000, crystal: 40000),
+      );
+      final out = recycle(s, {UnitKind.recycler: 1, UnitKind.largeCargo: 2});
       expect(out.block, isNull);
-      expect(out.state.planet.count(UnitKind.recycler), 1);
-      final mission = currentRecycling(out.state)!;
-      expect(mission.dueAt, t0.add(const Duration(hours: 1)));
-      final back = advance(out.state, mission.dueAt, rules).state;
-      expect(back.planet.count(UnitKind.recycler), 2);
-      expect(back.planet.debris, Resources.zero);
-      final produced = rules.produce(s.planet, s.research, const Duration(hours: 1));
-      expect(back.planet.resources.metal, closeTo(produced.metal + 9000, 1e-6));
-      expect(back.planet.resources.crystal, closeTo(produced.crystal + 3000, 1e-6));
+      // Soute 70 000 sur 140 000 : la moitié de chaque, retirée du champ tout de suite.
+      expect(out.state.planet.debris, const Resources(metal: 50000, crystal: 20000));
+      expect(out.state.planet.count(UnitKind.largeCargo), 0);
+      final m = missions(out.state).single;
+      expect(m.exploring, isTrue);
+      expect(m.cargo, const Resources(metal: 50000, crystal: 20000));
+      // 70 000 pour un recycleur de 20 000 : 3,5 fois la durée de base.
+      expect(m.dueAt, t0.add(const Duration(minutes: 210)));
+      final back = advance(out.state, m.dueAt, rules).state;
+      expect(missions(back), isEmpty);
+      expect(back.planet.count(UnitKind.recycler), 1);
+      expect(back.planet.count(UnitKind.largeCargo), 2);
+      expect(back.planet.debris, const Resources(metal: 50000, crystal: 20000));
+      final produced = rules.produce(s.planet, s.research, const Duration(minutes: 210));
+      expect(back.planet.resources.metal, closeTo(produced.metal + 50000, 1e-6));
+      expect(back.planet.resources.crystal, closeTo(produced.crystal + 20000, 1e-6));
     });
 
-    test('soute limitée : au prorata, le reste du champ demeure', () {
-      final s = withDebris(1, const Resources(metal: 30000, crystal: 10000));
-      final out = startRecycling(s, 1, t0, rules, eventId: 1);
-      final back = advance(out.state, currentRecycling(out.state)!.dueAt, rules).state;
-      // Soute 20 000 sur 40 000 : la moitié de chaque.
+    test('plancher : un petit champ prend la durée de base', () {
+      final s = withDebris({UnitKind.recycler: 3}, const Resources(metal: 9000, crystal: 3000));
+      final m = missions(recycle(s, {UnitKind.recycler: 3}).state).single;
+      expect(m.dueAt, t0.add(const Duration(hours: 1)));
+      expect(collectDuration(const Resources(metal: 60000), {UnitKind.recycler: 1}, rules),
+          const Duration(hours: 3));
+    });
+
+    test('deux missions sur le même champ : la seconde prend le reste', () {
+      final s = withDebris({UnitKind.recycler: 2}, const Resources(metal: 30000));
+      final first = recycle(s, {UnitKind.recycler: 1});
+      final second = recycle(first.state, {UnitKind.recycler: 1}, id: 2);
+      expect(second.block, isNull);
+      expect(missions(second.state).map((m) => m.cargo.metal), [20000, 10000]);
+      expect(second.state.planet.debris, Resources.zero);
+      expect(recycle(second.state, {UnitKind.recycler: 1}, id: 3).block, isNotNull);
+    });
+
+    test('rappel pendant la collecte : la part ramassée rentre, le reste au champ', () {
+      final s = withDebris({UnitKind.recycler: 1}, const Resources(metal: 20000, crystal: 20000));
+      final out = recycle(s, {UnitKind.recycler: 1});
+      final half = t0.add(const Duration(minutes: 30));
+      final r = recallMission(out.state, 1, half, rules);
+      expect(missions(r), isEmpty);
+      expect(r.planet.count(UnitKind.recycler), 1);
+      expect(r.planet.debris, const Resources(metal: 15000, crystal: 15000));
+      final produced = rules.produce(s.planet, s.research, const Duration(minutes: 30));
+      expect(r.planet.resources.metal, closeTo(produced.metal + 5000, 1e-6));
+    });
+
+    test('ancienne mission de recyclage (sauvegarde antérieure) : encore appliquée', () {
+      final s = withDebris({}, const Resources(metal: 30000, crystal: 10000)).copyWith(
+        pending: [
+          RecycleMission(
+            id: 1,
+            planetId: 1,
+            dueAt: t0.add(const Duration(hours: 1)),
+            startedAt: t0,
+            recyclers: 1,
+          ),
+        ],
+      );
+      final back = advance(s, t0.add(const Duration(hours: 1)), rules).state;
+      expect(back.planet.count(UnitKind.recycler), 1);
       expect(back.planet.debris, const Resources(metal: 15000, crystal: 5000));
     });
   });

@@ -273,14 +273,33 @@ double shelterDistance(GameData data) => data.pirateBases.list.isEmpty
     ? 2700
     : data.pirateBases.list.map((b) => b.distance).reduce(math.min);
 
+/// Recyclage du champ de la planète (V3d) : pas de trajet, la collecte commence au départ.
+bool onPlanet(MissionKind kind, int? target) => kind == MissionKind.recycle && target == null;
+
+/// Champ de débris visé : celui de la planète ou d'une base.
+Resources debrisField(GameState s, int? target) =>
+    target == null ? s.planet.debris : s.bases[target].debris;
+
+/// Durée de collecte de [load] par [ships] (V3d) : un recycleur remplit sa soute en
+/// `debris.collect_hours` ; jamais moins que cette durée.
+Duration collectDuration(Resources load, Map<UnitKind, int> ships, Rules rules) {
+  final data = rules.data;
+  final rate = (ships[UnitKind.recycler] ?? 0) * data.unit(UnitKind.recycler).cargo;
+  final amount = load.metal + load.crystal;
+  final factor = rate <= 0 ? 1.0 : math.max(1.0, amount / rate);
+  final hours = data.debris.collectHours * factor;
+  return Duration(milliseconds: (hours * Duration.millisecondsPerHour / rules.speed).round());
+}
+
 double _distance(MissionKind kind, int? target, GameData data) => switch (kind) {
   MissionKind.expedition => data.expedition.distance,
   MissionKind.shelter => shelterDistance(data),
   _ => target == null ? shelterDistance(data) : data.pirateBases.list[target].distance,
 };
 
-/// Prévision d'un envoi : durée d'un aller, carburant aller-retour, soute.
-({Duration oneWay, double fuel, double cargo}) missionPreview(
+/// Prévision d'un envoi : durée d'un aller, carburant aller-retour, soute ; recyclage :
+/// débris collectés (champ actuel) et durée de la collecte.
+({Duration oneWay, double fuel, double cargo, Resources load, Duration collect}) missionPreview(
   GameState s,
   MissionKind kind,
   int? target,
@@ -289,11 +308,20 @@ double _distance(MissionKind kind, int? target, GameData data) => switch (kind) 
   Rules rules,
 ) {
   final data = rules.data;
+  final cargo = shipsCargo(ships, data);
+  final recycle = kind == MissionKind.recycle;
+  final load = recycle ? recycleLoad(debrisField(s, target), cargo) : Resources.zero;
+  final collect = recycle ? collectDuration(load, ships, rules) : Duration.zero;
+  if (onPlanet(kind, target)) {
+    return (oneWay: Duration.zero, fuel: 0, cargo: cargo, load: load, collect: collect);
+  }
   final distance = _distance(kind, target, data);
   return (
     oneWay: flightDuration(ships, distance, speedPercent, s.research, rules),
     fuel: 2 * fuelCost(ships, distance, speedPercent, data),
-    cargo: shipsCargo(ships, data),
+    cargo: cargo,
+    load: load,
+    collect: collect,
   );
 }
 
@@ -328,7 +356,7 @@ MissionBlock? checkMission(
   }
   if (kind == MissionKind.recycle) {
     if ((selected[UnitKind.recycler] ?? 0) == 0) return MissionBlock.noRecycler;
-    final d = s.bases[target!].debris;
+    final d = debrisField(s, target);
     if (d.metal + d.crystal < 1) return MissionBlock.noDebris;
   }
   final fuel = missionPreview(s, kind, target, selected, speedPercent, rules).fuel;
@@ -363,18 +391,28 @@ MissionBlock? checkMission(
   final away = Duration(
     milliseconds: (shelterHours * Duration.millisecondsPerHour / rules.speed).round(),
   );
+  // Champ de la planète : la collecte commence tout de suite, débris réservés.
+  final local = onPlanet(kind, target);
   final mission = FleetMission(
     id: eventId,
     planetId: s.planet.id,
-    dueAt: now.add(shelter ? away : preview.oneWay),
+    dueAt: now.add(
+      shelter
+          ? away
+          : local
+          ? preview.collect
+          : preview.oneWay,
+    ),
     kind: kind,
     target: shelter || kind == MissionKind.expedition ? null : target,
     ships: selected,
+    cargo: local ? preview.load : Resources.zero,
     returning: shelter,
     departedAt: now,
     speedPercent: speedPercent,
     seed: seed,
     exploreHours: kind == MissionKind.expedition ? exploreHours : 0,
+    exploring: local,
   );
   final p = s.planet;
   return (
@@ -382,6 +420,7 @@ MissionBlock? checkMission(
       planet: p.copyWith(
         units: {for (final k in UnitKind.values) k: p.count(k) - (selected[k] ?? 0)},
         resources: p.resources - Resources(deuterium: preview.fuel),
+        debris: local ? p.debris - preview.load : null,
       ),
       pending: [...s.pending, mission],
     ),
@@ -390,10 +429,12 @@ MissionBlock? checkMission(
 }
 
 /// Rappel d'une flotte à l'aller : demi-tour, le retour prend le temps déjà parcouru.
+/// Pendant une collecte : la part déjà ramassée rentre, le reste retourne au champ.
 GameState recallMission(GameState state, int id, DateTime now, Rules rules) {
   final s = advance(state, now, rules).state;
   final m = missions(s).where((e) => e.id == id && !e.returning).firstOrNull;
   if (m == null) return s;
+  if (m.kind == MissionKind.recycle && m.exploring) return _recallCollect(s, m, now, rules);
   // En exploration : retour direct, durée d'un aller.
   final elapsed = m.exploring
       ? flightDuration(
@@ -406,6 +447,94 @@ GameState recallMission(GameState state, int id, DateTime now, Rules rules) {
       : now.difference(m.departedAt);
   final back = m.copyWith(dueAt: now.add(elapsed), returning: true, exploring: false, phaseAt: now);
   return s.copyWith(pending: [for (final e in s.pending) e.id == id ? back : e]);
+}
+
+/// Rappel pendant une collecte (V3d) : chargement = réservation × avancée, reste au champ.
+GameState _recallCollect(GameState s, FleetMission m, DateTime now, Rules rules) {
+  final done = m.progress(now);
+  final taken = m.cargo.map((_, v) => (v * done).floorToDouble());
+  final rest = m.cargo - taken;
+  final target = m.target;
+  if (target == null) {
+    final left = s.copyWith(
+      planet: s.planet.copyWith(debris: s.planet.debris + rest),
+      pending: [for (final e in s.pending) if (e.id != m.id) e],
+    );
+    return missionReturn(left, m.copyWith(cargo: taken));
+  }
+  final base = s.bases[target];
+  final flight = flightDuration(
+    m.ships,
+    rules.data.pirateBases.list[target].distance,
+    m.speedPercent,
+    s.research,
+    rules,
+  );
+  final back = m.copyWith(
+    dueAt: now.add(flight),
+    cargo: taken,
+    returning: true,
+    exploring: false,
+    phaseAt: now,
+  );
+  return _withBase(
+    s,
+    base.copyWith(debris: base.debris + rest),
+  ).copyWith(pending: [for (final e in s.pending) e.id == m.id ? back : e]);
+}
+
+/// Début d'une collecte sur un champ de base (V3d) : débris réservés (soute de [ships]),
+/// retirés du champ ; champ vide : retour direct à vide.
+({GameState state, GameEvent? next, RaidReport? report}) _startCollect(
+  GameState s,
+  FleetMission m,
+  PirateBase base,
+  Map<UnitKind, int> ships,
+  DateTime at,
+  Rules rules,
+  FleetMission Function(Map<UnitKind, int>, Resources) back, {
+  RaidReport? report,
+}) {
+  final load = (ships[UnitKind.recycler] ?? 0) > 0
+      ? recycleLoad(base.debris, shipsCargo(ships, rules.data))
+      : Resources.zero;
+  if (load.metal + load.crystal < 1) {
+    return (state: _withBase(s, base), next: back(ships, Resources.zero), report: report);
+  }
+  return (
+    state: _withBase(s, base.copyWith(debris: base.debris - load)),
+    next: m.copyWith(
+      dueAt: at.add(collectDuration(load, ships, rules)),
+      ships: ships,
+      cargo: load,
+      exploring: true,
+      phaseAt: at,
+    ),
+    report: report,
+  );
+}
+
+/// Fin d'une collecte (V3d) : planète, vaisseaux et débris déposés ; base, retour.
+({GameState state, GameEvent? next, RaidReport? report}) _endCollect(
+  GameState s,
+  FleetMission m,
+  Rules rules,
+) {
+  final target = m.target;
+  if (target == null) return (state: missionReturn(s, m), next: null, report: null);
+  final at = m.dueAt;
+  final flight = flightDuration(
+    m.ships,
+    rules.data.pirateBases.list[target].distance,
+    m.speedPercent,
+    s.research,
+    rules,
+  );
+  return (
+    state: s,
+    next: m.copyWith(dueAt: at.add(flight), returning: true, exploring: false, phaseAt: at),
+    report: null,
+  );
 }
 
 GameState _withBase(GameState s, PirateBase b) =>
@@ -421,6 +550,7 @@ GameState _withBase(GameState s, PirateBase b) =>
   final data = rules.data;
   final at = m.dueAt;
   if (m.kind == MissionKind.expedition) return _expedition(s, m, rules);
+  if (m.kind == MissionKind.recycle && m.exploring) return _endCollect(s, m, rules);
   final target = m.target!;
   final spec = data.pirateBases.list[target];
   final base = _respawned(s.bases[target]);
@@ -462,12 +592,7 @@ GameState _withBase(GameState s, PirateBase b) =>
       if (random.nextDouble() < data.pirateBases.patrolChance) {
         return _patrol(s, m, base, at, rules, random, back);
       }
-      final load = recycleLoad(base.debris, m.ships[UnitKind.recycler] ?? 0, data);
-      return (
-        state: _withBase(s, base.copyWith(debris: base.debris - load)),
-        next: back(m.ships, load),
-        report: null,
-      );
+      return _startCollect(s, m, base, m.ships, at, rules, back);
     case MissionKind.shelter || MissionKind.expedition:
       return (state: s, next: back(m.ships, Resources.zero), report: null);
     case MissionKind.attack:
@@ -535,8 +660,8 @@ Map<UnitKind, int> _pirateShips(double budget, GameState s, Rules rules, math.Ra
 }
 
 /// Patrouille pirate surprise au recyclage d'un champ de base (V3c) : combat contre les
-/// recycleurs et leur escorte. Gagné : collecte ; sinon les survivants rentrent à vide. Les
-/// débris du combat s'ajoutent au champ.
+/// recycleurs et leur escorte. Les débris du combat s'ajoutent au champ. Gagné : les
+/// survivants collectent (V3d) ; sinon ils rentrent à vide.
 ({GameState state, GameEvent? next, RaidReport? report}) _patrol(
   GameState s,
   FleetMission m,
@@ -561,20 +686,23 @@ Map<UnitKind, int> _pirateShips(double budget, GameState s, Rules rules, math.Ra
   final debris = combatDebris(result, data);
   final left = result.attackerLeft;
   final won = result.winner == CombatWinner.attacker;
-  final load = won ? recycleLoad(base.debris, left[UnitKind.recycler] ?? 0, data) : Resources.zero;
+  final report = RaidReport.fromCombat(
+    result,
+    at: at,
+    debris: debris,
+    attackerStrength: SideStrength.of(data, attacker),
+    defenderStrength: SideStrength.of(data, defender),
+    baseName: data.pirateBases.list[base.index].name,
+    patrol: true,
+  );
+  final field = base.copyWith(debris: base.debris + debris);
+  if (won && left.values.any((n) => n > 0)) {
+    return _startCollect(s, m, field, left, at, rules, back, report: report);
+  }
   return (
-    state: _withBase(s, base.copyWith(debris: base.debris - load + debris)),
-    next: left.values.any((n) => n > 0) ? back(left, load) : null,
-    report: RaidReport.fromCombat(
-      result,
-      at: at,
-      loot: load,
-      debris: debris,
-      attackerStrength: SideStrength.of(data, attacker),
-      defenderStrength: SideStrength.of(data, defender),
-      baseName: data.pirateBases.list[base.index].name,
-      patrol: true,
-    ),
+    state: _withBase(s, field),
+    next: left.values.any((n) => n > 0) ? back(left, Resources.zero) : null,
+    report: report,
   );
 }
 

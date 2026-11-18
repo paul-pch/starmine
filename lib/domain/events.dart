@@ -237,8 +237,9 @@ class StoryEvent extends GameEvent {
   final DateTime? serveAt;
 }
 
-/// Recycleurs partis collecter le champ de débris (spec 15) : à [dueAt], ils rentrent avec
-/// au plus leur soute de débris (métal et cristal, au prorata).
+/// Recycleurs partis collecter le champ de la planète, ancienne règle (V3a) : à [dueAt], ils
+/// rentrent avec au plus leur soute de débris. Plus créée depuis la V3d (`FleetMission` de
+/// recyclage sans cible) ; gardée pour les sauvegardes antérieures.
 class RecycleMission extends GameEvent {
   const RecycleMission({
     required super.id,
@@ -278,11 +279,12 @@ class FleetMission extends GameEvent {
 
   final MissionKind kind;
 
-  /// Index de la base pirate visée (aucune pour une mise à l'abri).
+  /// Index de la base pirate visée (aucune pour une mise à l'abri, une expédition ou le
+  /// recyclage du champ de la planète).
   final int? target;
   final Map<UnitKind, int> ships;
 
-  /// Chargement rapporté (pillage, débris).
+  /// Chargement rapporté (pillage, débris) ; pendant une collecte, les débris réservés.
   final Resources cargo;
   final bool returning;
   final DateTime departedAt;
@@ -291,8 +293,8 @@ class FleetMission extends GameEvent {
   /// Graine du combat à l'arrivée.
   final int seed;
 
-  /// Expédition (V3c) : durée d'exploration (heures à ×1), et vrai pendant l'exploration
-  /// ([dueAt] = fin de l'exploration).
+  /// Expédition (V3c) : durée d'exploration (heures à ×1). [exploring] : vrai pendant la
+  /// phase sur place, exploration ou collecte de débris (V3d) ; [dueAt] = sa fin.
   final double exploreHours;
   final bool exploring;
 

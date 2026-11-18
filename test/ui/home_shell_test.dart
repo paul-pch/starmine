@@ -9,6 +9,7 @@ import 'package:starmine/data/game_repository.dart';
 import 'package:starmine/data/save_codec.dart';
 import 'package:starmine/domain/events.dart';
 import 'package:starmine/domain/game_data.dart';
+import 'package:starmine/domain/resources.dart';
 import 'package:starmine/main.dart';
 import 'package:starmine/ui/format.dart';
 import 'package:starmine/ui/game_controller.dart';
@@ -265,6 +266,44 @@ void main() {
     expect(find.byType(EventPopover), findsOneWidget);
     expect(find.text('Épave instable : pari ${o.won! ? 'réussi' : 'raté'}'), findsOneWidget);
     expect(find.text('Choix : Fouiller'), findsOneWidget);
+
+    await close(tester, db);
+  });
+
+  testWidgets('recyclage de la planète : feuille avec transporteurs, collecte en cours', (
+    tester,
+  ) async {
+    final (controller, db) = await open(tester);
+    final p = controller.state.planet;
+    final save = SaveGame(
+      state: controller.state.copyWith(
+        planet: p.copyWith(
+          units: {...p.units, UnitKind.recycler: 1, UnitKind.largeCargo: 2},
+          debris: const Resources(metal: 100000, crystal: 40000),
+        ),
+      ),
+      speed: controller.speed,
+      seed: 1,
+    );
+    await tester.runAsync(
+      () => controller.importJson(jsonEncode(encodeSave(save, exportedAt: t0))),
+    );
+    await tester.pump();
+    await tester.tap(find.text('Chantier'));
+    await tester.pump();
+    await tester.tap(find.text('Recycler'));
+    await tester.pumpAndSettle();
+    expect(find.text('Recyclage · Champ de la planète'), findsOneWidget);
+    expect(find.text('Juste assez'), findsOneWidget);
+    // Juste assez : le recycleur et les deux grands transporteurs, 70 000 sur 140 000.
+    expect(find.text('Reste dans le champ ${fmtAmount(70000)}'), findsOneWidget);
+    expect(find.text('Débit ${fmtAmount(20000)} / h (1 recycleur)'), findsOneWidget);
+    expect(find.textContaining('Collecte '), findsWidgets);
+    await tester.ensureVisible(find.text('Envoyer'));
+    await tester.tap(find.text('Envoyer'));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 100)));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Collecte · 0 / ${fmtAmount(70000)}'), findsOneWidget);
 
     await close(tester, db);
   });

@@ -88,7 +88,7 @@ String gambleText(bool? won) => switch (won) {
 String _arrivalTitle(MissionKind kind) => switch (kind) {
   MissionKind.attack => 'Flotte arrivée : combat terminé',
   MissionKind.spy => 'Rapport d’espionnage reçu',
-  MissionKind.recycle => 'Débris collectés',
+  MissionKind.recycle => 'Recycleurs sur le champ',
   MissionKind.shelter => 'Flotte de retour',
   MissionKind.expedition => 'Expédition arrivée',
 };
@@ -260,17 +260,23 @@ class LocalBuildNotifier implements BuildNotifier {
                     _story,
                   ),
                 ],
-        FleetMission(:final returning, :final kind) => [
+        FleetMission(:final returning, :final kind, :final exploring, :final target) => [
           (
             event.id,
             event.dueAt,
             returning
                 ? (kind == MissionKind.expedition ? 'Expédition de retour' : 'Flotte de retour')
+                : kind == MissionKind.recycle && exploring
+                ? 'Recyclage terminé'
                 : _arrivalTitle(kind),
             returning
                 ? (kind == MissionKind.expedition
                       ? 'Consulte le rapport d’expédition.'
                       : 'Tes vaisseaux sont rentrés et ont déchargé leur cargaison.')
+                : kind == MissionKind.recycle && exploring
+                ? (target == null
+                      ? 'Tes vaisseaux sont rentrés et ont déchargé les débris.'
+                      : 'Tes vaisseaux rentrent avec les débris.')
                 : 'Consulte l’onglet Flotte.',
             _buildings,
           ),

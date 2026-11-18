@@ -375,4 +375,41 @@ void main() {
     // patrol_chance = 0,25 sur 200 envois.
     expect(patrols, inInclusiveRange(30, 75));
   });
+
+  test('recyclage d’une base avec transporteurs : Aller › Collecte › Retour, rappel partiel', () {
+    final base = world(units: {UnitKind.recycler: 1, UnitKind.largeCargo: 1});
+    final s = base.copyWith(
+      bases: [
+        for (final b in base.bases)
+          b.index == 0 ? b.copyWith(debris: const Resources(metal: 60000, crystal: 30000)) : b,
+      ],
+    );
+    final ships = {UnitKind.recycler: 1, UnitKind.largeCargo: 1};
+    // Une graine sans patrouille.
+    late ({GameState state, MissionBlock? block}) out;
+    late AdvanceResult arrived;
+    for (var seed = 0; ; seed++) {
+      out = sendMission(s, MissionKind.recycle, 0, ships, 100, t0, rules, eventId: 80, seed: seed);
+      arrived = advance(out.state, missions(out.state).single.dueAt, rules);
+      if (arrived.reports.isEmpty) break;
+    }
+    final at = missions(out.state).single.dueAt;
+    final m = missions(arrived.state).single;
+    expect(m.exploring, isTrue);
+    // Soute 45 000 sur 90 000 : moitié de chaque, réservée.
+    expect(m.cargo, const Resources(metal: 30000, crystal: 15000));
+    expect(arrived.state.bases[0].debris, const Resources(metal: 30000, crystal: 15000));
+    expect(m.dueAt, at.add(const Duration(minutes: 135)));
+    final mid = at.add(const Duration(minutes: 67, seconds: 30));
+    final r = recallMission(arrived.state, 80, mid, rules);
+    final back = missions(r).single;
+    expect(back.returning, isTrue);
+    expect(back.cargo, const Resources(metal: 15000, crystal: 7500));
+    expect(r.bases[0].debris, const Resources(metal: 45000, crystal: 22500));
+    final flight = flightDuration(ships, gameData.pirateBases.list[0].distance, 100, s.research, rules);
+    expect(back.dueAt, mid.add(flight));
+    final home = advance(r, back.dueAt, rules).state;
+    expect(home.planet.count(UnitKind.largeCargo), 1);
+    expect(missions(home), isEmpty);
+  });
 }

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../../domain/availability.dart';
 import '../../domain/combat.dart';
 import '../../domain/engine.dart';
+import '../../domain/events.dart';
+import '../../domain/fleet.dart';
 import '../../domain/game_data.dart';
 import '../format.dart';
 import '../game_controller.dart';
@@ -14,6 +16,7 @@ import '../visuals.dart';
 import '../widgets/categorized_list.dart';
 import '../widgets/in_progress_card.dart';
 import '../widgets/info_button.dart';
+import 'fleet_screen.dart';
 
 /// Défenses constructibles au chantier.
 class DefenseScreen extends StatelessWidget {
@@ -375,11 +378,11 @@ class _QuantitySheetState extends State<_QuantitySheet> {
 const debrisHelp =
     'Quand des vaisseaux sont détruits au-dessus de la planète, une partie de leur métal et '
     'de leur cristal reste en orbite : c’est le champ de débris. Les défenses n’en laissent '
-    'pas.\n\nEnvoie des recycleurs pour le collecter : ils partent un moment, ne combattent '
-    'pas pendant leur absence, et rapportent au plus leur soute.';
+    'pas.\n\nEnvoie des recycleurs pour le collecter, avec des transporteurs pour plus de '
+    'soute : ils ne combattent pas pendant la collecte.';
 
-/// Champ de débris de la planète et mission de recyclage (spec 15). Rien s'il n'y a ni
-/// débris ni mission.
+/// Champ de débris de la planète et collectes en cours (spec 15). Rien s'il n'y a ni
+/// débris ni collecte.
 class DebrisCard extends StatelessWidget {
   const DebrisCard({super.key, required this.controller, required this.now});
 
@@ -390,15 +393,14 @@ class DebrisCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = controller.state;
     final debris = state.planet.debris;
-    final mission = currentRecycling(state);
-    if (mission == null && debris.metal + debris.crystal < 1) return const SizedBox.shrink();
+    final collects = [
+      for (final m in missions(state))
+        if (onPlanet(m.kind, m.target)) m,
+    ];
+    final hasDebris = debris.metal + debris.crystal >= 1;
+    if (collects.isEmpty && !hasDebris) return const SizedBox.shrink();
     final theme = Theme.of(context);
     final recyclers = state.planet.count(UnitKind.recycler);
-    final cargo = controller.data.unit(UnitKind.recycler).cargo;
-    final total = debris.metal + debris.crystal;
-    // Assez de recycleurs pour tout prendre, dans la limite de ceux présents.
-    final needed = (total / cargo).ceil().clamp(1, 1 << 20);
-    final send = recyclers < needed ? recyclers : needed;
     final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
     final image = VisualsScope.of(context).debris;
     return Padding(
@@ -434,24 +436,25 @@ class DebrisCard extends StatelessWidget {
               ),
               CostLine(cost: debris),
               const SizedBox(height: 4),
-              if (mission != null)
+              for (final m in collects)
                 Text(
-                  '${mission.recyclers} recycleurs en route · retour dans '
-                  '${fmtDuration(mission.dueAt.difference(now))}',
-                  style: secondary,
-                )
-              else if (recyclers == 0)
+                  'Collecte · ${collectedAmounts(m, now)} · reste '
+                  '${fmtDuration(m.dueAt.difference(now))}',
+                  style: mono(secondary),
+                ),
+              if (hasDebris && recyclers == 0)
                 Text('Construis des recycleurs pour le collecter', style: secondary)
-              else
+              else if (hasDebris)
                 Align(
                   alignment: Alignment.centerRight,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: FilledButton.tonalIcon(
                       style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
-                      onPressed: () => controller.recycle(send),
+                      onPressed: () =>
+                          SendSheet.show(context, controller, MissionKind.recycle, null),
                       icon: const Icon(Icons.recycling),
-                      label: Text('Envoyer $send recycleur${send > 1 ? 's' : ''}'),
+                      label: const Text('Recycler'),
                     ),
                   ),
                 ),
