@@ -458,7 +458,10 @@ GameState _recallCollect(GameState s, FleetMission m, DateTime now, Rules rules)
   if (target == null) {
     final left = s.copyWith(
       planet: s.planet.copyWith(debris: s.planet.debris + rest),
-      pending: [for (final e in s.pending) if (e.id != m.id) e],
+      pending: [
+        for (final e in s.pending)
+          if (e.id != m.id) e,
+      ],
     );
     return missionReturn(left, m.copyWith(cargo: taken));
   }

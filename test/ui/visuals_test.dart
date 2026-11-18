@@ -66,7 +66,9 @@ void main() {
   test('fin de combat : scène selon le camp du joueur et le vainqueur', () {
     String scene(String key) => 'assets/visuels/scene.$key.webp';
     final visuals = Visuals(
-      assets: {for (final k in ['raid_won', 'raid_lost', 'attack_won', 'attack_lost', 'debris']) scene(k)},
+      assets: {
+        for (final k in ['raid_won', 'raid_lost', 'attack_won', 'attack_lost', 'debris']) scene(k),
+      },
     );
     RaidReport report(
       CombatWinner winner, {
@@ -91,9 +93,15 @@ void main() {
     expect(visuals.combat(report(CombatWinner.defender)), scene('raid_won'));
     expect(visuals.combat(report(CombatWinner.attacker)), scene('raid_lost'));
     expect(visuals.combat(report(CombatWinner.attacker, baseName: 'Repaire')), scene('attack_won'));
-    expect(visuals.combat(report(CombatWinner.defender, baseName: 'Repaire')), scene('attack_lost'));
+    expect(
+      visuals.combat(report(CombatWinner.defender, baseName: 'Repaire')),
+      scene('attack_lost'),
+    );
     expect(visuals.combat(report(CombatWinner.draw)), isNull);
-    expect(visuals.combat(report(CombatWinner.attacker, baseName: 'Repaire', patrol: true)), isNull);
+    expect(
+      visuals.combat(report(CombatWinner.attacker, baseName: 'Repaire', patrol: true)),
+      isNull,
+    );
     expect(visuals.combat(report(CombatWinner.defender, simulated: true)), isNull);
     expect(
       visuals.combat(report(CombatWinner.attacker, expedition: ExpeditionOutcome.ambush)),

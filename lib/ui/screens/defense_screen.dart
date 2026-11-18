@@ -422,44 +422,44 @@ class DebrisCard extends StatelessWidget {
                 ),
               ),
             Padding(
-          padding: const EdgeInsets.fromLTRB(12, 4, 4, 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+              padding: const EdgeInsets.fromLTRB(12, 4, 4, 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.blur_on, size: 18),
-                  const SizedBox(width: 6),
-                  Expanded(child: Text('Champ de débris', style: theme.textTheme.titleSmall)),
-                  const InfoButton(title: 'Champ de débris', body: debrisHelp),
+                  Row(
+                    children: [
+                      const Icon(Icons.blur_on, size: 18),
+                      const SizedBox(width: 6),
+                      Expanded(child: Text('Champ de débris', style: theme.textTheme.titleSmall)),
+                      const InfoButton(title: 'Champ de débris', body: debrisHelp),
+                    ],
+                  ),
+                  CostLine(cost: debris),
+                  const SizedBox(height: 4),
+                  for (final m in collects)
+                    Text(
+                      'Collecte · ${collectedAmounts(m, now)} · reste '
+                      '${fmtDuration(m.dueAt.difference(now))}',
+                      style: mono(secondary),
+                    ),
+                  if (hasDebris && recyclers == 0)
+                    Text('Construis des recycleurs pour le collecter', style: secondary)
+                  else if (hasDebris)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: FilledButton.tonalIcon(
+                          style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
+                          onPressed: () =>
+                              SendSheet.show(context, controller, MissionKind.recycle, null),
+                          icon: const Icon(Icons.recycling),
+                          label: const Text('Recycler'),
+                        ),
+                      ),
+                    ),
                 ],
               ),
-              CostLine(cost: debris),
-              const SizedBox(height: 4),
-              for (final m in collects)
-                Text(
-                  'Collecte · ${collectedAmounts(m, now)} · reste '
-                  '${fmtDuration(m.dueAt.difference(now))}',
-                  style: mono(secondary),
-                ),
-              if (hasDebris && recyclers == 0)
-                Text('Construis des recycleurs pour le collecter', style: secondary)
-              else if (hasDebris)
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: FilledButton.tonalIcon(
-                      style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
-                      onPressed: () =>
-                          SendSheet.show(context, controller, MissionKind.recycle, null),
-                      icon: const Icon(Icons.recycling),
-                      label: const Text('Recycler'),
-                    ),
-                  ),
-                ),
-            ],
-          ),
             ),
           ],
         ),

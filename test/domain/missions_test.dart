@@ -406,7 +406,13 @@ void main() {
     expect(back.returning, isTrue);
     expect(back.cargo, const Resources(metal: 15000, crystal: 7500));
     expect(r.bases[0].debris, const Resources(metal: 45000, crystal: 22500));
-    final flight = flightDuration(ships, gameData.pirateBases.list[0].distance, 100, s.research, rules);
+    final flight = flightDuration(
+      ships,
+      gameData.pirateBases.list[0].distance,
+      100,
+      s.research,
+      rules,
+    );
     expect(back.dueAt, mid.add(flight));
     final home = advance(r, back.dueAt, rules).state;
     expect(home.planet.count(UnitKind.largeCargo), 1);

@@ -64,12 +64,25 @@ void main() {
       Map<UnitKind, int> ships, {
       DateTime? at,
       int id = 1,
-    }) => sendMission(s, MissionKind.recycle, null, ships, 100, at ?? t0, rules, eventId: id, seed: 1);
+    }) => sendMission(
+      s,
+      MissionKind.recycle,
+      null,
+      ships,
+      100,
+      at ?? t0,
+      rules,
+      eventId: id,
+      seed: 1,
+    );
 
     test('refus : sans débris, sans recycleur ; transporteurs dans le plafond', () {
       final empty = withDebris({UnitKind.recycler: 2}, Resources.zero);
       expect(recycle(empty, {UnitKind.recycler: 1}).block, MissionBlock.noDebris);
-      final s = withDebris({UnitKind.recycler: 1, UnitKind.smallCargo: 500}, const Resources(metal: 100));
+      final s = withDebris({
+        UnitKind.recycler: 1,
+        UnitKind.smallCargo: 500,
+      }, const Resources(metal: 100));
       expect(recycle(s, {UnitKind.smallCargo: 1}).block, MissionBlock.noRecycler);
       final cap = shipCap(s, gameData);
       expect(
@@ -79,10 +92,10 @@ void main() {
     });
 
     test('collecte : débris réservés au départ, durée selon le débit des recycleurs', () {
-      final s = withDebris(
-        {UnitKind.recycler: 1, UnitKind.largeCargo: 2},
-        const Resources(metal: 100000, crystal: 40000),
-      );
+      final s = withDebris({
+        UnitKind.recycler: 1,
+        UnitKind.largeCargo: 2,
+      }, const Resources(metal: 100000, crystal: 40000));
       final out = recycle(s, {UnitKind.recycler: 1, UnitKind.largeCargo: 2});
       expect(out.block, isNull);
       // Soute 70 000 sur 140 000 : la moitié de chaque, retirée du champ tout de suite.
@@ -107,8 +120,10 @@ void main() {
       final s = withDebris({UnitKind.recycler: 3}, const Resources(metal: 9000, crystal: 3000));
       final m = missions(recycle(s, {UnitKind.recycler: 3}).state).single;
       expect(m.dueAt, t0.add(const Duration(hours: 1)));
-      expect(collectDuration(const Resources(metal: 60000), {UnitKind.recycler: 1}, rules),
-          const Duration(hours: 3));
+      expect(
+        collectDuration(const Resources(metal: 60000), {UnitKind.recycler: 1}, rules),
+        const Duration(hours: 3),
+      );
     });
 
     test('deux missions sur le même champ : la seconde prend le reste', () {

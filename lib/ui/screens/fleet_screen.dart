@@ -612,7 +612,10 @@ class _SendSheetState extends State<SendSheet> {
                   }),
                 ),
                 if (recycle)
-                  ActionChip(label: const Text('Juste assez'), onPressed: () => setState(_justEnough)),
+                  ActionChip(
+                    label: const Text('Juste assez'),
+                    onPressed: () => setState(_justEnough),
+                  ),
               ],
             ),
             for (final k in _available) ...[
