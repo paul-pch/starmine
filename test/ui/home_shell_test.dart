@@ -289,8 +289,9 @@ void main() {
       () => controller.importJson(jsonEncode(encodeSave(save, exportedAt: t0))),
     );
     await tester.pump();
-    await tester.tap(find.text('Chantier'));
+    await tester.tap(find.text('Flotte'));
     await tester.pump();
+    expect(find.text('Champ de débris'), findsOneWidget);
     await tester.tap(find.text('Recycler'));
     await tester.pumpAndSettle();
     expect(find.text('Recyclage · Champ de la planète'), findsOneWidget);
@@ -303,7 +304,7 @@ void main() {
     await tester.tap(find.text('Envoyer'));
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 100)));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Collecte · 0 / ${fmtAmount(70000)}'), findsOneWidget);
+    expect(find.text('Collecté 0 / ${fmtAmount(70000)}'), findsOneWidget);
 
     await close(tester, db);
   });

@@ -82,7 +82,8 @@ est dans la feuille de détail (un tap).
   immédiat + points, événement immédiat (spec 14), nouvelle partie, alarmes
   exactes, dernière mise à jour.
 - **Flotte** (spec 15) : état de la flotte (à quai, en vol), limites de missions, missions
-  en vol, mise à l'abri, expédition, bases pirates.
+  en vol, champ de débris de la planète (s'il y en a), expédition, mise à l'abri, bases
+  pirates.
 - **Rapports** (depuis le hero) : **une seule liste** (journal) mêlant rapports de combat
   (→ rapport complet) et événements ponctuels (spec 14), les plus récents d'abord, avec un
   seul bouton « Effacer le journal » (confirmation ; effets en cours et décision en attente
@@ -101,8 +102,8 @@ est dans la feuille de détail (un tap).
   d'histoire, effets ; une décision montre ses options et « Plus tard »), file annulée.
   Plusieurs à la fois : affichées l'une après l'autre. Image d'en-tête 16:9 facultative
   (décorative, registre) : `story.<clé>` pour un événement, `scene.<clé>` pour un raid subi ou
-  l'attaque d'une base ; sans image, aucune place réservée. La carte du champ de débris du
-  chantier porte aussi `scene.debris` en tête, la feuille du raid détecté `scene.raid_incoming`, et
+  l'attaque d'une base ; sans image, aucune place réservée. La carte du champ de débris
+  (onglet Flotte) porte `scene.debris` en vignette 16:9 de 80 dp, la feuille du raid détecté `scene.raid_incoming`, et
   chaque base pirate (carte et feuille, onglet Flotte) sa vignette 4:3 `pirate_base.<rang>`.
 
 ## Puces de filtre

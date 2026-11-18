@@ -41,8 +41,8 @@ Produire des unités au chantier spatial : défenses en V2, vaisseaux à partir 
 
 ## UI
 
-Onglet **Chantier** : défenses puis vaisseaux (soute affichée), carte du champ de débris
-en tête (spec 15) ; carte par unité (nombre possédé, attaque / bouclier / coque avec technos,
+Onglet **Chantier** : défenses puis vaisseaux (soute affichée) ; le champ de débris est dans
+l'onglet Flotte (spec 15) ; carte par unité (nombre possédé, attaque / bouclier / coque avec technos,
 coût unitaire, durée par unité), feuille de quantité (curseur, 1 / 10 / 100 / Max, coût et
 durée totaux). File : emplacement Chantier (progression « 3 / 20 », prochaine unité, fin).
 

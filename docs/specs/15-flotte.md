@@ -261,8 +261,9 @@ la flotte envoyée) ajoutent de la soute, les recycleurs restent seuls à ramass
 - **Mission en vol** : étapes Aller › Collecte › Retour (planète : Collecte), « Collecté X /
   Q » pendant la collecte, rappel possible jusqu'au retour. Les missions de la planète
   apparaissent dans l'onglet Flotte et dans « Ta flotte » (en vol).
-- **Carte « Champ de débris »** (Chantier) : champ, collectes en cours (« Collecte · X / Q ·
-  reste … »), bouton « Recycler » qui ouvre la feuille d'envoi.
+- **Carte « Champ de débris »** (onglet Flotte, après les missions en vol ; déplacée du
+  Chantier) : vignette, champ, bouton « Recycler » qui ouvre la feuille d'envoi. Absente sans
+  débris ; les collectes en cours sont des missions en vol.
 
 ### Tests
 

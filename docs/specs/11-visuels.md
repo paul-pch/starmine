@@ -42,7 +42,7 @@ dans le code, alignement vérifié par un test.
 | `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 | Fond plein écran de l'ambiance Immersive | **À produire**, non branché |
 | `pirate` | — | — | 0 | — | **Abandonné** (décision de l'utilisateur, 2026-11-13) : pas de vignette par vaisseau pirate ; la menace s'annonce par `scene.raid_incoming` |
 | `pirate_base` | `pirate_base.<0-3>` (ordre de `pirate_bases.list` : avant-poste, repaire, forteresse, citadelle) | 4:3, 640 × 480 | 4 | Cartes des bases (onglet Flotte) | **4 validées** (série 65, `art/prompts/serie-65-bases-pirates.md`) ; branchées : vignette de la carte (64 × 48) et de la feuille de la base (128 × 96), grisées tant que la base est détruite |
-| `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur scientifique, chef de chantier, amiral) | 1:1, 512 px, portrait buste | 8 | Cartes de l'écran Officiers (spec 12) | **8 validées** (série 66, charte `art/style/character_prompt.md`) ; branchées : vignette 64 dp de la carte, grisée tant que l'officier n'est pas recruté |
+| `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur scientifique, chef de chantier, amiral) | 1:1, 512 px, portrait buste | 8 | Cartes de l'écran Officiers (spec 12) | **8 validées** (série 66, charte `art/style/character_prompt.md`) ; branchées : vignette 64 dp de la carte et portrait 128 dp dans l'infobulle (i), grisés tant que l'officier n'est pas recruté |
 | `story` | `story.<clé YAML de l'événement>` | 16:9, 1280 × 720, sujet centré | 15 (catalogue actuel) | En-tête de la popover d'événement (spec 10, 14) | **15 packagées** (liste : `art/prompts/selection-story.md`) ; branché |
 | `scene` | `scene.<raid_incoming\|raid_won\|raid_lost\|attack_won\|attack_lost\|debris>` | 16:9, 1280 × 720, sujet centré | 6 | Feuille du raid détecté (`raid_incoming`, au tap du bandeau d'alerte, spec 07) ; en-tête de la popover de fin de combat ; carte du champ de débris | **6 validées** : 5 de la série 62 (`art/prompts/serie-62-scene.md`), branchées ; `raid_incoming` de la série 64 (`art/prompts/serie-64-menace.md`), en tête de la feuille du raid détecté |
 
@@ -66,8 +66,8 @@ Par priorité (impact sur l'écran le plus vu d'abord) :
 
 1. `scene` × 5 — **faites et branchées** (série 62) : `Visuals.combat` choisit l'en-tête de la popover de fin de
    combat (raid subi : `raid_won` / `raid_lost` ; attaque d'une base : `attack_won` / `attack_lost` ; rien pour
-   un match nul, une patrouille, une expédition ou une simulation) ; `Visuals.debris` en tête de la carte du
-   champ de débris du chantier.
+   un match nul, une patrouille, une expédition ou une simulation) ; `Visuals.debris` en vignette de la carte du
+   champ de débris (onglet Flotte).
 2. `scene.raid_incoming` (série 64) et `pirate_base` × 4 (série 65) — **faites et branchées** :
    `Visuals.raidIncoming` en tête de la feuille du bandeau d'alerte, `Visuals.pirateBase(rang)` sur la carte
    et la feuille de chaque base.

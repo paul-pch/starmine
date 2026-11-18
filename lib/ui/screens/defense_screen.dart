@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import '../../domain/availability.dart';
 import '../../domain/combat.dart';
 import '../../domain/engine.dart';
-import '../../domain/events.dart';
-import '../../domain/fleet.dart';
 import '../../domain/game_data.dart';
 import '../format.dart';
 import '../game_controller.dart';
@@ -16,7 +14,6 @@ import '../visuals.dart';
 import '../widgets/categorized_list.dart';
 import '../widgets/in_progress_card.dart';
 import '../widgets/info_button.dart';
-import 'fleet_screen.dart';
 
 /// Défenses constructibles au chantier.
 class DefenseScreen extends StatelessWidget {
@@ -39,7 +36,6 @@ class DefenseScreen extends StatelessWidget {
     return CategorizedList<UnitKind>(
       header: Column(
         children: [
-          DebrisCard(controller: controller, now: now),
           InProgressCard(controller: controller, slot: Slot.shipyard, now: now, onTap: onOpenQueue),
         ],
       ),
@@ -366,99 +362,6 @@ class _QuantitySheetState extends State<_QuantitySheet> {
                       ? 'Ajouter $_count à la file'
                       : 'Construire $_count',
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-const debrisHelp =
-    'Quand des vaisseaux sont détruits au-dessus de la planète, une partie de leur métal et '
-    'de leur cristal reste en orbite : c’est le champ de débris. Les défenses n’en laissent '
-    'pas.\n\nEnvoie des recycleurs pour le collecter, avec des transporteurs pour plus de '
-    'soute : ils ne combattent pas pendant la collecte.';
-
-/// Champ de débris de la planète et collectes en cours (spec 15). Rien s'il n'y a ni
-/// débris ni collecte.
-class DebrisCard extends StatelessWidget {
-  const DebrisCard({super.key, required this.controller, required this.now});
-
-  final GameController controller;
-  final DateTime now;
-
-  @override
-  Widget build(BuildContext context) {
-    final state = controller.state;
-    final debris = state.planet.debris;
-    final collects = [
-      for (final m in missions(state))
-        if (onPlanet(m.kind, m.target)) m,
-    ];
-    final hasDebris = debris.metal + debris.crystal >= 1;
-    if (collects.isEmpty && !hasDebris) return const SizedBox.shrink();
-    final theme = Theme.of(context);
-    final recyclers = state.planet.count(UnitKind.recycler);
-    final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
-    final image = VisualsScope.of(context).debris;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-      child: Card(
-        margin: EdgeInsets.zero,
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Image décorative en tête (spec 11) ; sans image, aucune place réservée.
-            if (image != null)
-              LayoutBuilder(
-                builder: (context, c) => GameImage(
-                  path: image,
-                  icon: Icons.blur_on,
-                  width: c.maxWidth,
-                  height: c.maxWidth * 9 / 16,
-                ),
-              ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 4, 4, 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.blur_on, size: 18),
-                      const SizedBox(width: 6),
-                      Expanded(child: Text('Champ de débris', style: theme.textTheme.titleSmall)),
-                      const InfoButton(title: 'Champ de débris', body: debrisHelp),
-                    ],
-                  ),
-                  CostLine(cost: debris),
-                  const SizedBox(height: 4),
-                  for (final m in collects)
-                    Text(
-                      'Collecte · ${collectedAmounts(m, now)} · reste '
-                      '${fmtDuration(m.dueAt.difference(now))}',
-                      style: mono(secondary),
-                    ),
-                  if (hasDebris && recyclers == 0)
-                    Text('Construis des recycleurs pour le collecter', style: secondary)
-                  else if (hasDebris)
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: FilledButton.tonalIcon(
-                          style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
-                          onPressed: () =>
-                              SendSheet.show(context, controller, MissionKind.recycle, null),
-                          icon: const Icon(Icons.recycling),
-                          label: const Text('Recycler'),
-                        ),
-                      ),
-                    ),
-                ],
               ),
             ),
           ],

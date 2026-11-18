@@ -104,6 +104,7 @@ class FleetScreen extends StatelessWidget {
           ],
         ),
         for (final m in flying) _MissionCard(controller: controller, mission: m, now: now),
+        DebrisCard(controller: controller),
         Card(
           child: ListTile(
             leading: const Icon(Icons.travel_explore),
@@ -793,6 +794,82 @@ extension on _SendSheetState {
         ),
       const SizedBox(height: 4),
     ];
+  }
+}
+
+const debrisHelp =
+    'Quand des vaisseaux sont détruits au-dessus de la planète, une partie de leur métal et '
+    'de leur cristal reste en orbite : c’est le champ de débris. Les défenses n’en laissent '
+    'pas.\n\nEnvoie des recycleurs pour le collecter, avec des transporteurs pour plus de '
+    'soute : ils ne combattent pas pendant la collecte.';
+
+/// Champ de débris de la planète (spec 15), dans l'onglet Flotte : vignette, champ, bouton
+/// Recycler. Rien sans débris ; les collectes en cours sont des missions en vol.
+class DebrisCard extends StatelessWidget {
+  const DebrisCard({super.key, required this.controller});
+
+  final GameController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final state = controller.state;
+    final debris = state.planet.debris;
+    if (debris.metal + debris.crystal < 1) return const SizedBox.shrink();
+    final recyclers = state.planet.count(UnitKind.recycler);
+    final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8, 8, 4, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                // Vignette 16:9 (scène du champ de débris), repli icône.
+                GameImage(
+                  path: VisualsScope.of(context).debris,
+                  icon: Icons.blur_on,
+                  width: 80,
+                  height: 45,
+                  radius: 8,
+                  iconSize: 24,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Champ de débris', style: theme.textTheme.titleSmall),
+                      CostLine(cost: debris),
+                    ],
+                  ),
+                ),
+                const InfoButton(title: 'Champ de débris', body: debrisHelp),
+              ],
+            ),
+            if (recyclers == 0)
+              Padding(
+                padding: const EdgeInsets.only(left: 4, top: 4),
+                child: Text('Construis des recycleurs pour le collecter', style: secondary),
+              )
+            else
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: FilledButton.tonalIcon(
+                    style: FilledButton.styleFrom(minimumSize: const Size(48, 48)),
+                    onPressed: () => SendSheet.show(context, controller, MissionKind.recycle, null),
+                    icon: const Icon(Icons.recycling),
+                    label: const Text('Recycler'),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
