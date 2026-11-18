@@ -20,7 +20,7 @@ pas à l'écran.
 | Raid détecté | Détection | Flotte pirate détectée (heure d'arrivée) | Raids pirates |
 | Raid | Arrivée | Raid pirate (voir le rapport) | Raids pirates |
 | Flotte | Arrivée (combat, espionnage, collecte) et retour | Flotte arrivée / de retour | Constructions |
-| Recyclage | Retour des recycleurs | Recyclage terminé | Constructions |
+| Recyclage | Fin de la collecte (planète : retour des vaisseaux) | Recyclage terminé | Constructions |
 | File d'attente annulée | Tour de l'ordre impossible | File de … annulée (élément, raison) | Recherches ou Constructions |
 | Choix en attente | `expiry_notice_minutes` avant l'échéance | Décision en attente : <nom> | Événements |
 

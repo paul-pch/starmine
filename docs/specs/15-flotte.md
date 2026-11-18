@@ -1,6 +1,6 @@
 # 15 · Flotte (V3)
 
-> **V3a, V3b et V3c livrées** (V3c décidée et implémentée le 2026-11-10). Les vaisseaux existent déjà dans les données
+> **V3a, V3b, V3c et V3d livrées** (V3c décidée et implémentée le 2026-11-10, V3d le 2026-11-18). Les vaisseaux existent déjà dans les données
 > (flottes pirates, spec 07).
 
 ## Objet
@@ -15,6 +15,7 @@ attaquer les bases pirates (le pillage devient un revenu), recycler les débris,
 | V3a | Vaisseaux constructibles au chantier (6 existants), flotte stationnée qui défend la planète avec les défenses, champ de débris après un combat, recycleur |
 | V3b | Bases pirates : cibles générées, technos de propulsion (durée des trajets) et d'espionnage, missions d'attaque avec aller-retour, consommation de deutérium, pillage rapporté |
 | V3c | Expéditions (résultat aléatoire à graine), officier **Amiral**, plafond de vaisseaux par mission, risque du recyclage |
+| V3d | Recyclage avec transporteurs : soute ajoutée, durée de collecte selon le débit des recycleurs, rappel pendant la collecte, champ de la planète en mission de flotte |
 
 Chaque lot est jouable seul ; V3a ne demande aucun trajet.
 
@@ -68,10 +69,8 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
   pas reconstruits. Ils ne comptent pas dans la base des raids.
 - **Champ de débris** (`Planet.debris`) : `debris.share` (30 %) du métal et du cristal des
   vaisseaux détruits des deux camps ; affiché dans le rapport de combat.
-- **Recyclage** : « Envoyer N recycleurs » (assez pour tout le champ, dans la limite des
-  présents) ; mission `RecycleMission` de `debris.collect_hours` (1 h à ×1), recycleurs
-  absents pendant ce temps ; au retour, chargement au plus de la soute, au prorata du métal
-  et du cristal, ajouté au stock même au-delà du stockage. Une mission à la fois.
+- **Recyclage** (remplacé en V3d) : « Envoyer N recycleurs » ; mission `RecycleMission` de
+  `debris.collect_hours` (1 h à ×1). Une mission à la fois.
 - **UI** : onglet Chantier (défenses puis vaisseaux, catégories Civils et Combat), carte du
   champ de débris en tête ; Debug depuis le hero (icône réglages).
 - **Persistance** : colonnes de débris de `planets` (schéma v8), sauvegarde v8.
@@ -212,3 +211,61 @@ Chaque lot est jouable seul ; V3a ne demande aucun trajet.
   patrouille avec et sans escorte, rattrapage d'une expédition app fermée. Équilibrage :
   chaque base reste prenable avec le plafond atteignable à ce stade (`test/balance`), une
   expédition est rentable en moyenne, escorter le recyclage aussi.
+
+## V3d (implémentée)
+
+Les débris s'accumulent plus vite que la soute des recycleurs : les transporteurs (et toute
+la flotte envoyée) ajoutent de la soute, les recycleurs restent seuls à ramasser.
+
+### Collecte
+
+- Une mission de recyclage demande **au moins un recycleur** ; elle accepte tous les
+  vaisseaux sauf les sondes. Les recycleurs ne comptent pas dans le plafond, les autres
+  (transporteurs, escorte) si.
+- **Quantité** Q = min(champ, soute totale de la flotte), au prorata du métal et du cristal.
+- **Débit** : un recycleur remplit sa soute en `debris.collect_hours` (1 h à ×1) ; débit de
+  la flotte = recycleurs × soute du recycleur / `collect_hours`.
+- **Durée de collecte** = `collect_hours` × max(1, Q / (recycleurs × soute du recycleur)),
+  divisée par la vitesse de jeu. Pas de plafond : 1 recycleur et 3 fois sa soute en
+  transporteurs collectent 3 fois plus longtemps.
+- **Réservation** : Q est retirée du champ au début de la collecte (arrivée sur une base,
+  départ pour la planète). Ce qui arrive ensuite dans le champ reste pour une autre mission ;
+  plusieurs missions peuvent viser le même champ sans se disputer les débris.
+- **Rappel pendant la collecte** : la flotte rapporte Q × avancée de la collecte (arrondi
+  par défaut), le reste retourne au champ. Sur une base, le retour dure un aller ; sur la
+  planète, les vaisseaux sont déposés tout de suite.
+
+### Champ de la planète
+
+- C'est une `FleetMission` de recyclage **sans cible** : pas de trajet ni de carburant, la
+  collecte commence au départ, les vaisseaux et le chargement sont déposés à sa fin. Plus de
+  limite d'une mission à la fois.
+- Une `RecycleMission` en cours dans une sauvegarde antérieure se termine selon l'ancienne
+  règle (aucune migration de schéma).
+
+### Champ d'une base
+
+- Étapes Aller › Collecte › Retour. La patrouille (V3c) surgit à l'arrivée, avant la
+  collecte : gagnée, ses débris s'ajoutent au champ et les survivants collectent ; perdue,
+  les survivants rentrent à vide. Un champ vidé entre-temps : retour direct, à vide.
+
+### UI
+
+- **Feuille d'envoi « Recyclage »** (planète ou base) : sélection par défaut « Juste
+  assez » (tous les recycleurs, puis grands puis petits transporteurs jusqu'à couvrir le
+  champ, dans la limite du plafond ; escorte à 0), puce « Juste assez » en plus de « Tout »
+  et « Aucun » ; compteur « n / plafond (recycleurs sans limite) ». Bloc de prévision :
+  champ, quantité collectée et soute, « Reste dans le champ X » ou « Soute inutilisée X »,
+  « Aller · collecte · retour » (planète : « Collecte » seule, ni vitesse ni carburant),
+  débit horaire. Infobulle sur la règle.
+- **Mission en vol** : étapes Aller › Collecte › Retour (planète : Collecte), « Collecté X /
+  Q » pendant la collecte, rappel possible jusqu'au retour. Les missions de la planète
+  apparaissent dans l'onglet Flotte et dans « Ta flotte » (en vol).
+- **Carte « Champ de débris »** (Chantier) : champ, collectes en cours (« Collecte · X / Q ·
+  reste … »), bouton « Recycler » qui ouvre la feuille d'envoi.
+
+### Tests
+
+- Durée selon le débit (plancher, ×3 avec 3 fois la soute), réservation au départ, deux
+  missions sur le même champ, rappel partiel (planète et base), patrouille puis collecte,
+  transporteurs comptés dans le plafond, ancienne `RecycleMission` encore appliquée.
