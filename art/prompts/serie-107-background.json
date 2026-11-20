@@ -1,0 +1,10 @@
+{
+  "series": "serie-107-background",
+  "base": "art/style/background_prompt.md",
+  "size": [768, 1664],
+  "seeds": [4242, 7777],
+  "images": [
+    {"id": "background.temperate", "variant": "f1"},
+    {"id": "background.temperate", "variant": "f2", "view": "Tall vertical phone wallpaper of an alien landscape seen from a high rocky ridge, looking across a vast valley, with the horizon in the upper third of the frame."}
+  ]
+}

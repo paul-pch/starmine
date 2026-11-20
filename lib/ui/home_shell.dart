@@ -251,37 +251,70 @@ class _HomeShellState extends State<HomeShell> {
           QueueScreen(controller: _c, now: _now),
           FleetScreen(controller: _c, now: _now),
         ];
-        return Scaffold(
-          body: VisualsScope(
-            visuals: widget.visuals.withAmbiance(_c.ambiance),
-            child: Column(
-              children: [
-                ResourceBar(controller: _c, now: _now),
-                const Divider(height: 1),
-                Expanded(
-                  child: NestedScrollView(
-                    headerSliverBuilder: (context, _) => [
-                      SliverToBoxAdapter(
-                        child: PlanetHero(
-                          controller: _c,
-                          onReports: _openReports,
-                          onOfficers: _openOfficers,
-                          onDebug: _openDebug,
-                        ),
-                      ),
-                    ],
-                    body: Column(
-                      children: [
-                        if (_c.incomingRaid case final raid?)
-                          RaidBanner(controller: _c, raid: raid, now: _now),
-                        StoryBanner(controller: _c, now: _now),
-                        Expanded(child: pages[_tab]),
-                      ],
+        final visuals = widget.visuals.withAmbiance(_c.ambiance);
+        // Ambiance Immersive (spec 10) : fond plein écran, barre et contenu sur des panneaux.
+        final immersive = visuals.immersive;
+        final content = Column(
+          children: [
+            if (_c.incomingRaid case final raid?)
+              RaidBanner(controller: _c, raid: raid, now: _now),
+            StoryBanner(controller: _c, now: _now),
+            Expanded(child: pages[_tab]),
+          ],
+        );
+        final column = Column(
+          children: [
+            if (immersive)
+              SafeArea(
+                bottom: false,
+                child: _Panel(
+                  color: Palette.panel,
+                  margin: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+                  radius: BorderRadius.circular(12),
+                  child: ResourceBar(controller: _c, now: _now, color: Colors.transparent),
+                ),
+              )
+            else ...[
+              ResourceBar(controller: _c, now: _now),
+              const Divider(height: 1),
+            ],
+            Expanded(
+              child: NestedScrollView(
+                headerSliverBuilder: (context, _) => [
+                  SliverToBoxAdapter(
+                    child: PlanetHero(
+                      controller: _c,
+                      onReports: _openReports,
+                      onOfficers: _openOfficers,
+                      onDebug: _openDebug,
                     ),
                   ),
-                ),
-              ],
+                ],
+                body: immersive
+                    ? _Panel(
+                        color: Palette.panelStrong,
+                        margin: const EdgeInsets.symmetric(horizontal: 12),
+                        radius: const BorderRadius.vertical(top: Radius.circular(16)),
+                        child: content,
+                      )
+                    : content,
+              ),
             ),
+          ],
+        );
+        return Scaffold(
+          body: VisualsScope(
+            visuals: visuals,
+            child: immersive
+                ? Stack(
+                    children: [
+                      Positioned.fill(
+                        child: _Background(path: visuals.background(state.planet.tempMax)),
+                      ),
+                      column,
+                    ],
+                  )
+                : column,
           ),
           bottomNavigationBar: NavigationBar(
             selectedIndex: _tab,
@@ -336,5 +369,48 @@ class _SlotBadge extends StatelessWidget {
           : Palette.free,
       child: child,
     );
+  }
+}
+
+/// Panneau opaque posé sur le fond de l'ambiance Immersive.
+class _Panel extends StatelessWidget {
+  const _Panel({
+    required this.color,
+    required this.margin,
+    required this.radius,
+    required this.child,
+  });
+
+  final Color color;
+  final EdgeInsets margin;
+  final BorderRadius radius;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: margin,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: radius,
+        border: Border.all(color: Palette.panelLine),
+      ),
+      child: child,
+    );
+  }
+}
+
+/// Fond plein écran de l'ambiance Immersive ; sans image, la couleur de fond seule.
+class _Background extends StatelessWidget {
+  const _Background({required this.path});
+
+  final String? path;
+
+  @override
+  Widget build(BuildContext context) {
+    if (path == null) return const ColoredBox(color: Palette.background);
+    final size = MediaQuery.sizeOf(context);
+    return GameImage(path: path, icon: Icons.public, width: size.width, height: size.height);
   }
 }

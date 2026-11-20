@@ -13,6 +13,7 @@ import '../game_controller.dart';
 import '../resource_style.dart';
 import '../theme.dart';
 import '../visuals.dart';
+import 'grid_card.dart';
 import 'info_button.dart';
 
 /// Ce qu'on sait d'un élément à [now] : partagé par la carte et sa feuille de détail.
@@ -173,6 +174,25 @@ class ItemCard extends StatelessWidget {
     final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
     final error = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error);
     final level = facts.level;
+    final visuals = VisualsScope.of(context);
+    final image = visuals.unlockable(item, level, facts.state.planet.tempMax);
+
+    if (visuals.immersive) {
+      return GridCard(
+        image: image,
+        icon: ItemStyle.icon(item),
+        grayed: item is BuildingKind && level == 0,
+        locked: locked,
+        name: spec.name,
+        line: locked ? 'Niv. $level' : 'Niv. $level · ${fmtDuration(facts.duration)}',
+        action: locked
+            ? const Text('Verrouillé')
+            : CostLine(cost: facts.cost, available: facts.state.planet.resources),
+        actionLabel: '${facts.verb} ${spec.name}',
+        onAction: block == null ? () => _order(context, controller, item) : null,
+        onDetails: () => ItemDetailSheet.show(context, controller, item),
+      );
+    }
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -188,9 +208,7 @@ class ItemCard extends StatelessWidget {
                 child: Row(
                   children: [
                     GameImage(
-                      path: VisualsScope.of(
-                        context,
-                      ).unlockable(item, level, facts.state.planet.tempMax),
+                      path: image,
                       icon: ItemStyle.icon(item),
                       width: 64,
                       radius: 10,

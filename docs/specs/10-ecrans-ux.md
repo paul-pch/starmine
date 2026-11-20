@@ -11,9 +11,10 @@ Maquettes de référence (validées) : canevas claude.ai « Ogamelike – intég
 C « Immersive » (option), A « Sobre » (repli sans image). Les images et leur registre :
 spec 11.
 
-État : B et A sont implémentées, sans images pour l'instant (repli partout, spec 11) ; les
-polices restent à embarquer. C reste la **cible** : ce qui la concerne ci-dessous n'est pas
-implémenté.
+État : B, C et A sont implémentées (choix de l'ambiance dans Debug). C : fond plein écran
+`background.<climat>` (couleur de fond seule tant que l'image manque), barre de ressources et
+bandeau du hero sur des panneaux à 78 %, contenu de l'onglet sur un panneau à 90 %, cartes
+d'élément en grille (bâtiments, recherche, chantier) ; les autres écrans gardent leurs listes.
 
 Écarts voulus avec les maquettes, la spec primant sur l'information : stocks en entier animé
 (pas « 128.4k ») ; (i) sur chaque carte ; navigation avec icônes ; cibles 48 dp (44 sur la
@@ -64,8 +65,11 @@ la carte, grisée pour un bâtiment au niveau 0, repli sinon), description (YAML
 d'unité (attaque / bouclier / coque) pour la défense. La feuille de quantité s'ouvre depuis
 le bouton de la carte.
 
-En C, la carte n'affiche que nom, niveau, durée et le coût **sur** le bouton ; tout le reste
-est dans la feuille de détail (un tap).
+En C, la carte n'affiche que l'image 4:3 (l'image carrée recadrée), le nom + (i), « Niv. N ·
+durée » (unité : « × N · durée par unité ») et le coût **sur** le bouton (ressource manquante en
+rouge ; « Verrouillé » si un prérequis manque) ; tout le reste (effet, blocage, prérequis,
+description, soute) est dans la feuille de détail (un tap). La feuille d'une unité affiche
+donc aussi coût, durée par unité, blocage et soute.
 
 ## Écrans
 

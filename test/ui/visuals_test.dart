@@ -128,6 +128,15 @@ void main() {
     expect(visuals.officer(OfficerKind.admiral), isNull);
   });
 
+  test('fond plein écran : ambiance Immersive seulement, par climat', () {
+    const bg = 'assets/visuels/background.cold.webp';
+    expect(const Visuals(assets: {bg}, ambiance: Ambiance.immersive).background(cold), bg);
+    expect(const Visuals(assets: {bg}, ambiance: Ambiance.immersive).background(hot), isNull);
+    expect(const Visuals(assets: {bg}).background(cold), isNull);
+    expect(const Visuals(assets: {bg}, ambiance: Ambiance.immersive).immersive, isTrue);
+    expect(Ambiance.fromName('immersive'), Ambiance.immersive);
+  });
+
   test('ambiance Sobre : aucune image', () {
     const visuals = Visuals(assets: {t1}, ambiance: Ambiance.plain);
     expect(visuals.building(mine, 1, temperate), isNull);

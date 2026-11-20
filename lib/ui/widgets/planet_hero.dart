@@ -8,7 +8,8 @@ import '../theme.dart';
 import '../visuals.dart';
 
 /// Hero 21:9 : image par tranche de température et bandeau opaque (nom, températures,
-/// rapports). En ambiance Sobre, le bandeau seul.
+/// rapports). En ambiance Sobre, le bandeau seul ; en Immersive, le bandeau sur un panneau,
+/// devant le fond plein écran.
 class PlanetHero extends StatelessWidget {
   const PlanetHero({
     super.key,
@@ -20,6 +21,9 @@ class PlanetHero extends StatelessWidget {
 
   /// Évite qu'un écran large ou un test de widgets ne donne tout l'écran au hero.
   static const _maxHeight = 200.0;
+
+  /// Ambiance Immersive : bande où le fond reste visible, bandeau compris.
+  static const _immersiveHeight = 170.0;
 
   final GameController controller;
   final VoidCallback onReports;
@@ -37,6 +41,28 @@ class PlanetHero extends StatelessWidget {
       onDebug: onDebug,
     );
     if (visuals.plain) return ColoredBox(color: Palette.bar, child: banner);
+    // Immersive : le fond plein écran tient lieu d'image ; bandeau sur un panneau à 78 %.
+    if (visuals.immersive) {
+      return SizedBox(
+        height: _immersiveHeight,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: _Banner(
+                controller: controller,
+                onReports: onReports,
+                onOfficers: onOfficers,
+                onDebug: onDebug,
+                color: Palette.panel,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
     final width = MediaQuery.sizeOf(context).width;
     final height = math.min(width * 9 / 21, _maxHeight);
     return SizedBox(
@@ -63,9 +89,11 @@ class _Banner extends StatelessWidget {
     required this.onReports,
     required this.onOfficers,
     required this.onDebug,
+    this.color = Palette.heroScrim,
   });
 
   final GameController controller;
+  final Color color;
   final VoidCallback onReports;
   final VoidCallback onOfficers;
   final VoidCallback onDebug;
@@ -77,7 +105,7 @@ class _Banner extends StatelessWidget {
     final unseen = controller.unseenReports;
     final officers = controller.availableOfficers.length;
     return ColoredBox(
-      color: Palette.heroScrim,
+      color: color,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 6, 4, 6),
         child: Row(

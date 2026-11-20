@@ -39,7 +39,7 @@ dans le code, alignement vérifié par un test.
 | `defense` | `defense.<clé YAML>` | 1:1, 512 px, sans climat | 8 | Cartes du chantier et feuille de détail | Packagées |
 | `ship` | `ship.<clé YAML>` | 1:1, 512 px, sans climat | 8 | Cartes du chantier et feuille de détail | Packagées |
 | `planet_hero` | `planet_hero.<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 3 | Hero de l'écran principal | Packagées (biome rocheux) |
-| `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 | Fond plein écran de l'ambiance Immersive | **À produire**, non branché |
+| `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 | Fond plein écran de l'ambiance Immersive | Validées et branchées (`Visuals.background`, séries 107 et 108, charte `background_prompt.md`) |
 | `pirate` | — | — | 0 | — | **Abandonné** (décision de l'utilisateur, 2026-11-13) : pas de vignette par vaisseau pirate ; la menace s'annonce par `scene.raid_incoming` |
 | `pirate_base` | `pirate_base.<0-3>` (ordre de `pirate_bases.list` : avant-poste, repaire, forteresse, citadelle) | 4:3, 640 × 480 | 4 | Cartes des bases (onglet Flotte) | **4 validées** (série 65, `art/prompts/serie-65-bases-pirates.md`) ; branchées : vignette de la carte (64 × 48) et de la feuille de la base (128 × 96), grisées tant que la base est détruite |
 | `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur scientifique, chef de chantier, amiral) | 1:1, 512 px, portrait buste | 8 | Cartes de l'écran Officiers (spec 12) | **8 validées** (série 66, charte `art/style/character_prompt.md`) ; branchées : vignette 64 dp de la carte et portrait 128 dp dans l'infobulle (i), grisés tant que l'officier n'est pas recruté |
@@ -78,7 +78,8 @@ Par priorité (impact sur l'écran le plus vu d'abord) :
    du hangar de cristal (série 89), génération déléguée par l'utilisateur avec un critère absolu : aucun élément du palier
    inférieur ne change ; `denoise` abaissé à 0,86-0,92 pour les paliers et 0,88 pour les climats.
 4. `character` × 8 (Amiral compris, décision de l'utilisateur 2026-11-17) — écran Officiers ; **faites et branchées** (série 66, `Visuals.officer`).
-5. `background` × 3 — seulement pour l'ambiance Immersive.
+5. `background` × 3 — seulement pour l'ambiance Immersive ; **faites et branchées** (`Visuals.background`,
+   séries 107 et 108, charte `art/style/background_prompt.md`).
 
 Chaque catégorie non branchée demande, en plus de l'image, une méthode de `Visuals` (id →
 chemin) et l'appel `GameImage` à l'endroit indiqué, avec repli icône.
@@ -177,6 +178,7 @@ pour l'instant.
 
 ## Points ouverts
 
-- Images 4:3 dédiées à C ou recadrage du 1:1 : à trancher sur les premiers rendus.
+- Images 4:3 dédiées à C ou recadrage du 1:1 : recadrage du 1:1 pour l'instant (`BoxFit.cover`), à revoir sur
+  les premiers rendus.
 - Charte de prompt des catégories `scene` et `pirate_base` à écrire (`art/style/`), comme `unit_prompt.md` pour
   les unités ; elles utilisent pour l'instant `story_prompt.md`. `character` : `character_prompt.md`.

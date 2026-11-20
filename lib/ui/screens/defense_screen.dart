@@ -12,6 +12,7 @@ import '../resource_style.dart';
 import '../theme.dart';
 import '../visuals.dart';
 import '../widgets/categorized_list.dart';
+import '../widgets/grid_card.dart';
 import '../widgets/in_progress_card.dart';
 import '../widgets/info_button.dart';
 
@@ -121,6 +122,23 @@ class _UnitCard extends StatelessWidget {
     final locked = block is RequirementsNotMet;
     final secondary = theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary);
     final error = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error);
+    final visuals = VisualsScope.of(context);
+
+    if (visuals.immersive) {
+      return GridCard(
+        image: visuals.unit(spec),
+        icon: ItemStyle.unitIcon,
+        locked: locked,
+        name: spec.name,
+        line: '× ${fmtAmount(owned.toDouble())} · ${fmtDuration(unitDuration(state, unit, rules))}',
+        action: locked
+            ? const Text('Verrouillé')
+            : CostLine(cost: spec.baseCost, available: state.planet.resources),
+        actionLabel: 'Commander ${spec.name}',
+        onAction: block == null ? () => _order(context) : null,
+        onDetails: () => _details(context),
+      );
+    }
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -136,7 +154,7 @@ class _UnitCard extends StatelessWidget {
                 child: Row(
                   children: [
                     GameImage(
-                      path: VisualsScope.of(context).unit(spec),
+                      path: visuals.unit(spec),
                       icon: ItemStyle.unitIcon,
                       width: 64,
                       radius: 10,
@@ -255,6 +273,31 @@ class _UnitCard extends StatelessWidget {
                 ),
                 gap,
                 UnitStatsLine(stats: UnitStats.of(spec, state.research)),
+                if (!spec.defense && spec.cargo > 0)
+                  Text(
+                    'Soute ${fmtAmount(spec.cargo)}',
+                    style: mono(theme.textTheme.bodySmall)?.copyWith(color: Palette.textSecondary),
+                  ),
+                gap,
+                // Coût, durée et blocage : aussi ici, la carte en grille (Immersive) ne les
+                // montre pas tous.
+                Wrap(
+                  spacing: 10,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    CostLine(cost: spec.baseCost, available: state.planet.resources),
+                    Text(
+                      '${fmtDuration(unitDuration(state, unit, controller.rules))} par unité',
+                      style: mono(theme.textTheme.bodySmall)?.copyWith(color: Palette.textSecondary),
+                    ),
+                  ],
+                ),
+                if (_blockText(checkBatchPlacement(state, unit, 1, controller.rules))
+                    case final text?)
+                  Text(
+                    text,
+                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error),
+                  ),
                 gap,
                 Text(_helpText, style: theme.textTheme.bodyMedium),
                 if (spec.requires.isNotEmpty) ...[

@@ -9,6 +9,7 @@ import 'theme.dart';
 /// Préférence d'affichage (spec 10) : ne change aucune information affichée.
 enum Ambiance {
   balanced('Équilibrée'),
+  immersive('Immersive'),
   plain('Sobre');
 
   const Ambiance(this.label);
@@ -59,6 +60,10 @@ class Visuals {
 
   bool get plain => ambiance == Ambiance.plain;
 
+  /// Ambiance Immersive : fond plein écran, panneaux opaques, cartes en grille de 2 colonnes
+  /// avec image 4:3 en tête (spec 10). Les écrans lisent ce drapeau, jamais l'ambiance.
+  bool get immersive => ambiance == Ambiance.immersive;
+
   static Future<Visuals> load(AssetBundle bundle) async {
     final manifest = await AssetManifest.loadFromAssetBundle(bundle);
     return Visuals(assets: manifest.listAssets().toSet());
@@ -72,6 +77,10 @@ class Visuals {
   }
 
   String? hero(int tempMax) => _resolve('planet_hero.${TemperatureBand.of(tempMax).name}');
+
+  /// Fond plein écran de l'ambiance Immersive, par tranche de température ; rien ailleurs.
+  String? background(int tempMax) =>
+      immersive ? _resolve('background.${TemperatureBand.of(tempMax).name}') : null;
 
   /// Image du climat de la planète. Palier sans image validée : palier inférieur du même
   /// climat, sinon repli.

@@ -3289,3 +3289,55 @@ images:
     denoise: 0.88
   master: art/masters/building.research_lab.t3.hot/v1.png
   build: assets/visuels/building.research_lab.t3.hot.webp
+- id: background.temperate
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: null
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, at the foot of a towering cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. The land is made of bare dark neutral grey rock, with towering grey cliffs and distant mountains, on a lifeless alien planet of bare rock. The lower two thirds of the frame are plain bare dark rock sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: a6228069-cdde-4d4f-bbe8-f4c2dd582825
+    series: serie-107-background
+    code: f1-temperate-4242
+  master: art/masters/background.temperate/v1.png
+  build: assets/visuels/background.temperate.webp
+- id: background.cold
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: background.temperate
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, at the foot of a towering cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. The land is blanketed in deep white snow and snowdrifts, with towering dark neutral grey rock cliffs heavily covered with thick white snow and ice and distant snow-covered mountains, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. The lower two thirds of the frame are plain snow-covered dark rock sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 9831ebae-410b-4ffd-8a7f-e2696e581735
+    series: serie-108-background-climats
+    code: d90-cold-4242
+    source: serie-107-background/f1-temperate-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/background.cold/v1.png
+  build: assets/visuels/background.cold.webp
+- id: background.hot
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: background.temperate
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, at the foot of a towering cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. The land is made of baked deep muted oxblood-red earth, with towering scorched dark basalt cliffs with a few thin glowing orange lava cracks and distant mountains, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. The lower two thirds of the frame are plain dark scorched rock sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: c8c2c299-c92b-4c2d-9ff3-b6c338ac11c1
+    series: serie-108-background-climats
+    code: d90-hot-4242
+    source: serie-107-background/f1-temperate-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/background.hot/v1.png
+  build: assets/visuels/background.hot.webp

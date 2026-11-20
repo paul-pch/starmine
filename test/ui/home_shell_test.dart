@@ -16,6 +16,7 @@ import 'package:starmine/ui/game_controller.dart';
 import 'package:starmine/domain/story.dart';
 import 'package:starmine/ui/visuals.dart';
 import 'package:starmine/ui/widgets/event_popover.dart';
+import 'package:starmine/ui/widgets/grid_card.dart';
 
 import '../domain/helpers.dart';
 import 'fakes.dart';
@@ -153,6 +154,24 @@ void main() {
     );
     await tester.runAsync(reloaded.init);
     expect(reloaded.ambiance, Ambiance.plain);
+
+    await close(tester, db);
+  });
+
+  testWidgets('ambiance Immersive : même information, cartes en grille', (tester) async {
+    final (controller, db) = await open(tester);
+
+    await tester.runAsync(() => controller.setAmbiance(Ambiance.immersive));
+    await tester.pump();
+    expect(find.text(controller.state.planet.name), findsOneWidget);
+    expect(find.byKey(const ValueKey('resource.metal')), findsOneWidget);
+    expect(find.text('Mine de métal'), findsOneWidget);
+    expect(find.textContaining('Niv. 0 · '), findsWidgets);
+    expect(find.byType(GridCard), findsWidgets);
+
+    await tester.tap(find.text('Mine de métal'));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.textContaining('Niveau suivant'), findsOneWidget);
 
     await close(tester, db);
   });

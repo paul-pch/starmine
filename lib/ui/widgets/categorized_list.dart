@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../category_style.dart';
 import '../format.dart';
 import '../theme.dart';
+import '../visuals.dart';
 
 /// Filtre « Réalisables » d'une liste (spec 10) : masque ce qui ne peut pas être lancé
 /// maintenant. Évalué à l'activation et à l'ouverture de l'onglet, pas chaque seconde.
@@ -151,19 +152,42 @@ class _CategorizedListState<T> extends State<CategorizedList<T>> {
       widget.categories[_selected] ?? 'Tout',
     ].join(' · ');
 
+    // Ambiance Immersive : grille de 2 colonnes (spec 10) ; sinon une carte par ligne.
+    final grid = VisualsScope.of(context).immersive;
+    List<Widget> tiles(List<T> items) => !grid
+        ? [for (final i in items) widget.itemBuilder(context, i)]
+        : [
+            for (var n = 0; n < items.length; n += 2)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: widget.itemBuilder(context, items[n])),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: n + 1 < items.length
+                          ? widget.itemBuilder(context, items[n + 1])
+                          : const SizedBox.shrink(),
+                    ),
+                  ],
+                ),
+              ),
+          ];
+
     final selected = _selected;
     final children = <Widget>[
       if (selected != null)
-        for (final i in groups[selected] ?? <T>[]) widget.itemBuilder(context, i)
+        ...tiles(groups[selected] ?? <T>[])
       else ...[
         for (final g in groups.entries) ...[
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Text(widget.categories[g.key]!, style: theme.textTheme.labelLarge),
           ),
-          for (final i in g.value) widget.itemBuilder(context, i),
+          ...tiles(g.value),
         ],
-        for (final i in others) widget.itemBuilder(context, i),
+        ...tiles(others),
       ],
       if (filter != null && filtering && visible.isEmpty) _empty(theme, filter),
     ];

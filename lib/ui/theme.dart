@@ -21,6 +21,12 @@ abstract final class Palette {
 
   /// Bandeau opaque du hero : jamais de texte sur l'image nue.
   static const heroScrim = Color(0xD10B0F17);
+
+  /// Ambiance Immersive : panneaux posés sur le fond (barre et bandeau à 78 %, contenu à
+  /// 90 %), bordés d'un filet clair.
+  static const panel = Color(0xC70B0F17);
+  static const panelStrong = Color(0xE60B0F17);
+  static const panelLine = Color(0x2EA3B2C9);
 }
 
 const _display = 'SpaceGrotesk';

@@ -14,10 +14,18 @@ const _energyHelp =
 /// Barre compacte, collée en haut : quatre colonnes (stock interpolé à [now], production,
 /// jauge ; solde d'énergie). Le tap ouvre le détail de la ressource.
 class ResourceBar extends StatelessWidget {
-  const ResourceBar({super.key, required this.controller, required this.now});
+  const ResourceBar({
+    super.key,
+    required this.controller,
+    required this.now,
+    this.color = Palette.bar,
+  });
 
   final GameController controller;
   final DateTime now;
+
+  /// Fond de la barre ; transparent sur le panneau de l'ambiance Immersive.
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +35,7 @@ class ResourceBar extends StatelessWidget {
     final cap = rules.capacity(state.planet.levels);
     final rate = controller.hourlyRate(state);
     return ColoredBox(
-      color: Palette.bar,
+      color: color,
       child: SafeArea(
         bottom: false,
         child: Padding(
