@@ -1,0 +1,88 @@
+{
+  "series": "serie-96-robotics-t3",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.robotics_factory.t3.temperate",
+      "variant": "g1a",
+      "subject": "An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. In the bottom right of the frame, in the foreground on the rocky ground, a third large and clearly separate block: an open-air steel assembly gantry in which a giant heavy-duty robot, taller than the hall, is being built by robotic arms.",
+      "detail": "A line of finished bipedal robots walks out from its base.",
+      "source": "serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "id": "building.robotics_factory.t3.temperate",
+      "variant": "g1b",
+      "subject": "An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. In the bottom right of the frame, in the foreground on the rocky ground, a third large and clearly separate block: an open-air steel assembly gantry in which a giant heavy-duty robot, taller than the hall, is being built by robotic arms.",
+      "detail": "A line of finished bipedal robots walks out from its base.",
+      "source": "serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.robotics_factory.t3.temperate",
+      "variant": "g1c",
+      "subject": "An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. In the bottom right of the frame, in the foreground on the rocky ground, a third large and clearly separate block: an open-air steel assembly gantry in which a giant heavy-duty robot, taller than the hall, is being built by robotic arms.",
+      "detail": "A line of finished bipedal robots walks out from its base.",
+      "source": "serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png",
+      "denoise": 0.92
+    },
+    {
+      "id": "building.robotics_factory.t3.temperate",
+      "variant": "g1d",
+      "subject": "An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. In the bottom right of the frame, in the foreground on the rocky ground, a third large and clearly separate block: an open-air steel assembly gantry in which a giant heavy-duty robot, taller than the hall, is being built by robotic arms.",
+      "detail": "A line of finished bipedal robots walks out from its base.",
+      "source": "serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png",
+      "denoise": 0.94
+    },
+    {
+      "id": "building.robotics_factory.t3.temperate",
+      "variant": "g2a",
+      "subject": "An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. In the bottom left corner of the frame, in the foreground on the open ground in front of the low hall, a third large and clearly separate block: an open-air steel assembly gantry in which a giant heavy-duty robot, taller than the hall, is being built by robotic arms.",
+      "detail": "A line of finished bipedal robots walks out from its base.",
+      "source": "serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.robotics_factory.t3.temperate",
+      "variant": "g2b",
+      "subject": "An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. In the bottom left corner of the frame, in the foreground on the open ground in front of the low hall, a third large and clearly separate block: an open-air steel assembly gantry in which a giant heavy-duty robot, taller than the hall, is being built by robotic arms.",
+      "detail": "A line of finished bipedal robots walks out from its base.",
+      "source": "serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png",
+      "denoise": 0.92
+    },
+    {
+      "id": "building.robotics_factory.t3.temperate",
+      "variant": "g2c",
+      "subject": "An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. In the bottom left corner of the frame, in the foreground on the open ground in front of the low hall, a third large and clearly separate block: an open-air steel assembly gantry in which a giant heavy-duty robot, taller than the hall, is being built by robotic arms.",
+      "detail": "A line of finished bipedal robots walks out from its base.",
+      "source": "serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png",
+      "denoise": 0.94
+    },
+    {
+      "id": "building.robotics_factory.t3.temperate",
+      "variant": "g3a",
+      "subject": "An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. On the right side of the frame, carved into the dark cliff face to the right of the tower, a third large and clearly separate block: a tall robot hangar cut into the rock, its huge brightly lit opening showing a giant heavy-duty robot standing inside.",
+      "detail": "A line of finished bipedal robots walks out from its base.",
+      "source": "serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.robotics_factory.t3.temperate",
+      "variant": "g3b",
+      "subject": "An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. On the right side of the frame, carved into the dark cliff face to the right of the tower, a third large and clearly separate block: a tall robot hangar cut into the rock, its huge brightly lit opening showing a giant heavy-duty robot standing inside.",
+      "detail": "A line of finished bipedal robots walks out from its base.",
+      "source": "serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png",
+      "denoise": 0.92
+    },
+    {
+      "id": "building.robotics_factory.t3.temperate",
+      "variant": "g3c",
+      "subject": "An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. On the right side of the frame, carved into the dark cliff face to the right of the tower, a third large and clearly separate block: a tall robot hangar cut into the rock, its huge brightly lit opening showing a giant heavy-duty robot standing inside.",
+      "detail": "A line of finished bipedal robots walks out from its base.",
+      "source": "serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png",
+      "denoise": 0.94
+    }
+  ]
+}

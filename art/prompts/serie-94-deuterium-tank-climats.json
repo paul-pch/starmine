@@ -1,0 +1,44 @@
+{
+  "series": "serie-94-deuterium-tank-climats",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.deuterium_tank.t2.cold",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff streaked with ice that plunges straight into a frozen sea of cracked pale ice with ice floes and pressure ridges, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "variant": "d88-t2_cold",
+      "source": "serie-92-deuterium-tank-t2/a1c-deuterium_tank-4242_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "id": "building.deuterium_tank.t2.hot",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks that plunges straight into a dark slate-grey sea with heavy swell and thick white steam rising from its surface, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance.",
+      "variant": "d88-t2_hot",
+      "source": "serie-92-deuterium-tank-t2/a1c-deuterium_tank-4242_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "id": "building.deuterium_tank.t3.cold",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side. In the bottom left of the frame, in the foreground standing in the sea off the platform, a third large and clearly separate block: an offshore storage platform on thick steel pylons carrying one huge armored tank with a wide glass wall full of glowing blue-green liquid, linked to the platform by a heavy pipe bridge.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff streaked with ice that plunges straight into a frozen sea of cracked pale ice with ice floes and pressure ridges, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "variant": "d88-t3_cold",
+      "source": "serie-93-deuterium-tank-t3/b1a-deuterium_tank-4242_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "id": "building.deuterium_tank.t3.hot",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side. In the bottom left of the frame, in the foreground standing in the sea off the platform, a third large and clearly separate block: an offshore storage platform on thick steel pylons carrying one huge armored tank with a wide glass wall full of glowing blue-green liquid, linked to the platform by a heavy pipe bridge.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks that plunges straight into a dark slate-grey sea with heavy swell and thick white steam rising from its surface, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance.",
+      "variant": "d88-t3_hot",
+      "source": "serie-93-deuterium-tank-t3/b1a-deuterium_tank-4242_00001_.png",
+      "denoise": 0.88
+    }
+  ]
+}

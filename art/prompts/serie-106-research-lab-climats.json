@@ -1,0 +1,48 @@
+{
+  "series": "serie-106-research-lab-climats",
+  "seeds": [
+    7777
+  ],
+  "images": [
+    {
+      "view": "High aerial view from a distance, with the whole research complex visible inside the frame.",
+      "detail": "A ring of slender antennas surrounds the dome.",
+      "site": "It stands on a flat plateau blanketed in deep white snow and snowdrifts at the top of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, open to the sky, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "id": "building.research_lab.t2.cold",
+      "subject": "A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it. On the right side of the frame, on the plateau beside the dome, a second large and clearly separate block: a tall observatory tower topped by a large white radio telescope dish pointing at the sky.",
+      "variant": "d88-t2_cold",
+      "source": "serie-104-research-lab-t2/l1a-research_lab-7777_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "view": "High aerial view from a distance, with the whole research complex visible inside the frame.",
+      "detail": "A ring of slender antennas surrounds the dome.",
+      "site": "It stands on a flat plateau of baked deep muted oxblood-red earth at the top of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, open to the sky, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance.",
+      "id": "building.research_lab.t2.hot",
+      "subject": "A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it. On the right side of the frame, on the plateau beside the dome, a second large and clearly separate block: a tall observatory tower topped by a large white radio telescope dish pointing at the sky.",
+      "variant": "d88-t2_hot",
+      "source": "serie-104-research-lab-t2/l1a-research_lab-7777_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "view": "High aerial view from a distance, with the whole research complex visible inside the frame.",
+      "detail": "A ring of slender antennas surrounds the dome.",
+      "site": "It stands on a flat plateau blanketed in deep white snow and snowdrifts at the top of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, open to the sky, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "id": "building.research_lab.t3.cold",
+      "subject": "A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it. On the right side of the frame, on the plateau beside the dome, a second large and clearly separate block: a tall observatory tower topped by a large white radio telescope dish pointing at the sky. In front of the dome stands a flat rectangular low building. On the bare rock at the far left edge of the plateau, well apart from the complex, a third large and clearly separate block: a tall slender observatory tower topped by a white telescope dome with an open slit.",
+      "variant": "d88-t3_cold",
+      "source": "serie-105-research-lab-t3/p3b-research_lab-7777_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "view": "High aerial view from a distance, with the whole research complex visible inside the frame.",
+      "detail": "A ring of slender antennas surrounds the dome.",
+      "site": "It stands on a flat plateau of baked deep muted oxblood-red earth at the top of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, open to the sky, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance.",
+      "id": "building.research_lab.t3.hot",
+      "subject": "A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it. On the right side of the frame, on the plateau beside the dome, a second large and clearly separate block: a tall observatory tower topped by a large white radio telescope dish pointing at the sky. In front of the dome stands a flat rectangular low building. On the bare rock at the far left edge of the plateau, well apart from the complex, a third large and clearly separate block: a tall slender observatory tower topped by a white telescope dome with an open slit.",
+      "variant": "d88-t3_hot",
+      "source": "serie-105-research-lab-t3/p3b-research_lab-7777_00001_.png",
+      "denoise": 0.88
+    }
+  ]
+}

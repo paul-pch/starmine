@@ -1,0 +1,58 @@
+{
+  "series": "serie-76-solar-t2",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "view": "High aerial view from a distance, with the whole solar plant visible inside the frame.",
+      "detail": "Concentric rings of tilted polished mirrors surround the tower and all face toward its top.",
+      "site": "It stands on a flat plateau at the top of a towering dark neutral grey rock cliff, open to the sky, on a lifeless alien planet of bare rock.",
+      "id": "building.solar_plant.t2.temperate",
+      "variant": "h1a",
+      "subject": "A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top. On the right side of the frame, on the plateau beside the mirror field, stands a second large and clearly separate block: a thermal storage facility of several giant upright cylindrical molten-salt tanks, linked to the tower by thick insulated pipes.",
+      "source": "serie-11-solar/solar_plant-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "view": "High aerial view from a distance, with the whole solar plant visible inside the frame.",
+      "detail": "Concentric rings of tilted polished mirrors surround the tower and all face toward its top.",
+      "site": "It stands on a flat plateau at the top of a towering dark neutral grey rock cliff, open to the sky, on a lifeless alien planet of bare rock.",
+      "id": "building.solar_plant.t2.temperate",
+      "variant": "h1b",
+      "subject": "A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top. On the right side of the frame, on the plateau beside the mirror field, stands a second large and clearly separate block: a thermal storage facility of several giant upright cylindrical molten-salt tanks, linked to the tower by thick insulated pipes.",
+      "source": "serie-11-solar/solar_plant-4242_00001_.png",
+      "denoise": 0.96
+    },
+    {
+      "view": "High aerial view from a distance, with the whole solar plant visible inside the frame.",
+      "detail": "Concentric rings of tilted polished mirrors surround the tower and all face toward its top.",
+      "site": "It stands on a flat plateau at the top of a towering dark neutral grey rock cliff, open to the sky, on a lifeless alien planet of bare rock.",
+      "id": "building.solar_plant.t2.temperate",
+      "variant": "h1c",
+      "subject": "A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top. On the right side of the frame, on the plateau beside the mirror field, stands a second large and clearly separate block: a thermal storage facility of several giant upright cylindrical molten-salt tanks, linked to the tower by thick insulated pipes.",
+      "source": "serie-11-solar/solar_plant-4242_00001_.png",
+      "denoise": 0.97
+    },
+    {
+      "view": "High aerial view from a distance, with the whole solar plant visible inside the frame.",
+      "detail": "Concentric rings of tilted polished mirrors surround the tower and all face toward its top.",
+      "site": "It stands on a flat plateau at the top of a towering dark neutral grey rock cliff, open to the sky, on a lifeless alien planet of bare rock.",
+      "id": "building.solar_plant.t2.temperate",
+      "variant": "h2a",
+      "subject": "A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top. In the bottom right corner of the frame, on the plateau outside the mirror field, stands a second large and clearly separate block: a thermal storage facility of three giant upright cylindrical molten-salt tanks, each as tall as a building, linked to the tower by thick insulated pipes.",
+      "source": "serie-11-solar/solar_plant-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "view": "High aerial view from a distance, with the whole solar plant visible inside the frame.",
+      "detail": "Concentric rings of tilted polished mirrors surround the tower and all face toward its top.",
+      "site": "It stands on a flat plateau at the top of a towering dark neutral grey rock cliff, open to the sky, on a lifeless alien planet of bare rock.",
+      "id": "building.solar_plant.t2.temperate",
+      "variant": "h2b",
+      "subject": "A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top. In the bottom right corner of the frame, on the plateau outside the mirror field, stands a second large and clearly separate block: a thermal storage facility of three giant upright cylindrical molten-salt tanks, each as tall as a building, linked to the tower by thick insulated pipes.",
+      "source": "serie-11-solar/solar_plant-4242_00001_.png",
+      "denoise": 0.97
+    }
+  ]
+}

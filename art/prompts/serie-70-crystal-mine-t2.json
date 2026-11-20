@@ -1,0 +1,26 @@
+{
+  "series": "serie-70-crystal-mine-t2",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.crystal_mine.t2.temperate",
+      "variant": "r1a",
+      "subject": "A crystal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw crystal out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated crystal refinery building with tall glass walls, through which rows of cut and polished pale blue crystals glow brightly.",
+      "detail": "Huge clusters of pale blue crystal grow out of the exposed rock around the tunnel mouth.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal under a very light coat of rock dust, and bright floodlights switched on.",
+      "source": "serie-09-crystal-mine/crystal_mine-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.crystal_mine.t2.temperate",
+      "variant": "r1b",
+      "subject": "A crystal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw crystal out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated crystal refinery building with tall glass walls, through which rows of cut and polished pale blue crystals glow brightly.",
+      "detail": "Huge clusters of pale blue crystal grow out of the exposed rock around the tunnel mouth.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal under a very light coat of rock dust, and bright floodlights switched on.",
+      "source": "serie-09-crystal-mine/crystal_mine-4242_00001_.png",
+      "denoise": 0.97
+    }
+  ]
+}

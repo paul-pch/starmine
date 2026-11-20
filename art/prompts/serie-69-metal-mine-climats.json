@@ -1,0 +1,48 @@
+{
+  "series": "serie-69-metal-mine-climats",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.metal_mine.t2.cold",
+      "variant": "d90-t2_cold",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouth.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "source": "serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.metal_mine.t2.hot",
+      "variant": "d90-t2_hot",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouth.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "site": "It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance.",
+      "source": "serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.metal_mine.t3.cold",
+      "variant": "d90-t3_cold",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. In the left half of the frame, a third massive and clearly separate block, larger than the main building: a huge multi-level mining building carved deep into the mountain itself, its facade embedded in the cliff face and rising high up the rock, with a second wide tunnel mouth at its base and its own massive conveyor.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "source": "serie-68-metal-mine-t3/g3c-metal_mine-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.metal_mine.t3.hot",
+      "variant": "d90-t3_hot",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. In the left half of the frame, a third massive and clearly separate block, larger than the main building: a huge multi-level mining building carved deep into the mountain itself, its facade embedded in the cliff face and rising high up the rock, with a second wide tunnel mouth at its base and its own massive conveyor.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "site": "It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance.",
+      "source": "serie-68-metal-mine-t3/g3c-metal_mine-4242_00001_.png",
+      "denoise": 0.9
+    }
+  ]
+}

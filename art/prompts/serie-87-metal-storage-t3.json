@@ -1,0 +1,48 @@
+{
+  "series": "serie-87-metal-storage-t3",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.metal_storage.t3.temperate",
+      "variant": "v1a",
+      "subject": "A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. In the upper part of the frame, high above the silos, a third massive and clearly separate block: a colossal round armored vault door embedded in the cliff face, wider than two silos, standing half open and revealing a deep vault filled with glowing stacks of silver ingots.",
+      "detail": "Wide open bays at the base of each silo reveal stacks of huge silver metal ingots.",
+      "source": "serie-86-metal-storage-t2/m3a-metal_storage-4242_00001_.png",
+      "denoise": 0.93
+    },
+    {
+      "id": "building.metal_storage.t3.temperate",
+      "variant": "v1b",
+      "subject": "A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. In the upper part of the frame, high above the silos, a third massive and clearly separate block: a colossal round armored vault door embedded in the cliff face, wider than two silos, standing half open and revealing a deep vault filled with glowing stacks of silver ingots.",
+      "detail": "Wide open bays at the base of each silo reveal stacks of huge silver metal ingots.",
+      "source": "serie-86-metal-storage-t2/m3a-metal_storage-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.metal_storage.t3.temperate",
+      "variant": "v1c",
+      "subject": "A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. In the upper part of the frame, high above the silos, a third massive and clearly separate block: a colossal round armored vault door embedded in the cliff face, wider than two silos, standing half open and revealing a deep vault filled with glowing stacks of silver ingots.",
+      "detail": "Wide open bays at the base of each silo reveal stacks of huge silver metal ingots.",
+      "source": "serie-86-metal-storage-t2/m3a-metal_storage-4242_00001_.png",
+      "denoise": 0.97
+    },
+    {
+      "id": "building.metal_storage.t3.temperate",
+      "variant": "v2a",
+      "subject": "A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. In the upper left part of the frame, carved high into the cliff face above the silos, a third massive and clearly separate block: a colossal round armored vault door, wider than two silos, standing half open on a vault full of silver ingots, reached by a ramp.",
+      "detail": "Wide open bays at the base of each silo reveal stacks of huge silver metal ingots.",
+      "source": "serie-86-metal-storage-t2/m3a-metal_storage-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.metal_storage.t3.temperate",
+      "variant": "v2b",
+      "subject": "A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. In the upper left part of the frame, carved high into the cliff face above the silos, a third massive and clearly separate block: a colossal round armored vault door, wider than two silos, standing half open on a vault full of silver ingots, reached by a ramp.",
+      "detail": "Wide open bays at the base of each silo reveal stacks of huge silver metal ingots.",
+      "source": "serie-86-metal-storage-t2/m3a-metal_storage-4242_00001_.png",
+      "denoise": 0.97
+    }
+  ]
+}

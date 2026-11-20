@@ -1,0 +1,62 @@
+{
+  "series": "serie-92-deuterium-tank-t2",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.deuterium_tank.t2.temperate",
+      "variant": "a1a",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-16-deuterium-tank/deuterium_tank-4242_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "id": "building.deuterium_tank.t2.temperate",
+      "variant": "a1b",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-16-deuterium-tank/deuterium_tank-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.deuterium_tank.t2.temperate",
+      "variant": "a1c",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-16-deuterium-tank/deuterium_tank-4242_00001_.png",
+      "denoise": 0.92
+    },
+    {
+      "id": "building.deuterium_tank.t2.temperate",
+      "variant": "a2a",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom left of the frame, on the near end of the platform by the sea, a second large and clearly separate block: a cluster of long horizontal armored tanks with glass walls full of glowing blue-green liquid.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-16-deuterium-tank/deuterium_tank-4242_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "id": "building.deuterium_tank.t2.temperate",
+      "variant": "a2b",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom left of the frame, on the near end of the platform by the sea, a second large and clearly separate block: a cluster of long horizontal armored tanks with glass walls full of glowing blue-green liquid.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-16-deuterium-tank/deuterium_tank-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.deuterium_tank.t2.temperate",
+      "variant": "a2c",
+      "subject": "A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom left of the frame, on the near end of the platform by the sea, a second large and clearly separate block: a cluster of long horizontal armored tanks with glass walls full of glowing blue-green liquid.",
+      "detail": "A glowing blue-green liquid fills each silo behind the glass.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-16-deuterium-tank/deuterium_tank-4242_00001_.png",
+      "denoise": 0.92
+    }
+  ]
+}

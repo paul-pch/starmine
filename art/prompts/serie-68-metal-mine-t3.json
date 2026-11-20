@@ -1,0 +1,71 @@
+{
+  "series": "serie-68-metal-mine-t3",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.metal_mine.t3.temperate",
+      "variant": "g1a",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. On the left side of the frame, a third large and clearly separate block: a second mine tunnel mouth cut into the cliff with its own tall industrial headframe building and its own massive conveyor, linked to the rest of the complex by long elevated walkways running across the cliff face.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "source": "serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.metal_mine.t3.temperate",
+      "variant": "g1b",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. On the left side of the frame, a third large and clearly separate block: a second mine tunnel mouth cut into the cliff with its own tall industrial headframe building and its own massive conveyor, linked to the rest of the complex by long elevated walkways running across the cliff face.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "source": "serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.metal_mine.t3.temperate",
+      "variant": "g2a",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. In the left half of the frame, in the foreground and as large as the main building, a third large and clearly separate block: a second towering headframe building over a second mine tunnel mouth cut into the cliff, with its own massive conveyor, linked to the main building by an elevated walkway.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "source": "serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.metal_mine.t3.temperate",
+      "variant": "g2b",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. In the left half of the frame, in the foreground and as large as the main building, a third large and clearly separate block: a second towering headframe building over a second mine tunnel mouth cut into the cliff, with its own massive conveyor, linked to the main building by an elevated walkway.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "source": "serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.metal_mine.t3.temperate",
+      "variant": "g3a",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. In the left half of the frame, a third massive and clearly separate block, larger than the main building: a huge multi-level mining building carved deep into the mountain itself, its facade embedded in the cliff face and rising high up the rock, with a second wide tunnel mouth at its base and its own massive conveyor.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "source": "serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.metal_mine.t3.temperate",
+      "variant": "g3b",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. In the left half of the frame, a third massive and clearly separate block, larger than the main building: a huge mining building clinging high up on the cliff face, built into the rock of the mountain, with a long inclined conveyor running down from it to the ground.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "source": "serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.metal_mine.t3.temperate",
+      "variant": "g3c",
+      "subject": "A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. In the left half of the frame, a third massive and clearly separate block, larger than the main building: a huge multi-level mining building carved deep into the mountain itself, its facade embedded in the cliff face and rising high up the rock, with a second wide tunnel mouth at its base and its own massive conveyor.",
+      "detail": "Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths.",
+      "state": "Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips.",
+      "source": "serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png",
+      "denoise": 0.97
+    }
+  ]
+}

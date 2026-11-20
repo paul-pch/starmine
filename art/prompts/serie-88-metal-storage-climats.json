@@ -1,0 +1,44 @@
+{
+  "series": "serie-88-metal-storage-climats",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.metal_storage.t2.cold",
+      "subject": "A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos.",
+      "detail": "Wide open bays at the base of each silo reveal stacks of huge silver metal ingots.",
+      "variant": "d90-t2_cold",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "source": "serie-86-metal-storage-t2/m3a-metal_storage-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.metal_storage.t2.hot",
+      "subject": "A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos.",
+      "detail": "Wide open bays at the base of each silo reveal stacks of huge silver metal ingots.",
+      "variant": "d90-t2_hot",
+      "site": "It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance.",
+      "source": "serie-86-metal-storage-t2/m3a-metal_storage-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.metal_storage.t3.cold",
+      "subject": "A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. In the upper part of the frame, high above the silos, a third massive and clearly separate block: a colossal round armored vault door embedded in the cliff face, wider than two silos, standing half open and revealing a deep vault filled with glowing stacks of silver ingots.",
+      "detail": "Wide open bays at the base of each silo reveal stacks of huge silver metal ingots.",
+      "variant": "d90-t3_cold",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "source": "serie-87-metal-storage-t3/v1b-metal_storage-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.metal_storage.t3.hot",
+      "subject": "A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. In the upper part of the frame, high above the silos, a third massive and clearly separate block: a colossal round armored vault door embedded in the cliff face, wider than two silos, standing half open and revealing a deep vault filled with glowing stacks of silver ingots.",
+      "detail": "Wide open bays at the base of each silo reveal stacks of huge silver metal ingots.",
+      "variant": "d90-t3_hot",
+      "site": "It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance.",
+      "source": "serie-87-metal-storage-t3/v1b-metal_storage-4242_00001_.png",
+      "denoise": 0.9
+    }
+  ]
+}

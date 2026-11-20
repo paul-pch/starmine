@@ -1,0 +1,52 @@
+{
+  "series": "serie-102-shipyard-t3",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "view": "High aerial view from a distance, with the whole shipyard visible inside the frame.",
+      "detail": "A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow.",
+      "state": "Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor.",
+      "site": "The dock is cut into a plateau of dark neutral grey rock on a lifeless alien planet of bare rock.",
+      "id": "building.shipyard.t3.temperate",
+      "variant": "z1a",
+      "subject": "A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim. On the right rim of the dock, a second large and clearly separate block: a long tall hull assembly hangar with a glowing open side, holding the hull sections of a second starship. In the upper left of the frame, on the flat rock plateau beyond the left rim of the dock, a third large and clearly separate block: a large circular landing pad ringed with lights, with a second finished starship resting on it and a slim control tower beside it.",
+      "source": "serie-101-shipyard-t2/y3b-shipyard-4242_00001_.png",
+      "denoise": 0.86
+    },
+    {
+      "view": "High aerial view from a distance, with the whole shipyard visible inside the frame.",
+      "detail": "A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow.",
+      "state": "Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor.",
+      "site": "The dock is cut into a plateau of dark neutral grey rock on a lifeless alien planet of bare rock.",
+      "id": "building.shipyard.t3.temperate",
+      "variant": "z1b",
+      "subject": "A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim. On the right rim of the dock, a second large and clearly separate block: a long tall hull assembly hangar with a glowing open side, holding the hull sections of a second starship. In the upper left of the frame, on the flat rock plateau beyond the left rim of the dock, a third large and clearly separate block: a large circular landing pad ringed with lights, with a second finished starship resting on it and a slim control tower beside it.",
+      "source": "serie-101-shipyard-t2/y3b-shipyard-4242_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "view": "High aerial view from a distance, with the whole shipyard visible inside the frame.",
+      "detail": "A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow.",
+      "state": "Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor.",
+      "site": "The dock is cut into a plateau of dark neutral grey rock on a lifeless alien planet of bare rock.",
+      "id": "building.shipyard.t3.temperate",
+      "variant": "z1c",
+      "subject": "A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim. On the right rim of the dock, a second large and clearly separate block: a long tall hull assembly hangar with a glowing open side, holding the hull sections of a second starship. In the upper left of the frame, on the flat rock plateau beyond the left rim of the dock, a third large and clearly separate block: a large circular landing pad ringed with lights, with a second finished starship resting on it and a slim control tower beside it.",
+      "source": "serie-101-shipyard-t2/y3b-shipyard-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "view": "High aerial view from a distance, with the whole shipyard visible inside the frame.",
+      "detail": "A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow.",
+      "state": "Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor.",
+      "site": "The dock is cut into a plateau of dark neutral grey rock on a lifeless alien planet of bare rock.",
+      "id": "building.shipyard.t3.temperate",
+      "variant": "z1d",
+      "subject": "A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim. On the right rim of the dock, a second large and clearly separate block: a long tall hull assembly hangar with a glowing open side, holding the hull sections of a second starship. In the upper left of the frame, on the flat rock plateau beyond the left rim of the dock, a third large and clearly separate block: a large circular landing pad ringed with lights, with a second finished starship resting on it and a slim control tower beside it.",
+      "source": "serie-101-shipyard-t2/y3b-shipyard-4242_00001_.png",
+      "denoise": 0.92
+    }
+  ]
+}

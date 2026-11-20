@@ -1,0 +1,48 @@
+{
+  "series": "serie-83-fusion-t3-stockage",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.fusion_reactor.t3.temperate",
+      "variant": "z1a",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. In the bottom left of the frame, in the foreground on the ground in front of the ring, a third large and clearly separate block: a massive energy storage building, a long armoured hall lined with rows of giant glowing blue capacitor cells, connected to the ring by several very thick heavy power cables running across the ground.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "source": "serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.92
+    },
+    {
+      "id": "building.fusion_reactor.t3.temperate",
+      "variant": "z1b",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. In the bottom left of the frame, in the foreground on the ground in front of the ring, a third large and clearly separate block: a massive energy storage building, a long armoured hall lined with rows of giant glowing blue capacitor cells, connected to the ring by several very thick heavy power cables running across the ground.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "source": "serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.94
+    },
+    {
+      "id": "building.fusion_reactor.t3.temperate",
+      "variant": "z1c",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. In the bottom left of the frame, in the foreground on the ground in front of the ring, a third large and clearly separate block: a massive energy storage building, a long armoured hall lined with rows of giant glowing blue capacitor cells, connected to the ring by several very thick heavy power cables running across the ground.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "source": "serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.fusion_reactor.t3.temperate",
+      "variant": "z2a",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. In the bottom left corner of the frame, in the foreground, a third large and clearly separate block: a massive energy storage building made of rows of giant cylindrical capacitor banks glowing with blue light, linked directly to the ring by several very thick heavy power cables lying on the ground.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "source": "serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.93
+    },
+    {
+      "id": "building.fusion_reactor.t3.temperate",
+      "variant": "z2b",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. In the bottom left corner of the frame, in the foreground, a third large and clearly separate block: a massive energy storage building made of rows of giant cylindrical capacitor banks glowing with blue light, linked directly to the ring by several very thick heavy power cables lying on the ground.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "source": "serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.95
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "series": "serie-98-nanite-t2",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.nanite_factory.t2.temperate",
+      "variant": "n1a",
+      "subject": "A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. On the left side of the frame, on the open plain beside the main cylinder, a second large and clearly separate block: a smaller glass containment cylinder on its own base, with a swirling cloud of glowing silver nanoparticles inside, linked to the main cylinder by thick conduits.",
+      "detail": "A swirling cloud of silver nanoparticles glows inside the cylinder.",
+      "source": "serie-03-construction/nanite_factory-4242_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "id": "building.nanite_factory.t2.temperate",
+      "variant": "n1b",
+      "subject": "A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. On the left side of the frame, on the open plain beside the main cylinder, a second large and clearly separate block: a smaller glass containment cylinder on its own base, with a swirling cloud of glowing silver nanoparticles inside, linked to the main cylinder by thick conduits.",
+      "detail": "A swirling cloud of silver nanoparticles glows inside the cylinder.",
+      "source": "serie-03-construction/nanite_factory-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.nanite_factory.t2.temperate",
+      "variant": "n1c",
+      "subject": "A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. On the left side of the frame, on the open plain beside the main cylinder, a second large and clearly separate block: a smaller glass containment cylinder on its own base, with a swirling cloud of glowing silver nanoparticles inside, linked to the main cylinder by thick conduits.",
+      "detail": "A swirling cloud of silver nanoparticles glows inside the cylinder.",
+      "source": "serie-03-construction/nanite_factory-4242_00001_.png",
+      "denoise": 0.92
+    },
+    {
+      "id": "building.nanite_factory.t2.temperate",
+      "variant": "n2a",
+      "subject": "A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. In the left half of the frame, on the open ground, a second large and clearly separate block: a wide low glass-roofed nanite processing hall glowing silver from inside.",
+      "detail": "A swirling cloud of silver nanoparticles glows inside the cylinder.",
+      "source": "serie-03-construction/nanite_factory-4242_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "id": "building.nanite_factory.t2.temperate",
+      "variant": "n2b",
+      "subject": "A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. In the left half of the frame, on the open ground, a second large and clearly separate block: a wide low glass-roofed nanite processing hall glowing silver from inside.",
+      "detail": "A swirling cloud of silver nanoparticles glows inside the cylinder.",
+      "source": "serie-03-construction/nanite_factory-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.nanite_factory.t2.temperate",
+      "variant": "n2c",
+      "subject": "A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. In the left half of the frame, on the open ground, a second large and clearly separate block: a wide low glass-roofed nanite processing hall glowing silver from inside.",
+      "detail": "A swirling cloud of silver nanoparticles glows inside the cylinder.",
+      "source": "serie-03-construction/nanite_factory-4242_00001_.png",
+      "denoise": 0.92
+    }
+  ]
+}

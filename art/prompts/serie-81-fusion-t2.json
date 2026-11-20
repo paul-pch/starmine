@@ -1,0 +1,48 @@
+{
+  "series": "serie-81-fusion-t2",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.fusion_reactor.t2.temperate",
+      "variant": "x1a",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. On the right side of the frame, at the foot of the cliff, stands a second large and clearly separate block: two giant cooling towers releasing thick white plumes of steam, linked to the ring by thick pipes.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "source": "serie-12-fusion/fusion_reactor-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.fusion_reactor.t2.temperate",
+      "variant": "x1b",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. On the right side of the frame, at the foot of the cliff, stands a second large and clearly separate block: two giant cooling towers releasing thick white plumes of steam, linked to the ring by thick pipes.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "source": "serie-12-fusion/fusion_reactor-4242_00001_.png",
+      "denoise": 0.96
+    },
+    {
+      "id": "building.fusion_reactor.t2.temperate",
+      "variant": "x1c",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. On the right side of the frame, at the foot of the cliff, stands a second large and clearly separate block: two giant cooling towers releasing thick white plumes of steam, linked to the ring by thick pipes.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "source": "serie-12-fusion/fusion_reactor-4242_00001_.png",
+      "denoise": 0.97
+    },
+    {
+      "id": "building.fusion_reactor.t2.temperate",
+      "variant": "x2a",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "source": "serie-12-fusion/fusion_reactor-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.fusion_reactor.t2.temperate",
+      "variant": "x2b",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "source": "serie-12-fusion/fusion_reactor-4242_00001_.png",
+      "denoise": 0.97
+    }
+  ]
+}

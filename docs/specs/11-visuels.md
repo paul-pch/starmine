@@ -33,7 +33,7 @@ dans le code, alignement vérifié par un test.
 
 | Catégorie | Id | Format | Quantité | Où | État |
 | --- | --- | --- | --- | --- | --- |
-| `building` | `building.<clé YAML>.t<1-3>.<cold\|temperate\|hot>` | 1:1, 512 px (B, A) | 12 × 3 paliers × 3 climats | Cartes et feuille de détail | t1 packagés (36) ; **t2, t3 à produire (72)** |
+| `building` | `building.<clé YAML>.t<1-3>.<cold\|temperate\|hot>` | 1:1, 512 px (B, A) | 12 × 3 paliers × 3 climats | Cartes et feuille de détail | t1 packagés (36) ; t2 et t3 : `metal_mine` fait (séries 67 à 69), **66 à produire** |
 | `building_wide` | `building_wide.<clé>.t<1-3>.<cold\|temperate\|hot>` | 4:3, 640 × 480 (C) — facultatif, sinon recadrage du 1:1 | — | Cartes de l'ambiance Immersive | Facultatif, non branché |
 | `research` | `research.<clé YAML>` | 1:1, 512 px, sans climat | 12 | Cartes et feuille de détail | Packagées |
 | `defense` | `defense.<clé YAML>` | 1:1, 512 px, sans climat | 8 | Cartes du chantier et feuille de détail | Packagées |
@@ -71,8 +71,12 @@ Par priorité (impact sur l'écran le plus vu d'abord) :
 2. `scene.raid_incoming` (série 64) et `pirate_base` × 4 (série 65) — **faites et branchées** :
    `Visuals.raidIncoming` en tête de la feuille du bandeau d'alerte, `Visuals.pirateBase(rang)` sur la carte
    et la feuille de chaque base.
-3. `building` t2 et t3 × 72 — déjà branchés par les paliers ; à produire avec le t1 du même
-   climat en `parent`.
+3. `building` t2 et t3 × 72 — déjà branchés par les paliers. Méthode validée par l'utilisateur sur `metal_mine`
+   (séries 67 à 69) : t2 tempéré depuis le t1 tempéré, t3 depuis le t2, seed du t1 ; chaque palier ajoute **un bloc
+   séparé**, placé dans le cadre et lisible à 128 px (`denoise` 0,95 à 0,97) ; froid et chaud déclinés depuis chaque
+   palier tempéré (`site` seul, `denoise` 0,90). **Faits** : les 12 bâtiments × t2/t3 × 3 climats (séries 67 à 106). À partir
+   du hangar de cristal (série 89), génération déléguée par l'utilisateur avec un critère absolu : aucun élément du palier
+   inférieur ne change ; `denoise` abaissé à 0,86-0,92 pour les paliers et 0,88 pour les climats.
 4. `character` × 8 (Amiral compris, décision de l'utilisateur 2026-11-17) — écran Officiers ; **faites et branchées** (série 66, `Visuals.officer`).
 5. `background` × 3 — seulement pour l'ambiance Immersive.
 

@@ -1,0 +1,44 @@
+{
+  "series": "serie-84-fusion-climats",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.fusion_reactor.t2.cold",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "variant": "d90-t2_cold",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "source": "serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.fusion_reactor.t2.hot",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "variant": "d90-t2_hot",
+      "site": "It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance.",
+      "source": "serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.fusion_reactor.t3.cold",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. In the bottom left corner of the frame, in the foreground, a third large and clearly separate block: a massive energy storage building made of rows of giant cylindrical capacitor banks glowing with blue light, linked directly to the ring by several very thick heavy power cables lying on the ground.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "variant": "d90-t3_cold",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "source": "serie-83-fusion-t3-stockage/z2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.fusion_reactor.t3.hot",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. In the bottom left corner of the frame, in the foreground, a third large and clearly separate block: a massive energy storage building made of rows of giant cylindrical capacitor banks glowing with blue light, linked directly to the ring by several very thick heavy power cables lying on the ground.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "variant": "d90-t3_hot",
+      "site": "It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance.",
+      "source": "serie-83-fusion-t3-stockage/z2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.9
+    }
+  ]
+}

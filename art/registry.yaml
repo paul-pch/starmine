@@ -1993,3 +1993,1299 @@ images:
     code: c3b-engineer-4242
   master: art/masters/character.engineer/v1.png
   build: assets/visuels/character.engineer.webp
+- id: building.metal_mine.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_mine.t1.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouth. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 5c595ba0-9f7d-4aeb-9e2e-e10774f06dec
+    series: serie-67-metal-mine-t2
+    code: f3b-metal_mine-4242
+    source: serie-08-metal-mine/metal_mine-4242_00001_.png
+    denoise: 0.95
+  master: art/masters/building.metal_mine.t2.temperate/v1.png
+  build: assets/visuels/building.metal_mine.t2.temperate.webp
+- id: building.metal_mine.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_mine.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. In the left half of the frame, a third massive and clearly separate block, larger than the main building: a huge multi-level mining building carved deep into the mountain itself, its facade embedded in the cliff face and rising high up the rock, with a second wide tunnel mouth at its base and its own massive conveyor. Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 4031662b-ddfd-418e-bbc3-81f5171f9003
+    series: serie-68-metal-mine-t3
+    code: g3c-metal_mine-4242
+    source: serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png
+    denoise: 0.97
+  master: art/masters/building.metal_mine.t3.temperate/v1.png
+  build: assets/visuels/building.metal_mine.t3.temperate.webp
+- id: building.metal_mine.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_mine.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouth. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: f922f6cf-017d-4ae2-b262-e0f0ad1f8b51
+    series: serie-69-metal-mine-climats
+    code: d90-t2_cold-metal_mine-4242
+    source: serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.metal_mine.t2.cold/v1.png
+  build: assets/visuels/building.metal_mine.t2.cold.webp
+- id: building.metal_mine.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_mine.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouth. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 111f5e5f-4f02-4ad9-be11-d593fc20f3e7
+    series: serie-69-metal-mine-climats
+    code: d90-t2_hot-metal_mine-4242
+    source: serie-67-metal-mine-t2/f3b-metal_mine-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.metal_mine.t2.hot/v1.png
+  build: assets/visuels/building.metal_mine.t2.hot.webp
+- id: building.metal_mine.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_mine.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. In the left half of the frame, a third massive and clearly separate block, larger than the main building: a huge multi-level mining building carved deep into the mountain itself, its facade embedded in the cliff face and rising high up the rock, with a second wide tunnel mouth at its base and its own massive conveyor. Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: ee98c101-fbe2-4708-bfb2-8649ce537b69
+    series: serie-69-metal-mine-climats
+    code: d90-t3_cold-metal_mine-4242
+    source: serie-68-metal-mine-t3/g3c-metal_mine-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.metal_mine.t3.cold/v1.png
+  build: assets/visuels/building.metal_mine.t3.cold.webp
+- id: building.metal_mine.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_mine.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw ore out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated foundry building with glowing orange furnace mouths, two tall smoking chimneys and rows of glowing molten metal ingots cooling outside. In the left half of the frame, a third massive and clearly separate block, larger than the main building: a huge multi-level mining building carved deep into the mountain itself, its facade embedded in the cliff face and rising high up the rock, with a second wide tunnel mouth at its base and its own massive conveyor. Thick veins of raw silver and copper metal run through the exposed rock around the tunnel mouths. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech mining machinery in active use, with composite panels and polished metal coated in fine grey rock dust, and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 7a97093e-fe5e-4ac8-aa5f-ee1560937605
+    series: serie-69-metal-mine-climats
+    code: d90-t3_hot-metal_mine-4242
+    source: serie-68-metal-mine-t3/g3c-metal_mine-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.metal_mine.t3.hot/v1.png
+  build: assets/visuels/building.metal_mine.t3.hot.webp
+- id: building.crystal_mine.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_mine.t1.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw crystal out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated crystal refinery building with tall glass walls, through which rows of cut and polished pale blue crystals glow brightly. Huge clusters of pale blue crystal grow out of the exposed rock around the tunnel mouth. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech mining machinery in active use, with composite panels and polished metal under a very light coat of rock dust, and bright floodlights switched on. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: a03a27dd-ad72-43da-ad2b-91b0c730ec59
+    series: serie-70-crystal-mine-t2
+    code: r1a-crystal_mine-4242
+    source: serie-09-crystal-mine/crystal_mine-4242_00001_.png
+    denoise: 0.95
+  master: art/masters/building.crystal_mine.t2.temperate/v1.png
+  build: assets/visuels/building.crystal_mine.t2.temperate.webp
+- id: building.crystal_mine.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_mine.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw crystal out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated crystal refinery building with tall glass walls, through which rows of cut and polished pale blue crystals glow brightly. Close to the viewer on the left, its base filling the bottom-left corner of the frame and as tall as the main building, a third massive and clearly separate block: a huge multi-level mining building carved into a rocky outcrop of the mountain, with a second wide tunnel mouth at its base, surrounded by huge clusters of pale blue crystal. Huge clusters of pale blue crystal grow out of the exposed rock around the tunnel mouth. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech mining machinery in active use, with composite panels and polished metal under a very light coat of rock dust, and bright floodlights switched on. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: bf78781f-da1e-4a68-8635-ab1ee8120c4d
+    series: serie-71-crystal-mine-t3
+    code: k2b-crystal_mine-4242
+    source: serie-70-crystal-mine-t2/r1a-crystal_mine-4242_00001_.png
+    denoise: 0.97
+  master: art/masters/building.crystal_mine.t3.temperate/v1.png
+  build: assets/visuels/building.crystal_mine.t3.temperate.webp
+- id: building.crystal_mine.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_mine.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw crystal out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated crystal refinery building with tall glass walls, through which rows of cut and polished pale blue crystals glow brightly. Huge clusters of pale blue crystal grow out of the exposed rock around the tunnel mouth. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech mining machinery in active use, with composite panels and polished metal under a very light coat of rock dust, and bright floodlights switched on. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: f28f4cce-131c-471d-8a72-f2a6eb8291c2
+    series: serie-72-crystal-mine-climats
+    code: d90-t2_cold-crystal_mine-4242
+    source: serie-70-crystal-mine-t2/r1a-crystal_mine-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.crystal_mine.t2.cold/v1.png
+  build: assets/visuels/building.crystal_mine.t2.cold.webp
+- id: building.crystal_mine.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_mine.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw crystal out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated crystal refinery building with tall glass walls, through which rows of cut and polished pale blue crystals glow brightly. Huge clusters of pale blue crystal grow out of the exposed rock around the tunnel mouth. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech mining machinery in active use, with composite panels and polished metal under a very light coat of rock dust, and bright floodlights switched on. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 5aba24fb-5098-4d82-9ce5-8d7346469003
+    series: serie-72-crystal-mine-climats
+    code: d90-t2_hot-crystal_mine-4242
+    source: serie-70-crystal-mine-t2/r1a-crystal_mine-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.crystal_mine.t2.hot/v1.png
+  build: assets/visuels/building.crystal_mine.t2.hot.webp
+- id: building.crystal_mine.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_mine.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw crystal out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated crystal refinery building with tall glass walls, through which rows of cut and polished pale blue crystals glow brightly. Close to the viewer on the left, its base filling the bottom-left corner of the frame and as tall as the main building, a third massive and clearly separate block: a huge multi-level mining building carved into a rocky outcrop of the mountain, with a second wide tunnel mouth at its base, surrounded by huge clusters of pale blue crystal. Huge clusters of pale blue crystal grow out of the exposed rock around the tunnel mouth. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech mining machinery in active use, with composite panels and polished metal under a very light coat of rock dust, and bright floodlights switched on. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 5e9d92e9-790a-4c0f-94a5-68a3b37f48bd
+    series: serie-72-crystal-mine-climats
+    code: d90-t3_cold-crystal_mine-4242
+    source: serie-71-crystal-mine-t3/k2b-crystal_mine-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.crystal_mine.t3.cold/v1.png
+  build: assets/visuels/building.crystal_mine.t3.cold.webp
+- id: building.crystal_mine.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_mine.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal mining complex, one towering multi-level industrial building built directly around the wide dark mouth of a mine tunnel cut into the cliff face, with one massive conveyor carrying raw crystal out of the tunnel. On the right side of the frame, next to the tunnel, stands a second large and clearly separate block: a dedicated crystal refinery building with tall glass walls, through which rows of cut and polished pale blue crystals glow brightly. Close to the viewer on the left, its base filling the bottom-left corner of the frame and as tall as the main building, a third massive and clearly separate block: a huge multi-level mining building carved into a rocky outcrop of the mountain, with a second wide tunnel mouth at its base, surrounded by huge clusters of pale blue crystal. Huge clusters of pale blue crystal grow out of the exposed rock around the tunnel mouth. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech mining machinery in active use, with composite panels and polished metal under a very light coat of rock dust, and bright floodlights switched on. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 430195c5-84a7-4682-90b8-a9040183cda0
+    series: serie-72-crystal-mine-climats
+    code: d90-t3_hot-crystal_mine-4242
+    source: serie-71-crystal-mine-t3/k2b-crystal_mine-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.crystal_mine.t3.hot/v1.png
+  build: assets/visuels/building.crystal_mine.t3.hot.webp
+- id: building.deuterium_synthesizer.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_synthesizer.t1.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes. Thick insulated pipes run from the tanks down into the sea. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: a981ce72-af06-4b1d-8671-d52ffcc3a3ac
+    series: serie-73-deuterium-t2
+    code: s2b-deuterium_synthesizer-4242
+    source: serie-10-deuterium/deuterium_synthesizer-4242_00001_.png
+    denoise: 0.95
+  master: art/masters/building.deuterium_synthesizer.t2.temperate/v1.png
+  build: assets/visuels/building.deuterium_synthesizer.t2.temperate.webp
+- id: building.deuterium_synthesizer.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_synthesizer.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes. In the bottom of the frame, in the foreground and larger than the main building, a third massive and clearly separate block: a huge offshore pumping station standing in the sea on thick steel pylons, with giant pump housings and wide intake pipes plunging into the waves, linked to the platform by a heavy pipe bridge. Thick insulated pipes run from the tanks down into the sea. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 3a1c43e5-03d0-4c9c-b3db-a7cb7f765196
+    series: serie-74-deuterium-t3
+    code: p1a-deuterium_synthesizer-4242
+    source: serie-73-deuterium-t2/s2b-deuterium_synthesizer-4242_00001_.png
+    denoise: 0.92
+  master: art/masters/building.deuterium_synthesizer.t3.temperate/v1.png
+  build: assets/visuels/building.deuterium_synthesizer.t3.temperate.webp
+- id: building.deuterium_synthesizer.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_synthesizer.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes. Thick insulated pipes run from the tanks down into the sea. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering dark neutral grey rock cliff streaked with ice that plunges straight into a frozen sea of cracked pale ice with ice floes and pressure ridges, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: caab283e-7868-4476-8b0b-da312ffb2ab9
+    series: serie-75-deuterium-climats
+    code: d90-t2_cold-deuterium_synthesizer-4242
+    source: serie-73-deuterium-t2/s2b-deuterium_synthesizer-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.deuterium_synthesizer.t2.cold/v1.png
+  build: assets/visuels/building.deuterium_synthesizer.t2.cold.webp
+- id: building.deuterium_synthesizer.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_synthesizer.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes. Thick insulated pipes run from the tanks down into the sea. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks that plunges straight into a dark slate-grey sea with heavy swell and thick white steam rising from its surface, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 34d64282-6424-4158-9627-c06d4cc9aceb
+    series: serie-75-deuterium-climats
+    code: d90-t2_hot-deuterium_synthesizer-4242
+    source: serie-73-deuterium-t2/s2b-deuterium_synthesizer-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.deuterium_synthesizer.t2.hot/v1.png
+  build: assets/visuels/building.deuterium_synthesizer.t2.hot.webp
+- id: building.deuterium_synthesizer.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_synthesizer.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes. In the bottom of the frame, in the foreground and larger than the main building, a third massive and clearly separate block: a huge offshore pumping station standing in the sea on thick steel pylons, with giant pump housings and wide intake pipes plunging into the waves, linked to the platform by a heavy pipe bridge. Thick insulated pipes run from the tanks down into the sea. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering dark neutral grey rock cliff streaked with ice that plunges straight into a frozen sea of cracked pale ice with ice floes and pressure ridges, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: b1ca0eab-d028-45b8-a504-6c5f5f9cd160
+    series: serie-75-deuterium-climats
+    code: d90-t3_cold-deuterium_synthesizer-4242
+    source: serie-74-deuterium-t3/p1a-deuterium_synthesizer-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.deuterium_synthesizer.t3.cold/v1.png
+  build: assets/visuels/building.deuterium_synthesizer.t3.cold.webp
+- id: building.deuterium_synthesizer.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_synthesizer.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes. In the bottom of the frame, in the foreground and larger than the main building, a third massive and clearly separate block: a huge offshore pumping station standing in the sea on thick steel pylons, with giant pump housings and wide intake pipes plunging into the waves, linked to the platform by a heavy pipe bridge. Thick insulated pipes run from the tanks down into the sea. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks that plunges straight into a dark slate-grey sea with heavy swell and thick white steam rising from its surface, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 4aa3c439-0d68-4130-be1c-5dc1f5b03e13
+    series: serie-75-deuterium-climats
+    code: d90-t3_hot-deuterium_synthesizer-4242
+    source: serie-74-deuterium-t3/p1a-deuterium_synthesizer-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.deuterium_synthesizer.t3.hot/v1.png
+  build: assets/visuels/building.deuterium_synthesizer.t3.hot.webp
+- id: building.solar_plant.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.solar_plant.t1.temperate
+  prompt: 'High aerial view from a distance, with the whole solar plant visible inside the frame. A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top. In the bottom right corner of the frame, on the plateau outside the mirror field, stands a second large and clearly separate block: a massive high-voltage electrical substation with giant transformers and crackling blue-white electric arcs, from which a line of colossal steel transmission pylons runs away across the plateau. Concentric rings of tilted polished mirrors surround the tower and all face toward its top. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau at the top of a towering dark neutral grey rock cliff, open to the sky, on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 4dc8e4f5-7953-433e-93aa-4098112fa93c
+    series: serie-78-solar-t2-pylones
+    code: v2a-solar_plant-4242
+    source: serie-11-solar/solar_plant-4242_00001_.png
+    denoise: 0.95
+  master: art/masters/building.solar_plant.t2.temperate/v1.png
+  build: assets/visuels/building.solar_plant.t2.temperate.webp
+- id: building.solar_plant.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.solar_plant.t2.temperate
+  prompt: 'High aerial view from a distance, with the whole solar plant visible inside the frame. A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top. In the bottom right corner of the frame, on the plateau outside the mirror field, stands a second large and clearly separate block: a massive high-voltage electrical substation with giant transformers and crackling blue-white electric arcs, from which a line of colossal steel transmission pylons runs away across the plateau. In the bottom left corner of the frame, in the foreground on the plateau near the cliff edge, and larger than the substation, a third massive and clearly separate block: a huge turbine hall, a long multi-level power generation building with rows of giant generator housings glowing with blue-white light, linked to the substation by thick cables. Concentric rings of tilted polished mirrors surround the tower and all face toward its top. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau at the top of a towering dark neutral grey rock cliff, open to the sky, on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: eff6ad9f-1fd0-48b4-904c-182c03a945ca
+    series: serie-79-solar-t3
+    code: w2a-solar_plant-4242
+    source: serie-78-solar-t2-pylones/v2a-solar_plant-4242_00001_.png
+    denoise: 0.95
+  master: art/masters/building.solar_plant.t3.temperate/v1.png
+  build: assets/visuels/building.solar_plant.t3.temperate.webp
+- id: building.solar_plant.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.solar_plant.t2.temperate
+  prompt: 'High aerial view from a distance, with the whole solar plant visible inside the frame. A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top. In the bottom right corner of the frame, on the plateau outside the mirror field, stands a second large and clearly separate block: a massive high-voltage electrical substation with giant transformers and crackling blue-white electric arcs, from which a line of colossal steel transmission pylons runs away across the plateau. Concentric rings of tilted polished mirrors surround the tower and all face toward its top. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau blanketed in deep white snow and snowdrifts at the top of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, open to the sky, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: f9b64f78-49b5-4729-acca-e7da591914c0
+    series: serie-80-solar-climats
+    code: d90-t2_cold-solar_plant-4242
+    source: serie-78-solar-t2-pylones/v2a-solar_plant-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.solar_plant.t2.cold/v1.png
+  build: assets/visuels/building.solar_plant.t2.cold.webp
+- id: building.solar_plant.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.solar_plant.t2.temperate
+  prompt: 'High aerial view from a distance, with the whole solar plant visible inside the frame. A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top. In the bottom right corner of the frame, on the plateau outside the mirror field, stands a second large and clearly separate block: a massive high-voltage electrical substation with giant transformers and crackling blue-white electric arcs, from which a line of colossal steel transmission pylons runs away across the plateau. Concentric rings of tilted polished mirrors surround the tower and all face toward its top. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau of baked deep muted oxblood-red earth at the top of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, open to the sky, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 411dca37-da0f-46fe-bdc2-0a5fc382192d
+    series: serie-80-solar-climats
+    code: d90-t2_hot-solar_plant-4242
+    source: serie-78-solar-t2-pylones/v2a-solar_plant-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.solar_plant.t2.hot/v1.png
+  build: assets/visuels/building.solar_plant.t2.hot.webp
+- id: building.solar_plant.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.solar_plant.t3.temperate
+  prompt: 'High aerial view from a distance, with the whole solar plant visible inside the frame. A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top. In the bottom right corner of the frame, on the plateau outside the mirror field, stands a second large and clearly separate block: a massive high-voltage electrical substation with giant transformers and crackling blue-white electric arcs, from which a line of colossal steel transmission pylons runs away across the plateau. In the bottom left corner of the frame, in the foreground on the plateau near the cliff edge, and larger than the substation, a third massive and clearly separate block: a huge turbine hall, a long multi-level power generation building with rows of giant generator housings glowing with blue-white light, linked to the substation by thick cables. Concentric rings of tilted polished mirrors surround the tower and all face toward its top. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau blanketed in deep white snow and snowdrifts at the top of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, open to the sky, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: aade42a8-fedd-46e1-9985-3f80fb278e32
+    series: serie-80-solar-climats
+    code: d90-t3_cold-solar_plant-4242
+    source: serie-79-solar-t3/w2a-solar_plant-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.solar_plant.t3.cold/v1.png
+  build: assets/visuels/building.solar_plant.t3.cold.webp
+- id: building.solar_plant.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.solar_plant.t3.temperate
+  prompt: 'High aerial view from a distance, with the whole solar plant visible inside the frame. A solar power plant built around one colossal central tower with a brilliantly glowing receiver at its top. In the bottom right corner of the frame, on the plateau outside the mirror field, stands a second large and clearly separate block: a massive high-voltage electrical substation with giant transformers and crackling blue-white electric arcs, from which a line of colossal steel transmission pylons runs away across the plateau. In the bottom left corner of the frame, in the foreground on the plateau near the cliff edge, and larger than the substation, a third massive and clearly separate block: a huge turbine hall, a long multi-level power generation building with rows of giant generator housings glowing with blue-white light, linked to the substation by thick cables. Concentric rings of tilted polished mirrors surround the tower and all face toward its top. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau of baked deep muted oxblood-red earth at the top of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, open to the sky, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 299743d4-478c-49a0-af0e-2a574042fb82
+    series: serie-80-solar-climats
+    code: d90-t3_hot-solar_plant-4242
+    source: serie-79-solar-t3/w2a-solar_plant-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.solar_plant.t3.hot/v1.png
+  build: assets/visuels/building.solar_plant.t3.hot.webp
+- id: building.fusion_reactor.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.fusion_reactor.t1.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. Blue-white plasma glows brightly through wide windows along the ring. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 8c8bf443-bd98-4f27-b0a1-13a0ff04ce64
+    series: serie-81-fusion-t2
+    code: x2a-fusion_reactor-4242
+    source: serie-12-fusion/fusion_reactor-4242_00001_.png
+    denoise: 0.95
+  master: art/masters/building.fusion_reactor.t2.temperate/v1.png
+  build: assets/visuels/building.fusion_reactor.t2.temperate.webp
+- id: building.fusion_reactor.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.fusion_reactor.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. In the bottom left corner of the frame, in the foreground, a third large and clearly separate block: a massive energy storage building made of rows of giant cylindrical capacitor banks glowing with blue light, linked directly to the ring by several very thick heavy power cables lying on the ground. Blue-white plasma glows brightly through wide windows along the ring. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 9ed5ef7e-d39e-4b42-b67b-3efa583621ef
+    series: serie-83-fusion-t3-stockage
+    code: z2a-fusion_reactor-4242
+    source: serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png
+    denoise: 0.93
+  master: art/masters/building.fusion_reactor.t3.temperate/v1.png
+  build: assets/visuels/building.fusion_reactor.t3.temperate.webp
+- id: building.fusion_reactor.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.fusion_reactor.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. Blue-white plasma glows brightly through wide windows along the ring. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 87d2738f-82f6-4d70-93d1-4ffa1973052e
+    series: serie-85-fusion-t2-froid
+    code: d88-t2_cold-fusion_reactor-4242
+    source: serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.fusion_reactor.t2.cold/v1.png
+  build: assets/visuels/building.fusion_reactor.t2.cold.webp
+- id: building.fusion_reactor.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.fusion_reactor.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. Blue-white plasma glows brightly through wide windows along the ring. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 91ba43de-bf1a-4895-a499-915a7cf0fff9
+    series: serie-84-fusion-climats
+    code: d90-t2_hot-fusion_reactor-4242
+    source: serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.fusion_reactor.t2.hot/v1.png
+  build: assets/visuels/building.fusion_reactor.t2.hot.webp
+- id: building.fusion_reactor.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.fusion_reactor.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. In the bottom left corner of the frame, in the foreground, a third large and clearly separate block: a massive energy storage building made of rows of giant cylindrical capacitor banks glowing with blue light, linked directly to the ring by several very thick heavy power cables lying on the ground. Blue-white plasma glows brightly through wide windows along the ring. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 60ffb4c6-8e65-4c71-ad69-af9dcbccdb3b
+    series: serie-84-fusion-climats
+    code: d90-t3_cold-fusion_reactor-4242
+    source: serie-83-fusion-t3-stockage/z2a-fusion_reactor-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.fusion_reactor.t3.cold/v1.png
+  build: assets/visuels/building.fusion_reactor.t3.cold.webp
+- id: building.fusion_reactor.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.fusion_reactor.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky. In the bottom left corner of the frame, in the foreground, a third large and clearly separate block: a massive energy storage building made of rows of giant cylindrical capacitor banks glowing with blue light, linked directly to the ring by several very thick heavy power cables lying on the ground. Blue-white plasma glows brightly through wide windows along the ring. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: e76b2a37-fa4d-4763-a229-409ea3522f1a
+    series: serie-84-fusion-climats
+    code: d90-t3_hot-fusion_reactor-4242
+    source: serie-83-fusion-t3-stockage/z2a-fusion_reactor-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.fusion_reactor.t3.hot/v1.png
+  build: assets/visuels/building.fusion_reactor.t3.hot.webp
+- id: building.metal_storage.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_storage.t1.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. Wide open bays at the base of each silo reveal stacks of huge silver metal ingots. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: dfd69ce5-01c2-49c3-a8e7-6ac4d8fe0e05
+    series: serie-86-metal-storage-t2
+    code: m3a-metal_storage-4242
+    source: serie-13-metal-storage/metal_storage-4242_00001_.png
+    denoise: 0.95
+  master: art/masters/building.metal_storage.t2.temperate/v1.png
+  build: assets/visuels/building.metal_storage.t2.temperate.webp
+- id: building.metal_storage.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_storage.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. In the upper part of the frame, high above the silos, a third massive and clearly separate block: a colossal round armored vault door embedded in the cliff face, wider than two silos, standing half open and revealing a deep vault filled with glowing stacks of silver ingots. Wide open bays at the base of each silo reveal stacks of huge silver metal ingots. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 6a9e764b-beb0-4dd0-9764-e152427ffad1
+    series: serie-87-metal-storage-t3
+    code: v1b-metal_storage-4242
+    source: serie-86-metal-storage-t2/m3a-metal_storage-4242_00001_.png
+    denoise: 0.95
+  master: art/masters/building.metal_storage.t3.temperate/v1.png
+  build: assets/visuels/building.metal_storage.t3.temperate.webp
+- id: building.metal_storage.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_storage.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. Wide open bays at the base of each silo reveal stacks of huge silver metal ingots. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: af9ecd5b-cf3c-46c9-9cb7-c06d6edf5039
+    series: serie-88-metal-storage-climats
+    code: d90-t2_cold-metal_storage-4242
+    source: serie-86-metal-storage-t2/m3a-metal_storage-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.metal_storage.t2.cold/v1.png
+  build: assets/visuels/building.metal_storage.t2.cold.webp
+- id: building.metal_storage.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_storage.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. Wide open bays at the base of each silo reveal stacks of huge silver metal ingots. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: f9025ccf-1985-4a51-a9ba-70ab750ed6c8
+    series: serie-88-metal-storage-climats
+    code: d90-t2_hot-metal_storage-4242
+    source: serie-86-metal-storage-t2/m3a-metal_storage-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.metal_storage.t2.hot/v1.png
+  build: assets/visuels/building.metal_storage.t2.hot.webp
+- id: building.metal_storage.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_storage.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. In the upper part of the frame, high above the silos, a third massive and clearly separate block: a colossal round armored vault door embedded in the cliff face, wider than two silos, standing half open and revealing a deep vault filled with glowing stacks of silver ingots. Wide open bays at the base of each silo reveal stacks of huge silver metal ingots. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 16326414-4ef9-4a25-b0d2-6a4673ea0cdb
+    series: serie-88-metal-storage-climats
+    code: d90-t3_cold-metal_storage-4242
+    source: serie-87-metal-storage-t3/v1b-metal_storage-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.metal_storage.t3.cold/v1.png
+  build: assets/visuels/building.metal_storage.t3.cold.webp
+- id: building.metal_storage.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.metal_storage.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A metal storage depot built around one row of giant armored silos standing side by side against the cliff. In the foreground, filling the bottom third of the frame, a second large and clearly separate block: a wide open-air storage yard covered with huge stacks of silver metal ingots, spanned by one colossal gantry crane as tall as the silos. In the upper part of the frame, high above the silos, a third massive and clearly separate block: a colossal round armored vault door embedded in the cliff face, wider than two silos, standing half open and revealing a deep vault filled with glowing stacks of silver ingots. Wide open bays at the base of each silo reveal stacks of huge silver metal ingots. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 90c6021c-3845-4dfa-968f-f6e36b1aa9c5
+    series: serie-88-metal-storage-climats
+    code: d90-t3_hot-metal_storage-4242
+    source: serie-87-metal-storage-t3/v1b-metal_storage-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.metal_storage.t3.hot/v1.png
+  build: assets/visuels/building.metal_storage.t3.hot.webp
+- id: building.crystal_storage.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_storage.t1.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: d223bc16-530f-4050-9ffe-338a7f47a77d
+    series: serie-89-crystal-storage-t2
+    code: q3c-crystal_storage-4242
+    source: serie-14-crystal-storage/crystal_storage-4242_00001_.png
+    denoise: 0.93
+  master: art/masters/building.crystal_storage.t2.temperate/v1.png
+  build: assets/visuels/building.crystal_storage.t2.temperate.webp
+- id: building.crystal_storage.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_storage.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the bottom right corner of the frame, on the rocky ground in front of the six silos, a third large and clearly separate block: a low armored crystal vault bunker half sunk into the rock, its wide glass roof glowing bright pale blue with stacked crystal. Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: f35cdcd9-bec3-4188-9072-fce73bde21f9
+    series: serie-90-crystal-storage-t3
+    code: k5c-crystal_storage-4242
+    source: serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png
+    denoise: 0.89
+  master: art/masters/building.crystal_storage.t3.temperate/v1.png
+  build: assets/visuels/building.crystal_storage.t3.temperate.webp
+- id: building.crystal_storage.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_storage.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 431beda2-d3fd-4c6e-8148-5ef046c074c5
+    series: serie-91-crystal-storage-climats
+    code: d88-t2_cold-crystal_storage-4242
+    source: serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.crystal_storage.t2.cold/v1.png
+  build: assets/visuels/building.crystal_storage.t2.cold.webp
+- id: building.crystal_storage.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_storage.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 3c2b0ac6-78d2-4a1f-9a0c-2854a7e679bb
+    series: serie-91-crystal-storage-climats
+    code: d88-t2_hot-crystal_storage-4242
+    source: serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.crystal_storage.t2.hot/v1.png
+  build: assets/visuels/building.crystal_storage.t2.hot.webp
+- id: building.crystal_storage.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_storage.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the bottom right corner of the frame, on the rocky ground in front of the six silos, a third large and clearly separate block: a low armored crystal vault bunker half sunk into the rock, its wide glass roof glowing bright pale blue with stacked crystal. Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 4812f144-1fa7-4017-bdba-e88ced5e4a62
+    series: serie-91-crystal-storage-climats
+    code: d88-t3_cold-crystal_storage-4242
+    source: serie-90-crystal-storage-t3/k5c-crystal_storage-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.crystal_storage.t3.cold/v1.png
+  build: assets/visuels/building.crystal_storage.t3.cold.webp
+- id: building.crystal_storage.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.crystal_storage.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the bottom right corner of the frame, on the rocky ground in front of the six silos, a third large and clearly separate block: a low armored crystal vault bunker half sunk into the rock, its wide glass roof glowing bright pale blue with stacked crystal. Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: c2b00d28-20ac-4fb7-bbec-6dcbf1c068bf
+    series: serie-91-crystal-storage-climats
+    code: d88-t3_hot-crystal_storage-4242
+    source: serie-90-crystal-storage-t3/k5c-crystal_storage-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.crystal_storage.t3.hot/v1.png
+  build: assets/visuels/building.crystal_storage.t3.hot.webp
+- id: building.deuterium_tank.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_tank.t1.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side. A glowing blue-green liquid fills each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 901c92ae-e750-423e-bfdc-a802dd762117
+    series: serie-92-deuterium-tank-t2
+    code: a1c-deuterium_tank-4242
+    source: serie-16-deuterium-tank/deuterium_tank-4242_00001_.png
+    denoise: 0.92
+  master: art/masters/building.deuterium_tank.t2.temperate/v1.png
+  build: assets/visuels/building.deuterium_tank.t2.temperate.webp
+- id: building.deuterium_tank.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_tank.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side. In the bottom left of the frame, in the foreground standing in the sea off the platform, a third large and clearly separate block: an offshore storage platform on thick steel pylons carrying one huge armored tank with a wide glass wall full of glowing blue-green liquid, linked to the platform by a heavy pipe bridge. A glowing blue-green liquid fills each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: a5f788bf-5763-40d5-ab2e-1a5e59ac194a
+    series: serie-93-deuterium-tank-t3
+    code: b1a-deuterium_tank-4242
+    source: serie-92-deuterium-tank-t2/a1c-deuterium_tank-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.deuterium_tank.t3.temperate/v1.png
+  build: assets/visuels/building.deuterium_tank.t3.temperate.webp
+- id: building.deuterium_tank.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_tank.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side. A glowing blue-green liquid fills each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering dark neutral grey rock cliff streaked with ice that plunges straight into a frozen sea of cracked pale ice with ice floes and pressure ridges, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: b61c6f45-f21a-41ae-b5cf-eefe0ec8cb3f
+    series: serie-94-deuterium-tank-climats
+    code: d88-t2_cold-deuterium_tank-4242
+    source: serie-92-deuterium-tank-t2/a1c-deuterium_tank-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.deuterium_tank.t2.cold/v1.png
+  build: assets/visuels/building.deuterium_tank.t2.cold.webp
+- id: building.deuterium_tank.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_tank.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side. A glowing blue-green liquid fills each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks that plunges straight into a dark slate-grey sea with heavy swell and thick white steam rising from its surface, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 29bc0cae-3030-426d-932f-1597794a609f
+    series: serie-94-deuterium-tank-climats
+    code: d88-t2_hot-deuterium_tank-4242
+    source: serie-92-deuterium-tank-t2/a1c-deuterium_tank-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.deuterium_tank.t2.hot/v1.png
+  build: assets/visuels/building.deuterium_tank.t2.hot.webp
+- id: building.deuterium_tank.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_tank.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side. In the bottom left of the frame, in the foreground standing in the sea off the platform, a third large and clearly separate block: an offshore storage platform on thick steel pylons carrying one huge armored tank with a wide glass wall full of glowing blue-green liquid, linked to the platform by a heavy pipe bridge. A glowing blue-green liquid fills each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering dark neutral grey rock cliff streaked with ice that plunges straight into a frozen sea of cracked pale ice with ice floes and pressure ridges, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: f098bfb3-de23-483f-945b-a0c675db6b0c
+    series: serie-94-deuterium-tank-climats
+    code: d88-t3_cold-deuterium_tank-4242
+    source: serie-93-deuterium-tank-t3/b1a-deuterium_tank-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.deuterium_tank.t3.cold/v1.png
+  build: assets/visuels/building.deuterium_tank.t3.cold.webp
+- id: building.deuterium_tank.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.deuterium_tank.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A deuterium storage depot built around one row of colossal armored silos standing side by side that rise almost to the top of the cliff, each silo with one wide glass wall. In the bottom of the frame, on the platform in front of the three silos, a second large and clearly separate block: a row of long horizontal armored tanks with glass walls full of glowing blue-green liquid, lying side by side. In the bottom left of the frame, in the foreground standing in the sea off the platform, a third large and clearly separate block: an offshore storage platform on thick steel pylons carrying one huge armored tank with a wide glass wall full of glowing blue-green liquid, linked to the platform by a heavy pipe bridge. A glowing blue-green liquid fills each silo behind the glass. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a broad platform at the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks that plunges straight into a dark slate-grey sea with heavy swell and thick white steam rising from its surface, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 78882d67-9b07-4b1d-adad-8955bba2ef1d
+    series: serie-94-deuterium-tank-climats
+    code: d88-t3_hot-deuterium_tank-4242
+    source: serie-93-deuterium-tank-t3/b1a-deuterium_tank-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.deuterium_tank.t3.hot/v1.png
+  build: assets/visuels/building.deuterium_tank.t3.hot.webp
+- id: building.robotics_factory.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.robotics_factory.t1.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. A line of finished bipedal robots walks out from its base. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 3c1bb5c6-524e-4f31-ade7-cb0abb35c804
+    series: serie-95-robotics-t2
+    code: r1b-robotics_factory-4242
+    source: serie-04-robotics/robotics_factory-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.robotics_factory.t2.temperate/v1.png
+  build: assets/visuels/building.robotics_factory.t2.temperate.webp
+- id: building.robotics_factory.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.robotics_factory.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. On the right side of the frame, carved into the dark cliff face to the right of the tower, a third large and clearly separate block: a tall robot hangar cut into the rock, its huge brightly lit opening showing a giant heavy-duty robot standing inside. A line of finished bipedal robots walks out from its base. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 132c55ba-370a-4659-b158-dbb268bc2beb
+    series: serie-96-robotics-t3
+    code: g3a-robotics_factory-4242
+    source: serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.robotics_factory.t3.temperate/v1.png
+  build: assets/visuels/building.robotics_factory.t3.temperate.webp
+- id: building.robotics_factory.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.robotics_factory.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. A line of finished bipedal robots walks out from its base. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: ccee485c-1171-4919-82a8-176f3e063f58
+    series: serie-97-robotics-climats
+    code: d88-t2_cold-robotics_factory-4242
+    source: serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.robotics_factory.t2.cold/v1.png
+  build: assets/visuels/building.robotics_factory.t2.cold.webp
+- id: building.robotics_factory.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.robotics_factory.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. A line of finished bipedal robots walks out from its base. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: ded72427-9778-49d2-b5ce-1e32a21516b2
+    series: serie-97-robotics-climats
+    code: d88-t2_hot-robotics_factory-4242
+    source: serie-95-robotics-t2/r1b-robotics_factory-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.robotics_factory.t2.hot/v1.png
+  build: assets/visuels/building.robotics_factory.t2.hot.webp
+- id: building.robotics_factory.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.robotics_factory.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. On the right side of the frame, carved into the dark cliff face to the right of the tower, a third large and clearly separate block: a tall robot hangar cut into the rock, its huge brightly lit opening showing a giant heavy-duty robot standing inside. A line of finished bipedal robots walks out from its base. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 8eae2b55-1bf3-485b-97e3-b252d4abeb27
+    series: serie-97-robotics-climats
+    code: d88-t3_cold-robotics_factory-4242
+    source: serie-96-robotics-t3/g3a-robotics_factory-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.robotics_factory.t3.cold/v1.png
+  build: assets/visuels/building.robotics_factory.t3.cold.webp
+- id: building.robotics_factory.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.robotics_factory.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. An automated robot factory, one towering multi-level structure anchored into the cliff, with glass-walled assembly floors stacked up its height where giant robotic arms assemble robots under bright light. On the left side of the frame, on the open plain beside the tower, a second large and clearly separate block: a wide low assembly hall with a huge open door and bright lights inside, from which a second line of robots walks out. On the right side of the frame, carved into the dark cliff face to the right of the tower, a third large and clearly separate block: a tall robot hangar cut into the rock, its huge brightly lit opening showing a giant heavy-duty robot standing inside. A line of finished bipedal robots walks out from its base. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 1e466e00-26b9-42ae-bd86-c9824c241c0e
+    series: serie-97-robotics-climats
+    code: d88-t3_hot-robotics_factory-4242
+    source: serie-96-robotics-t3/g3a-robotics_factory-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.robotics_factory.t3.hot/v1.png
+  build: assets/visuels/building.robotics_factory.t3.hot.webp
+- id: building.nanite_factory.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.nanite_factory.t1.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. In the left half of the frame, on the open ground, a second large and clearly separate block: a wide low glass-roofed nanite processing hall glowing silver from inside. A swirling cloud of silver nanoparticles glows inside the cylinder. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 5e7564ab-1576-4630-8b85-56f0c9e80d80
+    series: serie-98-nanite-t2
+    code: n2a-nanite_factory-4242
+    source: serie-03-construction/nanite_factory-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.nanite_factory.t2.temperate/v1.png
+  build: assets/visuels/building.nanite_factory.t2.temperate.webp
+- id: building.nanite_factory.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.nanite_factory.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. In the left half of the frame, on the open ground, a second large and clearly separate block: a wide low glass-roofed nanite processing hall glowing silver from inside. In the upper right of the frame, high up on the dark cliff face and well apart from the main cylinder, a third large and clearly separate block: a wide chamber cut into the rock behind a huge glass window glowing with a cloud of silver nanoparticles, reached by a long enclosed walkway. A swirling cloud of silver nanoparticles glows inside the cylinder. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 1ea4e003-9398-4ff8-a563-9dd41180ec90
+    series: serie-99-nanite-t3
+    code: c2a-nanite_factory-4242
+    source: serie-98-nanite-t2/n2a-nanite_factory-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/building.nanite_factory.t3.temperate/v1.png
+  build: assets/visuels/building.nanite_factory.t3.temperate.webp
+- id: building.nanite_factory.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.nanite_factory.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. In the left half of the frame, on the open ground, a second large and clearly separate block: a wide low glass-roofed nanite processing hall glowing silver from inside. A swirling cloud of silver nanoparticles glows inside the cylinder. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: b929d95d-405a-41c8-88ad-f3b70d83c8c4
+    series: serie-100-nanite-climats
+    code: d88-t2_cold-nanite_factory-4242
+    source: serie-98-nanite-t2/n2a-nanite_factory-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.nanite_factory.t2.cold/v1.png
+  build: assets/visuels/building.nanite_factory.t2.cold.webp
+- id: building.nanite_factory.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.nanite_factory.t2.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. In the left half of the frame, on the open ground, a second large and clearly separate block: a wide low glass-roofed nanite processing hall glowing silver from inside. A swirling cloud of silver nanoparticles glows inside the cylinder. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 97531636-84da-47f9-90de-c40ed98520b2
+    series: serie-100-nanite-climats
+    code: d88-t2_hot-nanite_factory-4242
+    source: serie-98-nanite-t2/n2a-nanite_factory-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.nanite_factory.t2.hot/v1.png
+  build: assets/visuels/building.nanite_factory.t2.hot.webp
+- id: building.nanite_factory.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.nanite_factory.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. In the left half of the frame, on the open ground, a second large and clearly separate block: a wide low glass-roofed nanite processing hall glowing silver from inside. In the upper right of the frame, high up on the dark cliff face and well apart from the main cylinder, a third large and clearly separate block: a wide chamber cut into the rock behind a huge glass window glowing with a cloud of silver nanoparticles, reached by a long enclosed walkway. A swirling cloud of silver nanoparticles glows inside the cylinder. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 3e2324b7-8c76-4570-b1fa-4acbd1ec5a5e
+    series: serie-100-nanite-climats
+    code: d88-t3_cold-nanite_factory-4242
+    source: serie-99-nanite-t3/c2a-nanite_factory-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.nanite_factory.t3.cold/v1.png
+  build: assets/visuels/building.nanite_factory.t3.cold.webp
+- id: building.nanite_factory.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.nanite_factory.t3.temperate
+  prompt: 'Wide low three-quarter aerial view from a distance, with the whole installation visible inside the frame. A high-tech nanite factory built around one colossal glass containment cylinder that rises almost to the top of the cliff. In the left half of the frame, on the open ground, a second large and clearly separate block: a wide low glass-roofed nanite processing hall glowing silver from inside. In the upper right of the frame, high up on the dark cliff face and well apart from the main cylinder, a third large and clearly separate block: a wide chamber cut into the rock behind a huge glass window glowing with a cloud of silver nanoparticles, reached by a long enclosed walkway. A swirling cloud of silver nanoparticles glows inside the cylinder. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It is built into the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, with the ground all around made of baked deep muted oxblood-red earth, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: fb9509ba-c6d8-4f1a-abb5-eb0eed9d71cf
+    series: serie-100-nanite-climats
+    code: d88-t3_hot-nanite_factory-4242
+    source: serie-99-nanite-t3/c2a-nanite_factory-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.nanite_factory.t3.hot/v1.png
+  build: assets/visuels/building.nanite_factory.t3.hot.webp
+- id: building.shipyard.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.shipyard.t1.temperate
+  prompt: 'High aerial view from a distance, with the whole shipyard visible inside the frame. A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim. On the right rim of the dock, a second large and clearly separate block: a long tall hull assembly hangar with a glowing open side, holding the hull sections of a second starship. A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. The dock is cut into a plateau of dark neutral grey rock on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: f80e57a5-9b7e-4bb4-ad8c-68ca8bd5c8eb
+    series: serie-101-shipyard-t2
+    code: y3b-shipyard-4242
+    source: serie-18-shipyard/B-shipyard-4242_00001_.png
+    denoise: 0.86
+  master: art/masters/building.shipyard.t2.temperate/v1.png
+  build: assets/visuels/building.shipyard.t2.temperate.webp
+- id: building.shipyard.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.shipyard.t2.temperate
+  prompt: 'High aerial view from a distance, with the whole shipyard visible inside the frame. A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim. On the right rim of the dock, a second large and clearly separate block: a long tall hull assembly hangar with a glowing open side, holding the hull sections of a second starship. In the upper left of the frame, on the flat rock plateau beyond the left rim of the dock, a third large and clearly separate block: a large circular landing pad ringed with lights, with a second finished starship resting on it and a slim control tower beside it. A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. The dock is cut into a plateau of dark neutral grey rock on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: bced7668-6dc2-41fe-87a3-4beae97038f7
+    series: serie-102-shipyard-t3
+    code: z1a-shipyard-4242
+    source: serie-101-shipyard-t2/y3b-shipyard-4242_00001_.png
+    denoise: 0.86
+  master: art/masters/building.shipyard.t3.temperate/v1.png
+  build: assets/visuels/building.shipyard.t3.temperate.webp
+- id: building.shipyard.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.shipyard.t2.temperate
+  prompt: 'High aerial view from a distance, with the whole shipyard visible inside the frame. A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim. On the right rim of the dock, a second large and clearly separate block: a long tall hull assembly hangar with a glowing open side, holding the hull sections of a second starship. A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. The dock is cut into a plateau of dark neutral grey rock blanketed in deep white snow and snowdrifts, with its rock walls streaked with ice, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 38545f2d-0c0f-47d4-8ae3-3ae30b8374cb
+    series: serie-103-shipyard-climats
+    code: d88-t2_cold-shipyard-4242
+    source: serie-101-shipyard-t2/y3b-shipyard-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.shipyard.t2.cold/v1.png
+  build: assets/visuels/building.shipyard.t2.cold.webp
+- id: building.shipyard.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.shipyard.t2.temperate
+  prompt: 'High aerial view from a distance, with the whole shipyard visible inside the frame. A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim. On the right rim of the dock, a second large and clearly separate block: a long tall hull assembly hangar with a glowing open side, holding the hull sections of a second starship. A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. The dock is cut into a plateau of baked deep muted oxblood-red earth, with scorched dark basalt rock walls with a few thin glowing orange lava cracks, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: e7c4600d-1b18-47d6-8e1a-48ab8bd19959
+    series: serie-103-shipyard-climats
+    code: d88-t2_hot-shipyard-4242
+    source: serie-101-shipyard-t2/y3b-shipyard-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.shipyard.t2.hot/v1.png
+  build: assets/visuels/building.shipyard.t2.hot.webp
+- id: building.shipyard.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.shipyard.t3.temperate
+  prompt: 'High aerial view from a distance, with the whole shipyard visible inside the frame. A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim. On the right rim of the dock, a second large and clearly separate block: a long tall hull assembly hangar with a glowing open side, holding the hull sections of a second starship. In the upper left of the frame, on the flat rock plateau beyond the left rim of the dock, a third large and clearly separate block: a large circular landing pad ringed with lights, with a second finished starship resting on it and a slim control tower beside it. A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. The dock is cut into a plateau of dark neutral grey rock blanketed in deep white snow and snowdrifts, with its rock walls streaked with ice, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 105b82e9-c0b4-4da3-bff3-1fe6edfdc88e
+    series: serie-103-shipyard-climats
+    code: d88-t3_cold-shipyard-4242
+    source: serie-102-shipyard-t3/z1a-shipyard-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.shipyard.t3.cold/v1.png
+  build: assets/visuels/building.shipyard.t3.cold.webp
+- id: building.shipyard.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.shipyard.t3.temperate
+  prompt: 'High aerial view from a distance, with the whole shipyard visible inside the frame. A spaceship construction dock, one vast open-air dry dock cut deep into the rock and open to the sky, with gantry cranes along its rim. On the right rim of the dock, a second large and clearly separate block: a long tall hull assembly hangar with a glowing open side, holding the hull sections of a second starship. In the upper left of the frame, on the flat rock plateau beyond the left rim of the dock, a third large and clearly separate block: a large circular landing pad ringed with lights, with a second finished starship resting on it and a slim control tower beside it. A sleek newly finished starship with a wide, flat, angular hull and swept wings hovers level above the dock floor, its long axis along the dock, lifting out on bright engine glow. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. The dock is cut into a plateau of baked deep muted oxblood-red earth, with scorched dark basalt rock walls with a few thin glowing orange lava cracks, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips, all kept spotlessly clean, and clear air over a clean paved dock floor. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: c1f48a08-aba2-403e-9aec-e7e025bc1da0
+    series: serie-103-shipyard-climats
+    code: d88-t3_hot-shipyard-4242
+    source: serie-102-shipyard-t3/z1a-shipyard-4242_00001_.png
+    denoise: 0.88
+  master: art/masters/building.shipyard.t3.hot/v1.png
+  build: assets/visuels/building.shipyard.t3.hot.webp
+- id: building.research_lab.t2.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.research_lab.t1.temperate
+  prompt: 'High aerial view from a distance, with the whole research complex visible inside the frame. A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it. On the right side of the frame, on the plateau beside the dome, a second large and clearly separate block: a tall observatory tower topped by a large white radio telescope dish pointing at the sky. A ring of slender antennas surrounds the dome. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau of dark neutral grey rock at the top of a towering dark neutral grey rock cliff, open to the sky, on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: cc9ff31a-30e4-4b3c-9604-29675584a2f0
+    series: serie-104-research-lab-t2
+    code: l1a-research_lab-7777
+    source: serie-17-research-lab/research_lab-7777_00001_.png
+    denoise: 0.86
+  master: art/masters/building.research_lab.t2.temperate/v1.png
+  build: assets/visuels/building.research_lab.t2.temperate.webp
+- id: building.research_lab.t3.temperate
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.research_lab.t2.temperate
+  prompt: 'High aerial view from a distance, with the whole research complex visible inside the frame. A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it. On the right side of the frame, on the plateau beside the dome, a second large and clearly separate block: a tall observatory tower topped by a large white radio telescope dish pointing at the sky. In front of the dome stands a flat rectangular low building. On the bare rock at the far left edge of the plateau, well apart from the complex, a third large and clearly separate block: a tall slender observatory tower topped by a white telescope dome with an open slit. A ring of slender antennas surrounds the dome. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau of dark neutral grey rock at the top of a towering dark neutral grey rock cliff, open to the sky, on a lifeless alien planet of bare rock. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 4b0b6627-35d2-4c9f-9d31-45633e090c3b
+    series: serie-105-research-lab-t3
+    code: p3b-research_lab-7777
+    source: serie-104-research-lab-t2/l1a-research_lab-7777_00001_.png
+    denoise: 0.88
+  master: art/masters/building.research_lab.t3.temperate/v1.png
+  build: assets/visuels/building.research_lab.t3.temperate.webp
+- id: building.research_lab.t2.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.research_lab.t2.temperate
+  prompt: 'High aerial view from a distance, with the whole research complex visible inside the frame. A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it. On the right side of the frame, on the plateau beside the dome, a second large and clearly separate block: a tall observatory tower topped by a large white radio telescope dish pointing at the sky. A ring of slender antennas surrounds the dome. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau blanketed in deep white snow and snowdrifts at the top of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, open to the sky, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: babecf21-060d-43a3-ad03-f95dadd530be
+    series: serie-106-research-lab-climats
+    code: d88-t2_cold-research_lab-7777
+    source: serie-104-research-lab-t2/l1a-research_lab-7777_00001_.png
+    denoise: 0.88
+  master: art/masters/building.research_lab.t2.cold/v1.png
+  build: assets/visuels/building.research_lab.t2.cold.webp
+- id: building.research_lab.t2.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.research_lab.t2.temperate
+  prompt: 'High aerial view from a distance, with the whole research complex visible inside the frame. A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it. On the right side of the frame, on the plateau beside the dome, a second large and clearly separate block: a tall observatory tower topped by a large white radio telescope dish pointing at the sky. A ring of slender antennas surrounds the dome. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau of baked deep muted oxblood-red earth at the top of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, open to the sky, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 93475f08-c343-4ff0-8ba1-9758980a5ef8
+    series: serie-106-research-lab-climats
+    code: d88-t2_hot-research_lab-7777
+    source: serie-104-research-lab-t2/l1a-research_lab-7777_00001_.png
+    denoise: 0.88
+  master: art/masters/building.research_lab.t2.hot/v1.png
+  build: assets/visuels/building.research_lab.t2.hot.webp
+- id: building.research_lab.t3.cold
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.research_lab.t3.temperate
+  prompt: 'High aerial view from a distance, with the whole research complex visible inside the frame. A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it. On the right side of the frame, on the plateau beside the dome, a second large and clearly separate block: a tall observatory tower topped by a large white radio telescope dish pointing at the sky. In front of the dome stands a flat rectangular low building. On the bare rock at the far left edge of the plateau, well apart from the complex, a third large and clearly separate block: a tall slender observatory tower topped by a white telescope dome with an open slit. A ring of slender antennas surrounds the dome. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau blanketed in deep white snow and snowdrifts at the top of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, open to the sky, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: b3ca11dd-1c8d-4261-afbe-b9b9e8abdfd0
+    series: serie-106-research-lab-climats
+    code: d88-t3_cold-research_lab-7777
+    source: serie-105-research-lab-t3/p3b-research_lab-7777_00001_.png
+    denoise: 0.88
+  master: art/masters/building.research_lab.t3.cold/v1.png
+  build: assets/visuels/building.research_lab.t3.cold.webp
+- id: building.research_lab.t3.hot
+  category: building
+  format: 1:1 512
+  status: validated
+  version: 1
+  parent: building.research_lab.t3.temperate
+  prompt: 'High aerial view from a distance, with the whole research complex visible inside the frame. A research laboratory complex built around one immense glass dome, with glowing scientific instruments visible inside it. On the right side of the frame, on the plateau beside the dome, a second large and clearly separate block: a tall observatory tower topped by a large white radio telescope dish pointing at the sky. In front of the dome stands a flat rectangular low building. On the bare rock at the far left edge of the plateau, well apart from the complex, a third large and clearly separate block: a tall slender observatory tower topped by a white telescope dome with an open slit. A ring of slender antennas surrounds the dome. The installation is monumental: tiny vehicles and tiny human figures at its base give the scale. It stands on a flat plateau of baked deep muted oxblood-red earth at the top of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks, open to the sky, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. Far-future high-tech industry in active use, with seamless composite panels, polished metal and illuminated light strips. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 1167a76c-82d6-42f4-a452-0f0f9298e453
+    series: serie-106-research-lab-climats
+    code: d88-t3_hot-research_lab-7777
+    source: serie-105-research-lab-t3/p3b-research_lab-7777_00001_.png
+    denoise: 0.88
+  master: art/masters/building.research_lab.t3.hot/v1.png
+  build: assets/visuels/building.research_lab.t3.hot.webp

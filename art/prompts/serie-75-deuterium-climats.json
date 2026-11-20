@@ -1,0 +1,44 @@
+{
+  "series": "serie-75-deuterium-climats",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.deuterium_synthesizer.t2.cold",
+      "subject": "A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff streaked with ice that plunges straight into a frozen sea of cracked pale ice with ice floes and pressure ridges, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "variant": "d90-t2_cold",
+      "source": "serie-73-deuterium-t2/s2b-deuterium_synthesizer-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.deuterium_synthesizer.t2.hot",
+      "subject": "A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform at the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks that plunges straight into a dark slate-grey sea with heavy swell and thick white steam rising from its surface, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance.",
+      "variant": "d90-t2_hot",
+      "source": "serie-73-deuterium-t2/s2b-deuterium_synthesizer-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.deuterium_synthesizer.t3.cold",
+      "subject": "A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes. In the bottom of the frame, in the foreground and larger than the main building, a third massive and clearly separate block: a huge offshore pumping station standing in the sea on thick steel pylons, with giant pump housings and wide intake pipes plunging into the waves, linked to the platform by a heavy pipe bridge.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff streaked with ice that plunges straight into a frozen sea of cracked pale ice with ice floes and pressure ridges, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "variant": "d90-t3_cold",
+      "source": "serie-74-deuterium-t3/p1a-deuterium_synthesizer-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.deuterium_synthesizer.t3.hot",
+      "subject": "A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes. In the bottom of the frame, in the foreground and larger than the main building, a third massive and clearly separate block: a huge offshore pumping station standing in the sea on thick steel pylons, with giant pump housings and wide intake pipes plunging into the waves, linked to the platform by a heavy pipe bridge.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform at the foot of a towering scorched dark basalt cliff with a few thin glowing orange lava cracks that plunges straight into a dark slate-grey sea with heavy swell and thick white steam rising from its surface, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance.",
+      "variant": "d90-t3_hot",
+      "source": "serie-74-deuterium-t3/p1a-deuterium_synthesizer-4242_00001_.png",
+      "denoise": 0.9
+    }
+  ]
+}

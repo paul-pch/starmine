@@ -1,0 +1,35 @@
+{
+  "series": "serie-85-fusion-t2-froid",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.fusion_reactor.t2.cold",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "variant": "d85-t2_cold",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "source": "serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.85
+    },
+    {
+      "id": "building.fusion_reactor.t2.cold",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "variant": "d87-t2_cold",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "source": "serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.87
+    },
+    {
+      "id": "building.fusion_reactor.t2.cold",
+      "subject": "A fusion power plant built around one colossal upright ring-shaped tokamak containment torus. In the bottom right corner of the frame, in front of the cliff, stands a second large and clearly separate block: two giant hyperboloid cooling towers, each as tall as the ring, releasing thick white plumes of steam into the sky.",
+      "detail": "Blue-white plasma glows brightly through wide windows along the ring.",
+      "variant": "d88-t2_cold",
+      "site": "It is built into the foot of a towering dark neutral grey rock cliff heavily covered with thick white snow and ice, with the ground all around blanketed in deep white snow and snowdrifts, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "source": "serie-81-fusion-t2/x2a-fusion_reactor-4242_00001_.png",
+      "denoise": 0.88
+    }
+  ]
+}

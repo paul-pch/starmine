@@ -1,0 +1,62 @@
+{
+  "series": "serie-73-deuterium-t2",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.deuterium_synthesizer.t2.temperate",
+      "variant": "s1a",
+      "subject": "A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the left side of the frame, on the platform, stands a second large and clearly separate block: a second giant spherical pressure tank with its own supports, linked to the first by thick pipes.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-10-deuterium/deuterium_synthesizer-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.deuterium_synthesizer.t2.temperate",
+      "variant": "s1b",
+      "subject": "A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the left side of the frame, on the platform, stands a second large and clearly separate block: a second giant spherical pressure tank with its own supports, linked to the first by thick pipes.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-10-deuterium/deuterium_synthesizer-4242_00001_.png",
+      "denoise": 0.96
+    },
+    {
+      "id": "building.deuterium_synthesizer.t2.temperate",
+      "variant": "s1c",
+      "subject": "A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the left side of the frame, on the platform, stands a second large and clearly separate block: a second giant spherical pressure tank with its own supports, linked to the first by thick pipes.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-10-deuterium/deuterium_synthesizer-4242_00001_.png",
+      "denoise": 0.97
+    },
+    {
+      "id": "building.deuterium_synthesizer.t2.temperate",
+      "variant": "s2a",
+      "subject": "A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-10-deuterium/deuterium_synthesizer-4242_00001_.png",
+      "denoise": 0.92
+    },
+    {
+      "id": "building.deuterium_synthesizer.t2.temperate",
+      "variant": "s2b",
+      "subject": "A deuterium synthesis plant built around one cluster of giant spherical pressure tanks. On the right side of the frame, on the platform against the cliff, stands a second large and clearly separate block: a second giant spherical pressure tank as large as the first, with its own supports, linked to the first by thick pipes.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-10-deuterium/deuterium_synthesizer-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.deuterium_synthesizer.t2.temperate",
+      "variant": "s2c",
+      "subject": "A deuterium synthesis plant built around two giant spherical pressure tanks standing side by side on the platform, each as large as the other, clearly separate and linked by thick pipes.",
+      "detail": "Thick insulated pipes run from the tanks down into the sea.",
+      "site": "It stands on a broad platform at the foot of a towering dark neutral grey rock cliff that plunges straight into a dark slate-grey sea with heavy swell, on a lifeless alien planet of bare rock.",
+      "source": "serie-10-deuterium/deuterium_synthesizer-4242_00001_.png",
+      "denoise": 0.95
+    }
+  ]
+}

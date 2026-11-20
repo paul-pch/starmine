@@ -1,0 +1,128 @@
+{
+  "series": "serie-90-crystal-storage-t3",
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k1a",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. High in the cliff face above the silos, a third large and clearly separate block: a vast crystal vault carved into the rock, its tall armored glass facade glowing brightly with stacked pale blue crystal inside.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.92
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k1b",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. High in the cliff face above the silos, a third large and clearly separate block: a vast crystal vault carved into the rock, its tall armored glass facade glowing brightly with stacked pale blue crystal inside.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.93
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k1c",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. High in the cliff face above the silos, a third large and clearly separate block: a vast crystal vault carved into the rock, its tall armored glass facade glowing brightly with stacked pale blue crystal inside.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k2a",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the upper left part of the frame, embedded high in the cliff face above the silos, a third large and clearly separate block: a huge crystal vault with a tall armored glass facade glowing bright pale blue with stacked crystal.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.92
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k2b",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the upper left part of the frame, embedded high in the cliff face above the silos, a third large and clearly separate block: a huge crystal vault with a tall armored glass facade glowing bright pale blue with stacked crystal.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.93
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k2c",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the upper left part of the frame, embedded high in the cliff face above the silos, a third large and clearly separate block: a huge crystal vault with a tall armored glass facade glowing bright pale blue with stacked crystal.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.95
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k3a",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. High in the cliff face above the silos, a third large and clearly separate block: a vast crystal vault carved into the rock, its tall armored glass facade glowing brightly with stacked pale blue crystal inside.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k3b",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. High in the cliff face above the silos, a third large and clearly separate block: a vast crystal vault carved into the rock, its tall armored glass facade glowing brightly with stacked pale blue crystal inside.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k3c",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. High in the cliff face above the silos, a third large and clearly separate block: a vast crystal vault carved into the rock, its tall armored glass facade glowing brightly with stacked pale blue crystal inside.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.91
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k4a",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the bottom right corner of the frame, on the rocky ground in front of the six silos, a third large and clearly separate block: a low armored crystal vault bunker half sunk into the rock, its wide glass roof glowing bright pale blue with stacked crystal.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.9
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k4b",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the bottom right corner of the frame, on the rocky ground in front of the six silos, a third large and clearly separate block: a low armored crystal vault bunker half sunk into the rock, its wide glass roof glowing bright pale blue with stacked crystal.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.92
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k4c",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the bottom right corner of the frame, on the rocky ground in front of the six silos, a third large and clearly separate block: a low armored crystal vault bunker half sunk into the rock, its wide glass roof glowing bright pale blue with stacked crystal.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.94
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k5a",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the bottom right corner of the frame, on the rocky ground in front of the six silos, a third large and clearly separate block: a low armored crystal vault bunker half sunk into the rock, its wide glass roof glowing bright pale blue with stacked crystal.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.86
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k5b",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the bottom right corner of the frame, on the rocky ground in front of the six silos, a third large and clearly separate block: a low armored crystal vault bunker half sunk into the rock, its wide glass roof glowing bright pale blue with stacked crystal.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.88
+    },
+    {
+      "id": "building.crystal_storage.t3.temperate",
+      "variant": "k5c",
+      "subject": "A crystal storage depot built around one row of giant armored silos standing side by side against the cliff, each silo with one wide glass wall. In the bottom left of the frame, in the foreground, a second large and clearly separate block: a wide open-air storage yard with rows of large glass-walled crates filled with glowing pale blue crystal, under one big gantry crane. In the bottom right corner of the frame, on the rocky ground in front of the six silos, a third large and clearly separate block: a low armored crystal vault bunker half sunk into the rock, its wide glass roof glowing bright pale blue with stacked crystal.",
+      "detail": "Neatly sorted blocks of faceted pale blue crystal fill each silo behind the glass.",
+      "source": "serie-89-crystal-storage-t2/q3c-crystal_storage-4242_00001_.png",
+      "denoise": 0.89
+    }
+  ]
+}
