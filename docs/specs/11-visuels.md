@@ -38,8 +38,8 @@ dans le code, alignement vérifié par un test.
 | `research` | `research.<clé YAML>` | 1:1, 512 px, sans climat | 12 | Cartes et feuille de détail | Packagées |
 | `defense` | `defense.<clé YAML>` | 1:1, 512 px, sans climat | 8 | Cartes du chantier et feuille de détail | Packagées |
 | `ship` | `ship.<clé YAML>` | 1:1, 512 px, sans climat | 8 | Cartes du chantier et feuille de détail | Packagées |
-| `planet_hero` | `planet_hero.<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 3 | Hero de l'écran principal | Packagées (biome rocheux) |
-| `background` | `background.<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 3 | Fond plein écran de l'ambiance Immersive | Validées et branchées (`Visuals.background`, séries 107 et 108, charte `background_prompt.md`) |
+| `planet_hero` | `planet_hero.[<paysage>.]<cold\|temperate\|hot>` | 21:9, 1260 × 540 | 12 | Hero de l'écran principal | Validées et packagées : rocheux (série 59), côte, mesas, jungle (séries 109, 111, 113) |
+| `background` | `background.[<paysage>.]<cold\|temperate\|hot>` | 9:19.5, 1080 × 2340, sombre en bas | 12 | Fond plein écran de l'ambiance Immersive | Rocheux validé et branché (`Visuals.background`, séries 107 et 108, charte `background_prompt.md`) ; côte, mesas, jungle validés (séries 110 et 112) |
 | `pirate` | — | — | 0 | — | **Abandonné** (décision de l'utilisateur, 2026-11-13) : pas de vignette par vaisseau pirate ; la menace s'annonce par `scene.raid_incoming` |
 | `pirate_base` | `pirate_base.<0-3>` (ordre de `pirate_bases.list` : avant-poste, repaire, forteresse, citadelle) | 4:3, 640 × 480 | 4 | Cartes des bases (onglet Flotte) | **4 validées** (série 65, `art/prompts/serie-65-bases-pirates.md`) ; branchées : vignette de la carte (64 × 48) et de la feuille de la base (128 × 96), grisées tant que la base est détruite |
 | `character` | `character.<clé YAML de l'officier>` (géologue, technocrate, architecte, ingénieur, commandant, directeur scientifique, chef de chantier, amiral) | 1:1, 512 px, portrait buste | 8 | Cartes de l'écran Officiers (spec 12) | **8 validées** (série 66, charte `art/style/character_prompt.md`) ; branchées : vignette 64 dp de la carte et portrait 128 dp dans l'infobulle (i), grisés tant que l'officier n'est pas recruté |
@@ -169,12 +169,13 @@ rocheux, parce que le bandeau du nom le couvre. L'image n'est jamais recadrée :
 entier sur la largeur de l'écran. Le froid et le chaud sont déclinés depuis le tempéré
 (`denoise` 0,90).
 
-**Évolution ultérieure (hors V0) : biomes de planète.** D'autres jeux de 3 climats, avec d'autres
-paysages (cratère, côte, canyon, mesas…). Le jeu affiché se déduit de Tmax, qui est déjà tirée avec une
-graine stockée : jeu = Tmax modulo le nombre de biomes. Pas de migration ni de changement de
-sauvegarde. Id envisagé : `planet_hero.<biome>.<climat>`, le biome rocheux restant
-`planet_hero.<climat>`. Décision de l'utilisateur (2026-11-10) : reporté, le biome rocheux suffit
-pour l'instant.
+**Paysages de planète.** Quatre paysages, chacun en 3 climats, pour le hero et le fond de l'ambiance
+Immersive : rocheux, côte (`coast`), mesas (`mesas`), jungle (`jungle`) — choix de l'utilisateur
+(2026-11-20). Le paysage se déduit de Tmax, déjà tirée avec une graine stockée : Tmax modulo 4, dans
+cet ordre (`Biome.of`). Pas de migration ni de changement de sauvegarde. Ids
+`planet_hero.<paysage>.<climat>` et `background.<paysage>.<climat>` ; le rocheux garde
+`planet_hero.<climat>` et `background.<climat>`. Paysage sans image : le rocheux du même climat,
+sinon repli. Hero : séries 109, 111 et 113 ; fond : séries 110 et 112.
 
 ## Points ouverts
 

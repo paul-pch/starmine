@@ -3341,3 +3341,315 @@ images:
     denoise: 0.9
   master: art/masters/background.hot/v1.png
   build: assets/visuels/background.hot.webp
+- id: planet_hero.coast.temperate
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: planet_hero.temperate
+  prompt: 'Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame. In the middle distance, on top of a towering sea cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. Beyond the ridge, towering dark neutral grey rock cliffs plunge straight into a vast dark slate-grey sea with heavy swell and white surf, which stretches to the horizon, on a lifeless alien planet of bare rock and sea. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: adb461d3-1063-432b-9e8e-6d4f09d324bf
+    series: serie-109-biomes-hero
+    code: coast-coast-4242
+  master: art/masters/planet_hero.coast.temperate/v1.png
+  build: assets/visuels/planet_hero.coast.temperate.webp
+- id: planet_hero.jungle.temperate
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: planet_hero.temperate
+  prompt: 'Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame. In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. The valley is covered by a dense alien jungle of giant strange plants with huge broad dark teal leaves, twisted trunks and glowing pale blossoms, rising in layers toward distant mist-covered mountains, on a humid alien planet. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: d6440f8b-815f-493a-9aee-e0d1ce41b7a9
+    series: serie-109-biomes-hero
+    code: jungle-jungle-4242
+  master: art/masters/planet_hero.jungle.temperate/v1.png
+  build: assets/visuels/planet_hero.jungle.temperate.webp
+- id: planet_hero.mesas.temperate
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: planet_hero.temperate
+  prompt: 'Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame. In the middle distance, at the foot of a huge flat-topped mesa, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. The vast plain is dotted with tall flat-topped mesas and slender buttes of layered neutral grey and pale ochre rock with sheer striped walls, stretching to distant mountains, on a lifeless alien planet of bare rock. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 85690804-88b1-465c-bfce-ff9911e99bdf
+    series: serie-109-biomes-hero
+    code: mesas-mesas-7777
+  master: art/masters/planet_hero.mesas.temperate/v1.png
+  build: assets/visuels/planet_hero.mesas.temperate.webp
+- id: background.coast.temperate
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: background.temperate
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, on top of a towering sea cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. Beyond the ridge, towering dark neutral grey rock cliffs plunge straight into a vast dark slate-grey sea with heavy swell and white surf, which stretches to the horizon, on a lifeless alien planet of bare rock and sea. The lower two thirds of the frame are the dark sea and plain dark rocky shore sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 6eaba69f-6e93-4c36-baaa-202bd1562ec4
+    series: serie-110-biomes-background
+    code: coast-coast-7777
+  master: art/masters/background.coast.temperate/v1.png
+  build: assets/visuels/background.coast.temperate.webp
+- id: background.jungle.temperate
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: background.temperate
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, in a clearing at the foot of a towering cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. The valley is covered by a dense alien jungle of giant strange plants with huge broad dark teal leaves, twisted trunks and glowing pale blossoms, rising in layers toward distant mist-covered mountains, on a humid alien planet. The lower two thirds of the frame are the dark canopy of the jungle sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 62a0bc4d-d67d-4703-9f89-154cf7624d0e
+    series: serie-110-biomes-background
+    code: jungle-jungle-7777
+  master: art/masters/background.jungle.temperate/v1.png
+  build: assets/visuels/background.jungle.temperate.webp
+- id: background.mesas.temperate
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: background.temperate
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, at the foot of a huge flat-topped mesa, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. The vast plain is dotted with tall flat-topped mesas and slender buttes of layered neutral grey and pale ochre rock with sheer striped walls, stretching to distant mountains, on a lifeless alien planet of bare rock. The lower two thirds of the frame are plain bare dark rocky plain sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 8fe42b21-97ad-4557-9d8e-a5e61e9ce069
+    series: serie-110-biomes-background
+    code: mesas-mesas-4242
+  master: art/masters/background.mesas.temperate/v1.png
+  build: assets/visuels/background.mesas.temperate.webp
+- id: planet_hero.coast.cold
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: planet_hero.coast.temperate
+  prompt: 'Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame. In the middle distance, on top of a towering sea cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. Beyond the ridge, towering dark neutral grey rock cliffs heavily covered with thick white snow and ice plunge straight into a vast frozen sea of cracked pale ice with ice floes and pressure ridges, which stretches to the horizon, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 2723c1d8-adbf-4a72-a0c0-d97c9b96e4f3
+    series: serie-111-biomes-hero-climats
+    code: d90-coast-coast-4242
+    source: serie-109-biomes-hero/coast-coast-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/planet_hero.coast.cold/v1.png
+  build: assets/visuels/planet_hero.coast.cold.webp
+- id: planet_hero.coast.hot
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: planet_hero.coast.temperate
+  prompt: 'Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame. In the middle distance, on top of a towering sea cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. Beyond the ridge, towering scorched dark basalt cliffs with a few thin glowing orange lava cracks plunge straight into a vast dark slate-grey sea with heavy swell and thick white steam rising from its surface, which stretches to the horizon, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: f1ac0518-7dfe-43ef-9f58-543e95b1e170
+    series: serie-111-biomes-hero-climats
+    code: d90-coast-coast-4242
+    source: serie-109-biomes-hero/coast-coast-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/planet_hero.coast.hot/v1.png
+  build: assets/visuels/planet_hero.coast.hot.webp
+- id: planet_hero.mesas.cold
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: planet_hero.mesas.temperate
+  prompt: 'Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame. In the middle distance, at the foot of a huge flat-topped mesa, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. The vast plain is blanketed in deep white snow and snowdrifts, dotted with tall flat-topped mesas and slender buttes of layered grey rock heavily covered with thick white snow and ice, stretching to distant snow-covered mountains, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: a6ae9e0e-b424-49ed-86d2-52109483d859
+    series: serie-111-biomes-hero-climats
+    code: d90-mesas-mesas-7777
+    source: serie-109-biomes-hero/mesas-mesas-7777_00001_.png
+    denoise: 0.9
+  master: art/masters/planet_hero.mesas.cold/v1.png
+  build: assets/visuels/planet_hero.mesas.cold.webp
+- id: planet_hero.mesas.hot
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: planet_hero.mesas.temperate
+  prompt: 'Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame. In the middle distance, at the foot of a huge flat-topped mesa, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. The vast plain is made of baked deep muted oxblood-red earth, dotted with tall flat-topped mesas and slender buttes of scorched dark basalt with a few thin glowing orange lava cracks, stretching to distant mountains, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 366a9d68-77f1-4e20-a4ba-946955d4c910
+    series: serie-111-biomes-hero-climats
+    code: d90-mesas-mesas-7777
+    source: serie-109-biomes-hero/mesas-mesas-7777_00001_.png
+    denoise: 0.9
+  master: art/masters/planet_hero.mesas.hot/v1.png
+  build: assets/visuels/planet_hero.mesas.hot.webp
+- id: planet_hero.jungle.hot
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: planet_hero.jungle.temperate
+  prompt: 'Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame. In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. The valley is covered by a steaming alien jungle of giant strange plants with huge broad dark red and black leaves and twisted trunks, rising in layers toward distant scorched mountains in hot volcanic haze, with a few thin glowing orange lava streams, on a sun-baked alien planet, with thick columns of volcanic smoke rising in the distance. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: cbca7654-88d8-4e3d-ac7b-70129a32f26d
+    series: serie-111-biomes-hero-climats
+    code: d90-jungle-jungle-4242
+    source: serie-109-biomes-hero/jungle-jungle-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/planet_hero.jungle.hot/v1.png
+  build: assets/visuels/planet_hero.jungle.hot.webp
+- id: background.coast.cold
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: background.coast.temperate
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, on top of a towering sea cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. Beyond the ridge, towering dark neutral grey rock cliffs heavily covered with thick white snow and ice plunge straight into a vast frozen sea of cracked pale ice with ice floes and pressure ridges, which stretches to the horizon, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. The lower two thirds of the frame are the dark sea and plain dark rocky shore sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 2ed1e1f9-3e79-4ca1-a2d5-6287f58cad62
+    series: serie-112-biomes-background-climats
+    code: d90-coast-coast-7777
+    source: serie-110-biomes-background/coast-coast-7777_00001_.png
+    denoise: 0.9
+  master: art/masters/background.coast.cold/v1.png
+  build: assets/visuels/background.coast.cold.webp
+- id: background.coast.hot
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: background.coast.temperate
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, on top of a towering sea cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. Beyond the ridge, towering scorched dark basalt cliffs with a few thin glowing orange lava cracks plunge straight into a vast dark slate-grey sea with heavy swell and thick white steam rising from its surface, which stretches to the horizon, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance. The lower two thirds of the frame are the dark sea and plain dark rocky shore sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: c6df9dca-decd-48d6-ba2d-8ef6b63951d5
+    series: serie-112-biomes-background-climats
+    code: d90-coast-coast-7777
+    source: serie-110-biomes-background/coast-coast-7777_00001_.png
+    denoise: 0.9
+  master: art/masters/background.coast.hot/v1.png
+  build: assets/visuels/background.coast.hot.webp
+- id: background.mesas.cold
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: background.mesas.temperate
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, at the foot of a huge flat-topped mesa, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. The vast plain is blanketed in deep white snow and snowdrifts, dotted with tall flat-topped mesas and slender buttes of layered grey rock heavily covered with thick white snow and ice, stretching to distant snow-covered mountains, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow. The lower two thirds of the frame are plain bare dark rocky plain sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 3666b2b1-7a50-482c-8af0-15912beda2a4
+    series: serie-112-biomes-background-climats
+    code: d90-mesas-mesas-4242
+    source: serie-110-biomes-background/mesas-mesas-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/background.mesas.cold/v1.png
+  build: assets/visuels/background.mesas.cold.webp
+- id: background.mesas.hot
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: background.mesas.temperate
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, at the foot of a huge flat-topped mesa, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. The vast plain is made of baked deep muted oxblood-red earth, dotted with tall flat-topped mesas and slender buttes of scorched dark basalt with a few thin glowing orange lava cracks, stretching to distant mountains, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance. The lower two thirds of the frame are plain bare dark rocky plain sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 6063f42f-56b7-470b-b624-9ddc2e6895c7
+    series: serie-112-biomes-background-climats
+    code: d90-mesas-mesas-4242
+    source: serie-110-biomes-background/mesas-mesas-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/background.mesas.hot/v1.png
+  build: assets/visuels/background.mesas.hot.webp
+- id: background.jungle.cold
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: background.jungle.temperate
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, in a clearing at the foot of a towering cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. The valley is covered by a frozen alien jungle of giant strange plants with huge broad leaves and twisted trunks, all heavily coated in thick white frost, snow and icicles, rising in layers toward distant snow-covered mountains, on a frozen alien planet of ice and wind-blown snow. The lower two thirds of the frame are the dark canopy of the jungle sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 3e2a1441-4ae1-4696-bb49-96b50e53d75d
+    series: serie-112-biomes-background-climats
+    code: d90-jungle-jungle-7777
+    source: serie-110-biomes-background/jungle-jungle-7777_00001_.png
+    denoise: 0.9
+  master: art/masters/background.jungle.cold/v1.png
+  build: assets/visuels/background.jungle.cold.webp
+- id: background.jungle.hot
+  category: background
+  format: 9:19.5 1080x2340
+  status: validated
+  version: 1
+  parent: background.jungle.temperate
+  prompt: 'Tall vertical phone wallpaper of an alien landscape, seen from a high rocky ridge, with the horizon in the upper third of the frame. High in the hazy sky near the top of the frame hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Far away on the horizon, in a clearing at the foot of a towering cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly. The valley is covered by a steaming alien jungle of giant strange plants with huge broad dark red and black leaves and twisted trunks, rising in layers toward distant scorched mountains in hot volcanic haze, with a few thin glowing orange lava streams, on a sun-baked alien planet, with thick columns of volcanic smoke rising in the distance. The lower two thirds of the frame are the dark canopy of the jungle sinking into deep shadow, darker and darker toward the bottom edge, with no object. Art direction: realistic sci-fi concept art, warm low sunlight, long soft shadows, muted neutral grey palette, atmospheric haze. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 7777
+    job_id: 8725223f-3575-4410-8e28-df2d30067bcb
+    series: serie-112-biomes-background-climats
+    code: d90-jungle-jungle-7777
+    source: serie-110-biomes-background/jungle-jungle-7777_00001_.png
+    denoise: 0.9
+  master: art/masters/background.jungle.hot/v1.png
+  build: assets/visuels/background.jungle.hot.webp
+- id: planet_hero.jungle.cold
+  category: planet_hero
+  format: 21:9 1260x540
+  status: validated
+  version: 1
+  parent: planet_hero.jungle.temperate
+  prompt: 'Cinematic panoramic landscape seen from a low snow-covered ridge close to the colony, with the horizon in the upper half of the frame and plain rocky ground buried under deep white snow and snowdrifts filling the lower third of the frame. In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly. The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it. The whole valley is blanketed in deep white snow and snowdrifts: a frozen alien jungle of giant strange plants with huge broad leaves and twisted trunks, all buried under thick white snow and hung with long icicles, rising in layers toward distant snow-covered mountains, on a frozen alien planet of ice and wind-blown snow. High in the hazy sky above the horizon hangs a huge pale banded gas giant planet, partly lit by the sun, with a small grey moon beside it. Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit. No text.'
+  refs: []
+  generation:
+    model: Qwen-Image-2.1
+    seed: 4242
+    job_id: 6bdb0d0f-8b19-43b3-9c37-4e26f90697b1
+    series: serie-113-jungle-hero-froid
+    code: v90-jungle-4242
+    source: serie-109-biomes-hero/jungle-jungle-4242_00001_.png
+    denoise: 0.9
+  master: art/masters/planet_hero.jungle.cold/v1.png
+  build: assets/visuels/planet_hero.jungle.cold.webp

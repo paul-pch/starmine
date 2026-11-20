@@ -1,0 +1,139 @@
+{
+  "series": "serie-111-biomes-hero-climats",
+  "base": "art/style/hero_prompt.md",
+  "size": [
+    1792,
+    768
+  ],
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "planet_hero.coast.cold",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, on top of a towering sea cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "Beyond the ridge, towering dark neutral grey rock cliffs heavily covered with thick white snow and ice plunge straight into a vast frozen sea of cracked pale ice with ice floes and pressure ridges, which stretches to the horizon, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "d90-coast",
+      "source": "serie-109-biomes-hero/coast-coast-4242_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "planet_hero.coast.hot",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, on top of a towering sea cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "Beyond the ridge, towering scorched dark basalt cliffs with a few thin glowing orange lava cracks plunge straight into a vast dark slate-grey sea with heavy swell and thick white steam rising from its surface, which stretches to the horizon, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "d90-coast",
+      "source": "serie-109-biomes-hero/coast-coast-4242_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "planet_hero.mesas.cold",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, at the foot of a huge flat-topped mesa, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The vast plain is blanketed in deep white snow and snowdrifts, dotted with tall flat-topped mesas and slender buttes of layered grey rock heavily covered with thick white snow and ice, stretching to distant snow-covered mountains, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "d90-mesas",
+      "source": "serie-109-biomes-hero/mesas-mesas-7777_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "planet_hero.mesas.hot",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, at the foot of a huge flat-topped mesa, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The vast plain is made of baked deep muted oxblood-red earth, dotted with tall flat-topped mesas and slender buttes of scorched dark basalt with a few thin glowing orange lava cracks, stretching to distant mountains, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "d90-mesas",
+      "source": "serie-109-biomes-hero/mesas-mesas-7777_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "planet_hero.jungle.cold",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The valley is covered by a frozen alien jungle of giant strange plants with huge broad leaves and twisted trunks, all heavily coated in thick white frost, snow and icicles, rising in layers toward distant snow-covered mountains, on a frozen alien planet of ice and wind-blown snow.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "d90-jungle",
+      "source": "serie-109-biomes-hero/jungle-jungle-4242_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "planet_hero.jungle.hot",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The valley is covered by a steaming alien jungle of giant strange plants with huge broad dark red and black leaves and twisted trunks, rising in layers toward distant scorched mountains in hot volcanic haze, with a few thin glowing orange lava streams, on a sun-baked alien planet, with thick columns of volcanic smoke rising in the distance.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "d90-jungle",
+      "source": "serie-109-biomes-hero/jungle-jungle-4242_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "planet_hero.jungle.cold",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The whole valley is blanketed in deep white snow and snowdrifts: a frozen alien jungle of giant strange plants with huge broad leaves and twisted trunks, all buried under thick white snow and hung with long icicles, rising in layers toward distant snow-covered mountains, on a frozen alien planet of ice and wind-blown snow.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "s90",
+      "source": "serie-109-biomes-hero/jungle-jungle-4242_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "planet_hero.jungle.cold",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The whole valley is blanketed in deep white snow and snowdrifts: a frozen alien jungle of giant strange plants with huge broad leaves and twisted trunks, all buried under thick white snow and hung with long icicles, rising in layers toward distant snow-covered mountains, on a frozen alien planet of ice and wind-blown snow.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "s93",
+      "source": "serie-109-biomes-hero/jungle-jungle-4242_00001_.png",
+      "denoise": 0.93,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "planet_hero.jungle.cold",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The whole valley is blanketed in deep white snow and snowdrifts: a frozen alien jungle of giant strange plants with huge broad leaves and twisted trunks, all buried under thick white snow and hung with long icicles, rising in layers toward distant snow-covered mountains, on a frozen alien planet of ice and wind-blown snow.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "s95",
+      "source": "serie-109-biomes-hero/jungle-jungle-4242_00001_.png",
+      "denoise": 0.95,
+      "seeds": [
+        4242
+      ]
+    }
+  ]
+}

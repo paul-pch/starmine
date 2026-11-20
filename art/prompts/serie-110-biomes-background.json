@@ -1,0 +1,35 @@
+{
+  "series": "serie-110-biomes-background",
+  "base": "art/style/background_prompt.md",
+  "size": [
+    768,
+    1664
+  ],
+  "seeds": [
+    4242,
+    7777
+  ],
+  "images": [
+    {
+      "id": "background.coast.temperate",
+      "variant": "coast",
+      "subject": "Far away on the horizon, on top of a towering sea cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly.",
+      "site": "Beyond the ridge, towering dark neutral grey rock cliffs plunge straight into a vast dark slate-grey sea with heavy swell and white surf, which stretches to the horizon, on a lifeless alien planet of bare rock and sea.",
+      "ground": "The lower two thirds of the frame are the dark sea and plain dark rocky shore sinking into deep shadow, darker and darker toward the bottom edge, with no object."
+    },
+    {
+      "id": "background.mesas.temperate",
+      "variant": "mesas",
+      "subject": "Far away on the horizon, at the foot of a huge flat-topped mesa, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly.",
+      "site": "The vast plain is dotted with tall flat-topped mesas and slender buttes of layered neutral grey and pale ochre rock with sheer striped walls, stretching to distant mountains, on a lifeless alien planet of bare rock.",
+      "ground": "The lower two thirds of the frame are plain bare dark rocky plain sinking into deep shadow, darker and darker toward the bottom edge, with no object."
+    },
+    {
+      "id": "background.jungle.temperate",
+      "variant": "jungle",
+      "subject": "Far away on the horizon, in a clearing at the foot of a towering cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly.",
+      "site": "The valley is covered by a dense alien jungle of giant strange plants with huge broad dark teal leaves, twisted trunks and glowing pale blossoms, rising in layers toward distant mist-covered mountains, on a humid alien planet.",
+      "ground": "The lower two thirds of the frame are the dark canopy of the jungle sinking into deep shadow, darker and darker toward the bottom edge, with no object."
+    }
+  ]
+}

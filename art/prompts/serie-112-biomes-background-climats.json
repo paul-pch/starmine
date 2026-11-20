@@ -1,0 +1,85 @@
+{
+  "series": "serie-112-biomes-background-climats",
+  "base": "art/style/background_prompt.md",
+  "size": [
+    768,
+    1664
+  ],
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "background.coast.cold",
+      "subject": "Far away on the horizon, on top of a towering sea cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly.",
+      "site": "Beyond the ridge, towering dark neutral grey rock cliffs heavily covered with thick white snow and ice plunge straight into a vast frozen sea of cracked pale ice with ice floes and pressure ridges, which stretches to the horizon, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "ground": "The lower two thirds of the frame are the dark sea and plain dark rocky shore sinking into deep shadow, darker and darker toward the bottom edge, with no object.",
+      "variant": "d90-coast",
+      "source": "serie-110-biomes-background/coast-coast-7777_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "background.coast.hot",
+      "subject": "Far away on the horizon, on top of a towering sea cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly.",
+      "site": "Beyond the ridge, towering scorched dark basalt cliffs with a few thin glowing orange lava cracks plunge straight into a vast dark slate-grey sea with heavy swell and thick white steam rising from its surface, which stretches to the horizon, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising far in the distance.",
+      "ground": "The lower two thirds of the frame are the dark sea and plain dark rocky shore sinking into deep shadow, darker and darker toward the bottom edge, with no object.",
+      "variant": "d90-coast",
+      "source": "serie-110-biomes-background/coast-coast-7777_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "background.mesas.cold",
+      "subject": "Far away on the horizon, at the foot of a huge flat-topped mesa, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly.",
+      "site": "The vast plain is blanketed in deep white snow and snowdrifts, dotted with tall flat-topped mesas and slender buttes of layered grey rock heavily covered with thick white snow and ice, stretching to distant snow-covered mountains, on a frozen lifeless alien planet of bare rock, ice and wind-blown snow.",
+      "ground": "The lower two thirds of the frame are plain bare dark rocky plain sinking into deep shadow, darker and darker toward the bottom edge, with no object.",
+      "variant": "d90-mesas",
+      "source": "serie-110-biomes-background/mesas-mesas-4242_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "background.mesas.hot",
+      "subject": "Far away on the horizon, at the foot of a huge flat-topped mesa, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly.",
+      "site": "The vast plain is made of baked deep muted oxblood-red earth, dotted with tall flat-topped mesas and slender buttes of scorched dark basalt with a few thin glowing orange lava cracks, stretching to distant mountains, on a sun-baked lifeless alien planet of bare scorched rock, with thick columns of volcanic smoke rising in the distance.",
+      "ground": "The lower two thirds of the frame are plain bare dark rocky plain sinking into deep shadow, darker and darker toward the bottom edge, with no object.",
+      "variant": "d90-mesas",
+      "source": "serie-110-biomes-background/mesas-mesas-4242_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "background.jungle.cold",
+      "subject": "Far away on the horizon, in a clearing at the foot of a towering cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly.",
+      "site": "The valley is covered by a frozen alien jungle of giant strange plants with huge broad leaves and twisted trunks, all heavily coated in thick white frost, snow and icicles, rising in layers toward distant snow-covered mountains, on a frozen alien planet of ice and wind-blown snow.",
+      "ground": "The lower two thirds of the frame are the dark canopy of the jungle sinking into deep shadow, darker and darker toward the bottom edge, with no object.",
+      "variant": "d90-jungle",
+      "source": "serie-110-biomes-background/jungle-jungle-7777_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        7777
+      ]
+    },
+    {
+      "id": "background.jungle.hot",
+      "subject": "Far away on the horizon, in a clearing at the foot of a towering cliff, stands a small cluster of far-future high-tech installations with domes and towers, tiny in the frame, their windows and floodlights glowing brightly.",
+      "site": "The valley is covered by a steaming alien jungle of giant strange plants with huge broad dark red and black leaves and twisted trunks, rising in layers toward distant scorched mountains in hot volcanic haze, with a few thin glowing orange lava streams, on a sun-baked alien planet, with thick columns of volcanic smoke rising in the distance.",
+      "ground": "The lower two thirds of the frame are the dark canopy of the jungle sinking into deep shadow, darker and darker toward the bottom edge, with no object.",
+      "variant": "d90-jungle",
+      "source": "serie-110-biomes-background/jungle-jungle-7777_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        7777
+      ]
+    }
+  ]
+}

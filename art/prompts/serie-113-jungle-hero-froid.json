@@ -1,0 +1,55 @@
+{
+  "series": "serie-113-jungle-hero-froid",
+  "base": "art/style/hero_prompt.md",
+  "size": [
+    1792,
+    768
+  ],
+  "seeds": [
+    4242
+  ],
+  "images": [
+    {
+      "id": "planet_hero.jungle.cold",
+      "view": "Cinematic panoramic landscape seen from a low snow-covered ridge close to the colony, with the horizon in the upper half of the frame and plain rocky ground buried under deep white snow and snowdrifts filling the lower third of the frame.",
+      "subject": "In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The whole valley is blanketed in deep white snow and snowdrifts: a frozen alien jungle of giant strange plants with huge broad leaves and twisted trunks, all buried under thick white snow and hung with long icicles, rising in layers toward distant snow-covered mountains, on a frozen alien planet of ice and wind-blown snow.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "v90",
+      "source": "serie-109-biomes-hero/jungle-jungle-4242_00001_.png",
+      "denoise": 0.9,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "planet_hero.jungle.cold",
+      "view": "Cinematic panoramic landscape seen from a low snow-covered ridge close to the colony, with the horizon in the upper half of the frame and plain rocky ground buried under deep white snow and snowdrifts filling the lower third of the frame.",
+      "subject": "In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The whole valley is blanketed in deep white snow and snowdrifts: a frozen alien jungle of giant strange plants with huge broad leaves and twisted trunks, all buried under thick white snow and hung with long icicles, rising in layers toward distant snow-covered mountains, on a frozen alien planet of ice and wind-blown snow.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "v93",
+      "source": "serie-109-biomes-hero/jungle-jungle-4242_00001_.png",
+      "denoise": 0.93,
+      "seeds": [
+        4242
+      ]
+    },
+    {
+      "id": "planet_hero.jungle.cold",
+      "view": "Cinematic panoramic landscape seen from a low snow-covered ridge close to the colony, with the horizon in the upper half of the frame and plain rocky ground buried under deep white snow and snowdrifts filling the lower third of the frame.",
+      "subject": "In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The whole valley is blanketed in deep white snow and snowdrifts: a frozen alien jungle of giant strange plants with huge broad leaves and twisted trunks, all buried under thick white snow and hung with long icicles, rising in layers toward distant snow-covered mountains, on a frozen alien planet of ice and wind-blown snow.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit.",
+      "variant": "v95",
+      "source": "serie-109-biomes-hero/jungle-jungle-4242_00001_.png",
+      "denoise": 0.95,
+      "seeds": [
+        4242
+      ]
+    }
+  ]
+}

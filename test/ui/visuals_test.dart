@@ -137,6 +137,20 @@ void main() {
     expect(Ambiance.fromName('immersive'), Ambiance.immersive);
   });
 
+  test('paysage : Tmax modulo 4, repli sur le rocheux du même climat', () {
+    expect(Biome.of(20), Biome.rocky);
+    expect(Biome.of(21), Biome.coast);
+    expect(Biome.of(-1), Biome.jungle);
+    const rocky = 'assets/visuels/planet_hero.temperate.webp';
+    const coast = 'assets/visuels/planet_hero.coast.temperate.webp';
+    const visuals = Visuals(assets: {rocky, coast});
+    expect(visuals.hero(20), rocky);
+    expect(visuals.hero(21), coast);
+    expect(visuals.hero(22), rocky);
+    const bg = 'assets/visuels/background.coast.temperate.webp';
+    expect(const Visuals(assets: {bg}, ambiance: Ambiance.immersive).background(21), bg);
+  });
+
   test('ambiance Sobre : aucune image', () {
     const visuals = Visuals(assets: {t1}, ambiance: Ambiance.plain);
     expect(visuals.building(mine, 1, temperate), isNull);

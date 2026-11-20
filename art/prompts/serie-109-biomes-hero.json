@@ -1,0 +1,41 @@
+{
+  "series": "serie-109-biomes-hero",
+  "base": "art/style/hero_prompt.md",
+  "size": [
+    1792,
+    768
+  ],
+  "seeds": [
+    4242,
+    7777
+  ],
+  "images": [
+    {
+      "id": "planet_hero.coast.temperate",
+      "variant": "coast",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, on top of a towering sea cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "Beyond the ridge, towering dark neutral grey rock cliffs plunge straight into a vast dark slate-grey sea with heavy swell and white surf, which stretches to the horizon, on a lifeless alien planet of bare rock and sea.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit."
+    },
+    {
+      "id": "planet_hero.mesas.temperate",
+      "variant": "mesas",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, at the foot of a huge flat-topped mesa, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The vast plain is dotted with tall flat-topped mesas and slender buttes of layered neutral grey and pale ochre rock with sheer striped walls, stretching to distant mountains, on a lifeless alien planet of bare rock.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit."
+    },
+    {
+      "id": "planet_hero.jungle.temperate",
+      "variant": "jungle",
+      "view": "Cinematic panoramic landscape seen from a low rocky ridge close to the colony, with the horizon in the upper half of the frame and plain bare rocky ground filling the lower third of the frame.",
+      "subject": "In the middle distance, in a wide clearing at the foot of a towering cliff, stands a cluster of far-future high-tech installations with domes and towers, spanning about a third of the frame width, their windows and floodlights glowing brightly.",
+      "detail": "The colony and the sky above it share the frame, both large and clearly visible. The colony is thriving: a few small spaceships fly above it and vehicles move along a bright road leading to it.",
+      "site": "The valley is covered by a dense alien jungle of giant strange plants with huge broad dark teal leaves, twisted trunks and glowing pale blossoms, rising in layers toward distant mist-covered mountains, on a humid alien planet.",
+      "light": "Art direction: realistic sci-fi concept art, hopeful and optimistic mood, bright golden-hour sunlight with rich warm tones on the rock, crisp clear air with good contrast, a deep clear blue-teal sky, the colony gleaming white and sunlit."
+    }
+  ]
+}

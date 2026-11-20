@@ -33,6 +33,23 @@ enum TemperatureBand {
       : hot;
 }
 
+/// Paysage de la planète (spec 11) : déduit de Tmax, déjà tirée avec une graine stockée, sans
+/// rien changer à la sauvegarde. Le rocheux garde les ids historiques (`planet_hero.<climat>`).
+enum Biome {
+  rocky(null),
+  coast('coast'),
+  mesas('mesas'),
+  jungle('jungle');
+
+  const Biome(this.key);
+
+  /// Segment d'id de l'image, `null` pour le rocheux.
+  final String? key;
+
+  /// Tmax modulo le nombre de paysages (reste positif en Dart, même pour Tmax < 0).
+  static Biome of(int tempMax) => values[tempMax % values.length];
+}
+
 /// Seuils de palier (spec 11, `tiers` du registre).
 const _defaultTiers = [1, 10, 20];
 const _tiers = {
@@ -76,11 +93,20 @@ class Visuals {
     return !plain && assets.contains(path) ? path : null;
   }
 
-  String? hero(int tempMax) => _resolve('planet_hero.${TemperatureBand.of(tempMax).name}');
+  String? hero(int tempMax) => _landscape('planet_hero', tempMax);
 
-  /// Fond plein écran de l'ambiance Immersive, par tranche de température ; rien ailleurs.
-  String? background(int tempMax) =>
-      immersive ? _resolve('background.${TemperatureBand.of(tempMax).name}') : null;
+  /// Fond plein écran de l'ambiance Immersive, par paysage et tranche de température ; rien
+  /// ailleurs.
+  String? background(int tempMax) => immersive ? _landscape('background', tempMax) : null;
+
+  /// Image du paysage de la planète dans son climat ; paysage sans image : le rocheux du même
+  /// climat, sinon repli.
+  String? _landscape(String category, int tempMax) {
+    final band = TemperatureBand.of(tempMax).name;
+    final biome = Biome.of(tempMax).key;
+    return (biome == null ? null : _resolve('$category.$biome.$band')) ??
+        _resolve('$category.$band');
+  }
 
   /// Image du climat de la planète. Palier sans image validée : palier inférieur du même
   /// climat, sinon repli.
