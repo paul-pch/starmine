@@ -7,7 +7,10 @@ Produire des unités au chantier spatial : défenses en V2, vaisseaux à partir 
 ## Règles
 
 - **Lot** : une commande de N unités d'un type, payée intégralement à la commande,
-  livrée **unité par unité**. Un seul lot à la fois. **Pas d'annulation** (comme OGame).
+  livrée **unité par unité**. Un seul lot à la fois. **Annulation** du lot en cours (écart
+  à OGame, comme les autres files) : unités non livrées remboursées intégralement, celle en
+  cours comprise ; les unités livrées restent ; le lot suivant de la file démarre tout de
+  suite (spec 13). Écran File : bouton « Annuler » et confirmation avec le remboursement.
 - Durée par unité : `(M + C) / (2500 × (1 + chantier) × 2^nanites × vitesse)` heures, figée à
   la commande.
 - Règle du chantier : spec 03.

@@ -177,7 +177,8 @@ class _Slot extends StatelessWidget {
   }
 }
 
-/// Lot du chantier : progression du lot et de l'unité en cours. Pas d'annulation.
+/// Lot du chantier : progression du lot et de l'unité en cours, annulation (unités non
+/// livrées remboursées).
 class _BatchSlot extends StatelessWidget {
   const _BatchSlot({
     required this.batch,
@@ -225,12 +226,55 @@ class _BatchSlot extends StatelessWidget {
                 left: 'Prochaine dans ${fmtDuration(b.dueAt.difference(now))}',
                 right: 'Fin ${fmtDuration(b.finishAt.difference(now))}',
               ),
+              const SizedBox(height: 12),
+              Align(
+                alignment: Alignment.centerRight,
+                child: OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(minimumSize: const Size(48, 48)),
+                  onPressed: () => _cancel(context, b),
+                  icon: const Icon(Icons.close),
+                  label: const Text('Annuler'),
+                ),
+              ),
             ],
             _QueuedList(controller: controller, slot: Slot.shipyard),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _cancel(BuildContext context, ShipyardBatch b) async {
+    final done = b.ordered - b.remaining;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Annuler le lot ?'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${controller.data.unit(b.unit).name} : ${b.remaining} '
+              '${b.remaining > 1 ? 'unités non livrées remboursées' : 'unité non livrée remboursée'} '
+              'intégralement, celle en cours comprise.'
+              '${done > 0 ? ' Déjà livrées : $done, conservées.' : ''}'
+              '${controller.state.queued(Slot.shipyard).isEmpty ? '' : ' Le lot suivant de la file démarre tout de suite.'}',
+            ),
+            const SizedBox(height: 8),
+            CostLine(cost: b.unitCost * b.remaining.toDouble()),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Non')),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Oui, annuler'),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) await controller.cancel(b.id);
   }
 }
 

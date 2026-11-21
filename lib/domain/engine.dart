@@ -521,7 +521,9 @@ GameState cancelOrder(GameState state, int eventId, DateTime now, Rules rules) =
     cancelOrQueue(state, eventId, now, rules).state;
 
 /// Annule [eventId] : un ordre en attente est retiré sans frais (rien n'est payé) ; l'ordre
-/// en cours est remboursé et le suivant de sa file démarre tout de suite (spec 13).
+/// en cours est remboursé et le suivant de sa file démarre tout de suite (spec 13). Lot du
+/// chantier en cours : unités non livrées remboursées (celle en cours comprise), livrées
+/// conservées.
 ({GameState state, QueueCancelled? cancelled}) cancelOrQueue(
   GameState state,
   int eventId,
@@ -540,13 +542,24 @@ GameState cancelOrder(GameState state, int eventId, DateTime now, Rules rules) =
       cancelled: null,
     );
   }
-  final event = advanced.pending.whereType<OrderDone>().where((e) => e.id == eventId).firstOrNull;
+  final event = advanced.pending
+      .where((e) => e.id == eventId && (e is OrderDone || e is ShipyardBatch))
+      .firstOrNull;
   if (event == null) return (state: advanced, cancelled: null);
+  final refund = switch (event) {
+    OrderDone(:final cost) => cost,
+    ShipyardBatch(:final unitCost, :final remaining) => unitCost * remaining.toDouble(),
+    _ => Resources.zero,
+  };
   final refunded = advanced.copyWith(
-    planet: advanced.planet.copyWith(resources: advanced.planet.resources + event.cost),
+    planet: advanced.planet.copyWith(resources: advanced.planet.resources + refund),
     pending: advanced.pending.where((e) => e.id != eventId).toList(),
   );
-  final slot = event is BuildingDone ? Slot.construction : Slot.research;
+  final slot = switch (event) {
+    BuildingDone() => Slot.construction,
+    ResearchDone() => Slot.research,
+    _ => Slot.shipyard,
+  };
   final start = startNextQueued(refunded, slot, now, rules);
   final started = start.started;
   return (

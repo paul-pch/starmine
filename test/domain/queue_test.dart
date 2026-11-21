@@ -142,6 +142,33 @@ void main() {
     expect(r.currentBatch!.id, 2);
   });
 
+  test('chantier : annuler le lot en cours rembourse les unités non livrées, le suivant démarre', () {
+    var s = game(
+      planet(levels: {BuildingKind.shipyard: 1}, resources: rich),
+    ).copyWith(officers: {OfficerKind.shipyardMaster: 1});
+    s = placeBatch(s, UnitKind.rocketLauncher, 5, t0, rules, eventId: 1).state;
+    s = placeBatch(s, UnitKind.rocketLauncher, 2, t0, rules, eventId: 2).state;
+    final unit = s.currentBatch!.unitDuration;
+    // Deux unités livrées, la troisième en cours.
+    final at = t0.add(unit * 2 + const Duration(seconds: 5));
+    final before = advance(s, at, rules).state;
+    final out = cancelOrQueue(s, 1, at, rules);
+    expect(out.cancelled, isNull);
+    final after = out.state;
+    expect(after.planet.count(UnitKind.rocketLauncher), 2);
+    final cost = gameData.unit(UnitKind.rocketLauncher).cost * 3;
+    // Le lot suivant (2 unités) est payé à son démarrage.
+    final next = gameData.unit(UnitKind.rocketLauncher).cost * 2;
+    expect(
+      after.planet.resources.metal,
+      closeTo(before.planet.resources.metal + cost.metal - next.metal, 1e-6),
+    );
+    expect(after.currentBatch!.id, 2);
+    expect(after.currentBatch!.ordered, 2);
+    expect(after.currentBatch!.startedAt, at);
+    expect(after.queue, isEmpty);
+  });
+
   test('déterministe : même rattrapage, même résultat', () {
     var s = place(start(), BuildingKind.metalMine, 1);
     s = place(s, BuildingKind.metalMine, 2);

@@ -26,7 +26,8 @@ de chaque construction (confort d'idle mobile).
   agrandissement, limite par planète) : **toute la file est annulée** et une notification
   le signale (popover dans l'app si elle est ouverte, spec 10).
 - **Annulation** : un ordre en attente se retire sans frais ; annuler l'ordre en cours le
-  rembourse et démarre le suivant tout de suite (avec la même règle d'annulation).
+  rembourse et démarre le suivant tout de suite (avec la même règle d'annulation). Lot du
+  chantier en cours : seules les unités non livrées sont remboursées (spec 05).
 - **Chantier** : la file enchaîne des lots (unité, quantité).
 
 ## Notifications
