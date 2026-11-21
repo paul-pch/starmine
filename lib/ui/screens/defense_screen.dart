@@ -288,7 +288,9 @@ class _UnitCard extends StatelessWidget {
                     CostLine(cost: spec.baseCost, available: state.planet.resources),
                     Text(
                       '${fmtDuration(unitDuration(state, unit, controller.rules))} par unité',
-                      style: mono(theme.textTheme.bodySmall)?.copyWith(color: Palette.textSecondary),
+                      style: mono(
+                        theme.textTheme.bodySmall,
+                      )?.copyWith(color: Palette.textSecondary),
                     ),
                   ],
                 ),

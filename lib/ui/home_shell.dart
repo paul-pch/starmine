@@ -256,8 +256,7 @@ class _HomeShellState extends State<HomeShell> {
         final immersive = visuals.immersive;
         final content = Column(
           children: [
-            if (_c.incomingRaid case final raid?)
-              RaidBanner(controller: _c, raid: raid, now: _now),
+            if (_c.incomingRaid case final raid?) RaidBanner(controller: _c, raid: raid, now: _now),
             StoryBanner(controller: _c, now: _now),
             Expanded(child: pages[_tab]),
           ],

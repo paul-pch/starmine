@@ -87,7 +87,9 @@ class GridCard extends StatelessWidget {
                   children: [
                     Text(
                       line,
-                      style: mono(theme.textTheme.bodySmall)?.copyWith(color: Palette.textSecondary),
+                      style: mono(
+                        theme.textTheme.bodySmall,
+                      )?.copyWith(color: Palette.textSecondary),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
