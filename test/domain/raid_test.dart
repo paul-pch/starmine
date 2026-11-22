@@ -186,16 +186,16 @@ void main() {
       expect(left, greaterThan(100));
     });
 
-    test('raid suivant : même id, arrivée 48 à 96 h plus tard, détection 1 h avant', () {
+    test('raid suivant : même id, arrivée 84 à 168 h plus tard, détection 1 h avant', () {
       final step = resolveRaid(game(planet()), arrival({UnitKind.lightFighter: 3}), rules);
       final next = step.next as RaidDetected;
       final gap = next.arrivalAt.difference(t0.add(const Duration(hours: 1)));
       expect(next.id, 9);
-      expect(gap.inMinutes, inInclusiveRange(48 * 60, 96 * 60));
+      expect(gap.inMinutes, inInclusiveRange(84 * 60, 168 * 60));
       expect(next.arrivalAt.difference(next.dueAt), const Duration(hours: 1));
     });
 
-    test('milieu de partie : raid suivant 12 à 24 h plus tard', () {
+    test('milieu de partie : même cadence, 84 à 168 h', () {
       final s = game(
         planet(
           levels: {
@@ -205,13 +205,13 @@ void main() {
           },
         ),
       );
-      expect(economyPoints(s, rules), greaterThanOrEqualTo(gameData.pirates.latePoints));
+      expect(economyPoints(s, rules), greaterThanOrEqualTo(200));
       for (var seed = 0; seed < 20; seed++) {
         final e = arrival({UnitKind.lightFighter: 3}, seed: seed);
         final step = resolveRaid(s, e, rules);
         final next = step.next as RaidDetected;
         final gap = next.arrivalAt.difference(e.dueAt);
-        expect(gap.inMinutes, inInclusiveRange(12 * 60, 24 * 60));
+        expect(gap.inMinutes, inInclusiveRange(84 * 60, 168 * 60));
       }
     });
 
@@ -235,7 +235,7 @@ void main() {
     final a = advance(start, end, rules);
     final b = advance(start, end, rules);
 
-    expect(a.reports.length, inInclusiveRange(5, 10));
+    expect(a.reports.length, inInclusiveRange(3, 6));
     expect(a.reports.map((r) => r.at), b.reports.map((r) => r.at));
     expect(a.state.planet.resources, b.state.planet.resources);
     expect(pendingRaid(a.state)!.id, 1);

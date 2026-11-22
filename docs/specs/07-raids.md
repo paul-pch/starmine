@@ -11,11 +11,11 @@ pas les craindre ; il peut prendre de l'avance.
 
 - **Planification** : un raid est toujours en attente (créé à la première ouverture, après un
   reset ou un import). La chaîne garde **le même id** d'un raid à l'autre.
-- **Intervalle** entre deux arrivées : tiré dans `pirates.interval_hours` (à ×1), soit 2 à 3
-  raids par semaine. **Milieu de partie** : quand les points d'économie et de recherche du
-  relevé atteignent `pirates.late.points`, l'intervalle est tiré dans
-  `pirates.late.interval_hours` (1 à 2 raids par jour). Les raids surviennent app ouverte
-  ou fermée.
+- **Intervalle** entre deux arrivées : tiré dans `pirates.interval_hours` (à ×1), soit 1 à 2
+  raids par semaine, toute la partie (décision du 2026-11-22 : la cadence de 1 à 2 raids par
+  jour au milieu de partie ne laissait pas le temps de se refaire). La section facultative
+  `pirates.late` (seuil de points du relevé, autre intervalle) reste lue mais n'est plus
+  dans le YAML. Les raids surviennent app ouverte ou fermée.
 - **Relevé et retard** : à la planification (arrivée du raid précédent, ou création), le
   raid enregistre un **relevé** du joueur : points d'économie et de recherche, niveaux de
   technos. La flotte est calculée sur ce relevé, pas sur le joueur au moment de l'attaque :

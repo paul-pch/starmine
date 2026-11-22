@@ -442,12 +442,11 @@ debris: { share: 0.3, collect_hours: 1 }
 
 # Raids pirates (V2b). Durées à ×1, divisées par la vitesse de jeu.
 pirates:
-  # Délai entre deux arrivées, tiré uniformément : 2 à 3 raids par semaine à ×1. C'est aussi
-  # le retard des pirates : leur force vient du relevé fait au raid précédent.
-  interval_hours: { min: 48, max: 96 }
-  # Milieu de partie : à partir de `points` points d'économie et de recherche (relevé), 1 à 2
-  # raids par jour.
-  late: { points: 200, interval_hours: { min: 12, max: 24 } }
+  # Délai entre deux arrivées, tiré uniformément : 1 à 2 raids par semaine à ×1, toute la
+  # partie (le temps de se refaire entre deux raids). C'est aussi le retard des pirates : leur
+  # force vient du relevé fait au raid précédent. Option : `late: { points, interval_hours }`
+  # pour une autre cadence au-delà d'un seuil de points (retirée : 12-24 h était trop dense).
+  interval_hours: { min: 84, max: 168 }
   # La flotte est détectée (et sa composition fixée) ce délai avant son arrivée.
   warning_minutes: 60
   # Budget de la flotte (en ressources) = max(min_budget, points × 1000 × force),
