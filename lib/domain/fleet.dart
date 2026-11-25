@@ -103,9 +103,9 @@ bool baseAvailable(PirateBase b, DateTime at) {
 }
 
 /// Base à [at] après une éventuelle réapparition : nouvelle génération, stock plein.
-PirateBase _respawned(PirateBase b) {
+PirateBase _respawned(PirateBase b, DateTime at) {
   final until = b.destroyedUntil;
-  if (until == null) return b;
+  if (until == null || until.isAfter(at)) return b;
   return b.copyWith(
     generation: b.generation + 1,
     stockFraction: 1,
@@ -559,7 +559,7 @@ GameState _withBase(GameState s, PirateBase b) =>
   if (m.kind == MissionKind.recycle && m.exploring) return _endCollect(s, m, rules);
   final target = m.target!;
   final spec = data.pirateBases.list[target];
-  final base = _respawned(s.bases[target]);
+  final base = _respawned(s.bases[target], at);
   final duration = flightDuration(m.ships, spec.distance, m.speedPercent, s.research, rules);
   FleetMission back(Map<UnitKind, int> ships, Resources cargo) =>
       m.copyWith(dueAt: at.add(duration), ships: ships, cargo: cargo, returning: true, phaseAt: at);

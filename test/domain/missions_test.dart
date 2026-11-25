@@ -433,12 +433,25 @@ void main() {
       ],
     );
     expect(baseAvailable(s.bases[0], t0), isFalse);
-    expect(send(s, MissionKind.attack, 0, {UnitKind.lightFighter: 5}).block, MissionBlock.unavailable);
+    expect(
+      send(s, MissionKind.attack, 0, {UnitKind.lightFighter: 5}).block,
+      MissionBlock.unavailable,
+    );
     final ships = {UnitKind.recycler: 2};
     expect(send(s, MissionKind.recycle, 0, ships).block, isNull);
     // Une graine sans patrouille : la collecte commence à l'arrivée.
     for (var seed = 0; ; seed++) {
-      final out = sendMission(s, MissionKind.recycle, 0, ships, 100, t0, rules, eventId: 90, seed: seed);
+      final out = sendMission(
+        s,
+        MissionKind.recycle,
+        0,
+        ships,
+        100,
+        t0,
+        rules,
+        eventId: 90,
+        seed: seed,
+      );
       final r = advance(out.state, missions(out.state).single.dueAt, rules);
       if (r.reports.isNotEmpty) continue;
       final m = missions(r.state).single;
@@ -450,4 +463,3 @@ void main() {
     }
   });
 }
-
