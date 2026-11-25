@@ -350,7 +350,10 @@ MissionBlock? checkMission(
     return MissionBlock.expeditionsFull;
   }
   if (isCapped(kind) && cappedShips(selected) > shipCap(s, data)) return MissionBlock.overCap;
-  if (target != null && !baseAvailable(s.bases[target], at)) return MissionBlock.unavailable;
+  // Le champ d'une base détruite reste recyclable (spec 15).
+  if (target != null && kind != MissionKind.recycle && !baseAvailable(s.bases[target], at)) {
+    return MissionBlock.unavailable;
+  }
   if (kind == MissionKind.spy && selected.keys.any((k) => k != UnitKind.espionageProbe)) {
     return MissionBlock.noProbe;
   }
@@ -561,7 +564,7 @@ GameState _withBase(GameState s, PirateBase b) =>
   FleetMission back(Map<UnitKind, int> ships, Resources cargo) =>
       m.copyWith(dueAt: at.add(duration), ships: ships, cargo: cargo, returning: true, phaseAt: at);
 
-  if (!baseAvailable(base, at)) {
+  if (m.kind != MissionKind.recycle && !baseAvailable(base, at)) {
     return (state: _withBase(s, base), next: back(m.ships, Resources.zero), report: null);
   }
   switch (m.kind) {

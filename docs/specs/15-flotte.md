@@ -245,6 +245,8 @@ la flotte envoyée) ajoutent de la soute, les recycleurs restent seuls à ramass
 
 ### Champ d'une base
 
+- Le champ d'une base **détruite** reste recyclable (envoi et collecte) ; l'attaque et
+  l'espionnage, eux, attendent sa réapparition.
 - Étapes Aller › Collecte › Retour. La patrouille (V3c) surgit à l'arrivée, avant la
   collecte : gagnée, ses débris s'ajoutent au champ et les survivants collectent ; perdue,
   les survivants rentrent à vide. Un champ vidé entre-temps : retour direct, à vide.
