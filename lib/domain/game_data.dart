@@ -685,6 +685,50 @@ class StartConditions {
   final int tempSpread;
 }
 
+/// Tranche de température d'après Tmax (spec 11 et 16) : froide, tempérée, chaude.
+enum TemperatureBand {
+  cold,
+  temperate,
+  hot;
+
+  static TemperatureBand of(int tempMax) => tempMax < 0
+      ? cold
+      : tempMax < 40
+      ? temperate
+      : hot;
+}
+
+/// Effet d'un trait de planète (spec 16).
+enum TraitEffect { metal, crystal, deuterium, energy, build, research, rebuild }
+
+/// Trait de planète : un nom d'atout et un nom de défaut, poids de tirage par tranche.
+class PlanetTrait {
+  const PlanetTrait({
+    required this.effect,
+    required this.boon,
+    required this.flaw,
+    this.boonWeight = const {},
+    this.flawWeight = const {},
+  });
+
+  final TraitEffect effect;
+  final String boon;
+  final String flaw;
+
+  /// Poids par tranche, 1 si absent.
+  final Map<TemperatureBand, double> boonWeight;
+  final Map<TemperatureBand, double> flawWeight;
+}
+
+/// Identité de la planète (section `planet`, spec 16).
+class PlanetConfig {
+  const PlanetConfig({this.descriptions = const {}, this.traitValue = 0, this.traits = const {}});
+
+  final Map<TemperatureBand, String> descriptions;
+  final double traitValue;
+  final Map<TraitEffect, PlanetTrait> traits;
+}
+
 /// Coup de pouce de départ (section `start_boost`) : production × (1 + extra × max(0,
 /// 1 − points / fadePoints)).
 class StartBoost {
@@ -766,6 +810,7 @@ class GameData {
     this.fleet = const FleetConfig(),
     this.expedition = const ExpeditionConfig(),
     this.pirateBases = const PirateBasesConfig(),
+    this.planet = const PlanetConfig(),
   }) : officers = Map.unmodifiable(officers),
        units = Map.unmodifiable(units),
        buildings = Map.unmodifiable(buildings),
@@ -785,6 +830,9 @@ class GameData {
 
   final FormulaConstants formulas;
   final StartConditions start;
+
+  /// Description et traits de la planète (spec 16).
+  final PlanetConfig planet;
   final Map<BuildingKind, BuildingSpec> buildings;
   final Map<TechKind, TechSpec> research;
   final Map<UnitKind, UnitSpec> units;
@@ -845,6 +893,7 @@ class GameData {
     final fleet = _optMap(map, 'fleet');
     final bases = _optMap(map, 'pirate_bases');
     final expedition = _optMap(map, 'expedition');
+    final planet = _optMap(map, 'planet');
     final interval = _map(pirates, 'interval_hours');
     final strength = _map(pirates, 'strength');
     final late = _optMap(pirates, 'late');
@@ -935,8 +984,47 @@ class GameData {
             ),
       expedition: expedition == null ? const ExpeditionConfig() : _expedition(expedition),
       pirateBases: bases == null ? const PirateBasesConfig() : _bases(bases),
+      planet: planet == null ? const PlanetConfig() : _planet(planet),
     );
   }
+
+  static PlanetConfig _planet(Map<String, Object?> m) {
+    final descriptions = _optMap(m, 'descriptions') ?? const {};
+    final traits = _optMap(m, 'traits') ?? const {};
+    Map<TemperatureBand, double> weights(Map<String, Object?> t, String key) => {
+      for (final e in (_optMap(t, key) ?? const {}).entries)
+        _band(e.key): _num(_map(t, key), e.key),
+    };
+    return PlanetConfig(
+      descriptions: {
+        for (final e in descriptions.entries) _band(e.key): _string(descriptions, e.key),
+      },
+      traitValue: _numOr(m, 'trait_value'),
+      traits: {
+        for (final e in traits.entries)
+          _traitEffect(e.key): () {
+            final t = _asMap(e.value, e.key);
+            return PlanetTrait(
+              effect: _traitEffect(e.key),
+              boon: _string(t, 'boon'),
+              flaw: _string(t, 'flaw'),
+              boonWeight: weights(t, 'boon_weight'),
+              flawWeight: weights(t, 'flaw_weight'),
+            );
+          }(),
+      },
+    );
+  }
+
+  static TemperatureBand _band(String name) => TemperatureBand.values.firstWhere(
+    (b) => b.name == name,
+    orElse: () => throw FormatException('Tranche de température inconnue : $name'),
+  );
+
+  static TraitEffect _traitEffect(String name) => TraitEffect.values.firstWhere(
+    (e) => e.name == name,
+    orElse: () => throw FormatException('Effet de trait inconnu : $name'),
+  );
 
   static StoryConfig _story(Map<String, Object?> m) {
     final interval = _map(m, 'interval_hours');

@@ -18,6 +18,10 @@ class Planets extends Table {
   RealColumn get debrisMetal => real().withDefault(const Constant(0))();
   RealColumn get debrisCrystal => real().withDefault(const Constant(0))();
 
+  /// Traits de la planète, clés `TraitEffect` (schéma v11) ; `null` avant leur tirage.
+  TextColumn get boon => text().nullable()();
+  TextColumn get flaw => text().nullable()();
+
   /// Epoch UTC en millisecondes.
   IntColumn get lastUpdateMs => integer()();
 
@@ -196,8 +200,9 @@ class StarmineDatabase extends _$StarmineDatabase {
   /// v7 : événements ponctuels (tables active_effects, story_log).
   /// v8 : champ de débris (colonnes de planets). v9 : bases pirates (table pirate_bases).
   /// v10 : issue du pari d'un événement (colonne story_log.won).
+  /// v11 : traits de la planète (colonnes planets.boon et planets.flaw).
   @override
-  int get schemaVersion => 10;
+  int get schemaVersion => 11;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -238,6 +243,10 @@ class StarmineDatabase extends _$StarmineDatabase {
       }
       if (from < 10 && from >= 7) {
         await m.addColumn(storyLog, storyLog.won);
+      }
+      if (from < 11) {
+        await m.addColumn(planets, planets.boon);
+        await m.addColumn(planets, planets.flaw);
       }
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),

@@ -30,7 +30,7 @@ const _v1 = [
 ];
 
 void main() {
-  test('base v1 → v10 : partie conservée, technos et officiers à 0, réglages à 100 %', () async {
+  test('base v1 → v11 : partie conservée, technos et officiers à 0, réglages à 100 %', () async {
     final db = StarmineDatabase(
       NativeDatabase.memory(
         setup: (raw) {
@@ -52,6 +52,7 @@ void main() {
     expect(save.state.research.values, everyElement(0));
     expect(save.state.officers.values, everyElement(0));
     expect(save.state.planet.debris, Resources.zero);
+    expect(save.state.planet.boon, isNull);
     expect(save.state.counters.values, everyElement(0));
     expect(save.speed, 10);
     expect(save.seed, 99);
@@ -65,12 +66,15 @@ void main() {
         research: {TechKind.energy: 2},
         officers: {OfficerKind.geologist: 3},
         counters: {Counter.raidsRepelled: 4},
+        planet: save.state.planet.copyWith(boon: TraitEffect.metal, flaw: TraitEffect.build),
       ),
     );
     final reloaded = (await GameRepository(db).load())!;
     expect(reloaded.state.research[TechKind.energy], 2);
     expect(reloaded.state.officers[OfficerKind.geologist], 3);
     expect(reloaded.state.counters[Counter.raidsRepelled], 4);
+    expect(reloaded.state.planet.boon, TraitEffect.metal);
+    expect(reloaded.state.planet.flaw, TraitEffect.build);
     expect(reloaded.state.planet.lastUpdate, t0);
     expect(await GameRepository(db).loadReports(), isEmpty);
     expect(await GameRepository(db).loadStoryLog(), isEmpty);

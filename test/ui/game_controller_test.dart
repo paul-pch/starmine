@@ -10,6 +10,7 @@ import 'package:starmine/domain/combat.dart';
 import 'package:starmine/domain/engine.dart';
 import 'package:starmine/domain/events.dart';
 import 'package:starmine/domain/game_data.dart';
+import 'package:starmine/domain/planet.dart';
 import 'package:starmine/domain/resources.dart';
 import 'package:starmine/ui/game_controller.dart';
 import 'package:starmine/ui/notifications.dart';
@@ -43,6 +44,42 @@ void main() {
     await c.init();
     expect(c.state.planet.resources, const Resources(metal: 500, crystal: 500));
     expect(c.speed, 1);
+  });
+
+  test('planète : traits à la création, renommage enregistré', () async {
+    var c = controller();
+    await c.init();
+    expect(c.state.planet.boon, isNotNull);
+    expect(c.state.planet.flaw, isNot(c.state.planet.boon));
+    await c.rename('  Nova  ');
+    await c.rename('   ');
+    expect(c.state.planet.name, 'Nova');
+    c = controller();
+    await c.init();
+    expect(c.state.planet.name, 'Nova');
+  });
+
+  test('ancienne partie sans traits : tirés au chargement et enregistrés', () async {
+    var c = controller();
+    await c.init();
+    final legacy = c.state.copyWith(
+      planet: Planet(
+        id: c.state.planet.id,
+        name: c.state.planet.name,
+        tempMax: c.state.planet.tempMax,
+        resources: c.state.planet.resources,
+        levels: const {},
+        lastUpdate: c.state.planet.lastUpdate,
+      ),
+    );
+    await GameRepository(db).save(legacy);
+    c = controller();
+    await c.init();
+    final boon = c.state.planet.boon;
+    expect(boon, isNotNull);
+    c = controller();
+    await c.init();
+    expect(c.state.planet.boon, boon);
   });
 
   test('construction : notification programmée, puis appliquée app « fermée »', () async {

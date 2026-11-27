@@ -278,6 +278,13 @@ class GameController extends ChangeNotifier {
     return out.block;
   });
 
+  /// Renomme la planète (1 à [planetNameMax] caractères, espaces de bord retirés).
+  Future<void> rename(String name) => _serialized(() async {
+    final n = name.trim();
+    if (n.isEmpty || n.length > planetNameMax) return;
+    await _commit(state.copyWith(planet: state.planet.copyWith(name: n)));
+  });
+
   /// Fait faire demi-tour à une flotte à l'aller.
   Future<void> recall(int missionId) => _serialized(() async {
     final t = now();
@@ -578,6 +585,11 @@ class GameController extends ChangeNotifier {
   }
 
   void _set(SaveGame save) {
+    // Ancienne sauvegarde sans traits : tirés une fois (graine de la partie), enregistrés au
+    // prochain commit (spec 16).
+    final p = save.state.planet;
+    final traited = withTraits(p, data.planet, save.seed);
+    if (!identical(traited, p)) save = save.copyWith(state: save.state.copyWith(planet: traited));
     _save = save;
     _rules = Rules(data, speed: save.speed);
   }

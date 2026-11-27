@@ -127,6 +127,29 @@ class GameState {
           expeditions += value;
       }
     }
+    // Traits de la planète (spec 16) : atout +, défaut −.
+    final traitValue = data.planet.traitValue;
+    for (final (effect, sign) in [(planet.boon, 1.0), (planet.flaw, -1.0)]) {
+      final v = sign * traitValue;
+      switch (effect) {
+        case null:
+          break;
+        case TraitEffect.metal:
+          byResource = byResource + Resources(metal: v);
+        case TraitEffect.crystal:
+          byResource = byResource + Resources(crystal: v);
+        case TraitEffect.deuterium:
+          byResource = byResource + Resources(deuterium: v);
+        case TraitEffect.energy:
+          energy *= 1 + v;
+        case TraitEffect.build:
+          build += v;
+        case TraitEffect.research:
+          research += v;
+        case TraitEffect.rebuild:
+          rebuild += v;
+      }
+    }
     return Modifiers(
       mineProduction: mine,
       researchTime: research,

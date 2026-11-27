@@ -289,6 +289,27 @@ void main() {
     await close(tester, db);
   });
 
+  testWidgets('feuille de la planète : description, atout et défaut, renommage', (tester) async {
+    final (controller, db) = await open(tester);
+    final p = controller.state.planet;
+    await tester.tap(find.text(p.name));
+    await tester.pumpAndSettle();
+    expect(find.text(gameData.planet.descriptions[p.band]!), findsOneWidget);
+    expect(find.text('Atout · ${gameData.planet.traits[p.boon]!.boon}'), findsOneWidget);
+    expect(find.text('Défaut · ${gameData.planet.traits[p.flaw]!.flaw}'), findsOneWidget);
+    await tester.tap(find.byTooltip('Renommer'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'Nova');
+    await tester.tap(find.text('Renommer'));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 100)));
+    await tester.pumpAndSettle();
+    expect(controller.state.planet.name, 'Nova');
+    expect(find.text('Nova'), findsWidgets);
+    expect(find.byTooltip('Signaler un problème'), findsOneWidget);
+
+    await close(tester, db);
+  });
+
   testWidgets('recyclage de la planète : feuille avec transporteurs, collecte en cours', (
     tester,
   ) async {

@@ -49,6 +49,8 @@ class GameRepository {
         'deuterium': row.deuterium,
       }),
       debris: Resources(metal: row.debrisMetal, crystal: row.debrisCrystal),
+      boon: decodeTrait(row.boon),
+      flaw: decodeTrait(row.flaw),
       levels: {for (final b in buildings) BuildingKind.fromKey(b.kind): b.level},
       percents: {for (final b in buildings) BuildingKind.fromKey(b.kind): b.percent},
       units: {
@@ -198,6 +200,8 @@ class GameRepository {
             deuterium: Value(p.resources.deuterium),
             debrisMetal: Value(p.debris.metal),
             debrisCrystal: Value(p.debris.crystal),
+            boon: Value(p.boon?.name),
+            flaw: Value(p.flaw?.name),
             lastUpdateMs: Value(p.lastUpdate.millisecondsSinceEpoch),
           ),
         );

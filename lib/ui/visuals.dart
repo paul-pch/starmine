@@ -6,6 +6,9 @@ import '../domain/game_data.dart';
 import '../domain/raid.dart';
 import 'theme.dart';
 
+// Tranche de température : définie dans le domaine (spec 16), utilisée ici pour les images.
+export '../domain/game_data.dart' show TemperatureBand;
+
 /// Préférence d'affichage (spec 10) : ne change aucune information affichée.
 enum Ambiance {
   balanced('Équilibrée'),
@@ -20,18 +23,6 @@ enum Ambiance {
       values.firstWhere((a) => a.name == name, orElse: () => balanced);
 }
 
-/// Tranche de température d'après Tmax (spec 11, `temperature_bands` du registre).
-enum TemperatureBand {
-  cold,
-  temperate,
-  hot;
-
-  static TemperatureBand of(int tempMax) => tempMax < 0
-      ? cold
-      : tempMax < 40
-      ? temperate
-      : hot;
-}
 
 /// Paysage de la planète (spec 11) : déduit de Tmax, déjà tirée avec une graine stockée, sans
 /// rien changer à la sauvegarde. Le rocheux garde les ids historiques (`planet_hero.<climat>`).

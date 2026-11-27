@@ -17,7 +17,8 @@ const saveFormat = 'starmine-save';
 /// v5 (V2c) : officiers, compteurs, relevé des raids et technos pirates.
 /// v6 : files d'attente. v7 (V2d) : événements ponctuels et effets en cours.
 /// v8 (V3a) : champ de débris, missions de recyclage. v9 (V3b) : bases pirates, flottes.
-const saveVersion = 11;
+/// v12 : traits de la planète (absents avant : tirés au chargement, spec 16).
+const saveVersion = 12;
 
 /// Sauvegarde complète : état de jeu et réglages persistés.
 class SaveGame {
@@ -30,6 +31,10 @@ class SaveGame {
   SaveGame copyWith({GameState? state, double? speed}) =>
       SaveGame(state: state ?? this.state, speed: speed ?? this.speed, seed: seed);
 }
+
+/// Trait de planète stocké par son nom ; inconnu ou absent : `null` (tiré à nouveau).
+TraitEffect? decodeTrait(String? name) =>
+    TraitEffect.values.where((e) => e.name == name).firstOrNull;
 
 DateTime fromEpochMs(int ms) => DateTime.fromMillisecondsSinceEpoch(ms, isUtc: true);
 
@@ -340,6 +345,8 @@ Map<String, Object?> encodeSave(SaveGame save, {required DateTime exportedAt}) {
       'id': p.id,
       'name': p.name,
       'temp_max': p.tempMax,
+      'boon': ?p.boon?.name,
+      'flaw': ?p.flaw?.name,
       'last_update': p.lastUpdate.millisecondsSinceEpoch,
       'resources': encodeResources(p.resources),
       'debris': encodeResources(p.debris),
@@ -403,6 +410,9 @@ SaveGame decodeSave(Map<String, Object?> json) {
     id: _int(p, 'id'),
     name: _string(p, 'name'),
     tempMax: _int(p, 'temp_max'),
+    // Absents avant la v12.
+    boon: decodeTrait(p['boon'] as String?),
+    flaw: decodeTrait(p['flaw'] as String?),
     lastUpdate: fromEpochMs(_int(p, 'last_update')),
     resources: decodeResources(_map(p, 'resources')),
     // Absent avant la v8.

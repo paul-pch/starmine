@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 import '../format.dart';
 import '../game_controller.dart';
+import '../report_issue.dart';
 import '../theme.dart';
 import '../visuals.dart';
+import 'planet_sheet.dart';
 
 /// Hero 21:9 : image par tranche de température et bandeau opaque (nom, températures,
 /// rapports). En ambiance Sobre, le bandeau seul ; en Immersive, le bandeau sur un panneau,
@@ -110,17 +112,46 @@ class _Banner extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 6, 4, 6),
         child: Row(
           children: [
+            // Nom et températures : feuille de la planète au tap (spec 16).
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(planet.name, style: theme.textTheme.titleLarge),
-                  Text(
-                    fmtTempRange(planet.tempMax - controller.data.start.tempSpread, planet.tempMax),
-                    style: theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary),
+              child: InkWell(
+                onTap: () => PlanetSheet.show(context, controller),
+                borderRadius: BorderRadius.circular(8),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: 48),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        planet.name,
+                        style: theme.textTheme.titleLarge,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        fmtTempRange(
+                          planet.tempMax - controller.data.start.tempSpread,
+                          planet.tempMax,
+                        ),
+                        style: theme.textTheme.bodySmall?.copyWith(color: Palette.textSecondary),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
+            ),
+            IconButton(
+              tooltip: 'Signaler un problème',
+              onPressed: () async {
+                final messenger = ScaffoldMessenger.maybeOf(context);
+                if (!await reportIssue()) {
+                  messenger?.showSnackBar(
+                    const SnackBar(content: Text('Impossible d’ouvrir le navigateur')),
+                  );
+                }
+              },
+              icon: const Icon(Icons.bug_report_outlined, size: 20),
             ),
             IconButton(tooltip: 'Debug', onPressed: onDebug, icon: const Icon(Icons.tune_outlined)),
             // Pastille : un officier attend d'être débloqué ou promu.

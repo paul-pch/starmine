@@ -8,6 +8,39 @@ start:
   # Tmin = Tmax − temp_spread (affichage ; seule Tmax entre dans les formules).
   temp_spread: 40
 
+# Identité de la planète (spec 16). Tranches de température d'après Tmax : froide (< 0),
+# tempérée (0 à 39), chaude (≥ 40).
+planet:
+  descriptions:
+    cold: >-
+      Un monde gelé sous un soleil pâle. La glace des pôles cache des réserves d'eau lourde,
+      mais les panneaux solaires peinent à la tâche.
+    temperate: >-
+      Un monde tempéré aux saisons douces. Ni hostile ni généreux : tout y est possible, rien
+      n'y est donné.
+    hot: >-
+      Un monde brûlant écrasé de lumière. L'énergie y abonde, l'eau lourde s'y fait rare et
+      s'extrait à grand-peine.
+  # Atout : + trait_value sur l'effet ; défaut : − trait_value sur un autre effet. Tirés à la
+  # création ; poids par tranche (1 par défaut).
+  trait_value: 0.1
+  traits:
+    metal: { boon: Gisements riches, flaw: Gisements pauvres }
+    crystal: { boon: Veines cristallines, flaw: Cristaux rares }
+    deuterium:
+      boon: Océans lourds
+      flaw: Eaux rares
+      boon_weight: { cold: 3, temperate: 1, hot: 0.5 }
+      flaw_weight: { cold: 0.5, temperate: 1, hot: 3 }
+    energy:
+      boon: Soleil ardent
+      flaw: Ciel voilé
+      boon_weight: { cold: 0.5, temperate: 1, hot: 3 }
+      flaw_weight: { cold: 3, temperate: 1, hot: 0.5 }
+    build: { boon: Sol stable, flaw: Sol instable }
+    research: { boon: Calme magnétique, flaw: Orages magnétiques }
+    rebuild: { boon: Roche dure, flaw: Roche friable }
+
 # Groupes d'affichage (puces de filtre), dans l'ordre d'affichage.
 categories:
   buildings:

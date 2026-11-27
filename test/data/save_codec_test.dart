@@ -71,7 +71,11 @@ void main() {
             endsAt: t0.add(const Duration(hours: 12)),
           ),
         ],
-        planet: withRaid.planet.copyWith(debris: const Resources(metal: 1200, crystal: 400)),
+        planet: withRaid.planet.copyWith(
+          debris: const Resources(metal: 1200, crystal: 400),
+          boon: TraitEffect.energy,
+          flaw: TraitEffect.deuterium,
+        ),
         pending: [
           ...withRaid.pending,
           StoryEvent(id: 10, planetId: 1, dueAt: t0, seed: 4, choiceKey: 'merchant_convoy'),
@@ -113,6 +117,8 @@ void main() {
     expect(b.id, a.id);
     expect(b.name, a.name);
     expect(b.tempMax, a.tempMax);
+    expect(b.boon, TraitEffect.energy);
+    expect(b.flaw, TraitEffect.deuterium);
     expect(b.levels, a.levels);
     expect(b.percents, a.percents);
     expect(b.units, a.units);
@@ -183,9 +189,13 @@ void main() {
     json.remove('queue');
     json.remove('effects');
     json.remove('bases');
-    (json['planet']! as Map<String, Object?>).remove('production_percent');
+    (json['planet']! as Map<String, Object?>)
+      ..remove('production_percent')
+      ..remove('boon')
+      ..remove('flaw');
     json['events'] = <Object?>[];
     final restored = decodeSave(json);
+    expect(restored.state.planet.boon, isNull);
     expect(restored.state.research.values, everyElement(0));
     expect(restored.state.planet.percents.values, everyElement(100));
     expect(restored.state.officers.values, everyElement(0));
