@@ -36,7 +36,7 @@ Aucun achat, jamais : ce qui serait payant ailleurs se gagne en jouant.
 
 ## Installer
 
-1. Sur un téléphone **Android 15 ou plus récent** (arm64), ouvrir la
+1. Sur un téléphone **Android 11 ou plus récent** (arm64), ouvrir la
    [dernière release](https://github.com/paul-pch/starmine/releases/latest).
 2. Télécharger le fichier `.apk` joint.
 3. L'ouvrir et autoriser l'installation depuis cette source quand Android le demande.

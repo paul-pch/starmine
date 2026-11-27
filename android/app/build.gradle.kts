@@ -23,8 +23,8 @@ android {
 
     defaultConfig {
         applicationId = "dev.pch.starmine"
-        // Android 15 uniquement.
-        minSdk = 35
+        // Android 11 (API 30) et plus récent.
+        minSdk = 30
         targetSdk = flutter.targetSdkVersion
         // versionCode = --build-number (github.run_number en CI), versionName = pubspec.yaml.
         versionCode = flutter.versionCode

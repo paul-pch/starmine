@@ -7,7 +7,7 @@ Grande fidélité aux règles OGame classiques ; on diverge seulement quand le s
 
 ## Principes
 
-- **Plateforme** : Android 15+ (minSdk 35), APK arm64 installé à la main, `dev.pch.starmine`.
+- **Plateforme** : Android 11+ (minSdk 30), APK arm64 installé à la main, `dev.pch.starmine`.
 - **Stack** : Flutter, Drift (SQLite), flutter_local_notifications. 100 % local, sans backend.
 - **Temps réel** avec multiplicateur de vitesse (×1, ×10, ×100) pour le confort et le debug.
 - **Le temps n'avance que par `advance(state, now)`** : aucune boucle de jeu, l'état est
