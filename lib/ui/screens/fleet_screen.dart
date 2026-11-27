@@ -505,8 +505,8 @@ class _SendSheetState extends State<SendSheet> {
     ];
   }
 
-  /// Recyclage : tous les recycleurs, puis grands et petits transporteurs jusqu'à couvrir
-  /// le champ, dans la limite du plafond ; pas d'escorte.
+  /// Recyclage : les recycleurs nécessaires pour couvrir le champ (au moins un), puis grands
+  /// et petits transporteurs pour le reste, dans la limite du plafond ; pas d'escorte.
   void _justEnough() {
     final c = widget.controller;
     final data = c.data;
@@ -516,8 +516,11 @@ class _SendSheetState extends State<SendSheet> {
     for (final k in _available) {
       _ships[k] = 0;
     }
-    _ships[UnitKind.recycler] = c.state.planet.count(UnitKind.recycler);
-    missing -= _ships[UnitKind.recycler]! * data.unit(UnitKind.recycler).cargo;
+    final recyclers = c.state.planet.count(UnitKind.recycler);
+    final recyclerCargo = data.unit(UnitKind.recycler).cargo;
+    final needed = recyclerCargo > 0 ? (missing / recyclerCargo).ceil() : recyclers;
+    _ships[UnitKind.recycler] = math.min(math.max(needed, 1), recyclers);
+    missing -= _ships[UnitKind.recycler]! * recyclerCargo;
     for (final k in const [UnitKind.largeCargo, UnitKind.smallCargo]) {
       final cargo = data.unit(k).cargo;
       if (missing <= 0 || room <= 0 || cargo <= 0 || !_available.contains(k)) continue;

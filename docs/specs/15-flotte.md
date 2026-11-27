@@ -254,8 +254,8 @@ la flotte envoyée) ajoutent de la soute, les recycleurs restent seuls à ramass
 ### UI
 
 - **Feuille d'envoi « Recyclage »** (planète ou base) : sélection par défaut « Juste
-  assez » (tous les recycleurs, puis grands puis petits transporteurs jusqu'à couvrir le
-  champ, dans la limite du plafond ; escorte à 0), puce « Juste assez » en plus de « Tout »
+  assez » (les recycleurs nécessaires pour couvrir le champ, au moins un, puis grands puis
+  petits transporteurs pour le reste, dans la limite du plafond ; escorte à 0), puce « Juste assez » en plus de « Tout »
   et « Aucun » ; compteur « n / plafond (recycleurs sans limite) ». Bloc de prévision :
   champ, quantité collectée et soute, « Reste dans le champ X » ou « Soute inutilisée X »,
   « Aller · collecte · retour » (planète : « Collecte » seule, ni vitesse ni carburant),

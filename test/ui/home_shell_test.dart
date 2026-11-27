@@ -349,6 +349,43 @@ void main() {
     await close(tester, db);
   });
 
+  testWidgets('recyclage : juste assez de recycleurs, pas toute la flotte', (tester) async {
+    final (controller, db) = await open(tester);
+    final p = controller.state.planet;
+    final save = SaveGame(
+      state: controller.state.copyWith(
+        planet: p.copyWith(
+          units: {...p.units, UnitKind.recycler: 10, UnitKind.largeCargo: 2},
+          debris: const Resources(metal: 20000, crystal: 10000),
+        ),
+      ),
+      speed: controller.speed,
+      seed: 1,
+    );
+    await tester.runAsync(
+      () => controller.importJson(jsonEncode(encodeSave(save, exportedAt: t0))),
+    );
+    await tester.pump();
+    await tester.tap(find.text('Flotte'));
+    await tester.pump();
+    await tester.tap(find.text('Recycler'));
+    await tester.pumpAndSettle();
+    // 30 000 de débris, 20 000 par recycleur : 2 recycleurs, aucun transporteur.
+    expect(find.text('2 / 10'), findsOneWidget);
+    expect(find.text('0 / 2'), findsOneWidget);
+    expect(find.text('Débit ${fmtAmount(40000)} / h (2 recycleurs)'), findsOneWidget);
+    expect(find.text('Soute inutilisée ${fmtAmount(10000)}'), findsOneWidget);
+    // « Tout » puis « Juste assez » revient à la même sélection.
+    await tester.tap(find.text('Tout'));
+    await tester.pump();
+    expect(find.text('10 / 10'), findsOneWidget);
+    await tester.tap(find.text('Juste assez'));
+    await tester.pump();
+    expect(find.text('2 / 10'), findsOneWidget);
+
+    await close(tester, db);
+  });
+
   testWidgets('feuille de détail : vignette de l’élément (scope des images hors de l’écran)', (
     tester,
   ) async {
