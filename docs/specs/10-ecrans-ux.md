@@ -25,7 +25,8 @@ maquette) ; couleurs des ressources et de la production selon les jetons ci-dess
 ```
 Barre de ressources (collée en haut, compacte)
 Hero planète 21:9 (défile avec le contenu, 200 dp au plus) : image + bandeau opaque (nom,
-  « Tmin à Tmax °C », icônes Debug, Officiers + disponibles et Rapports + non lus)
+  « Tmin à Tmax °C » → feuille de la planète au tap, icônes Signaler un problème, Debug,
+  Officiers + disponibles et Rapports + non lus)
 [Bandeau d'alerte raid, si une flotte est en route]
 Contenu de l'onglet : [carte « En cours » de la file de l'onglet] · puces · cartes
 Navigation : Bâtiments · Recherche · Chantier · File · Flotte (pastilles d'état de file) ;
@@ -40,7 +41,7 @@ sont posés sur des panneaux opaques à 78–90 %.
 | Élément | Information | Disposition |
 | --- | --- | --- |
 | Barre de ressources | Par ressource : icône, stock (animé chaque seconde, rouge si plein), production /h ; jauge fine de remplissage. Énergie : solde ; « Mines à X % » en rouge à la place du /h si manque | 4 colonnes. Tap sur une ressource → feuille : nom, stock / capacité, production détaillée (base, mines et consommations, total) ; énergie : produite · consommée, explication du facteur |
-| Hero planète | Nom, « Tmin à Tmax °C », Officiers (badge du nombre d'officiers à débloquer ou promouvoir), Rapports (badge du nombre de non lus) | Image par tranche de température (spec 11), texte sur un bandeau opaque à 82 %, jamais sur l'image nue |
+| Hero planète | Nom et « Tmin à Tmax °C » (tap → feuille de la planète : renommage, description, atout et défaut, spec 16), Signaler un problème (issue GitHub), Officiers (badge du nombre d'officiers à débloquer ou promouvoir), Rapports (badge du nombre de non lus) | Image par tranche de température (spec 11), texte sur un bandeau opaque à 82 %, jamais sur l'image nue |
 | Carte « En cours » | File de l'onglet : nom → niveau ou « 3 / 20 », barre de progression, reste (fin du lot pour le chantier) | En tête de l'onglet si la file est occupée ; tap → onglet File. Rouge avec cadenas si la file est bloquée (agrandissement du labo / chantier) |
 | Pastilles d'onglet | Verte = file libre ; rouge = file bloquée par l'agrandissement du labo ou du chantier ; rien = occupée ou bâtiment absent | Point sur l'icône de navigation (inchangé) |
 | Puces de filtre | « Tout » (avec titres de section) + une puce par catégorie du YAML | Rangée défilante horizontale sous la carte « En cours » |
