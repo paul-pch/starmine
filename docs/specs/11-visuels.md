@@ -183,3 +183,5 @@ sinon repli. Hero : séries 109, 111 et 113 ; fond : séries 110 et 112.
   les premiers rendus.
 - Charte de prompt des catégories `scene` et `pirate_base` à écrire (`art/style/`), comme `unit_prompt.md` pour
   les unités ; elles utilisent pour l'instant `story_prompt.md`. `character` : `character_prompt.md`.
+- À refaire (l'utilisateur ne les aime pas, 2026-11-27) : `ship.large_cargo`, `defense.plasma_turret`,
+  `defense.light_laser`. Validées et packagées en attendant ; note dans le registre.

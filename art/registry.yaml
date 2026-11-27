@@ -1184,6 +1184,7 @@ images:
     code: e3-light_laser-1234
   master: art/masters/defense.light_laser/v1.png
   build: assets/visuels/defense.light_laser.webp
+  notes: "Validée, mais l'utilisateur ne l'aime pas (2026-11-27) : à refaire."
 - id: defense.heavy_laser
   category: defense
   format: 1:1 512
@@ -1248,6 +1249,7 @@ images:
     code: e1-plasma_turret-4242
   master: art/masters/defense.plasma_turret/v1.png
   build: assets/visuels/defense.plasma_turret.webp
+  notes: "Validée, mais l'utilisateur ne l'aime pas (2026-11-27) : à refaire."
 - id: defense.small_shield_dome
   category: defense
   format: 1:1 512
@@ -1312,6 +1314,7 @@ images:
     code: e2-large_cargo-4242
   master: art/masters/ship.large_cargo/v1.png
   build: assets/visuels/ship.large_cargo.webp
+  notes: "Validée, mais l'utilisateur ne l'aime pas (2026-11-27) : à refaire."
 - id: ship.light_fighter
   category: ship
   format: 1:1 512
