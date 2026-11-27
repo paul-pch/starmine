@@ -244,7 +244,11 @@ class StarmineDatabase extends _$StarmineDatabase {
       if (from < 10 && from >= 7) {
         await m.addColumn(storyLog, storyLog.won);
       }
-      if (from < 11) {
+      // Base partielle (tests de migration ciblés) : pas de table planets, rien à ajouter.
+      final hasPlanets = await customSelect(
+        "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'planets'",
+      ).get();
+      if (from < 11 && hasPlanets.isNotEmpty) {
         await m.addColumn(planets, planets.boon);
         await m.addColumn(planets, planets.flaw);
       }

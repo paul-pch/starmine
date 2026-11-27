@@ -23,7 +23,6 @@ enum Ambiance {
       values.firstWhere((a) => a.name == name, orElse: () => balanced);
 }
 
-
 /// Paysage de la planète (spec 11) : déduit de Tmax, déjà tirée avec une graine stockée, sans
 /// rien changer à la sauvegarde. Le rocheux garde les ids historiques (`planet_hero.<climat>`).
 enum Biome {

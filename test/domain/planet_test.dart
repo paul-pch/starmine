@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:starmine/domain/engine.dart';
 import 'package:starmine/domain/game_data.dart';
 import 'package:starmine/domain/planet.dart';
 import 'package:starmine/domain/rules.dart';

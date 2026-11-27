@@ -134,7 +134,7 @@ const planetNameMax = 24;
   // Ordre stable : celui de l'énumération, pas celui du YAML.
   final traits = [
     for (final e in TraitEffect.values)
-      if (cfg.traits[e] case final t?) t,
+      ?cfg.traits[e],
   ];
   final boon = pick(traits, (t) => t.boonWeight[band] ?? 1);
   final flaw = pick(traits.where((t) => t.effect != boon), (t) => t.flawWeight[band] ?? 1);
